@@ -190,10 +190,10 @@
     }
   </style>
 <meta property="og:title" content="The Tidymodels Framework – BSMM-8740 - Fall 2025">
-<meta property="og:description" content="BSMM8740-2-R-2023F [WEEK - 4]">
+<meta property="og:description" content="BSMM8740-2-R-2025F [WEEK - 4]">
 <meta property="og:site_name" content="BSMM-8740 - Fall 2025">
 <meta name="twitter:title" content="The Tidymodels Framework – BSMM-8740 - Fall 2025">
-<meta name="twitter:description" content="BSMM8740-2-R-2023F [WEEK - 4]">
+<meta name="twitter:description" content="BSMM8740-2-R-2025F [WEEK - 4]">
 <meta name="twitter:image" content="https://bsmm-8740-fall-2025.github.io/osb/slides/images/twitter-card.png">
 <meta name="twitter:creator" content="@lodette">
 <meta name="twitter:card" content="summary_large_image">
@@ -204,7 +204,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">The Tidymodels Framework</h1>
-  <p class="subtitle">BSMM8740-2-R-2023F [WEEK - 4]</p>
+  <p class="subtitle">BSMM8740-2-R-2025F [WEEK - 4]</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -218,8 +218,8 @@ L.L. Odette
 <section id="recap-of-last-week" class="slide level2">
 <h2>Recap of last week</h2>
 <ul>
-<li><p>Last week we looked at several regression models that are useful for predictions.</p></li>
-<li><p>However, R packages that implement these models have different conventions on how they accept data and specify the model.</p></li>
+<li><p>Last week we looked at several regression methods/models that are useful for predictions.</p></li>
+<li><p>However, R packages that implement these methods have different conventions on how they accept data and specify the underlying model.</p></li>
 <li><p>Today we look at the <code>tidymodels</code> package which will give us a workflow to describe, fit and compare models, using the same approach across methods.</p></li>
 </ul>
 </section>
@@ -241,7 +241,7 @@ L.L. Odette
 <h3 id="key-components-of-tidymodels">Key Components of Tidymodels</h3>
 <ul>
 <li>Model Building: the <code>parsnip</code> package provides various modeling engines for different algorithms like lm(), glm(), randomForest(), xgboost(), etc.</li>
-<li>Preprocessing: Easy and flexible data preprocessing using the <code>recipes</code> package, allowing for seamless data transformation and feature engineering.</li>
+<li>Preprocessing: Easy and flexible data preprocessing is provided by the <code>recipes</code> package, allowing for seamless data transformation and feature engineering.</li>
 </ul>
 </section>
 <section id="tidymodels-3" class="slide level2">
@@ -256,12 +256,12 @@ L.L. Odette
 <section id="tidymodels-4" class="slide level2">
 <h2>Tidymodels</h2>
 <h3 id="key-components-of-tidymodels-2">Key Components of Tidymodels</h3>
-<div style="font-size: xx-large">
+<div style="font-size: x-large">
 <ul>
 <li>Workflows: functions in the <code>workflows</code> package can bundle together your pre-processing, modeling, and post-processing requests. The advantages are:
 <ul>
 <li>You don’t have to keep track of separate objects in your workspace.</li>
-<li>The recipe prepping and model fitting can be executed using a single call to <a href="https://generics.r-lib.org/reference/fit.html"><code>fit()</code></a>.</li>
+<li>Both the recipe prepping and model fitting can be executed using a single call to <a href="https://generics.r-lib.org/reference/fit.html"><code>fit()</code></a>.</li>
 <li>If you have custom tuning parameter settings, these can be defined using a simpler interface when combined with <a href="https://github.com/tidymodels/tune">tune</a>.</li>
 </ul></li>
 <li>Workflowsets: The <code>workflowsets</code> package facilitates multiple workwflows - applying different types of models and preprocessing methods on a given data set.</li>
@@ -270,7 +270,7 @@ L.L. Odette
 </section>
 <section id="tidymodels-5" class="slide level2">
 <h2>Tidymodels</h2>
-<p>In base R, the <strong>predict</strong> function returns results in a format that depends on the models.</p>
+<p>In base R, the <strong>predict</strong> function returns results in a format that depends on the model.</p>
 <p>By contrast, <strong>parsnip</strong> and <strong>workflows</strong> conforms to the following rules:</p>
 <ol type="1">
 <li>The results are always a tibble.</li>
@@ -295,8 +295,8 @@ L.L. Odette
 <aside><ol class="aside-footnotes"><li id="fn1"><p>e.g.&nbsp;<code>stats::lm</code> takes a formula, while <code>glmnet::glmnet</code> takes separate outcome and co-variate matrices</p></li></ol></aside></section>
 <section id="fitting-with-parsnip" class="slide level2">
 <h2>Fitting with parsnip</h2>
-<p>For example we call <code>stats::lm</code>, specifying the model using a formula. By contrast <code>glmnet::glmnet</code> specify the model with separate outcome and co-variate matrices</p>
-<p>By contrast, the tidymodels permits using both models with a uniform model specification.</p>
+<p>For example, we call <code>stats::lm</code>, specifying the model using a formula. By contrast, <code>glmnet::glmnet</code> specify the model with separate outcome and co-variate matrices</p>
+<p>The tidymodels permits using both models with a uniform model specification.</p>
 </section>
 <section id="fitting-with-parsnip-1" class="slide level2">
 <h2>Fitting with parsnip</h2>
@@ -404,7 +404,7 @@ glmnet::glmnet(x = missing_arg(), y = missing_arg(), weights = missing_arg(),
 <span id="cb9-8"><a></a><span class="sc">+</span>   parsnip<span class="sc">::</span><span class="fu">set_engine</span>(<span class="st">"lm"</span>)</span>
 <span id="cb9-9"><a></a><span class="sc">&gt;</span> <span class="co"># fit model</span></span>
 <span id="cb9-10"><a></a><span class="er">&gt;</span> lm_form_fit <span class="ot">&lt;-</span> lm_model <span class="sc">%&gt;%</span> </span>
-<span id="cb9-11"><a></a><span class="sc">+</span>   <span class="co"># Recall that Sale_Price has been pre-logged</span></span>
+<span id="cb9-11"><a></a><span class="sc">+</span>   <span class="co"># Recall that Sale_Price has been transformed using log()</span></span>
 <span id="cb9-12"><a></a><span class="sc">+</span>    parsnip<span class="sc">::</span><span class="fu">fit</span>(Sale_Price <span class="sc">~</span> Longitude <span class="sc">+</span> Latitude, <span class="at">data =</span> ames_train)</span>
 <span id="cb9-13"><a></a><span class="sc">&gt;</span> <span class="co"># fit model with data in (x,y) form</span></span>
 <span id="cb9-14"><a></a><span class="er">&gt;</span> lm_xy_fit <span class="ot">&lt;-</span> </span>
@@ -426,14 +426,14 @@ stats::lm(formula = Sale_Price ~ Longitude + Latitude, data = data)
 
 Coefficients:
 (Intercept)    Longitude     Latitude  
- -134223828      -810988      1390808  </code></pre>
+ -132140704      -829828      1299275  </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb12" data-code-line-numbers="2|4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a><span class="sc">&gt;</span> lm_form_fit <span class="sc">%&gt;%</span> parsnip<span class="sc">::</span><span class="fu">extract_fit_engine</span>() <span class="sc">%&gt;%</span> stats<span class="sc">::</span><span class="fu">vcov</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              (Intercept)    Longitude      Latitude
-(Intercept)  4.664768e+13 355373289509 -318058799276
-Longitude    3.553733e+11   3734037641    -135776456
-Latitude    -3.180588e+11   -135776456    7264101260</code></pre>
+(Intercept)  4.809744e+13 364321163800 -332616799964
+Longitude    3.643212e+11   3795863624    -210922373
+Latitude    -3.326168e+11   -210922373    7443052310</code></pre>
 </div>
 </div>
 </section>
@@ -448,7 +448,7 @@ Latitude    -3.180588e+11   -135776456    7264101260</code></pre>
 </section>
 <section id="tidymodels-workflows" class="slide level2">
 <h2>Tidymodels: workflows</h2>
-<p>The model <strong>workflow</strong> collects all the steps of the analysis, including any pre-processing steps, the specification of the model, the model fit itself, as well as potential post-processing activities.</p>
+<p>The <strong>workflow</strong> data structure collects all the steps of the analysis, including any pre-processing steps, the specification of the model, the model fit itself, as well as potential post-processing activities.</p>
 <p>Similar collections of steps are sometimes called pipelines.</p>
 </section>
 <section id="workflows-example" class="slide level2">
@@ -628,8 +628,7 @@ Latitude    -3.180588e+11   -135776456    7264101260</code></pre>
 <h2>Tidymodels: workflowsets</h2>
 <p>A workflow set is a data structure</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a><span class="sc">&gt;</span> <span class="co"># view</span></span>
-<span id="cb25-2"><a></a><span class="er">&gt;</span> location_models</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a><span class="sc">&gt;</span> location_models</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A workflow set/tibble: 4 × 4
   wflow_id        info             option    result    
@@ -673,8 +672,7 @@ Latitude    -3.180588e+11   -135776456    7264101260</code></pre>
 <div style="font-size: xx-large">
 <p>Once we’ve settled on a final model there is a convenience function called&nbsp;<code>last_fit()</code>&nbsp;that will <em>fit</em> the model to the entire training set and <em>evaluate</em> it with the testing set. Notice that <code>last_fit()</code> takes a data split as an input, not a dataframe.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb30" data-code-line-numbers="1-2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a></a><span class="sc">&gt;</span> <span class="co"># pull </span></span>
-<span id="cb30-2"><a></a><span class="er">&gt;</span> final_lm_res <span class="ot">&lt;-</span> tune<span class="sc">::</span><span class="fu">last_fit</span>(lm_wflow, ames_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30" data-code-line-numbers="1-2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a></a><span class="sc">&gt;</span> final_lm_res <span class="ot">&lt;-</span> tune<span class="sc">::</span><span class="fu">last_fit</span>(lm_wflow, ames_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="panel-tabset">
 <ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">metrics</a></li><li><a href="#tabset-4-2">predictions</a></li></ul>
@@ -778,7 +776,7 @@ Latitude    -3.180588e+11   -135776456    7264101260</code></pre>
 <span id="cb36-13"><a></a><span class="sc">&gt;</span> <span class="co"># there is a standard output format for yardstick functions</span></span>
 <span id="cb36-14"><a></a><span class="er">&gt;</span> yardstick<span class="sc">::</span><span class="fu">rmse</span>(ames_test_res, <span class="at">truth =</span> Sale_Price, <span class="at">estimate =</span> .pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-ncol="3" data-layout-align="center">
+<div class="cell quarto-layout-panel" data-layout-align="center" data-layout-ncol="3">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
 <pre><code># A tibble: 588 × 1
@@ -926,7 +924,7 @@ Prediction Class1 Class2
 <span id="cb50-12"><a></a><span class="sc">+</span>   , <span class="at">estimate =</span> predicted</span>
 <span id="cb50-13"><a></a><span class="sc">+</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-ncol="2" data-layout-align="center">
+<div class="cell quarto-layout-panel" data-layout-align="center" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <pre><code># A tibble: 3 × 3
@@ -960,7 +958,7 @@ Prediction Class1 Class2
 </details>
 
 </div>
-<img data-src="BSMM_8740_lec_04_files/figure-html/unnamed-chunk-27-1.png" class="quarto-figure quarto-figure-center r-stretch" width="672"></section>
+<img data-src="BSMM_8740_lec_04_files/figure-revealjs/unnamed-chunk-27-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
 <section id="tidymodels-yardstick-8" class="slide level2">
 <h2>Tidymodels: yardstick</h2>
 <h3 id="regression-metrics-multi-class-targets">Regression metrics: multi-class targets</h3>
@@ -4613,484 +4611,36 @@ Prediction Class1 Class2
 <span id="cb65-14"><a></a><span class="sc">+</span>   gt<span class="sc">::</span><span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb65-15"><a></a><span class="sc">+</span>   gt<span class="sc">::</span><span class="fu">fmt_number</span>(<span class="at">decimals=</span><span class="dv">4</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb65-16"><a></a><span class="sc">+</span>   gt<span class="sc">::</span><span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">"Performance statistics"</span>, <span class="at">subtitle =</span> <span class="st">"metric: rmse"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb65-17"><a></a><span class="sc">+</span>   gtExtras<span class="sc">::</span><span class="fu">gt_theme_espn</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb65-17"><a></a><span class="sc">+</span>   gtExtras<span class="sc">::</span><span class="fu">gt_theme_espn</span>() <span class="sc">|&gt;</span> gt<span class="sc">::</span><span class="fu">as_raw_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div id="qyjwuurema" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-#qyjwuurema table {
-  font-family: Lato, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#qyjwuurema thead, #qyjwuurema tbody, #qyjwuurema tfoot, #qyjwuurema tr, #qyjwuurema td, #qyjwuurema th {
-  border-style: none;
-}
-
-#qyjwuurema p {
-  margin: 0;
-  padding: 0;
-}
-
-#qyjwuurema .gt_table {
-  display: table;
-  border-collapse: collapse;
-  line-height: normal;
-  margin-left: auto;
-  margin-right: auto;
-  color: #333333;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 3px;
-  border-top-color: #FFFFFF;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#qyjwuurema .gt_caption {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#qyjwuurema .gt_title {
-  color: #333333;
-  font-size: 24px;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#qyjwuurema .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#qyjwuurema .gt_heading {
-  background-color: #FFFFFF;
-  text-align: left;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#qyjwuurema .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#qyjwuurema .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#qyjwuurema .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 80%;
-  font-weight: bolder;
-  text-transform: uppercase;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#qyjwuurema .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 80%;
-  font-weight: bolder;
-  text-transform: uppercase;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#qyjwuurema .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#qyjwuurema .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#qyjwuurema .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#qyjwuurema .gt_spanner_row {
-  border-bottom-style: hidden;
-}
-
-#qyjwuurema .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 80%;
-  font-weight: bolder;
-  text-transform: uppercase;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  text-align: left;
-}
-
-#qyjwuurema .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 80%;
-  font-weight: bolder;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#qyjwuurema .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#qyjwuurema .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#qyjwuurema .gt_row {
-  padding-top: 7px;
-  padding-bottom: 7px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #F6F7F7;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#qyjwuurema .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 80%;
-  font-weight: bolder;
-  text-transform: uppercase;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#qyjwuurema .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-#qyjwuurema .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-#qyjwuurema .gt_row_group_first th {
-  border-top-width: 2px;
-}
-
-#qyjwuurema .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#qyjwuurema .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-#qyjwuurema .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-#qyjwuurema .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#qyjwuurema .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#qyjwuurema .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#qyjwuurema .gt_last_grand_summary_row_top {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: double;
-  border-bottom-width: 6px;
-  border-bottom-color: #D3D3D3;
-}
-
-#qyjwuurema .gt_striped {
-  background-color: #FAFAFA;
-}
-
-#qyjwuurema .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#qyjwuurema .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#qyjwuurema .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#qyjwuurema .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#qyjwuurema .gt_sourcenote {
-  font-size: 12px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#qyjwuurema .gt_left {
-  text-align: left;
-}
-
-#qyjwuurema .gt_center {
-  text-align: center;
-}
-
-#qyjwuurema .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#qyjwuurema .gt_font_normal {
-  font-weight: normal;
-}
-
-#qyjwuurema .gt_font_bold {
-  font-weight: bold;
-}
-
-#qyjwuurema .gt_font_italic {
-  font-style: italic;
-}
-
-#qyjwuurema .gt_super {
-  font-size: 65%;
-}
-
-#qyjwuurema .gt_footnote_marks {
-  font-size: 75%;
-  vertical-align: 0.4em;
-  position: initial;
-}
-
-#qyjwuurema .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-#qyjwuurema .gt_indent_1 {
-  text-indent: 5px;
-}
-
-#qyjwuurema .gt_indent_2 {
-  text-indent: 10px;
-}
-
-#qyjwuurema .gt_indent_3 {
-  text-indent: 15px;
-}
-
-#qyjwuurema .gt_indent_4 {
-  text-indent: 20px;
-}
-
-#qyjwuurema .gt_indent_5 {
-  text-indent: 25px;
-}
-
-#qyjwuurema .katex-display {
-  display: inline-flex !important;
-  margin-bottom: 0.75em !important;
-}
-
-#qyjwuurema div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
-  height: 0px !important;
-}
-</style>
-
-<table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-<thead>
-<tr class="gt_heading header">
-<th colspan="3" class="gt_heading gt_title gt_font_normal">Performance statistics</th>
+  
+  
+<table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: Lato, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 3px; border-top-color: #FFFFFF; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" data-bgcolor="#FFFFFF">
+<thead style="border-style: none;">
+<tr class="gt_heading header" style="border-style: none; background-color: #FFFFFF; text-align: left; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;" data-bgcolor="#FFFFFF" data-align="left">
+<th colspan="3" class="gt_heading gt_title gt_font_normal" style="text-align: left; border-style: none; color: #333333; font-size: 24px; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-width: 0; background-color: #FFFFFF; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; font-weight: normal;" data-bgcolor="#FFFFFF">Performance statistics</th>
 </tr>
-<tr class="gt_heading even">
-<th colspan="3" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">metric: rmse</th>
+<tr class="gt_heading even" style="border-style: none; background-color: #FFFFFF; text-align: left; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;" data-bgcolor="#FFFFFF" data-align="left">
+<th colspan="3" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style="text-align: left; border-style: none; color: #333333; font-size: 85%; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; background-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; font-weight: normal;" data-bgcolor="#FFFFFF">metric: rmse</th>
 </tr>
-<tr class="gt_col_headings header">
-<th id="object" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">object</th>
-<th id="train" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">train</th>
-<th id="test" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">test</th>
+<tr class="gt_col_headings header" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3;">
+<th id="object" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col" style="text-align: left; border-style: none; color: #333333; background-color: #FFFFFF; font-size: 80%; font-weight: bolder; text-transform: uppercase; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden;" data-bgcolor="#FFFFFF" data-valign="bottom">object</th>
+<th id="train" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col" style="text-align: right; border-style: none; color: #333333; background-color: #FFFFFF; font-size: 80%; font-weight: bolder; text-transform: uppercase; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-bgcolor="#FFFFFF" data-valign="bottom">train</th>
+<th id="test" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col" style="text-align: right; border-style: none; color: #333333; background-color: #FFFFFF; font-size: 80%; font-weight: bolder; text-transform: uppercase; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 6px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-bgcolor="#FFFFFF" data-valign="bottom">test</th>
 </tr>
 </thead>
-<tbody class="gt_table_body">
-<tr class="odd">
-<td class="gt_row gt_left" headers="object">rf_fit</td>
-<td class="gt_row gt_right" headers="train">0.0366</td>
-<td class="gt_row gt_right" headers="test">0.0702</td>
+<tbody class="gt_table_body" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3;">
+<tr class="odd" style="border-style: none;">
+<td class="gt_row gt_left" headers="object" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden;" data-valign="middle">rf_fit</td>
+<td class="gt_row gt_right" headers="train" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">0.0366</td>
+<td class="gt_row gt_right" headers="test" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">0.0702</td>
 </tr>
-<tr class="even">
-<td class="gt_row gt_left gt_striped" headers="object">lm_fit</td>
-<td class="gt_row gt_right gt_striped" headers="train">0.1603</td>
-<td class="gt_row gt_right gt_striped" headers="test">0.1638</td>
+<tr class="even" style="border-style: none;">
+<td class="gt_row gt_left gt_striped" headers="object" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA;" data-valign="middle" data-bgcolor="#FAFAFA">lm_fit</td>
+<td class="gt_row gt_right gt_striped" headers="train" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">0.1603</td>
+<td class="gt_row gt_right gt_striped" headers="test" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">0.1638</td>
 </tr>
 </tbody>
 </table>
@@ -5205,7 +4755,7 @@ Prediction Class1 Class2
 <p>R repetitions of V-fold cross-validation reduces the standard error variance by a factor of <span class="math inline">\(1/\sqrt{\text{R}}\)</span>.</p>
 </div>
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a></a><span class="sc">&gt;</span> rsample<span class="sc">::</span><span class="fu">vfold_cv</span>(ames_train, <span class="at">v =</span> <span class="dv">10</span>, <span class="at">repeats =</span> <span class="dv">5</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-layout-ncol="2" data-layout-align="center">
+<div class="cell quarto-layout-panel" data-layout-align="center" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <pre><code>#  10-fold cross-validation repeated 5 times 
@@ -5239,13 +4789,13 @@ Prediction Class1 Class2
 <p>The difference between MCCV and regular cross-validation is that, for MCCV, the input proportion of the data is randomly selected each time.</p>
 <p>MCCV is performed using <code>rsample::mv_cv()</code>.</p>
 </section>
-<section id="resampling-boostrapping" class="slide level2">
-<h2>Resampling: Boostrapping</h2>
+<section id="resampling-bootstrapping" class="slide level2">
+<h2>Resampling: Bootstrapping</h2>
 <p><strong>Re-sampling</strong>: bootstrapping:</p>
 <p>A bootstrap sample of the training set is a sample that is the same size as the training set but is drawn <em>with replacement.</em></p>
 <p>When bootstrapping, the assessment set is often called the&nbsp;<em>out-of-bag</em>&nbsp;sample.</p>
 <div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a></a><span class="sc">&gt;</span> rsample<span class="sc">::</span><span class="fu">bootstraps</span>(ames_train, <span class="at">times =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell quarto-layout-panel" data-layout-ncol="2" data-layout-align="center">
+<div class="cell quarto-layout-panel" data-layout-align="center" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <pre><code># Bootstrap sampling 
@@ -5261,8 +4811,8 @@ Prediction Class1 Class2
 </div>
 </div>
 </section>
-<section id="resampling-boostrapping-1" class="slide level2">
-<h2>Resampling: Boostrapping</h2>
+<section id="resampling-bootstrapping-1" class="slide level2">
+<h2>Resampling: Bootstrapping</h2>
 <p>Each data point has a 63.2% chance of inclusion in the training set at least once.</p>
 <p>The assessment set contains all of the training set samples that were not selected for the analysis set (on average, with 36.8% of the training set), and so they can vary in size.</p>
 <p>Bootstrap samples produce performance estimates that have very low variance (unlike cross-validation) but have significant pessimistic bias. This means that, if the true accuracy of a model is 90%, the bootstrap would tend to estimate the value to be less than 90%.</p>
@@ -5353,7 +4903,7 @@ Prediction Class1 Class2
 <section id="tidymodels-7" class="slide level2">
 <h2>Tidymodels</h2>
 <p><strong>Performance evaluation</strong>:</p>
-<div style="font-size: xx-large">
+<div style="font-size: x-large">
 <ol type="1">
 <li>During resampling, the analysis set is used to preprocess the data, apply the pre-processing to itself, and use these processed data to fit the model.</li>
 <li>The pre-processing statistics produced by the analysis set are applied to the assessment set. The predictions from the assessment set estimate performance on new data.</li>
@@ -5419,7 +4969,7 @@ Prediction Class1 Class2
 <span id="cb84-7"><a></a><span class="sc">+</span>   tune<span class="sc">::</span><span class="fu">fit_resamples</span>(<span class="at">resamples =</span> ames_folds, <span class="at">control =</span> keep_pred)</span>
 <span id="cb84-8"><a></a><span class="sc">&gt;</span> rf_res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-ncol="2" data-layout-align="center">
+<div class="cell quarto-layout-panel" data-layout-align="center" data-layout-ncol="2">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <pre><code># Resampling results
@@ -5496,7 +5046,7 @@ Prediction Class1 Class2
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="images/logo.png" class="slide-logo"></p>
 <div class="footer footer-default">
-<p><a href="https://bsmm-8740-fall-2024.github.io/osb/">bsmm-8740-fall-2024.github.io/osb</a></p>
+<p><a href="https://bsmm-8740-fall-2025.github.io/osb/">bsmm-8740-fall-2025.github.io/osb</a></p>
 </div>
 </div></div>
 
@@ -5713,6 +5263,44 @@ Prediction Class1 Class2
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")

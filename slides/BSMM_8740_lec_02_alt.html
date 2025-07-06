@@ -188,10 +188,10 @@
     }
   </style>
 <meta property="og:title" content="EDA and feature engineering – BSMM-8740 - Fall 2025">
-<meta property="og:description" content="BSMM8740-2-R-2024F [WEEK - 2]">
+<meta property="og:description" content="BSMM8740-2-R-2025F [WEEK - 2]">
 <meta property="og:site_name" content="BSMM-8740 - Fall 2025">
 <meta name="twitter:title" content="EDA and feature engineering – BSMM-8740 - Fall 2025">
-<meta name="twitter:description" content="BSMM8740-2-R-2024F [WEEK - 2]">
+<meta name="twitter:description" content="BSMM8740-2-R-2025F [WEEK - 2]">
 <meta name="twitter:image" content="https://bsmm-8740-fall-2025.github.io/osb/slides/images/twitter-card.png">
 <meta name="twitter:creator" content="@lodette">
 <meta name="twitter:card" content="summary_large_image">
@@ -202,7 +202,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">EDA and feature engineering</h1>
-  <p class="subtitle">BSMM8740-2-R-2024F [WEEK - 2]</p>
+  <p class="subtitle">BSMM8740-2-R-2025F [WEEK - 2]</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -338,18 +338,18 @@ $ tvhours &lt;int&gt; 12, NA, 2, 4, 1, NA, 3, NA, 0, 3</code></pre>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="sc">&gt;</span> dat <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">slice_sample</span>(<span class="at">n=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 9
-    year marital         age race  rincome        partyid           relig    denom tvhours
-   &lt;int&gt; &lt;fct&gt;         &lt;int&gt; &lt;fct&gt; &lt;fct&gt;          &lt;fct&gt;             &lt;fct&gt;    &lt;fct&gt;   &lt;int&gt;
- 1  2004 Divorced         57 White $25000 or more Not str democrat  Catholic Not …      NA
- 2  2004 Never married    33 White $25000 or more Strong democrat   Catholic Not …       2
- 3  2012 Married          64 Black $25000 or more Strong democrat   None     Not …       3
- 4  2004 Married          43 White Not applicable Independent       Catholic Not …      NA
- 5  2000 Never married    24 Other $20000 - 24999 Ind,near dem      Catholic Not …      NA
- 6  2012 Married          65 White $25000 or more Not str democrat  Protest… Pres…       2
- 7  2004 Divorced         56 White Not applicable Independent       Protest… Epis…      NA
- 8  2002 Married          30 White $8000 to 9999  Ind,near dem      Protest… Pres…      NA
- 9  2008 Married          54 Other Refused        Not str democrat  Catholic Not …       2
-10  2006 Married          45 White $25000 or more Strong republican None     Not …      NA</code></pre>
+    year marital         age race  rincome        partyid            relig   denom tvhours
+   &lt;int&gt; &lt;fct&gt;         &lt;int&gt; &lt;fct&gt; &lt;fct&gt;          &lt;fct&gt;              &lt;fct&gt;   &lt;fct&gt;   &lt;int&gt;
+ 1  2006 Married          60 White Not applicable Strong republican  Protes… Pres…      NA
+ 2  2000 Widowed          86 White Not applicable Strong democrat    Protes… Othe…      NA
+ 3  2006 Married          32 White $25000 or more Not str republican None    Not …       2
+ 4  2000 Divorced         50 Black $25000 or more Strong democrat    Protes… Sout…      NA
+ 5  2006 Married          61 White Lt $1000       Strong republican  Protes… No d…       4
+ 6  2002 Widowed          58 White $25000 or more Strong democrat    None    Not …      NA
+ 7  2000 Never married    34 White $25000 or more Independent        Cathol… Not …       3
+ 8  2010 Widowed          70 Other Not applicable Not str democrat   Cathol… Not …       2
+ 9  2002 Married          36 White $25000 or more Strong republican  Cathol… Not …       2
+10  2002 Married          55 White $6000 to 6999  Independent        Protes… Other      NA</code></pre>
 </div>
 </div>
 </div>
@@ -486,7 +486,7 @@ $ memory_usage         &lt;dbl&gt; 784776</code></pre>
 <span id="cb15-5"><a></a><span class="sc">+</span>   gt<span class="sc">::</span><span class="fu">as_raw_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="smxgfixgtx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="ywmociizxg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   
 <table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: Lato, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 28px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 3px; border-top-color: #FFFFFF; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" data-bgcolor="#FFFFFF">
@@ -906,7 +906,7 @@ x_i(\lambda) = \left\{
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="images/logo.png" class="slide-logo"></p>
 <div class="footer footer-default">
-<p><a href="https://bsmm-8740-fall-2024.github.io/osb/">bsmm-8740-fall-2024.github.io/osb</a></p>
+<p><a href="https://bsmm-8740-fall-2025.github.io/osb/">bsmm-8740-fall-2025.github.io/osb</a></p>
 </div>
 </div></div>
 
