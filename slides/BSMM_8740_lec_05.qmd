@@ -68,7 +68,7 @@ They usually require less time to make predictions.
 ::: {style="font-size: x-large"}
 **Logistic Regression**:
 
--   **Overview**: A statistical method for binary classification that models the probability of a binary outcome based on one or more predictor variables.
+-   **Overview**: A statistical method for **binary classification** that models the probability of a binary outcome based on one or more predictor variables.
 -   **Advantages**: Simple, interpretable, and works well with linear decision boundaries.
 -   **Disadvantages**: Assumes linearity between predictors and the log-odds of the outcome.
 :::
@@ -78,7 +78,7 @@ They usually require less time to make predictions.
 ::: {style="font-size: x-large"}
 **Decision Trees**:
 
--   **Overview**: A model that splits the data into subsets based on feature values, resulting in a tree structure where each leaf node represents a class label.
+-   **Overview**: A model that splits the data into subsets based on feature values, resulting in a tree structure where each leaf node represents a **class label**.
 -   **Advantages**: Easy to interpret and visualize, handles both numerical and categorical data.
 -   **Disadvantages**: Prone to overfitting, especially with deep trees.
 :::
@@ -106,7 +106,7 @@ They usually require less time to make predictions.
 ## ANN
 
 ::: {style="font-size: x-large"}
-**Neural Networks**:
+**Artificial Neural Networks**:
 
 -   **Overview**: Models inspired by the human brain, consisting of layers of interconnected neurons that learn to map inputs to outputs.
 -   **Advantages**: Capable of capturing complex patterns and relationships.
@@ -126,7 +126,7 @@ They usually require less time to make predictions.
 
 ## Lazy Learners
 
-**Lazy learners or instance-based learners**, do not create any model immediately from the training data, and this where the lazy aspect comes from. They just memorize the training data, and each time there is a need to make a prediction, they predict based on similarity between the query instance and stored instances.
+**Lazy learners or instance-based learners**, do not create any model immediately from the training data, and this where the lazy aspect comes from. They just memorize the training data, and each time there is a need to make a prediction, they predict based on similarity between the query measurement and stored measurements.
 
 ## Lazy Learners
 
@@ -162,7 +162,7 @@ Example lazy learners are:
     -   Lazy learners have negligible training time but are computationally intensive during prediction.
 -   **Model Interpretability**:
     -   Eager learners like decision trees and logistic regression are generally more interpretable.
-    -   Lazy learners like k-NN are less interpretable as they rely on instance-based comparisons.
+    -   Lazy learners like kNN are less interpretable as they rely on instance-based comparisons.
 :::
 
 ## Comparing Eager and Lazy Learners
@@ -170,7 +170,7 @@ Example lazy learners are:
 ::: {style="font-size: x-large"}
 -   **Handling of High-Dimensional Data**:
     -   Eager learners like SVMs and neural networks can handle high-dimensional data effectively.
-    -   Lazy learners like k-NN can struggle with the curse of dimensionality.
+    -   Lazy learners like kNN can struggle with the curse of dimensionality.
 -   **Flexibility and Complexity**:
     -   Eager learners can capture complex relationships and interactions through models like neural networks and gradient boosting.
     -   Lazy learners are simpler but can be flexible in capturing local patterns.
@@ -188,7 +188,7 @@ Example lazy learners are:
 
 ## Binary Logistic Regression
 
-Logistic regression is a Generalized Linear Model where the dependent (categorical) variable $y$ is binary, i.e. takes values in $\{0,1\}$ (e.g., yes/no, success/failure).
+Logistic regression is a **Generalized Linear Model** where the dependent (categorical) variable $y$ is binary, i.e. takes values in $\{0,1\}$ (e.g., yes/no, success/failure).
 
 This can be interpreted as identifying two classes, and logistic regression provides a prediction for class membership based on a linear combination of the explanatory variables.
 
@@ -198,9 +198,9 @@ Logistic regression is an example of supervised learning.
 
 For the logistic GLM:
 
--   the distribution of the observations is Binomial with parameter $\pi\equiv\mathbb{P}(\left.Y=1\right|\eta)$
+-   the distribution of the observations is Binomial with parameter $\eta$: $\pi\equiv\mathbb{P}(\left.Y=1\right|\eta)$
 -   the explanatory variables are linear in the parameters: $\eta=\beta_0+\beta_1 x_1+\beta_2 x_2+\beta_2 x_2\ldots+\beta_n x_n$
--   the link function is the logit: $\eta=\text{logit}(\pi) = \log(\frac{\pi}{1-\pi})$
+-   the link function is the logit: $\text{logit}(\pi) = \log(\frac{\pi}{1-\pi})$
 
 It follows that $\pi = \frac{e^\eta}{1+e^\eta} = \frac{1}{1+e^{-\eta}}$, which is a sigmoid function in the explanatory variables. The equation $\eta=0$ defines a linear decision boundary or classification threshold.
 
@@ -268,7 +268,7 @@ $$
 ::::::::: panel-tabset
 ## Usefulness
 
-::: {style="font-size: x-large"}
+::: {style="font-size: large"}
 **Accuracy** is a useful metric in evaluating classification models under certain conditions:
 
 1.  **Balanced Datasets**: When the classes in the dataset are roughly equal in number, accuracy can be a reliable indicator of model performance. For example, if you have a dataset where 50% of the samples are class A and 50% are class B, accuracy is a good measure of whether the model correctly predicts the classes.
@@ -278,14 +278,14 @@ $$
 
 ## Limitations
 
-::: {style="font-size: x-large"}
+::: {style="font-size: large"}
 Accuracy has several limitations, especially in the context of imbalanced datasets:
 :::
 
 :::::: panel-tabset
 ## Imbalance
 
-::: {style="font-size: x-large"}
+::: {style="font-size: large"}
 **Imbalanced Datasets**:
 
 -   **False Sense of Performance**: When one class significantly outnumbers the other, accuracy can be misleading: if 95% of the samples belong to class A and only 5% to class B, always predicting class A will have a high accuracy (95%) but may fail to correctly identify any instances of class B.
@@ -293,7 +293,7 @@ Accuracy has several limitations, especially in the context of imbalanced datase
 
 ## Importance
 
-::: {style="font-size: x-large"}
+::: {style="font-size: large"}
 **Ignoring Class Importance**:
 
 -   **Precision and Recall**: Accuracy does not take into account the importance of different classes or the costs of different types of errors (false positives and false negatives). In many business contexts, these costs are not equal, e.g., in medical diagnosis, a false -ve might be much more serious than a false +ve.
@@ -301,7 +301,7 @@ Accuracy has several limitations, especially in the context of imbalanced datase
 
 ## Behaviour
 
-::: {style="font-size: x-large"}
+::: {style="font-size: large"}
 **Lack of Insight into Model Behavior**:
 
 -   **Detailed Performance**: Accuracy give no insight into the types of errors the model is making. Precision and recall, on the other hand, offer more detailed information about the performance on individual classes - crucial for understanding and improving the model.
@@ -692,7 +692,7 @@ training_results_nb %>% yardstick::roc_curve(.pred_No, truth = default) %>% auto
 
 ## Nearest Neighbour Classification
 
-The k-nearest neighbors algorithm, also known as KNN or k-NN, is a non-parametric, supervised learning classifier, which uses proximity to make classifications or predictions about the grouping of an individual data point.
+The k-nearest neighbors algorithm, also known as KNN, kNN, or k-NN, is a non-parametric, supervised learning classifier, which uses proximity to make classifications or predictions about the grouping of an individual data point.
 
 It is typically used as a classification algorithm, working off the assumption that similar class predictions can be made by predictors near one another.
 
@@ -741,14 +741,16 @@ To use k-NN for a regression problem, calculate the mean or median (or another a
 
 ## KNN Classification: metrics
 
-In the context of k-Nearest Neighbors (kNN) classification, while the general evaluation metrics like accuracy, precision, recall, F1 score, and others are commonly used, there are no unique metrics that are exclusively specific to kNN. However, there are certain considerations and additional analyses that are particularly relevant when evaluating a kNN model.
+In the context of k-Nearest Neighbors (kNN) classification, while the general evaluation metrics like accuracy, precision, recall, F1[^4] score, and others are commonly used, there are no unique metrics that are exclusively specific to kNN. However, there are certain considerations and additional analyses that are particularly relevant when evaluating a kNN model.
+
+[^4]: $\text{F}_1\,\text{score}=2\times\frac{\text{precision }\times\text{recall}}{\text{precision}+\text{recall}}$ — precision & recall must be large for $\text{F}_1\,\text{score}$ to be large.
 
 ## KNN Classification: metrics
 
 ::: {style="font-size: smaller"}
-1.  **Choice of k (Number of Neighbors):** The value of k affects the performance of a kNN model. Testing the model with various values of k and evaluating the performance using standard metrics (like accuracy, F1 score) can to select the best k.
+1.  **Choice of k (Number of Neighbors):** The value of k affects the performance of a kNN model. Testing the model with various values of k and evaluating the performance using standard metrics (like accuracy, F1 score) can help to select the best k.
 
-2.  **Feature Scaling Sensitivity:** kNN is sensitive to the scale of the features because it relies on calculating distances. Evaluate the model's performance before and after feature scaling (like Min-Max scaling or Z-score normalization)
+2.  **Feature Scaling Sensitivity:** kNN is sensitive to the scale of the features because it relies on calculating distances. Evaluate the model's performance before and after feature scaling (like Min-Max scaling or Z-score normalization).
 
 3.  **Curse of Dimensionality:** kNN can perform poorly with high-dimensional data (many features). Evaluating the model's performance in relation to the number of features (dimensionality) can be important. Dimensionality reduction techniques like PCA might be used with kNN.
 :::
@@ -781,6 +783,13 @@ In the context of k-Nearest Neighbors (kNN) classification, while the general ev
     -   **Misuse**: kNN stores all training data and calculates all distances during prediction, & can be computationally expensive.
     -   **Impact**: It becomes slow and impractical for large datasets.
     -   **Solution**: Approximate kNN techniques or other algorithms suited for large datasets.
+
+:::
+
+## KNN Classification: abuses
+
+::: {style="font-size: large"}
+
 -   **Imbalanced Datasets**:
     -   **Misuse**: kNN can be biased towards the majority class in imbalanced datasets because the majority class neighbors dominate.
     -   **Impact**: Low recall for minority class, & to poor performance in e.g. fraud detection or rare disease diagnosis.
@@ -843,7 +852,7 @@ Illustration of SVM large-margin principle
 
 ::::: columns
 ::: {.column width="50%" style="font-size: smaller"}
--   Let our decision boundary be given by $f\left(x\right)=w^{\top}x+w_{0}=0$, for a vector $w$ perpendicular to the boundary[^4].
+-   Let our decision boundary be given by $f\left(x\right)=w^{\top}x+w_{0}=0$, for a vector $w$ perpendicular to the boundary[^5].
 
 -   We can express any point as $x=x_{\bot}+r\frac{w}{\left\Vert w\right\Vert }$
 
@@ -855,7 +864,7 @@ Illustration of SVM large-margin principle
 :::
 :::::
 
-[^4]: any point $x$ on the red line satisfies $w^\top x+w_0=0$
+[^5]: any point $x$ on the red line satisfies $w^\top x+w_0=0$
 
 ## SVM Classification:
 
@@ -910,7 +919,7 @@ If the data is not separable:
 
 -   a transformation of data may make them separable
 
--   an embedding in a higher dimensional space might make them separable
+-   an embedding in a higher dimensional space might make them separable (the "kernel trick")
 :::
 
 ::: {.column width="50%"}

@@ -1226,3 +1226,5 @@ These R backend packages define how to execute parallel processing.
 -   In this section we have worked with the `tidymodels` package to build a workflow that facilitates building and evaluating multiple models.
 
 -   Combined with the recipes package we now have a complete data modeling framework.
+
+-   [Here](file:///scrolly/tidymodels_regression.html) is an example of the complete workflow

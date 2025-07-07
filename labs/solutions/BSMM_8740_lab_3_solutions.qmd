@@ -42,7 +42,7 @@ The Boston House Values dataset (usually referred to as the Boston dataset) appe
 This dataset contains the following information for each cocktail:
 
 | variable | description |
-|----|----|
+|------------------------------------|------------------------------------|
 | crim | per capita crime rate by town. |
 | zn | proportion of residential land zoned for lots over 25,000 sq.ft. |
 | indus | proportion of non-retail business acres per town. |
@@ -648,8 +648,6 @@ Per the model, engine displacement is the most important feature for predicting 
 
 ## Grading
 
-Total points available: 50 points.
+Total points available: 30 points.
 
-| Component | Points |
-|-----------|--------|
-| Ex 1 - 10 | 30     |
+![](../images/rubric10.png){fig-align="center" width="600"}

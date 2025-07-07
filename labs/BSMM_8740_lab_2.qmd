@@ -405,21 +405,4 @@ I will pull (copy) everyone's submissions at 5:00pm on the Sunday following clas
 
 Total points available: 30 points.
 
-```{r}
-#| echo: false
-
-data.frame(exercise = "1 - 10", points = "3 points each") |> 
-gt::gt() |> 
-gt::tab_footnote(
-  gt::md("code (if any) does not run to completion: **-1 point**"),
-  locations = gt::cells_column_labels(columns = points),
-) |> 
-gt::tab_footnote(
-  gt::md("explicit question (if any) not answered, even if code runs to completion: **-1 point**."),
-  locations = gt::cells_column_labels(columns = points),
-) |> 
-gt::cols_align(align = "left") |> 
-gt::cols_width(exercise ~ gt::px(250), points ~ gt::px(150)) |> 
-gtExtras::gt_theme_espn() |> 
-gt::as_raw_html()
-```
+![](images/rubric10.png){fig-align="center" width="600"}

@@ -452,6 +452,12 @@ data |>
   theme_minimal()
 ```
 
+## Grading
+
+Total points available: 30 points.
+
+![](../images/rubric10.png){fig-align="center" width="600"}
+
 ## Resources for additional practice (optional)
 
 -   [Chapter 2: Get Started](https://socviz.co/gettingstarted.html#work-in-plain-text-using-rmarkdown) *Data Visualization by Kieran Healy*

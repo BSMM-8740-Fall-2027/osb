@@ -328,6 +328,4 @@ The ratio is 0.06821716 / 0.05747611 - 1 = 0.1868785, or about 19% higher in the
 
 Total points available: 30 points.
 
-| Component | Points |
-|-----------|--------|
-| Ex 1 - 10 | 30     |
+![](../images/rubric10.png){fig-align="center" width="600"}

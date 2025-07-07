@@ -20,7 +20,7 @@ By the end of the lab you will...
 
 ## Getting started
 
--   Log in to **your** github account and then go to the [GitHub organization](https://github.com/bsmm-8740-fall-2024) for the course and find the **2025-lab-4-\[your github username\]** repository to complete the lab.
+-   Log in to **your** github account and then go to the [GitHub organization](https://github.com/bsmm-8740-fall-2025) for the course and find the **2025-lab-4-\[your github username\]** repository to complete the lab.
 
     Create an R project using your **2025-lab-4-\[your github username\]** repository (remember to create a PAT, etc., as in lab-1) and add your answers by editing the `2025-lab-4.qmd` file in your repository.
 
@@ -57,6 +57,14 @@ librarian::shelf(
 # set the efault theme for plotting
 theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 ```
+
+::: callout-warning
+## Package installs
+
+If you install packages outside of the ones here, [**remove**]{.underline} your `install.packages(.)` code [**before submitting your solutions**]{.underline}.
+
+Leaving instructions that will install packages may cause your code to fail, but more importantly, it can corrupt the TA/instructor's system.
+:::
 
 ## The Data
 
@@ -343,8 +351,6 @@ I will pull (copy) everyone's submissions at 5:00pm on the Sunday following clas
 
 ## Grading
 
-Total points available: 50 points.
+Total points available: 30 points.
 
-| Component | Points |
-|-----------|--------|
-| Ex 1 - 10 | 30     |
+![](images/rubric10.png){fig-align="center" width="600"}
