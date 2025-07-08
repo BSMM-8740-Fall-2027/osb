@@ -60,6 +60,14 @@ librarian::shelf(
 theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 ```
 
+::: callout-warning
+## Package installs
+
+If you install packages outside of the ones here, [**remove**]{.underline} your `install.packages(.)` code [**before submitting your solutions**]{.underline}.
+
+Leaving instructions that will install packages may cause your code to fail, but more importantly, it can corrupt the TA/instructor's system.
+:::
+
 ## The Data
 
 Today we will be using customer churn data.
@@ -438,6 +446,4 @@ I will pull (copy) everyone's repository submissions at 5:00pm on the Sunday fol
 
 Total points available: 30 points.
 
-| Component | Points |
-|-----------|--------|
-| Ex 1 - 10 | 30     |
+![](images/rubric10.png){fig-align="center" width="600"}

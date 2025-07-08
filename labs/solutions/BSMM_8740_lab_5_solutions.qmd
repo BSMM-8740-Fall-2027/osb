@@ -510,18 +510,8 @@ clusterings |> ggplot(aes(k, tot.withinss)) +
 **(v)** Visually and by the "elbow" heursistic, we should use k=3, i.e. k=3 should give good results: good fit with low model complexity.
 :::
 
-## Submission
-
-::: callout-warning
-Before you wrap up the assignment, make sure all documents are saved, staged, committed, and pushed to your repository on the course github site.
-
-Remember -- you do **not** have to turn in an \*.html file. I will be pulling your work directly from your repository on the course website.
-:::
-
 ## Grading
 
 Total points available: 30 points.
 
-| Component | Points |
-|-----------|--------|
-| Ex 1 - 10 | 30     |
+![](../images/rubric10.png){fig-align="center" width="600"}
