@@ -542,6 +542,10 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#prepare" id="toc-prepare" class="nav-link active" data-scroll-target="#prepare">Prepare</a></li>
   <li><a href="#participate" id="toc-participate" class="nav-link" data-scroll-target="#participate">Participate</a></li>
   <li><a href="#perform" id="toc-perform" class="nav-link" data-scroll-target="#perform">Perform</a></li>
+  <li><a href="#study" id="toc-study" class="nav-link" data-scroll-target="#study">Study</a>
+  <ul class="collapse">
+  <li><a href="#short-answer-questions" id="toc-short-answer-questions" class="nav-link" data-scroll-target="#short-answer-questions">Short Answer Questions</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/bsmm-8740-fall-2025/osb/edit/main/weeks/BSMM_8740_week_4.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/bsmm-8740-fall-2025/osb/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -598,12 +602,67 @@ Important
 <section id="perform" class="level2">
 <h2 class="anchored" data-anchor-id="perform">Perform</h2>
 <p>⌨️ <a href="../labs/BSMM_8740_lab_4.html" title="Lab instructions">Lab 4 -The TidyModels Package</a></p>
+</section>
+<section id="study" class="level2">
+<h2 class="anchored" data-anchor-id="study">Study</h2>
+<section id="short-answer-questions" class="level3">
+<h3 class="anchored" data-anchor-id="short-answer-questions">Short Answer Questions</h3>
+<p>Answer each question in 2-3 sentences.</p>
+<ol type="1">
+<li><p>What is the primary purpose of the tidymodels framework in R, and how does it relate to the tidyverse?</p></li>
+<li><p>Name three key components of tidymodels and briefly describe the function of each package.</p></li>
+<li><p>How does the parsnip package standardize model fitting compared to base R or other R packages like glmnet?</p></li>
+<li><p>Explain the concept of a “workflow” in tidymodels and list two advantages of using workflows.</p></li>
+<li><p>Describe how predict() and augment() functions behave when used with parsnip or workflows objects, specifically regarding the format and content of their output.</p></li>
+<li><p>When should add_formula() versus add_variables() be used in workflows, especially considering different model engines? Provide an example where add_variables() and a custom formula within add_model() would be necessary.</p></li>
+<li><p>What is the purpose of workflowsets, and how does it facilitate model comparison?</p></li>
+<li><p>Explain the difference between a “training set” and a “test set” in empirical model validation. Why is it critical to look at the test set only once?</p></li>
+<li><p>Describe two different types of resampling methods available in the rsample package, explaining their core mechanisms and one characteristic or limitation of each.</p></li>
+<li><p>How does tune::fit_resamples() integrate preprocessing and model fitting with resampling, and what information can be saved or extracted from its results?</p></li>
+</ol>
+<p><strong>Answer Key</strong></p>
+<ol type="1">
+<li><p>The primary purpose of the tidymodels framework is to provide a unified and consistent framework for modeling and machine learning tasks in R. It is built on top of the tidyverse, meaning it integrates seamlessly with other tidyverse packages and adheres to similar principles of clean, consistent data manipulation.</p></li>
+<li><p>Three key components of tidymodels are:</p></li>
+</ol>
+<ul>
+<li><p><strong>parsnip</strong>: Provides a standardized interface for specifying different modeling engines and algorithms, allowing for uniform model specification across various methods.</p></li>
+<li><p><strong>recipes</strong>: Offers easy and flexible data preprocessing and feature engineering, enabling seamless data transformation.</p></li>
+<li><p><strong>rsample</strong>: Supplies efficient methods for data splitting, cross-validation, bootstrapping, and other resampling techniques for model evaluation.</p></li>
+<li><p><strong>yardstick</strong>: Provides a wide range of evaluation metrics to assess model performance for both regression and classification tasks.</p></li>
+<li><p><strong>workflows</strong>: Bundles together preprocessing steps, model specifications, and fitting requests into a single object, simplifying the modeling pipeline.</p></li>
+</ul>
+<ol type="1">
+<li><p>Parsnip standardizes model fitting by providing a uniform model specification regardless of the underlying R package or function used for fitting. Unlike base R’s lm() which uses formulas, or glmnet::glmnet() which takes separate outcome and covariate matrices, parsnip allows users to specify the model type, engine, and mode consistently, abstracting away these differences.</p></li>
+<li><p>A “workflow” in tidymodels is a data structure that collects all steps of an analysis, including preprocessing, model specification, and post-processing activities. Two advantages are that you don’t have to keep track of separate objects in your workspace, and both recipe prepping and model fitting can be executed using a single function call.</p></li>
+<li><p>When using predict() with parsnip or workflows, the results are always returned as a tibble, column names are predictable, and the number of rows matches the input data in the same order. parsnip::augment(), on the other hand, augments the new data with predictions and potentially other information like residuals, returning a tibble that includes both the original data and the prediction-related columns. Neither function re-estimates preprocessing parameters on the new_data.</p></li>
+<li><p>add_formula() should be used when a standard R formula can effectively handle the preprocessing, including inline transformations and dummy variable creation, and when the chosen model engine supports that formula interpretation directly (e.g., lm). add_variables() is needed when a specialized formula is required by the model engine (e.g., lme4 for random effects) or when the engine requires specific data input formats (e.g., xgboost requiring pre-made dummy variables for factors). For example, lme4::lmer(distance ~ Sex + (age | Subject), data = Orthodont) would require add_variables(outcome = distance, predictors = c(Sex, age, Subject)) and then add_model(multilevel_spec, formula = distance ~ Sex + (age | Subject)).</p></li>
+<li><p>Workflowsets is a package designed to create and manage multiple workflows simultaneously. It facilitates model comparison by allowing users to combine different preprocessors (e.g., formulas, recipes) with various model specifications, creating a cross-product of modeling pipelines. This structured approach makes it straightforward to compare the performance of many different model configurations on a given dataset.</p></li>
+<li><p>The training set is used to develop and optimize the model, typically comprising the majority of the available data. The test set is the remainder of the data, held in reserve and used only once to obtain an unbiased estimate of the model’s performance on new, unseen data. It is critical to look at the test set only once because repeatedly evaluating on it can lead to unintentional model tuning to the test set, making its performance estimate biased and overly optimistic.</p></li>
+<li><p>Two types of resampling methods are:</p></li>
+</ol>
+<ul>
+<li><p><strong>V-fold Cross-validation</strong>: The data are randomly partitioned into V sets (folds) of roughly equal size. In V iterations, one fold is held out for assessment, and the remaining V-1 folds are used for modeling. The final performance estimate is the average across all V replicates. A characteristic is that it provides a more robust estimate of model performance than simple train/test splits.</p></li>
+<li><p><strong>Bootstrapping</strong>: A bootstrap sample is created by drawing samples from the training set with replacement, of the same size as the training set. The samples not included in the bootstrap sample form the “out-of-bag” assessment set. Bootstrapping produces performance estimates with very low variance but can have significant pessimistic bias.</p></li>
+</ul>
+<ol start="8" type="1">
+<li>tune::fit_resamples() integrates preprocessing and model fitting by applying the entire modeling process (preprocessing, then model fitting) to each resample. First, the analysis set preprocesses the data and fits the model, then these preprocessing statistics are applied to the assessment set to generate predictions. The results include .metrics (performance statistics for each resample), .notes (warnings/errors), and optionally .predictions (out-of-sample predictions) if save_pred = TRUE, which can be collected and summarized.</li>
+</ol>
+<p><strong>Essay Format Questions</strong></p>
+<ol type="1">
+<li><p>Discuss the philosophy behind the tidymodels framework, contrasting its approach to machine learning workflows with traditional, less integrated R package ecosystems. How do parsnip, recipes, and workflows collectively embody this philosophy?</p></li>
+<li><p>Compare and contrast the various data splitting and resampling techniques available in the rsample package (initial_split, initial_validation_split, vfold_cv, repeated_vfold_cv, loo_cv, mc_cv, bootstraps, rolling_origin). For what types of data and modeling goals would each method be most appropriate?</p></li>
+<li><p>Elaborate on the importance of robust performance evaluation in machine learning. How do yardstick metrics, combined with resampling methods facilitated by tune::fit_resamples(), ensure a more reliable assessment of model generalization compared to simple re-substitution or a single train/test split?</p></li>
+<li><p>Explain how tidymodels handles different data types and their implications for preprocessing and model fitting. Provide specific examples of how workflows adapts its behavior based on the chosen model engine for factor variables (e.g., ranger vs.&nbsp;xgboost vs.&nbsp;C5.0), and how this simplifies the user experience.</p></li>
+<li><p>Design a comprehensive tidymodels workflow for a hypothetical machine learning problem (e.g., predicting house prices, classifying customer churn). Detail the steps from initial data loading and splitting to model fitting and evaluation, explicitly mentioning which tidymodels packages and functions would be used at each stage and why.</p></li>
+</ol>
 <p><br><br></p>
 <div style="font-size: 0.875em;">
 <p>Back to <a href=".." title="Course schedule">course schedule</a> ⏎</p>
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
