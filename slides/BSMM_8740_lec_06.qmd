@@ -41,7 +41,7 @@ theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 ## Recap of last week:
 
 -   Last week we introduced classification and clustering methods within the `Tidymodels` framework in R.
--   Today we look at methods for analysing time series, and we use the `timetk` and `modeltime` packages in conjunction with `Tidymodels` to create and evaluate time series models.
+-   Today we will shift gears and look at methods for analysing time series, where we use the `timetk` and `modeltime` packages in conjunction with `Tidymodels` to create and evaluate time series models.
 
 ## This week:
 
@@ -57,32 +57,33 @@ theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 
 ## Time series
 
-A time series data is a data frame (tibble) with an ordered temporal measurement.
+::: {style="font-size: 80%"}
+Time series data is a data frame (tibble) with an ordered temporal measurement where measurements (error terms) may be correlated i.e. not independent.
 
-Why is this a separate area of study? Consider the simple linear regression model
+Why can't we use a simple linear regression model with this data? Recall that
 
 $$
-y_t=x_t^\top\beta + \epsilon_t;\;t=1,\ldots,R
+\begin{align*}
+\text{var}\left(\hat{\mathbf{\beta}}_{OLS}\right) & =\mathbb{E}\left[\left(\left(X'X\right)^{-1}X'\epsilon\right)\left(\left(X'X\right)^{-1}X'\epsilon\right)'\right]\\
+ & =\mathbb{E}\left[\left(X'X\right)^{-1}X'\epsilon\epsilon'X\left(X'X\right)^{-1}\right]\\
+ & =\left(X'X\right)^{-1}X'\mathbb{E}\left[\epsilon\epsilon'\right]X\left(X'X\right)^{-1}
+\end{align*}
 $$
 
-errors should not be serially correlated for OLS estimates:
-
--   $\mathbb{E}[\epsilon_t]=\mathbb{E}[\epsilon_t|\epsilon_{t-1},\epsilon_{t-1},\ldots]$, and
--   $\mathbb{E}[\epsilon_t\epsilon_{t-j}]=0,\forall j$
+so correlated measurements seriously compromise our fundamental OLS assumptions. And there are other way time series are unique.
+:::
 
 ## Time series: characteristics
 
 ::: {style="font-size: 80%"}
--   Most economic and financial time series exhibit some form of serial correlation
-    -   If economic output is large during the previous quarter then there is a good chance that it is going to be large in the current quarter
--   A change that arises in the current period may only affect other variables in the distant future
--   A particular shock may affect variables over successive quarters
-    -   Hence, we need to start thinking about the dynamic structure of the system that we are investigating
+-   [**Stationarity**]{.underline} is a challenge with time series: Time series often exhibit trends, seasonal patterns, and structural breaks violate the assumption that the underlying data-generating process is stable over time
+-   [**Temporal ordering**]{.underline} matters enormously in time series creating opportunities for forecasting that don't exist in standard regression, but also requires different analytical approaches.
+-   The [**lag structure**]{.underline} in time series creates additional complexity, where effects often occur with delays.
 :::
 
 ## Time series: dynamics
 
-Whether time series data is used for forecasting or for testing various theories/hypotheses, we always need to identify the dynamic evolution of the variables, e.g.
+Whether time series data is used for forecasting or for testing various theories/hypotheses, we try to identify the dynamic evolution of the variables. One very simple & common approach is to break the dynamics into these three parts:
 
 $$
 \begin{align*}
@@ -100,18 +101,18 @@ $$
 #| code-summary: creating a time series
 set.seed(8740)
 
-dat <- tibble::tibble(
+dat <- tibble::tibble( # create a sequence of dates
   date = seq(as.Date('2015-04-7'),as.Date('2020-03-22'),'2 weeks')
 ) |> 
-  tibble::rowid_to_column("t") |> 
-  dplyr::mutate(
+  tibble::rowid_to_column("t") |> # create time units (2 weeks)
+  dplyr::mutate( # create trend and seasonality, along with noise
     trend = 1 + 0.05 * t
     , seasonality = 1.5 * cos(pi * t * 0.166)
     , noise = rnorm(length(t))
     , temp = dplyr::lag(noise)
   ) |> 
   tidyr::replace_na(list(temp = 0)) |> 
-  dplyr::mutate(
+  dplyr::mutate( # modify the noise to add autocorrelation
     noise =
       purrr::map2_dbl(
         noise
@@ -119,7 +120,7 @@ dat <- tibble::tibble(
         , ~ .x + 0.5 * .y
       )
   ) |> 
-  dplyr::select(-temp)
+  dplyr::select(-temp) # drop the temp column
 dat
 ```
 
@@ -133,7 +134,8 @@ dat
 #| code-fold: true
 dat |> 
   tidyr::pivot_longer(-c(t, date)) |> 
-  ggplot(aes(x=date, y=value, color=name)) + geom_line(linewidth=1) + 
+  ggplot(aes(x=date, y=value, color=name)) + 
+  geom_line(linewidth=1) + geom_point() + 
   labs(
     title = 'trend, seasonality, and noise'
     , subtitle = "deterministic: trend, seasonality | stochastic: noise"
@@ -157,23 +159,23 @@ dat |>
 
 ## Time series - processes
 
--   Time series is a collection of observations indexed by the date of each observation
+-   Time series is a collection of observations indexed by the date of each observation.
 
 -   Using notation that starts at time, $t=1$, and using the end point, $t=T$ the time series is a set of observations:
 
 $$\{y_1,y_2,y_3,…,y_T\}$$
 
--   Time index can be of any frequency (e.g. daily, quarterly, etc.)
+-   Time index can be of any frequency (e.g. daily, quarterly, etc.).
 
 ## Time series - processes
 
 ### Deterministic and Stochastic Processes
 
--   deterministic processes always produce the same output from a given starting point or state
+-   deterministic processes always produce the same output from a given starting point or state.
 
 -   stochastic processes have indeterminacy
 
-    -   Usually described by some form of statistical distribution
+    -   Usually described by some form of statistical distribution.
     -   Examples include: white noise processes, random walks, Brownian motions, Markov chains, martingale difference sequences, etc.
 
 ## Time series - processes
@@ -181,9 +183,9 @@ $$\{y_1,y_2,y_3,…,y_T\}$$
 ### Stochastic Processes - White noise
 
 ::: {style="font-size: 80%"}
--   A white noise series is made of serially uncorrelated random variables with zero mean and finite variance
--   For example, errors may be characterised by a Gaussian white noise process, where such a variable has a normal distribution
--   Slightly stronger condition is that they are independent from one another
+-   A white noise series is made of serially uncorrelated random variables with zero mean and finite variance.
+-   For example, errors may be characterised by a Gaussian white noise process, where such a variable has a normal distribution.
+-   Slightly stronger condition is that they are independent from one another.
 
 $$\epsilon_{t}\sim\text{{i.i.d.}}\mathscr{N}\left(0,\sigma_{\epsilon_{t}}^{2}\right)$$
 :::
@@ -256,7 +258,7 @@ implications:
 4.  **Types**:
 
     -   **Discrete-Time Markov Chain**: The process is observed at discrete time intervals.
-    -   **Continuous-Time Markov Chain**: The process evolves continuously over time.
+    -   **Continuous-Time Markov Process**: The process evolves continuously over time.
 
 5.  **Applications**:
 
@@ -322,7 +324,7 @@ $$
 -   The conditional moments are $$
     \begin{align*}
     \mathbb{E}\left[\left.y_{t}\right|y_{t-1}\right] & =\phi y_{t-1}\\
-    \text{var}\left(\left.y_{t}\right|y_{t-1}\right) & =\mathbb{E}\left[\phi y_{t-1}+\epsilon_{t}-\phi y_{t-1}\right]^{2}=\mathbb{E}\left[\epsilon\right]^{2}=\sigma^{2}\\
+    \text{var}\left(\left.y_{t}\right|y_{t-1}\right) & =\mathbb{E}\left[\left(\phi y_{t-1}+\epsilon_{t}-\phi y_{t-1}\right)^2\right]=\mathbb{E}\left[\epsilon^2\right]=\sigma^{2}\\
     \text{cov}\left(\left.y_{t}\right|y_{t-1},\left.y_{t-j}\right|y_{t-j-1}\right) & =0;\;j>1
     \end{align*}
     $$
@@ -423,7 +425,9 @@ $$
 #| layout-ncol: 3
 #| echo: true
 #| code-fold: true
-#| code-summary: demonstration of an AR(1) process and its ACF
+#| code-summary: demonstration of an AR(1) process and its ACF & PACF
+#| fig-height: 5
+#| fig-width: 5
 library(ggfortify)
 # Parameters for the AR(1) process
 phi = 0.8  # Autoregressive coefficient (should be less than 1 in absolute value)
@@ -441,11 +445,11 @@ for (t in 2:n) {
 
 # Plot the AR(1) series
 tibble::tibble(y=X, x=1:length(X)) |> ggplot(aes(x=x, y=y)) + geom_line() + 
-  labs(title="AR(1) Process", x = "Time", y = "Value")
+  labs(title="AR(1) Process", x = "Time", y = "Value") + theme_bw(base_size = 28) + theme(plot.title = element_text(size=18)) 
 # Plot the autocorrelation function (ACF)
-autoplot(stats::acf(X, plot = FALSE)) + labs(title = "Autocorrelation of AR(1) Process")
+autoplot(stats::acf(X, plot = FALSE)) + labs(title = "ACF of AR(1) Process") + theme_bw(base_size = 28) + theme(plot.title = element_text(size=18))
 # Plot the autocorrelation function (ACF)
-autoplot(stats::pacf(X, plot = FALSE)) + labs(title = "Partial Autocorrelation of AR(1) Process")
+autoplot(stats::pacf(X, plot = FALSE)) + labs(title = "PACF of AR(1) Process") + theme_bw(base_size = 28) + theme(plot.title = element_text(size=18))
 ```
 
 ## Time series - processes
@@ -457,10 +461,12 @@ autoplot(stats::pacf(X, plot = FALSE)) + labs(title = "Partial Autocorrelation o
 
 -   The characteristic equation is: $1-\phi_1 z-\phi_2 z^2-\cdots-\phi_p z^p = 0$
 
--   A process ${y_t}$ is strictly stationary if for each $k$ and $t$, and $n$, the distribution of ${y_t,\ldots,y_{t+k}}$ is the same as the distribution of ${y_{t+n},\ldots,y_{t+k+n}}$
+-   A process ${y_t}$ is strictly stationary if for each $k$, $t$, and $n$, the distribution of ${y_t,\ldots,y_{t+k}}$ is the same as the distribution of ${y_{t+n},\ldots,y_{t+k+n}}$
 
--   For an AR process to be stationary (its statistical properties do not change over time), the parameters $\phi_1, \phi_2, \ldots, \phi_p$ must satisfy certain conditions (typically related to the roots of the characteristic equation lying outside the unit circle).
+-   For an AR process to be stationary (its statistical properties do not change over time), the parameters $\phi_1, \phi_2, \ldots, \phi_p$ must satisfy certain conditions (typically related to the roots of the characteristic equation lying outside the unit circle[^2]).
 :::
+
+[^2]: Note: roots of polynomial may be complex numbers. The **unit circle** in the complex plane is the set of all complex numbers with absolute value 1.
 
 ## Time series - processes
 
@@ -475,6 +481,53 @@ autoplot(stats::pacf(X, plot = FALSE)) + labs(title = "Partial Autocorrelation o
 
 -   We define $(1-\rho\mathrm{L})^{-1}$ by $(1-\rho\mathrm{L})(1-\rho\mathrm{L})^{-1}\equiv1$.
 :::
+
+## Time series - processes
+
+### Autoregressive Processes
+
+::: {style="font-size: x-large"}
+-   An AR(p) model is sometimes expressed in terms of the Lag operator $\mathrm{L}$, where $\mathrm{L}y_t=y_{t-1}$.
+
+-   The lag operator can be raised to powers, e.g. $\mathrm{L}^2y_t=y_{t-2}$ and its powers can be combined into polynomials and we can, for example, write an AR(p) process as $\left( 1-\phi_1\mathrm{L}-\phi_2\mathrm{L}^2-\cdots -\phi_p\mathrm{L}^p\right)y_t=\epsilon_t$, or alternatively $\Phi(L)y_t=\epsilon_t$
+
+Note that the roots $\{z_1,z_2,\ldots,z_p\}$ of the characteristic equation $1-\phi_1 z-\phi_2 z^2-\cdots-\phi_p z^p = 0$ are the same as the roots of $\Phi(z)=(1-z/z_1)(1-z/z_2)\cdots(1-z/z_p)$ and if $\Phi(z)^{-1}$ is to be finite, then $(1-z/z_i)^{-1}$ must be finite for every $i$[^3]\
+:::
+
+[^3]: $(1-z/z_i)^{-1} = \sum_{i=0}^\infty(z/z_i)^i$ is finite only if $|z/z_i|<1$
+
+## Time series - processes
+
+### Autoregressive Processes
+
+::: {style="font-size: x-large"}
+-   Similarly $\Phi(L)^{-1}$ exists if $(1-L/z_i)^{-1}$ is finite for every $i$, which implies that we must have $|L/z_i|<1, \forall i$. Since $|L|=1$ in this context, we must have $|z_1|>1$
+
+-   In other words, the roots of the characteristic equation must lie outside the unit circle.
+
+\
+:::
+
+## Time series - processes
+
+### Example - AR(1) process:
+
+-   The process equation is $y_t = \phi_1 y_{t-1}+\epsilon_t$.
+-   The characteristic equation is $1-\phi_1z=0$
+-   the only root is $1/\phi_1$
+-   the stationarity condition is $|1/\phi_1|>1$ or $|\phi_1|<1$
+
+## Time series - processes
+
+### Example - AR(2) process:
+
+-   The process equation is $y_t = \phi_1 y_{t-1}+\phi_2 y_{t-2}+\epsilon_t$.
+-   The characteristic equation is $1-\phi_1z-\phi_2 z^2=0$
+-   the roots are $\phi_1\pm\frac{\sqrt{\phi_1^2+4\phi_2}}{2\phi_2}$
+-   the stationarity conditions are
+    -   $|\phi_2|<1$
+    -   $\phi_2-\phi_1<1$
+    -   $\phi_1+\phi_2<1$
 
 ## Time series - processes
 

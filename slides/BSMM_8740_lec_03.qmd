@@ -371,7 +371,36 @@ $$
 \hat{\mathbf{\beta}}_{OLS}=\left(X'X\right)^{-1}\left(X'Y\right) = \frac{\text{cov}(X,Y)}{\text{var}(X)}
 $$
 
-There are algorithmic issues with computing $\left(X'X\right)^{-1}$ though, so we could instead write $X\beta=y$ and so that $\hat{\mathbf{\beta}}_{OLS}=X^{-1}y$ .
+There are algorithmic issues with computing $\left(X'X\right)^{-1}$ though, so we could instead write $X\beta=y$ and try to solve $\hat{\mathbf{\beta}}_{OLS}=X^{-1}y$ .
+
+## Linear regression models
+
+Now we compute the variance of our estimate as follows:
+
+$$
+\begin{align*}
+\hat{\mathbf{\beta}}_{OLS} & =\left(X'X\right)^{-1}\left(X'Y\right);\,Y=X\beta+\epsilon\\
+ & =\left(X'X\right)^{-1}\left(X'X\beta+X'\epsilon\right)\\
+ & =\beta+\left(X'X\right)^{-1}X'\epsilon\\
+\text{var}\left(\hat{\mathbf{\beta}}_{OLS}\right) & =\mathbb{E}\left[\left(\hat{\mathbf{\beta}}_{OLS}-\mathbb{E}\left[\hat{\mathbf{\beta}}_{OLS}\right]\right)\left(\hat{\mathbf{\beta}}_{OLS}-\mathbb{E}\left[\hat{\mathbf{\beta}}_{OLS}\right]\right)'\right]
+\end{align*}
+$$
+
+where $\mathbb{E}\left[\hat{\mathbf{\beta}}_{OLS}\right]=\mathbb{E}\left[\beta\right]$ and $\hat{\mathbf{\beta}}_{OLS}-\beta=\left(X'X\right)^{-1}X'\epsilon$
+
+## Linear regression models
+
+So we can re-write the variance is as:
+
+$$
+\begin{align*}
+\text{var}\left(\hat{\mathbf{\beta}}_{OLS}\right) & =\mathbb{E}\left[\left(\left(X'X\right)^{-1}X'\epsilon\right)\left(\left(X'X\right)^{-1}X'\epsilon\right)'\right]\\
+ & =\mathbb{E}\left[\left(X'X\right)^{-1}X'\epsilon\epsilon'X\left(X'X\right)^{-1}\right]\\
+ & =\left(X'X\right)^{-1}X'\mathbb{E}\left[\epsilon\epsilon'\right]X\left(X'X\right)^{-1}
+\end{align*}
+$$
+
+and when our errors are independent and homoscedastic (our assumptions here) then $\mathbb{E}\left[\epsilon\epsilon'\right]=\sigma^2I$, and $\text{var}\left(\hat{\mathbf{\beta}}_{OLS}\right)=\sigma^2\left(X'X\right)^{-1}$.
 
 ## Linear regression algorithms
 

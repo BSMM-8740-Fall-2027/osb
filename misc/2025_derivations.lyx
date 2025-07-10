@@ -2909,5 +2909,32 @@ Y_{i1}^{1}-Y_{i0}^{1} & =\lambda\left(1-0\right)+\delta\left(1-0\right)
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\hat{\mathbf{\beta}}_{OLS} & =\left(X'X\right)^{-1}\left(X'Y\right);\,Y=X\beta+\epsilon\\
+ & =\left(X'X\right)^{-1}\left(X'X\beta+X'\epsilon\right)\\
+ & =\beta+\left(X'X\right)^{-1}X'\epsilon\\
+\text{\text{var}}\left(\hat{\mathbf{\beta}}_{OLS}\right) & =\mathbb{E}\left[\left(\hat{\mathbf{\beta}}_{OLS}-\mathbb{E}\left[\hat{\mathbf{\beta}}_{OLS}\right]\right)\left(\hat{\mathbf{\beta}}_{OLS}-\mathbb{E}\left[\hat{\mathbf{\beta}}_{OLS}\right]\right)'\right]
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\text{\text{var}}\left(\hat{\mathbf{\beta}}_{OLS}\right) & =\mathbb{E}\left[\left(\left(X'X\right)^{-1}X'\epsilon\right)\left(\left(X'X\right)^{-1}X'\epsilon\right)'\right]\\
+ & =\mathbb{E}\left[\left(X'X\right)^{-1}X'\epsilon\epsilon'X\left(X'X\right)^{-1}\right]\\
+ & =\left(X'X\right)^{-1}X'\mathbb{E}\left[\epsilon\epsilon'\right]X\left(X'X\right)^{-1}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document
