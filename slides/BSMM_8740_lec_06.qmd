@@ -473,13 +473,16 @@ autoplot(stats::pacf(X, plot = FALSE)) + labs(title = "PACF of AR(1) Process") +
 ### Autoregressive Processes
 
 ::: {style="font-size: x-large"}
--   The AR(p) model is sometimes expressed in terms of the Lag operator $\mathrm{L}$, where $\mathrm{L}y_t=y_{t-1}$.
+-   An AR(p) model is sometimes expressed in terms of the Lag operator $\mathrm{L}$, where $\mathrm{L}y_t=y_{t-1}$. For the AR(1) process, using the lag operator we can write:
 
--   The lag operator can be raised to powers, e.g. $\mathrm{L}^2y_t=y_{t-2}$ and its powers can be combined into polynomials to form a new operator: $a(\mathrm{L})=a_0+a_1\mathrm{L}+a_2\mathrm{L}^2+\ldots+a_p\mathrm{L}^p$ such that $a(\mathrm{L})y_t=a_0y_t+a_1y_{t-1}+a_2y_{t-2}+\ldots+a_py_{t-p}$
-
--   Lag polymonials can be multiplied and multiplication commutes: $a(\mathrm{L})b(\mathrm{L})=b(\mathrm{L})a(\mathrm{L})$.
-
--   We define $(1-\rho\mathrm{L})^{-1}$ by $(1-\rho\mathrm{L})(1-\rho\mathrm{L})^{-1}\equiv1$.
+$$
+\begin{align*}
+y_t & = \phi y_{t-1}+\epsilon_t\\
+(1-\phi L)y_t & =  \epsilon_t\\
+y_t & = (1-\phi L)^{-1} \epsilon_t\\
+  & = (\sum_{i=0}^\infty\phi^i\mathrm{L}^i)\epsilon_t = \sum_{j=1}^t\phi^{t-j}\epsilon_j
+\end{align*}
+$$ - EXERCISE: check that the last equality holds.
 :::
 
 ## Time series - processes
@@ -487,8 +490,6 @@ autoplot(stats::pacf(X, plot = FALSE)) + labs(title = "PACF of AR(1) Process") +
 ### Autoregressive Processes
 
 ::: {style="font-size: x-large"}
--   An AR(p) model is sometimes expressed in terms of the Lag operator $\mathrm{L}$, where $\mathrm{L}y_t=y_{t-1}$.
-
 -   The lag operator can be raised to powers, e.g. $\mathrm{L}^2y_t=y_{t-2}$ and its powers can be combined into polynomials and we can, for example, write an AR(p) process as $\left( 1-\phi_1\mathrm{L}-\phi_2\mathrm{L}^2-\cdots -\phi_p\mathrm{L}^p\right)y_t=\epsilon_t$, or alternatively $\Phi(L)y_t=\epsilon_t$
 
 Note that the roots $\{z_1,z_2,\ldots,z_p\}$ of the characteristic equation $1-\phi_1 z-\phi_2 z^2-\cdots-\phi_p z^p = 0$ are the same as the roots of $\Phi(z)=(1-z/z_1)(1-z/z_2)\cdots(1-z/z_p)$ and if $\Phi(z)^{-1}$ is to be finite, then $(1-z/z_i)^{-1}$ must be finite for every $i$[^3]\
@@ -533,40 +534,6 @@ Note that the roots $\{z_1,z_2,\ldots,z_p\}$ of the characteristic equation $1-\
 
 ### Autoregressive Processes
 
-::: {style="font-size: x-large"}
--   per the formula for the [geometric series](https://en.wikipedia.org/wiki/Geometric_series), if $|\rho|<1, then$
-
-$$
-(1-\rho\mathrm{L})^{-1} = \sum_{i=0}^\infty\rho^i\mathrm{L}^i
-$$
-
--   EXERCISE: check that $(1-\rho\mathrm{L})(1-\rho\mathrm{L})^{-1}\equiv1$ holds on both sides of the equation above.
-
--   If the sum is to converge, then we need $|\rho|<1$
-:::
-
-## Time series - processes
-
-### Autoregressive Processes
-
-::: {style="font-size: x-large"}
-For the AR(1) process, using the lag operator we can write:
-
-$$
-\begin{align*}
-y_t & = \phi y_{t-1}+\epsilon_t\\
-(1-\phi L)y_t & =  \epsilon_t\\
-y_t & = (1-\phi L)^{-1} \epsilon_t\\
-  & = (\sum_{i=0}^\infty\phi^i\mathrm{L}^i)\epsilon_t\\
-  & = \sum_{j=1}^t\phi^{t-j}\epsilon_j
-\end{align*}
-$$ - EXERCISE: check that the last equality holds.
-:::
-
-## Time series - processes
-
-### Autoregressive Processes
-
 AR(p) processes can be written as AR(1) vector processes, e.g. for AR(2)
 
 $$
@@ -596,7 +563,7 @@ $$
 
 ### Autoregressive Processes
 
-Repeating the argument for AR(1) processes
+Repeating the argument for AR(1) processes in the vector case:
 
 $$
 \begin{align*}
@@ -612,14 +579,14 @@ And we only converge if $A^i\rightarrow0 \;\mathrm{as}\;i\rightarrow\infty$, i.e
 ### Autoregressive Processes
 
 -   In general if an $n\times n$ matrix $A$ has $n$ distinct eigenvalues, then all eigenvalues must have magnitude $<1$ for $A^i\rightarrow0 \;\mathrm{as}\;i\rightarrow\infty$.
--   In this case we have $A=X\Lambda X^{-1}$ where the columns of $x$ are the eigenvectors of $A$ and $\Lambda$ is a diagonal matrix with the eigenvalues on the diagonal.
--   $A^i=X\Lambda^i X^{-1}$ so $A^i\rightarrow0 \;\mathrm{as}\;i\rightarrow\infty$
+-   proof: we decompose $A=X\Lambda X^{-1}$ where the columns of $x$ are the eigenvectors of $A$ and $\Lambda$ is a diagonal matrix with the eigenvalues on the diagonal.
+    -   so $A^i=X\Lambda^i X^{-1}$ so $A^i\rightarrow0 \;\mathrm{as}\;i\rightarrow\infty$
 
 ## Time series - processes
 
 ### Computing determinants
 
-::: {style="font-size: m"}
+::: {style="font-size: large"}
 1.  **Minor**:
     -   The minor $M_{ij}$ of an element $a_{ij}$ in an $n \times n$ matrix $A$ is the determinant of the $(n-1) \times (n-1)$ matrix that results from removing the $i$-th row and $j$-th column from $A$.
 2.  **Cofactor**:
@@ -706,9 +673,15 @@ and MA() processes can be expressed as AR processes by a similar argument.
 -   An ARIMA model is denoted as ARIMA(p, d, q), where: - p is the number of lag observations in the model (AR part), - d is the number of times that the raw observations are differenced (I part), - q is the size of the moving average window (MA part).
 :::
 
+## Time series - processes
+
+### ARIMA
+
+The ARIMA time series modeling package we will be using has an auto-ARIMA function which can suggest the $p$,$d$, and $q$ values that give the best fit to the data, along with computing the corresponding parameter estimates.
+
 ## Time series - exponential smoothing
 
-Exponential smoothing or exponential moving average (EMA) is a rule of thumb technique for smoothing time series data using the exponential window function.
+Exponential smoothing or exponential moving average (EMA) is a technique for smoothing time series data using the exponential window function.
 
 For a raw data series $\{x_t\}$ the output of the exponential smoothing process is $\{y_t\}$, where, for $0\le\alpha\le1$ and $t>0$
 
@@ -723,16 +696,33 @@ $\alpha$ is called the **smoothing factor**.
 
 ## Time series - exponential smoothing
 
-The time constant $\tau$ is the amount of time for the smoothed response of a unit step function to reach $1-1/e\approx 63.2\%$ of the original signal.
+Continuing on:
 
 $$
 \begin{align*}
-\alpha & = 1-e^{-\Delta T/\tau}\\
-\tau & = -\frac{\Delta T}{\log(1-\alpha)}
+y_{t} & =\alpha x_{t}+\alpha(1-\alpha)x_{t-1}+(1-\alpha)^{2}y_{t-2}\\
+y_{t} & =\alpha x_{t}+\alpha(1-\alpha)x_{t-1}+\alpha(1-\alpha)^{2}x_{t-2}+(1-\alpha)^{3}y_{t-3}\\
+y_{t} & =\alpha\sum_{i=0}^{\infty}(1-\alpha)^{i}x_{t-i}
 \end{align*}
-$$
+$$ The time constant $\tau$ is the number of time periods needed for the weight on past $x$ to reach $e^{-1}$ or 36.7%.
 
-where $\Delta T$ is the time interval.
+## Time series - exponential smoothing
+
+To find $\tau$ in the discrete-time case we solve
+
+$$
+(1-\alpha)^{k}=e^{-\frac{k}{\tau}}\rightarrow\tau=\frac{-1}{\log(1-\alpha)}=\frac{1}{\alpha+\alpha^2/2+\alpha^3/3+\ldots}
+$$ so for small $\alpha$, $\tau\approx 1/\alpha$.
+
+::: {style="font-size: large"}
+The time constant $\tau$ provides an intuitive measure of:
+
+1.  **Response speed**: How quickly the model adapts to changes
+
+2.  **Memory span**: How far back the model effectively looks
+
+3.  **Smoothing intensity**: How much noise reduction occurs
+:::
 
 ## Time series - exponential smoothing
 
@@ -756,9 +746,11 @@ $$
 
 ## Time series - exponential smoothing
 
-Finally we can also include a seasonality term, with a cycle length of $K$ time intervals.
+Finally we can also include a seasonality term[^4], with a cycle length of $L$ time intervals.
 
-and for $t>0$, $0\le\alpha\le1$, $0\le\beta\le1$ and $0\le\gamma\le1$
+[^4]: note that this seasonality is multiplicative
+
+and for $t>0$, $0\le\alpha\le1$, $0\le\beta\le1$ and $0\le\gamma\le1-\alpha$
 
 $$
 \begin{align*}
@@ -777,7 +769,7 @@ ETS stands for Error-Trend-Seasonality, and the exponential smoothing model is c
 -   **Trend**: "None" (N), "Additive" (A), "Additive damped" (Ad), "Multiplicative" (M), or "Multiplicative damped" (Md);
 -   **Seasonality**: "None" (N), or "Additive" (A), or "Multiplicative" (M).
 
-In this taxonomy, the exponential smoothing model is denoted as ETS(A,A,A).
+In this taxonomy, the exponential smoothing model is denoted as ETS(A,A,M).
 :::
 
 ## Time series - ETS models

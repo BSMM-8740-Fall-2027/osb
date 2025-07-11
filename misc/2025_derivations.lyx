@@ -2936,5 +2936,29 @@ Y_{i1}^{1}-Y_{i0}^{1} & =\lambda\left(1-0\right)+\delta\left(1-0\right)
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+y_{t} & =\alpha x_{t}+\alpha(1-\alpha)x_{t-1}+(1-\alpha)^{2}y_{t-2}\\
+y_{t} & =\alpha x_{t}+\alpha(1-\alpha)x_{t-1}+\alpha(1-\alpha)^{2}x_{t-2}+(1-\alpha)^{3}y_{t-3}\\
+y_{t} & =\alpha\sum_{i=0}^{\infty}(1-\alpha)^{i}x_{t-i}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+(1-\alpha)^{k}=e^{-\frac{k}{\tau}}\rightarrow\tau=\frac{-1}{\log(1-\alpha)}
+\]
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document
