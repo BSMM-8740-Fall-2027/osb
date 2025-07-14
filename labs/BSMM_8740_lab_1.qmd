@@ -49,14 +49,6 @@ Remember to (create a PAT and set your git credentials)
 The code below will install (if necessary) and load the packages needed in today's exercises
 :::
 
-::: callout-warning
-## Package installs
-
-If you install packages outside of the ones below, [**remove**]{.underline} your `install.packages(.)` code [**before submitting your solutions**]{.underline}.
-
-Leaving instructions that will install packages may cause your code to fail, but more importantly, it can corrupt the TA/instructor's system.
-:::
-
 ```{r}
 #| echo: true
 #| message: false
@@ -71,6 +63,14 @@ librarian::shelf(tidyverse, Lahman, magrittr, gt, gtExtras, ggplot2, skimr
                  , dplyr, gt, gtExtras, here, readr, rmarkdown)
 theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 ```
+
+::: callout-warning
+## Package installs
+
+If you install packages outside of the ones here, [**remove**]{.underline} your `install.packages(.)` code [**before submitting your solutions**]{.underline}.
+
+Leaving instructions that will install packages may cause your code to fail, but more importantly, it can corrupt the TA/instructor's system.
+:::
 
 # Now, today's lab
 

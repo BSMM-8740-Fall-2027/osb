@@ -24,17 +24,19 @@ execute:
   freeze: auto
 ---
 
-```{r opts, include = FALSE}
-options(width = 95)
-library(knitr)
-opts_chunk$set(comment="", 
-               digits = 3, 
-               tidy = FALSE, 
-               prompt = TRUE,
-               fig.align = 'center')
-require(magrittr)
-require(ggplot2)
-require(modeltime)
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+# check if 'librarian' is installed and if not, install it
+if (! "librarian" %in% rownames(installed.packages()) ){
+  install.packages("librarian")
+}
+  
+# load packages if not already loaded
+librarian::shelf(magrittr, ggplot2, modeltime, vars)
+
+# set the efault theme for plotting
 theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 ```
 
@@ -505,8 +507,6 @@ Note that the roots $\{z_1,z_2,\ldots,z_p\}$ of the characteristic equation $1-\
 -   Similarly $\Phi(L)^{-1}$ exists if $(1-L/z_i)^{-1}$ is finite for every $i$, which implies that we must have $|L/z_i|<1, \forall i$. Since $|L|=1$ in this context, we must have $|z_1|>1$
 
 -   In other words, the roots of the characteristic equation must lie outside the unit circle.
-
-\
 :::
 
 ## Time series - processes
@@ -532,7 +532,139 @@ Note that the roots $\{z_1,z_2,\ldots,z_p\}$ of the characteristic equation $1-\
 
 ## Time series - processes
 
-### Autoregressive Processes
+### Unit root tests matter in business
+
+**Stationary Series:**
+
+-   Predictable patterns
+-   Mean-reverting
+-   Standard econometric methods work
+-   Reliable forecasting
+
+## Time series - processes
+
+### Unit root tests matter in business
+
+**The Three Main Unit Root Tests**
+
+:::::: panel-tabset
+## ADF
+
+::: {style="font-size: large"}
+The augmented Dickey–Fuller test (ADF) tests the null hypothesis that a unit root is present in a time series sample. The alternative hypothesis depends on which version of the test is used, but is usually stationarity or trend-stationarity.
+
+```{r}
+#| eval: false
+#| echo: true
+tseries::adf.test(series, alternative = "stationary")
+```
+:::
+
+## PP
+
+::: {style="font-size: large"}
+The null hypothesis of the Phillips-Perron (PP) test is that there is a unit root, with the alternative that there is no unit root. If the pvalue is above a critical size, then the null cannot be rejected.
+
+```{r}
+#| eval: false
+#| echo: true
+tseries::pp.test(series, alternative = "stationary")
+```
+:::
+
+## KPSS
+
+::: {style="font-size: large"}
+Kwiatkowski–Phillips–Schmidt–Shin (KPSS) tests are used for testing a null hypothesis that an observable time series is stationary around a deterministic trend (i.e. trend-stationary) against the alternative of a unit root.
+
+[Contrary to most unit root tests]{.underline}, the presence of a unit root is not the null hypothesis but the alternative. Additionally, in the KPSS test, the absence of a unit root is not a proof of stationarity but, by design, of trend-stationarity. This is an important distinction since it is possible for a time series to be non-stationary, have no unit root yet be trend-stationary.
+
+```{r}
+#| eval: false
+#| echo: true
+tseries::kpss.test(series, null = "Trend") # or null = "Level"
+```
+:::
+::::::
+
+## Time series - processes
+
+### Unit root tests matter in business
+
+**Example**
+
+::::: columns
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| code-fold: true
+# Load the classic AirPassengers data
+data(AirPassengers, package - "datasets")
+log_passengers <- log(AirPassengers)
+
+# Test for unit roots
+adf_result <- tseries::adf.test(log_passengers, alternative = "stationary")
+pp_result <- tseries::pp.test(log_passengers, alternative = "stationary") 
+kpss_result <- tseries::kpss.test(log_passengers, null = "Trend")
+
+# Interpretation at 5% significance level:
+# ADF/PP: p < 0.05 → Reject null → Stationary
+# KPSS: p < 0.05 → Reject null → Non-stationary
+tibble::tibble(
+  test = c("ADF Test p-value:","PP Test p-value:","KPSS Test p-value:")
+  , value = c(adf_result$p.value, pp_result$p.value, kpss_result$p.value)
+) |> 
+  gt::gt("test") |> 
+  gt::fmt_number(decimals = 4) |> 
+  gt::as_raw_html()
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| code-fold: true
+# Plot the series
+plot(log_passengers, main = "Log of Monthly Airline Passengers")
+```
+:::
+:::::
+
+```{r}
+#| echo: false
+#| code-fold: true
+# Load the classic AirPassengers data
+# data(AirPassengers, package - "datasets")
+# log_passengers <- log(AirPassengers)
+# 
+# # Plot the series
+# plot(AirPassengers, main = "Monthly Airline Passengers")
+# plot(log_passengers, main = "Log of Monthly Airline Passengers")
+# 
+# # Test for unit roots
+# adf_result <- tseries::adf.test(log_passengers, alternative = "stationary")
+# pp_result <- tseries::pp.test(log_passengers, alternative = "stationary") 
+# kpss_result <- tseries::kpss.test(log_passengers, null = "Trend")
+# 
+# # Display results
+# cat("ADF Test p-value:", round(adf_result$p.value, 4), "\n")
+# cat("PP Test p-value:", round(pp_result$p.value, 4), "\n")
+# cat("KPSS Test p-value:", round(kpss_result$p.value, 4), "\n")
+# 
+# tibble::tibble(
+#   test = c("ADF Test p-value:","PP Test p-value:","KPSS Test p-value:")
+#   , value = c(adf_result$p.value, pp_result$p.value, kpss_result$p.value)
+# ) |> gt::gt("test") |> 
+#   gt::fmt_number(decimals = 4)
+# 
+# # Interpretation at 5% significance level:
+# # ADF/PP: p < 0.05 → Reject null → Stationary
+# # KPSS: p < 0.05 → Reject null → Non-stationary
+```
+
+## Time series - processes
+
+### Vector Autoregressive Processes
 
 AR(p) processes can be written as AR(1) vector processes, e.g. for AR(2)
 
@@ -561,7 +693,7 @@ $$
 
 ## Time series - processes
 
-### Autoregressive Processes
+### Vector Autoregressive Processes
 
 Repeating the argument for AR(1) processes in the vector case:
 
@@ -576,7 +708,7 @@ And we only converge if $A^i\rightarrow0 \;\mathrm{as}\;i\rightarrow\infty$, i.e
 
 ## Time series - processes
 
-### Autoregressive Processes
+### Vector Autoregressive Processes
 
 -   In general if an $n\times n$ matrix $A$ has $n$ distinct eigenvalues, then all eigenvalues must have magnitude $<1$ for $A^i\rightarrow0 \;\mathrm{as}\;i\rightarrow\infty$.
 -   proof: we decompose $A=X\Lambda X^{-1}$ where the columns of $x$ are the eigenvectors of $A$ and $\Lambda$ is a diagonal matrix with the eigenvalues on the diagonal.
@@ -606,13 +738,127 @@ $$ Similarly, the cofactor expansion along the $j$-th column is: $\det(A) = \sum
 
 ### Computing determinants
 
-The structure of the AR(1) vector process makes it easy to compute the polynomial for the determinant in terms of the coefficients of the process.
+The structure of the VAR(1) vector process makes it easy to compute the polynomial for the determinant in terms of the coefficients of the process.
 
 The roots of the polynomial can be computed using `polyroot`, passing in a vector of polynomial coefficients in increasing order. The magnitudes of the eigenvalues can using the base function `Mod`.
 
 ``` r
 polyroot(c(1,.2,3,.6)) |> Mod()
 ```
+
+## Time series - processes
+
+### Vector Autoregressive Processes
+
+In a $\text{VAR}(p)$ process we need to determine how many lags ($p$) to include.
+
+-   **too few lags**: Model misspecification, biased estimates
+-   **too many lags**: Overfitting, loss of degrees of freedom, poor forecasting
+
+The solution is to use statistical criteria that balance **model fit** vs **model complexity.**
+
+## Time series - processes
+
+### Information Criteria
+
+ICs balance **model fit** vs **model complexity:** in general the IC is $\log\det(\hat{\Sigma})+\text{penalty}\times \text{parameters}/N$, where
+
+-   $\log \det(\hat{\Sigma})$ is the log determinant of the residual covariance matrix (measures fit)
+-   $\text{penalty}$ is a complexity penalty (varies by IC)
+-   $N$ is the sample size
+
+## Time series - processes
+
+### Information Criteria
+
+-   **Akaike Information Criterion** (AIC): $\log \det(\hat{\Sigma})+k^2p\times 2/N$
+
+-   **Hannan-Quinn Criterion** (HQ): $\log \det(\hat{\Sigma})+k^p\times 2\log(\log(N))/N$
+
+-   **Schwarz Criterion** (SC/BIC): $\log \det(\hat{\Sigma})+k^p\times \log(\log(N))/N$
+
+where $k$ is the number of variables.
+
+## Time series - processes
+
+### Information Criteria
+
+-   **Akaike Information Criterion** (AIC)
+
+    -   tends to select more lags & good for prediction when true model is $p=\infty$.
+
+-   **Hannan-Quinn Criterion** (HQ):
+
+    penalty grows slowly.
+
+-   **Schwarz Criterion** (SC/BIC):
+
+    -   tends to select fewer lags & has strongest penalty for complexity.
+
+## Time series - processes
+
+### Information Criteria Example
+
+```{r}
+#| echo: true
+#| code-fold: true
+
+data(Canada, package = "vars")
+# Convert to regular data frame for easier handling
+canada_df <- as.data.frame(Canada)
+canada_df$date <- seq(as.Date("1980-01-01"), by = "quarter", length.out = nrow(Canada))
+
+# e:    Employment (log levels)
+# prod: Labor productivity (log levels)
+# rw:   Real wages (log levels)
+# U:    Unemployment rate (levels)
+head(canada_df)
+
+lag_selection <- VARselect(canada_df |> dplyr::select(-date), lag.max = 8, type = "const")
+
+# Display results
+print(lag_selection$selection)
+```
+
+## Time series - processes
+
+### Information Criteria Example
+
+```{r}
+#| echo: true
+#| code-fold: true
+var_dat <- canada_df |> dplyr::select(-date)
+# Estimate VAR models based on different criteria
+var_1 <- VAR(var_dat, p = 1, type = "const")  # SC choice
+var_2 <- VAR(var_dat, p = 2, type = "const")  # HQ choice  
+var_3 <- VAR(var_dat, p = 3, type = "const")  # AIC choice
+```
+
+::: panel-tabset
+## p=1
+
+```{r}
+#| echo: true
+#| code-fold: true
+summary(var_1)
+```
+
+## p=2
+
+```{r}
+#| echo: true
+#| code-fold: true
+summary(var_2)
+```
+
+## p=3
+
+```{r}
+#| echo: true
+#| code-fold: true
+summary(var_3)
+```
+:::
 
 ## Time series - processes
 
@@ -777,6 +1023,32 @@ In this taxonomy, the exponential smoothing model is denoted as ETS(A,A,M).
 The additive ETS models are shown below, and more detailed discussion can be found [here](https://openforecast.org/adam/ETSConventional.html)
 
 ![](images/ETSTaxonomyAdditive-1.png){fig-align="center"}
+
+## Time series - ETS models
+
+::: {style="font-size: x-large"}
+In `modeltime` these models, including seasonal decomposition models, are specified using `modeltime::seasonal_reg()`, for regression models only, with the following engines
+
+-   `parsnip::set_engine("stlm_ets")` for auto-ETS
+
+-   `parsnip::set_engine("stlm_arima")` for auto-arima
+
+-   `parsnip::set_engine("tbats")` for TBATS models: **T**rigonometric seasonality, **B**ox-Cox transformation, [**A**RMA](https://medium.com/analytics-vidhya/arima-fc1f962c22d4) errors, **T**rend and **S**easonal components.
+
+Only stlm_arima accepts covariates.
+:::
+
+## Time series - ETS models
+
+::: {style="font-size: x-large"}
+It is often useful to have a baseline model to compare all other models to.
+
+In `modeltime` we often use the NAIVE or SNAIVE (seasonal naive) models, where a naive forecast predicts the future value a the most recent observed value.
+
+These models are specified with `modeltime::naive_reg()`, with a `seasonal_period` argument in the specification for use if the seasonal period is known - otherwise the default is 'auto.'
+
+The corresponding engine is `parsnip::set_engine('naive')`.
+:::
 
 # The Timetk package
 

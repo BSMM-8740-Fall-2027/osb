@@ -13,7 +13,7 @@ In today's lab, you'll practice building `workflows` with `recipes`, `parsnip` m
 
 ## Getting started
 
--   To complete the lab, log on to **your** github account and then go to the class [GitHub organization](https://github.com/bsmm-8740-fall-2024) and find the **2025-lab-6-\[your github username\]** repository .
+-   To complete the lab, log on to **your** github account and then go to the class [GitHub organization](https://github.com/bsmm-8740-fall-2025) and find the **2025-lab-6-\[your github username\]** repository .
 
     Create an R project using your **2025-lab-6-\[your github username\]** repository (remember to create a PAT, etc.) and add your answers by editing the `2025-lab-6.qmd` file in your repository.
 
@@ -33,6 +33,10 @@ Remember to (create a PAT and set your git credentials)
     -   `usethis::use_git_config( user.name = ___, user.email = ___)`
 :::
 
+::: callout-note
+The code below will install (if necessary) and load the packages needed in today's exercises
+:::
+
 ## Packages
 
 ```{r}
@@ -46,11 +50,18 @@ if (! "librarian" %in% rownames(installed.packages()) ){
   
 # load packages if not already loaded
 librarian::shelf(tidyverse, Lahman, magrittr, gt, gtExtras, ggplot2, tidymodels, modeltime)
-theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 
 # set the efault theme for plotting
 theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 ```
+
+::: callout-warning
+## Package installs
+
+If you install packages outside of the ones below, [**remove**]{.underline} your `install.packages(.)` code [**before submitting your solutions**]{.underline}.
+
+Leaving instructions that will install packages may cause your code to fail, but more importantly, it can corrupt the TA/instructor's system.
+:::
 
 ## The Data
 
@@ -259,6 +270,44 @@ refit_tbl <-  ?
 ```
 :::
 
+## Exercise 10: Seasonal Time Series Modeling for Retail Forecasting
+
+You are working as a Senior Business Analyst for "TechMart," a consumer electronics retailer with 50 stores across North America. The company is planning its inventory strategy for 2025 and needs accurate forecasts of monthly sales. The CFO has specifically requested that you use advanced decomposition methods that can handle the complex seasonal patterns in electronics retail.
+
+You have been provided with 60 months of historical sales data (Jan 2019 - Dec 2023) showing strong monthly seasonality (holiday shopping peaks) and an underlying growth trend due to market expansion.
+
+```{r}
+# retail data
+retail_dat <- readr::read_csv('data/TechMart_sales.csv',show_col_types = FALSE)
+# Display data summary
+cat("TechMart Monthly Sales Data Summary:\n")
+cat("====================================\n")
+cat("Period:", format(min(retail_dat$date), "%b %Y"), "to", 
+    format(max(retail_dat$date), "%b %Y"), "\n")
+cat("Observations:", nrow(retail_dat), "\n")
+print(summary(retail_dat$monthly_sales))
+```
+
+Using the `modeltime` and `parsnip` frameworks,
+
+1.  build and evaluate a **Seasonal and Trend decomposition using Loess with ETS** (STLM-ETS) model.
+
+2.  compare your model against the SNAIVE model (baseline) and an ETS(A,A,A) model.
+
+3.  pick the best model based on [rmse]{.underline} and show the corresponding [mape]{.underline}. Also express the rmse as a percent improvement over the baseline.
+
+4.  forecast sales one month ahead, and extract the forecast for December.
+
+::: {.callout-note appearance="simple" icon="false"}
+## YOUR ANSWER:
+
+```{r}
+#| eval: false
+#| echo: true
+# SHOW ALL YOUR WORK
+```
+:::
+
 ::: render-commit-push
 You're done and ready to submit your work! **Save**, **stage**, **commit**, and **push** all remaining changes. You can use the commit message "Done with Lab 6!" , and make sure you have committed and pushed all changed files to GitHub (your Git pane in RStudio should be empty) and that **all** documents are updated in your repo on GitHub.
 :::
@@ -273,6 +322,4 @@ I will pull (copy) everyone's repository submissions at 5:00pm on the Sunday fol
 
 Total points available: 30 points.
 
-| Component | Points |
-|-----------|--------|
-| Ex 1 - 9  | 30     |
+![](images/rubric10.png){fig-align="center" width="600"}
