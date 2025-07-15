@@ -28,16 +28,20 @@ execute:
 
 ## Recap of last week
 
--   Last week we introduced the `modeltime` and `timetk` R packages.
+-   Last week we explored time series data, how they differ from typical cross-sectional or panel data, & how the differences matter for data analytics methods.
+
+-   We looked at breaking time series into components, and modeling autoregressive processes.
+
+-   We introduced the `modeltime` and `timetk` R packages for timeseries analytics.
 
 -   We showed how these integrate into the tidymodels workflows for predicting timeseries.
 
 ## This week
 
--   Introduction to the fundamental problems of causal inference and the biases of some intuitive estimators,
--   Develop a basic understanding of the tools used to state and then satisfy causality assumptions,
--   Understanding of how econometric methods recover treatment effects,
--   Ability to use these methods and estimate their precision using R.
+-   We Introduce the fundamental problems of causal inference and the biases of some intuitive estimators.
+-   We develop a basic understanding of the tools used to state and then satisfy causality assumptions, and then
+-   We understand of how econometric methods recover treatment effects,
+-   We learn to use these methods and estimate their precision using R.
 
 # Statistical Basis of Causal Inference
 
@@ -63,7 +67,7 @@ Treatment allocation is represented by the variable $D_i$, where $D_i=1$ if unit
 
 The treatment allocation rule is critical:
 
--   it switches the treatment on or off for each unit, it is going to be at the source of the FPCI.
+-   it switches the treatment on or off for each unit, and it is going to be the source of the FPCI.
 -   the specific properties of the treatment allocation rule are going to matter for the feasibility and bias of various effect estimation methods.
 
 ## Potential outcomes
@@ -72,56 +76,6 @@ Each unit can be treated or untreated, and so there are two potential outcomes:
 
 -   $Y_i^1$: the outcome unit $i$ will have, if treated
 -   $Y_i^0$: the outcome unit $i$ will have, if not treated
-
-## Example
-
-```{r}
-#| echo: false
-#| code-fold: true
-tibble::tibble(
-    'customer'  = c(1,2,3,4),
-    'Y1' = c(500,600,800,700) ,
-    'Y0' = c(450,600,600,750) ,
-    'D'  = c(1,1,0,0),
-    'Y'  = c(500,600,600,750) ,
-    'treatment effect' = c(50,0,200,-50) 
-) |> gt::gt() |> 
-  gt::cols_label(
-    Y1 = gt::md("$Y^1$"), Y0 = gt::md("$Y^0$"), D = gt::md("$\\text{D}$"), Y = gt::md("$\\text{outcome Y}$")
-  )
-```
-
-::: {style="font-size: large"}
-In this example $\text{ATE}=\left(50+0+200-50\right)/4=50$ and $\text{ATT}=\left(50+0\right)/2=25$.
-
-But this example imagines that we know the counterfactuals (i.e. $Y^0$ for $D=1$ and $Y^1$ for $D=0$), when we **never** do.
-
-The next example comparing the outcomes with and without treatment is more realistic.
-:::
-
-## Example
-
-```{r}
-#| echo: false
-#| code-fold: true
-tibble::tibble(
-    'customer'  = c(1,2,3,4),
-    'Y1' = c(500,600,NA,NA),
-    'Y0' = c(NA,NA,600,750),
-    'D'  = c(1,1,0,0),
-    'Y'  = c(500,600,600,750),
-    'treatment effect' = rep(NA,4)
-) |> gt::gt() |> 
-  gt::cols_label(
-    Y1 = gt::md("$Y^1$"), Y0 = gt::md("$Y^0$"), D = gt::md("$\\text{D}$"), Y = gt::md("$\\text{outcome Y}$")
-  )
-```
-
-::: {style="font-size: large"}
-Given these observations, and comparing the mean of the treated outcomes to the mean of the untreated outcomes: $\text{ATE}\ne\Delta_\text{WW}=\left(500+600\right)/2-\left(600+750\right)/2=-125$.
-
-The $\Delta_\text{WW}$ is a biased estimate of the $\text{ATE}$ because the untreated are bigger spenders than the treated on average.
-:::
 
 ## Switching equation
 
@@ -143,9 +97,54 @@ What the switching equation means is that, for each unit $i$ we get to observe o
 
 For each of the units, one of the two potential outcomes is unobserved - it is **counterfactual**. It can be conceived by an effort of reason: it is the consequence of what would have happened had some action not been taken.
 
+## Potential outcomes example
+
+:::::: columns
+:::: {.column width="60%"}
+::: {style="font-size: large"}
+In this example, we have 4 units, 2 treated and 2 untreated. The unit treatment effect is $Y_i^1-Y_i^0$, and we have at least 3 [**estimands**]{.underline}:
+
+-   average treatment effect ($\text{ATE}$)
+-   average treatment effect on the treated ($\text{ATT}$)
+-   average treatment effect on the untreated ($\text{ATU}$)
+:::
+::::
+
+::: {.column width="40%"}
+```{r}
+#| echo: false
+#| code-fold: true
+tibble::tibble(
+    'customer'  = c(1,2,3,4),
+    'Y1' = c(500,600,800,700) ,
+    'Y0' = c(450,600,600,750) ,
+    'D'  = c(1,1,0,0),
+    'Y'  = c(500,600,600,750) ,
+    'treatment effect' = c(50,0,200,-50) 
+) |> gt::gt() |> 
+  gt::cols_label(
+    Y1 = gt::md("$Y^1$"), Y0 = gt::md("$Y^0$")
+    , D = gt::md("$\\text{D}$"), Y = gt::md("$\\text{outcome Y}$")
+  ) |> 
+  gt::tab_options(
+    column_labels.background.color = 'yellow',
+    column_labels.border.bottom.style = 'none'
+  ) |> gtExtras::gt_theme_espn() |> gt::as_raw_html()
+```
+:::
+::::::
+
+::: {style="font-size: large"}
+In this example $\text{ATE}=\left(50+0+200-50\right)/4=50$ and $\text{ATT}=\left(50+0\right)/2=25$.
+
+But this example imagines that we know the counterfactuals (i.e. $Y^0$ for $D=1$ and $Y^1$ for $D=0$), when we [**never**]{.underline} do -- this is *the fundamental problem of causal inference*.
+
+One calculation we can do is to contrast the outcomes of the treated with the outcomes of the untreated.
+:::
+
 ## Treatment effects
 
-Now we can defined the causal effect:
+Now we can define the causal effect:
 
 The unit level treatment effect[^2] is defined as
 
@@ -157,28 +156,60 @@ $$ (which cannot be observed).
 
 ## Treatment effects
 
-Average treatment effect on the treated (TT[^3]) gives us summary stats (in the *population* \[$TT$\] or *sample* \[$TT_s$\]).
-
-[^3]: You'll sometimes see this written as ATT
+Average treatment effect on the treated ($\text{ATT}$) gives us summary stats (in the *population* $\left[\text{ATT}\right]$ or *sample* $\left[\text{ATT}_s\right]$).
 
 $$
-\Delta_{TT_{s}}^{Y}=\frac{1}{\sum_{i=1}^{N}D_{i}}\sum_{i=1}^{N}\left(Y_{i}^{1}-Y_{i}^{0}\right)D_{i}
+\Delta_{\text{ATT}_{s}}^{Y}=\frac{1}{\sum_{i=1}^{N}D_{i}}\sum_{i=1}^{N}\left(Y_{i}^{1}-Y_{i}^{0}\right)D_{i}
 $$ with the corresponding expected value in the population
 
 $$
-\Delta_{TT}^{Y}=\mathbb{E}\left[\left.Y_{i}^{1}-Y_{i}^{0}\right|D_{i}=1\right]
+\Delta_{\text{ATT}}^{Y}=\mathbb{E}\left[\left.Y_{i}^{1}-Y_{i}^{0}\right|D_{i}=1\right]
 $$
 
 ## Fundamental problem of causal inference
 
-It is **impossible** to observe TT, either in the *population* or in the *sample*.
+It is **impossible** to observe $\text{ATT}$, either in the *population* or in the *sample*.
 
 $$
 \begin{align*}
-\Delta_{TT_{s}}^{Y} & =\frac{1}{\sum_{i=1}^{N}D_{i}}\sum_{i=1}^{N}\left(Y_{i}^{1}-Y_{i}^{0}\right)D_{i}\\
+\Delta_{\text{ATT}_{s}}^{Y} & =\frac{1}{\sum_{i=1}^{N}D_{i}}\sum_{i=1}^{N}\left(Y_{i}^{1}-Y_{i}^{0}\right)D_{i}\\
  & =\frac{1}{\sum_{i=1}^{N}D_{i}}\sum_{i=1}^{N}Y_{i}^1D_{i}-\frac{1}{\sum_{i=1}^{N}D_{i}}\sum_{i=1}^{N}Y_{i}^{0}D_{i}
 \end{align*}
-$$ but $Y_{i}^{0}D_{i}$ is unobserved when $D_i=1$.
+$$ and $Y_{i}^{0}D_{i}$ is unobserved when $D_i=1$.
+
+## Potential outcomes example
+
+:::::: columns
+:::: {.column width="50%"}
+::: {style="font-size: large"}
+In practice, we only know the outcomes corresponding to the treatment. In this case an [**estimator**]{.underline} of the $\text{ATE}$ is the with-without estimator ($\Delta_{WW}$) which computes the difference between the average outcomes of the treated and untreated units.
+:::
+::::
+
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| code-fold: true
+tibble::tibble(
+    'customer'  = c(1,2,3,4),
+    'Y1' = c(500,600,NA,NA),
+    'Y0' = c(NA,NA,600,750),
+    'D'  = c(1,1,0,0),
+    'Y'  = c(500,600,600,750),
+    'treatment effect' = rep(NA,4)
+) |> gt::gt() |> 
+  gt::cols_label(
+    Y1 = gt::md("$Y^1$"), Y0 = gt::md("$Y^0$"), D = gt::md("$\\text{D}$"), Y = gt::md("$\\text{outcome Y}$")
+  )
+```
+:::
+::::::
+
+::: {style="font-size: large"}
+Given these observations, and comparing the mean of the treated outcomes to the mean of the untreated outcomes: $\text{ATE}\ne\Delta_\text{WW}=\left(500+600\right)/2-\left(600+750\right)/2=-125$.
+
+In this example, the $\Delta_\text{WW}$ estimator is a biased estimate of the $\text{ATE}$ estimand because the untreated are bigger spenders than the treated on average.
+:::
 
 ## Intuitive casual estimators
 
@@ -250,7 +281,26 @@ $$
 
 i.e. the expected *counterfactual* outcome of the [**treated**]{.underline} is equal to the expected potential outcome of the [**untreated**]{.underline} .
 
-This is called the **identification assumption**.
+If we also have
+
+$$
+\mathbb{E}\left[\left.Y_{i}^{1}\right|D_{i}=1\right]-\mathbb{E}\left[\left.Y_{i}^{1}\right|D_{i}=0\right]=0
+$$
+
+we say the treated and untreated populations are [**exchangeable**]{.underline}.
+
+## Identification assumption(s)
+
+To identify causal effects we need the treated and un-treated populations to be [**exchangeable**]{.underline},
+
+If we then also have:
+
+::: {style="font-size: x-large"}
+-   [**stable unit treatment values**]{.underline} (SUTVA), i.e. no interference between units & a single version of treatment and control, and
+-   [**common support**]{.underline}, meaning both treated and untreated units exist in the population (implicit)
+:::
+
+Then we can identify the $\text{ATE}$, where $\text{ATE}=\pi\text{ATT}+(1-\pi)\text{ATU}$, and $\pi$ is the proportion treated in the population.
 
 ## Identification assumption
 
@@ -264,18 +314,23 @@ One way to [**test**]{.underline} for the validity of the identification assumpt
 
 If the identification assumption holds, and the treatment assignment is (effectively) independent of the outcome, then
 
+::: {style="font-size: large"}
 $$
 \begin{align*}
 \Delta_{WW}^{Y} & =\mathbb{E}\left[\left.Y_{i}\right|D_{i}=1\right]-\mathbb{E}\left[\left.Y_{i}\right|D_{i}=0\right]\\
- & =\mathbb{E}\left[Y_{i}\right]-\mathbb{E}\left[Y_{i}\right]\\
+ & =\mathbb{E}\left[Y^1_{i}\right]-\mathbb{E}\left[Y^0_{i}\right]\\
+ & = \pi\mathbb{E}\left[Y^1_{i}|D_{i}=1\right]+(1-\pi)\mathbb{E}\left[Y^1_{i}|D_{i}=0\right]-\left(\pi\mathbb{E}\left[Y^0_{i}|D_{i}=1\right]+(1-\pi)\mathbb{E}\left[Y^0_{i}|D_{i}=0\right]\right) \\
  & =\Delta_{ATE}^{Y}
 \end{align*}
-$$ where $\Delta_{ATE}^{Y}$ is the average treatment effect in the population.
+$$
+:::
+
+where $\Delta_{ATE}^{Y}$ is the average treatment effect in the population.
 
 ## Fundamental problems
 
--   The FPCI states that our causal parameter of interest ($\Delta_{TT}^{Y}$ - the effect of treatment on the treated) is fundamentally unobservable, even when the sample size is infinite.
--   The FPSI states that, even if we have an estimator $E$ that identifies $\Delta_{TT}^{Y}$ in the population, we cannot observe $E$ because we only have access to a finite sample of the population.
+-   The FPCI states that our causal estimand of interest ($\Delta_{-}^{Y}$ - the effect of treatment on the treated) is fundamentally unobservable, even when the sample size is infinite.
+-   The FPSI states that, even if we have an estimator $E$ that identifies $\Delta_{-}^{Y}$ in the population, we cannot observe $E$ because we only have access to a finite sample of the population.
 
 # Causal Inference in R
 
