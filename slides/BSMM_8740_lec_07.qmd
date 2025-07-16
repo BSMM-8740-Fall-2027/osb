@@ -28,9 +28,9 @@ execute:
 
 ## Recap of last week
 
--   Last week we explored time series data, how they differ from typical cross-sectional or panel data, & how the differences matter for data analytics methods.
+-   Last week we explored time series data, how it differs from typical cross-sectional or panel data, & how the differences matter for data analytics methods.
 
--   We looked at breaking time series into components, and modeling autoregressive processes.
+-   We showed how to break time series into ETS components, and how to model autoregressive processes.
 
 -   We introduced the `modeltime` and `timetk` R packages for timeseries analytics.
 
@@ -38,7 +38,7 @@ execute:
 
 ## This week
 
--   We Introduce the fundamental problems of causal inference and the biases of some intuitive estimators.
+-   We Introduce the fundamental problems of causal inference and discuss the biases of some intuitive estimators.
 -   We develop a basic understanding of the tools used to state and then satisfy causality assumptions, and then
 -   We understand of how econometric methods recover treatment effects,
 -   We learn to use these methods and estimate their precision using R.
@@ -58,17 +58,17 @@ In this lecture we'll assume all interventions are binary, e.g. we offer a custo
 RCM is made of three distinct building blocks:
 
 -   a treatment allocation rule, that decides which unit receives the treatment / intervention;
--   a definition of potential outcomes that measure how each unit reacts to the treatment;
+-   a definition of potential outcomes that describe how each unit reacts to the treatment;
 -   the switching equation that relates potential outcomes to observed outcomes through the allocation rule.
 
 ## Treatment allocation
 
-Treatment allocation is represented by the variable $D_i$, where $D_i=1$ if unit $i$ receives the treatment and $D_i=0$ if unit $i$ does not receive the treatment.
+For binary treatments, treatment allocation is represented by the variable $D_i$, where $D_i=1$ if unit $i$ receives the treatment and $D_i=0$ if unit $i$ does not receive the treatment.
 
 The treatment allocation rule is critical:
 
 -   it switches the treatment on or off for each unit, and it is going to be the source of the FPCI.
--   the specific properties of the treatment allocation rule are going to matter for the feasibility and bias of various effect estimation methods.
+-   the specific properties of the treatment allocation rule will matter for the feasibility and bias of various effect estimation methods.
 
 ## Potential outcomes
 
@@ -95,7 +95,7 @@ $$
 
 What the switching equation means is that, for each unit $i$ we get to observe only one of the two potential outcomes. we can [never]{.underline} see both potential outcomes for the same unit at the same time.
 
-For each of the units, one of the two potential outcomes is unobserved - it is **counterfactual**. It can be conceived by an effort of reason: it is the consequence of what would have happened had some action not been taken.
+For each of the units, one of the two potential outcomes is unobserved - it is **counterfactual**. It is what would have happened had some action not been taken.
 
 ## Potential outcomes example
 
@@ -127,9 +127,9 @@ tibble::tibble(
     , D = gt::md("$\\text{D}$"), Y = gt::md("$\\text{outcome Y}$")
   ) |> 
   gt::tab_options(
-    column_labels.background.color = 'yellow',
+    column_labels.background.color = '#005596',
     column_labels.border.bottom.style = 'none'
-  ) |> gtExtras::gt_theme_espn() |> gt::as_raw_html()
+  )  |> gt::as_raw_html()
 ```
 :::
 ::::::
@@ -139,7 +139,7 @@ In this example $\text{ATE}=\left(50+0+200-50\right)/4=50$ and $\text{ATT}=\left
 
 But this example imagines that we know the counterfactuals (i.e. $Y^0$ for $D=1$ and $Y^1$ for $D=0$), when we [**never**]{.underline} do -- this is *the fundamental problem of causal inference*.
 
-One calculation we can do is to contrast the outcomes of the treated with the outcomes of the untreated.
+One calculation we could make when we have unobserved counterfactuals is to contrast the outcomes of the treated with the outcomes of the untreated.
 :::
 
 ## Treatment effects
@@ -175,7 +175,7 @@ $$
 \Delta_{\text{ATT}_{s}}^{Y} & =\frac{1}{\sum_{i=1}^{N}D_{i}}\sum_{i=1}^{N}\left(Y_{i}^{1}-Y_{i}^{0}\right)D_{i}\\
  & =\frac{1}{\sum_{i=1}^{N}D_{i}}\sum_{i=1}^{N}Y_{i}^1D_{i}-\frac{1}{\sum_{i=1}^{N}D_{i}}\sum_{i=1}^{N}Y_{i}^{0}D_{i}
 \end{align*}
-$$ and $Y_{i}^{0}D_{i}$ is unobserved when $D_i=1$.
+$$ since $Y_{i}^{0}D_{i}$ is unobserved when $D_i=1$.
 
 ## Potential outcomes example
 
@@ -200,7 +200,10 @@ tibble::tibble(
 ) |> gt::gt() |> 
   gt::cols_label(
     Y1 = gt::md("$Y^1$"), Y0 = gt::md("$Y^0$"), D = gt::md("$\\text{D}$"), Y = gt::md("$\\text{outcome Y}$")
-  )
+  ) |> gt::tab_options(
+    column_labels.background.color = '#005596',
+    column_labels.border.bottom.style = 'none'
+  )  |> gt::as_raw_html()
 ```
 :::
 ::::::
@@ -208,7 +211,7 @@ tibble::tibble(
 ::: {style="font-size: large"}
 Given these observations, and comparing the mean of the treated outcomes to the mean of the untreated outcomes: $\text{ATE}\ne\Delta_\text{WW}=\left(500+600\right)/2-\left(600+750\right)/2=-125$.
 
-In this example, the $\Delta_\text{WW}$ estimator is a biased estimate of the $\text{ATE}$ estimand because the untreated are bigger spenders than the treated on average.
+In this example, the $\Delta_\text{WW}$ estimator is a biased estimate of the $\text{ATE}$ estimand; the bias is due to the untreated being bigger spenders than the treated, on average.
 :::
 
 ## Intuitive casual estimators
@@ -217,13 +220,15 @@ Intuitive comparisons are often made in order to estimate causal effects, e.g. t
 
 **WW** compares the average outcomes of the treated units with those of the untreated units.
 
-Intuitive comparisons try to proxy for the expected counterfactual outcome in the treated group by using an observed quantity.
+Intuitive comparisons try to proxy for the expected counterfactual outcome in the treated group by using an observed quantity, i.e. the outcomes of the untreated units.
 
 ## Intuitive casual estimators
 
 Unfortunately, these proxies are generally poor and provide biased estimates of TT.
 
-The reason that these proxies are poor is that the treatment is not the only factor that differentiates the treated group from the groups used to form the proxy. The intuitive comparisons are biased because factors other than the treatment are correlated to its allocation.
+The reason that these proxies are poor is that the treatment is not the only factor that differentiates the treated group from the groups used to form the proxy. The intuitive comparisons are biased because factors other than the treatment are correlated with treatment allocation.
+
+We can eliminate the bias when particular assumptions are true.
 
 ## With/Without comparison
 
@@ -231,25 +236,25 @@ $$
 \Delta_{WW}^{Y}=\mathbb{E}\left[\left.Y_{i}\right|D_{i}=1\right] - \mathbb{E}\left[\left.Y_{i}\right|D_{i}=0\right]
 $$
 
-Note that this is not the same as the treatment effect on the treated (TT):
+Note that this is not the same as the treatment effect on the treated ($ATT$):
 
 $$
-\Delta_{TT}^{Y}=\mathbb{E}\left[\left.Y_{i}^{1}-Y_{i}^{0}\right|D_{i}=1\right]
+\Delta_{ATT}^{Y}=\mathbb{E}\left[\left.Y_{i}^{1}-Y_{i}^{0}\right|D_{i}=1\right]
 $$
 
 ## With/Without comparison
 
-The difference $\Delta_{WW}^{Y}-\Delta_{TT}^{Y}$ is called the selection bias $\Delta_{SB}^{Y}$:
+The difference $\Delta_{WW}^{Y}-\Delta_{ATT}^{Y}$ is called the selection bias:
 
 $$
 \begin{align*}
-\Delta_{SB}^{Y} & =\Delta_{WW}^{Y}-\Delta_{TT}^{Y}\\
+\Delta_{SB}^{Y} & =\Delta_{WW}^{Y}-\Delta_{ATT}^{Y}\\
  & =\mathbb{E}\left[\left.Y_{i}\right|D_{i}=1\right]-\mathbb{E}\left[\left.Y_{i}\right|D_{i}=0\right]-\mathbb{E}\left[\left.Y_{i}^{1}-Y_{i}^{0}\right|D_{i}=1\right]\\
  & =\mathbb{E}\left[\left.Y_{i}^{0}\right|D_{i}=1\right]-\mathbb{E}\left[\left.Y_{i}^{0}\right|D_{i}=0\right]
 \end{align*}
 $$
 
-So the selection bias is the difference in the **untreated potential-outcomes** between treatment groups
+So the selection bias is the difference in the **untreated potential-outcomes** between treatment groups.
 
 ## With/Without comparison
 
@@ -261,18 +266,9 @@ $$
 
 With non-zero selection bias, selection into the treatment biases the effect of the treatment on outcomes.
 
-## With/Without comparison
-
-::: {style="font-size: smaller"}
--   Confounding factors are the factors that generate differences between treated and untreated individuals even in the absence of the treatment.
-
--   Suppose we wanted to test giving discounts to our smaller-value customers to induce them to buy more. The results of the test could be biased if small-value customer would just buy less anyway.
-
--   The mere fact of being selected for receiving the discount means that these customers have a host of characteristics that would differentiate them from the unselected customers.
-:::
-
 ## Identification assumption
 
+::: {style="font-size: x-large"}
 There is no selection bias if
 
 $$
@@ -287,7 +283,8 @@ $$
 \mathbb{E}\left[\left.Y_{i}^{1}\right|D_{i}=1\right]-\mathbb{E}\left[\left.Y_{i}^{1}\right|D_{i}=0\right]=0
 $$
 
-we say the treated and untreated populations are [**exchangeable**]{.underline}.
+we say the treated and untreated populations are [**exchangeable**]{.underline}. This is equivalent to saying that the joint distribution of potential outcomes is independent of treatment assignment: $\left(Y^1,Y^0\right)\perp\!\!\!\!\perp D$.
+:::
 
 ## Identification assumption(s)
 
@@ -300,19 +297,19 @@ If we then also have:
 -   [**common support**]{.underline}, meaning both treated and untreated units exist in the population (implicit)
 :::
 
-Then we can identify the $\text{ATE}$, where $\text{ATE}=\pi\text{ATT}+(1-\pi)\text{ATU}$, and $\pi$ is the proportion treated in the population.
+Then we can identify the $\text{ATE}$, where $\text{ATE}=\pi\text{ATT}+(1-\pi)\text{ATU}$, with $\pi$ is the proportion treated in the population.
 
-## Identification assumption
+## Identification assumption(s)
 
 For the identification assumption to hold, it has to be that **all** the determinants of $D_i$ are actually unrelated to $Y_i^0$.
 
 One way to [**enforce**]{.underline} this assumption is to randomize treatment assignment.
 
-One way to [**test**]{.underline} for the validity of the identification assumption is to compare the values of observed covariates in the treated and untreated group, because differences in covariates can lead to confounding.
+One way to [**test**]{.underline} for the validity of the identification assumption is to compare the values of observed covariates in the treated and untreated group.
 
-## Identification assumption
+## Identification assumption(s)
 
-If the identification assumption holds, and the treatment assignment is (effectively) independent of the outcome, then
+If the identification assumption holds, and outcomes are (effectively) independent of the treatment assignment, then
 
 ::: {style="font-size: large"}
 $$
@@ -330,7 +327,13 @@ where $\Delta_{ATE}^{Y}$ is the average treatment effect in the population.
 ## Fundamental problems
 
 -   The FPCI states that our causal estimand of interest ($\Delta_{-}^{Y}$ - the effect of treatment on the treated) is fundamentally unobservable, even when the sample size is infinite.
--   The FPSI states that, even if we have an estimator $E$ that identifies $\Delta_{-}^{Y}$ in the population, we cannot observe $E$ because we only have access to a finite sample of the population.
+    -   so we need to carefully examine how well the necessary assumptions are satisfied
+-   The FPSI states that, even if we have an estimator $\hat{E}$ that identifies $\Delta_{-}^{Y}$ in the population, we cannot observe $E$ because we only have access to a finite sample of the population.
+    -   so we need to carefully validate our estimated values.
+
+## Causal modeling
+
+In the next section we will use a graphical method to help us clarify and identifying the causal structure between the exposure and outcome. This will then help us understand how to satisfy our causal assumptions.
 
 # Causal Inference in R
 
@@ -420,49 +423,51 @@ dag_flows |>
 ## DAGs
 
 ::: {style="font-size: 80%"}
-Forks represent a common cause of two variables. Here, we're saying that `q` causes both `x` and `y`, the traditional definition of a confounder. They're called forks because the arrows from `x` to `y` are in different directions.
+Forks represent a [**common cause**]{.underline} of two variables. Here, we're saying that `q` causes both `x` and `y`, the traditional definition of a confounder. They're called forks because the arrows from `x` to `y` are in different directions.
 
-Chains, on the other hand, represent a series of arrows going in the same direction. Here, `q` is called a *mediator*: it is along the causal path from `x` to `y`. In this diagram, the only path from `x` to `y` is mediated through `q`.
+Chains, on the other hand, represent a series of arrows going in the same direction. Here, `q` is called a [***mediator*****:**]{.underline} it is along the causal path from `x` to `y`. In this diagram, the only path from `x` to `y` is mediated through `q`.
 
-Finally, a collider is a path where two arrowheads meet at a variable. Because causality always goes forward in time, this naturally means that the collider variable is caused by two other variables. Here, we're saying that `x` and `y` both cause `q`.
+Finally, a collider is a path where two arrowheads meet at a variable. Because causality always goes forward in time, this naturally means that the collider variable is the [**common effect**]{.underline} of two other variables. Here, we're saying that `x` and `y` both cause `q`.
 :::
 
 ## DAGs
 
 ::: {style="font-size: 80%"}
-These three types of paths have different implications for the statistical relationship between `x` and `y`. If we only look at the correlation between the two variables under these assumptions:
+These three types of paths have different implications for the statistical relationship between `x` and `y`. If we only look at the correlation between the two variables:
 
-1.  In the fork, `x` and `y` will be associated, despite there being no arrow from `x` to `y`.
-2.  In the chain, `x` and `y` are related only through `q`.
-3.  In the collider, `x` and `y` will *not* be related.
+1.  In the fork, `x` and `y` will be correlated, despite there being no arrow from `x` to `y`.
+2.  In the chain, `x` and `y` are correlated through `q`.
+3.  In the collider, `x` and `y` will *not* be correlated.
 
-Paths that transmit association are called ***open paths***. Paths that do not transmit association are called ***closed paths***. Forks and chains are open, while colliders are closed.
+Paths that permit correlation between two variables are called ***open paths***. Paths that do not tpermt correlation are called ***closed paths***. Forks and chains are open, while colliders are closed.
 :::
 
 ## DAGs - forks
 
 ::: {style="font-size: 80%"}
-So, should we adjust for `q`, i.e. include `q` in our model? That depends on the nature of the path.
+So, should we adjust[^3] for confounder `q`, i.e. include `q` in our model? That depends on the nature of the path.
 
-Forks are confounding paths. Because `q` causes both `x` and `y`, `x` and `y` will have a spurious association. They both contain information from `q`, their mutual cause. That mutual causal relationship makes `x` and `y` associated statistically.
+Forks are confounding paths. Because `q` causes both `x` and `y`, `x` and `y` will have a spurious correlation. They both contain information from `q`, their mutual cause. That mutual causal relationship makes `x` and `y` associated statistically.
 
 Adjusting for `q`, i.e. fixing the value of `q`, will *block* the bias from confounding and give us the true relationship between `x` and `y`.
 :::
+
+[^3]: recall that in regression, controlling for a variable is used to isolate the relationship between your main variables of interest while holding the control variable constant.
 
 ## DAGs - mediators
 
 ::: {style="font-size: 80%"}
 For chains, whether or not we adjust for mediators depends on the research question.
 
-Here, adjusting for `q` would result in a null estimate of the effect of `x` on `y`. Because the only effect of `x` on `y` is via `q`, no other effect remains.
+Here, adjusting for `q` would result in a null estimate of the effect of `x` on `y`. Because the only effect of `x` on `y` is via `q`, no other effect remains when controlling for `q`.
 
-The effect of `x` on `y` mediated by `q` is called the ***indirect*** effect, while the effect of `x` on `y` directly is called the ***direct*** effect. If we're only interested in the direct effect, controlling for `q` might be what we want. If we want to know about both effects, we shouldn't try to adjust for `q`.
+The effect of `x` on `y` mediated by `q` is called the ***indirect*** effect, while the effect of `x` on `y` directly is called the ***direct*** effect. If we're only interested in the direct effect, controlling for `q` might be what we want. If we want to know about both effects (the total effect), we shouldn't try to adjust for `q`.
 :::
 
 ## DAGs - colliders
 
 ::: {style="font-size: 80%"}
-Colliders are different. In the collider DAG of @fig-dag-path-types, `x` and `y` are *not* associated, but both cause `q`.
+Colliders are different. In the collider DAG of @fig-dag-path-types, `x` and `y` are *not* correlated, but both cause `q`.
 
 Adjusting for `q` has the opposite effect than with confounding: it *opens* a biasing pathway.
 
@@ -472,6 +477,10 @@ Sometimes, people draw the path opened up by conditioning on a collider connecti
 ## DAGs - colliders
 
 ::: {style="font-size: 80%"}
+Colliders are different. In the collider DAG of @fig-dag-path-types, `x` and `y` are *not* correlated, but both cause `q`.
+
+Adjusting for `q` has the opposite effect than with confounding: it *opens* a biasing pathway.
+
 How can this be? Since `x` and `y` happen before `q`, `q` can't impact them.
 
 Let's turn the DAG on its side and consider @fig-collider-time on the next slide. If we break down the two time points, at time point 1, `q` hasn't happened yet, and `x` and `y` are unrelated. At time point 2, `q` happens due to `x` and `y`. *But causality only goes forward in time*.
@@ -521,17 +530,17 @@ collider_t |>
 ## DAGs - colliders
 
 ::: {style="font-size: 80%"}
-Causality only goes forward. Association, however, is time-agnostic. It's just an observation about the numerical relationships between variables. When we control for the future, we risk introducing bias. It takes time to develop an intuition for this.
+Causality only goes forward. Correlation, however, is time-agnostic. It's just an observation about the numerical relationships between variables. When we control for the future, we risk introducing bias. It takes time to develop an intuition for this.
 
-Consider a case where x and y are the only causes of q, and all three variables are binary. When either x or y equals 1, then q happens. If we know q = 1 and x = 0 then logically it must be that y = 1. Thus, knowing about q gives us information about y via x.
+Consider a case where x and y are the only causes of q, and all three variables are binary (e.g. $q=x\lor y$). When either x or y equals 1, then q happens. If we know q = 1 and x = 0 then logically it must be that y = 1. Thus, knowing about q gives us information about y via x.
 
-This example is extreme, but it shows how this type of bias, sometimes called collider-stratification bias or selection bias, occurs: conditioning on q provides statistical information about x and y and distorts their relationship.
+This example is extreme, but it shows how this type of bias, sometimes called collider-stratification bias or selection bias, occurs: conditioning on `q` provides statistical information about `x` and `y` and distorts their relationship.
 :::
 
 ## DAGs
 
 ::: {style="font-size: 80%"}
-Correctly identifying the causal structure between the exposure and outcome helps us
+Correctly identifying the causal structure between the exposure and outcome helps us to:
 
 1.  communicate the assumptions we're making about the relationships between variables, and
 2.  identify sources of bias.
@@ -542,7 +551,9 @@ Importantly, in doing 2), we are also often able to identify ways to prevent bia
 ## DAGs - exchangeability
 
 ::: {style="font-size: 80%"}
-We commonly refer to [**exchangeability**]{.underline} as the assumption of no confounding. Actually, this isn't quite right. It's the assumption of no open, non-causal paths. Many times, these are confounding pathways. However, conditioning on a collider can also open paths. Even though these aren't confounders, doing so creates non-exchangeability between the two groups: they are different in a way that matters to the exposure and outcome.
+[**Exchangeability**]{.underline} holds when treatment assignment is independent of potential outcomes. The same concept is expressed in the assumption of no open, non-causal paths.
+
+Confounding pathways are open, non-causal paths. However, conditioning on a collider can also open paths. Even though these aren't confounders, doing so creates non-exchangeability between the two groups: they are different in a way that matters to the exposure and outcome.
 
 Open, non-causal paths are also called [**backdoor paths**]{.underline}. We'll use this terminology often because it captures the idea well: these are any open paths biasing the effect we're interested in estimating.
 :::
@@ -550,8 +561,11 @@ Open, non-causal paths are also called [**backdoor paths**]{.underline}. We'll u
 ## DAGs - exchangeability vs identification
 
 ::: {style="font-size: 80%"}
--   Exchangeability is one of the assumptions that can help in achieving identification. If you can assume exchangeability, then you can often identify the causal effect using the observed data.
--   Exchangeability is more about the structure of the data and the treatment assignment mechanism, while identification is a broader concept that encompasses the entire process of linking causal models to statistical models and data.
+-   Exchangeability is one of the assumptions that can help in achieving identification. If you can assume exchangeability, then you can often identify the causal effect using the observed data. It is untestable and requires domain knowledge to assess plausibility.
+
+-   Identification is a property of a causal parameter that means the parameter can be uniquely determined from observable data. It's a mathematical property that holds or doesn't hold, and it's methodological.
+
+-   Exchangeability implies identification, but the reverse is not true.
 :::
 
 ## DAGs - visualization
@@ -573,7 +587,7 @@ ggdag::dagify(
 ## DAGs - visualization
 
 ::: {style="font-size: 80%"}
-What are all of the factors that cause graduate students to listen to a podcast the morning before an exam? What are all of the factors that could cause a graduate student to do well on a test? Let's posit some here.
+What are all of the factors that cause graduate students to listen to a podcast the morning before an exam? What are all of the factors that could cause a graduate student to do well on a test? Let's posit some here and create a DAG.
 
 ```{r}
 #| echo: true
@@ -587,7 +601,7 @@ ggdag::dagify(
 ## DAGs - visualization
 
 ::: {style="font-size: 80%"}
-In the code, we assume that:
+In the dagify code, we assume that:
 
 -   a graduate student's mood, sense of humor, and how prepared they feel for the exam could influence whether they listened to a podcast the morning of the test, and
 -   their mood and how prepared they are also influence their exam score.
@@ -853,7 +867,7 @@ dplyr::bind_rows(
 ::: {style="font-size: 70%"}
 In `podcast_dag`, `mood` and `prepared` were *direct* confounders: an arrow was going directly from them to `podcast` and `exam`.
 
-Often, backdoor paths are more complex. For example, let's add two new variables: `alertness` and `skills_course`. `alertness` represents the feeling of alertness from a good mood, thus an arrow from `mood` to `alertness`. `skills_course` represents whether the student took a College Skills Course and learned time management techniques.
+Often, backdoor paths are more complex. For example, let's add two new variables: `alertness` and `skills_course`. The `alertness` variable represents the feeling of alertness from a good mood, thus an arrow from `mood` to `alertness`. The `skills_course` variable represents whether the student took a College Skills Course and learned time management techniques.
 
 Now, `skills_course` is what frees up the time to listen to a podcast as well as being prepared for the exam. `mood` and `prepared` are no longer direct confounders: they are two variables along a more complex backdoor path. Additionally, we've added an arrow going from `humor` to `mood`.
 :::
@@ -1240,27 +1254,23 @@ ggdag::ggdag(podcast_dag5, use_labels = "label", text = FALSE)  +
 ::: {style="font-size: 70%"}
 Starting with `humor`:
 
-Variables that cause the exposure but not the outcome are also called *instrumental variables* (IVs). IVs are an unusual circumstance where, under certain conditions, controlling for them can make other types of bias worse.
+Variables that cause the exposure are called *instrumental variables* (IVs or just instrument) if they are independent of the potential outcomes and only affect outcomes through the exposure. The instrument must be correlated with treatment but uncorrelated with unobserved confounders.
 
-What's unique about this is that IVs can *also* be used to conduct an entirely different approach to estimating an unbiased effect of the exposure on the outcome. IVs are commonly used this way in econometrics and are increasingly popular in other areas.
+If the correlation with exposure is "strong," IVs can identify the local average treatment effect $\text{LATE}$, i.e. the effect for units affected by the instrument. IVs are commonly used this way in econometrics and are increasingly popular in other areas.
 
-In short, IV analysis allows us to estimate the causal effect using a different set of assumptions than the approaches we've talked about thus far.
-
-If you're unsure if the variable is an IV or not, you should probably add it to your model: it's more likely to be a confounder than an IV, and, it turns out, the bias from adding an IV is usually small in practice. So, like adjusting for a potential M-structure variable, the risk of bias is worse from confounding.
+Otherwise, variables that cause the exposure, are independent of the potential outcomes, and are used as a control reduce the variance of the exposure needed to estimate the effect. So don't include them.
 :::
 
 ## DAGs - One of exposure / outcome
 
 ::: {style="font-size: 70%"}
-About variables that are a cause of the outcome but are not the cause of the exposure:
-
-We'll call them *precision variables* because we're concerned about the relationship to the research question at hand, not to another research question where they are exposures.
+Variables that are a cause of the outcome but are not the cause of the exposure are called them *precision variables*.
 
 Like IVs, precision variables do not occur along paths from the exposure to the outcome. Thus, including them is not necessary.
 
-Unlike IVs, including precision variables is beneficial. Including other causes of the outcomes helps a statistical model capture some of its variation.
+Unlike IVs, including precision variables is beneficial. Including other causes of the outcomes helps a statistical model reduce some of its variation in the outcome.
 
-This doesn't impact the point estimate of the effect, but it does reduce the variance, resulting in smaller standard errors and narrower confidence intervals. Thus, it's recommended they be included when possible.
+This doesn't impact the point estimate of the effect, but it does reduce the variance, resulting in smaller standard errors and narrower confidence intervals. Thus, it's recommended precision variables be included when possible.
 :::
 
 ## DAGs - Construction
@@ -1317,7 +1327,7 @@ The time ordering algorithm in ggdag automates much of this for you, although it
 
 ## DAGs - Construction
 
-#### Order nodes by time - feedback loops
+#### Ordering nodes by time - feedback loops
 
 ::::: columns
 ::: {.column width="50%" style="font-size: 70%"}
@@ -1518,7 +1528,7 @@ causalworkshop::net_data |>
   dplyr::mutate(diff = malaria_risk - dplyr::lag(malaria_risk))
 ```
 
-And that's what we see with simple linear regression, as well, as we would expect.
+And that's what we see with simple linear regression as well, as we might expect.
 
 ```{r}
 #| echo: true
@@ -1534,7 +1544,7 @@ causalworkshop::net_data |>
 ::: {style="font-size: 75%"}
 The problem that we face is that other factors may be responsible for the effect we're seeing.
 
-In this example, we'll focus on confounding: a common cause of net usage and malaria will bias the effect we see unless we account for it somehow.
+In this example, we'll focus on confounding: a common cause of net usage and malaria will bias the effect we see, unless we account for it somehow.
 
 To determine which variables we need to account we'll use use a causal diagram or DAG, to visualize the assumptions that we're making about the causal relationships between the exposure, outcome, and other variables we think might be related.
 
@@ -1703,9 +1713,9 @@ mosquito_dag |>
 ::: {style="font-size: 65%"}
 For this DAG, we need to control for three variables: health, income, and temperature. These three variables are a minimal adjustment set, the minimum set (or sets) of variables you need to block all confounding pathways.
 
-We could estimate the causal effect using Regression Adjustment: including the minimal set of covariates in our regression.
+We could estimate the causal effect using [**Regression Adjustment**]{.underline}: including the minimal set of covariates in our regression.
 
-Instead we'll use a technique called Inverse Probability Weighting (IPW) to control for these variables:
+Instead we'll use a technique called [**Inverse Probability Weighting (IPW)**]{.underline} to control for these variables:
 
 We'll use logistic regression to predict the probability of treatment---the propensity score. Then, we'll calculate inverse probability weights to apply to the linear regression model we fit above.
 
@@ -1739,9 +1749,11 @@ To calculate the ATE, we'll use the `broom` and `propensity` packages. broom's `
 
 ## Example: Model our assumptions
 
-::: {style="font-size: 65%"}
-For inverse probability weighting, the ATE weight is the probability of receiving the treatment you actually received. In other words, if you used a bed net, the ATE weight is the probability that you used a net, and if you did *not* use a net, it is the probability that you did *not* use a net.
+:::::: {style="font-size: 65%"}
+For inverse probability weighting, the ATE weight is the inverse probability of receiving the treatment you actually received. In other words, if you used a bed net, the ATE weight is the inverse probability that you used a net, and if you did *not* use a net, it is the inverse probability that you did *not* use a net.
 
+::::: columns
+::: {.column width="50%"}
 ```{r}
 #| echo: true
 #| code-fold: true
@@ -1756,6 +1768,14 @@ net_data_wts |>
   dplyr::slice_head(n=16)
 ```
 :::
+
+::: {.column width="50%"}
+Check that the weight (wts) = 1/.fitted if net == TRUE and (wts) = 1/(1-.fitted) otherwise.
+
+Alternatively ifelse(net, 1/.fitted, 1/(1-.fitted))
+:::
+:::::
+::::::
 
 ## Example: Model our assumptions
 
@@ -1774,6 +1794,8 @@ The first household did *not* use a bed net; they're predicted probability of ne
 The goal of propensity score weighting is to weight the population of observations such that the distribution of confounders is balanced between the exposure groups.
 
 In principle, we're removing the arrows between the confounders and exposure in the DAG, so that the confounding paths no longer distort our estimates.
+
+Alternatively, this make our populations more exchangeable.
 :::
 
 ::: {.column width="60%" style="font-size: 65%"}
@@ -1927,7 +1949,7 @@ net_data_wts |>
 #| fig.width: 5
 #| fig.height: 4
 #| fig.cap: >
-#|   A density plot of the average treatment effect (ATE) weights. The plot is skewed, with higher values towards 8. This may indicate a problem with the model, but the weights aren't so extreme to destabilize the variance of the estimate.
+#|   A density plot of the average treatment effect (ATE) weights. The plot is skewed, with higher values towards 8. This may indicate a problem with the model, but the weights aren't so extreme as to destabilize the variance of the estimate.
 net_data_wts |>
   ggplot(aes(wts)) +
   geom_density(fill = "#CC79A7", color = NA, alpha = 0.8)
