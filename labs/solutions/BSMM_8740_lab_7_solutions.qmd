@@ -36,7 +36,7 @@ librarian::shelf(
 theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 ```
 
-## Exercise 1: DAGs and open paths
+## Exercise 2: DAGs and open paths
 
 Find the open paths from D (treatment) to Y (outcome) in the four DAGs below.
 
@@ -183,7 +183,7 @@ dag_4 %>% dagitty::paths()
 ```
 :::
 
-## Exercise 2: Building a DAG
+## Exercise 3: Building a DAG
 
 You work for a company that sells a commodity to retail customers, and your management is interested in the relationship between your price and the demand for the commodity at your outlets. You have one competitor and your pricing tactic is to set your price at slightly less that your competitor's. Your company surveys the competitors prices several times per day and once you know the competitor's price, the pricing team resets your prices according to the pricing tactic. The public is well informed of both prices when they make their choice to buy.
 
@@ -260,7 +260,7 @@ ggdag::dagify(
 ```
 :::
 
-## Exercise 3: Inverse Probability Weights (IPWs)
+## Exercise 4: Inverse Probability Weights (IPWs)
 
 In class we used the function `propensity::wt_ate` to calculate inverse probability weights, starting from the propensity scores, as in the code below:
 
@@ -311,7 +311,7 @@ net_data_wts |> dplyr::select(net, ip_wts, wts, `ip_wts = wts`) |>
 ```
 :::
 
-## Exercise 4: Randomized Controlled Trials
+## Exercise 5: Randomized Controlled Trials
 
 The essence of exchangeability is that the treated and untreated groups are very similar with respect to values of potential confounders. Randomization of treatment makes outcomes independent of treatment, and also makes the treated and untreated groups very similar with respect to values of potential confounders.
 
@@ -375,7 +375,7 @@ smd_dat |> dplyr::mutate( samples = "random" ) |>
 ```
 :::
 
-## Exercise 5: Frisch-Waugh-Lovell Theorem
+## Exercise 6: Frisch-Waugh-Lovell Theorem
 
 Here we'll look at credit and default-risk data. First we'll load the data:
 
@@ -521,7 +521,7 @@ lm(
 They are essentially identical, showing that the two methods are equivalent.
 :::
 
-## Exercise 6: Causal Modeling
+## Exercise 7: Causal Modeling
 
 In this guided exercise, we attempt to answer a causal question: does quitting smoking make you gain weight? Causal modeling has a special place in the history of smoking research: the studies that demonstrated that smoking causes lung cancer were observational. Thanks to other studies, we also know that, if you're already a smoker, quitting smoking reduces your risk of lung cancer. However, some have observed that former smokers tend to gain weight. Is this the result of quitting smoking, or does something else explain this effect? In the book [Causal Inference](https://www.hsph.harvard.edu/miguel-hernan/wp-content/uploads/sites/1268/2023/10/hernanrobins_WhatIf_30sep23.pdf) by Hernán and Robins, the authors analyze this question using several causal inference techniques.
 
@@ -940,10 +940,273 @@ We have many confounders in this problem. What if we missed an important one?
 The one step of the workflow that we missed is to conduct a sensitivity analysis and so that should certainly be done before reporting the results of the exercise.
 :::
 
+## Exercise 8: Causal Modeling
+
+An e-commerce company is studying the effect of personalized email campaigns (D) on monthly purchase amount (Y). They have data on 5,000 customers, where 2,000 received personalized emails (D=1) and 3,000 received standard emails (D=0).
+
+**Observed data:**
+
+-   Mean monthly purchase in personalized group: E\[Y\|D=1\] = \$120
+-   Mean monthly purchase in standard group: E\[Y\|D=0\] = \$85
+-   The company suspects that high-value customers were more likely to receive personalized emails
+
+**Questions:**
+
+-   Define the following parameters using Rubin's notation:
+    -   Average Treatment Effect (ATE)
+    -   Average Treatment Effect on the Treated (ATT)
+    -   Average Treatment Effect on the Untreated (ATU)
+-   What is the observed difference in means? What does this estimate capture?
+-   If the true ATE = \$25, what is the selection bias? Show your calculation.
+-   Explain why we cannot directly calculate ATT and ATU from the observed data alone.
+-   Under what assumption would the observed difference in means equal the ATE? Is this assumption likely to hold in this marketing context?
+
+::: {.callout-note appearance="simple" icon="false"}
+## YOUR ANSWER:
+
+-   Define the following parameters using Rubin's notation:
+
+    -   Average Treatment Effect (ATE): E\[Y(1) - Y(0)\] = E\[Y(1)\] - E\[Y(0)\]
+    -   Average Treatment Effect on the Treated (ATT): E\[Y(1) - Y(0)\|D=1\] = E\[Y(1)\|D=1\] - E\[Y(0)\|D=1\]
+    -   Average Treatment Effect on the Untreated (ATU): E\[Y(1) - Y(0)\|D=0\] = E\[Y(1)\|D=0\] - E\[Y(0)\|D=0\]
+
+-   What is the observed difference in means? \$120 - \$85 = **\$35**
+
+    -   What does this estimate capture? This captures: **ATE + Selection Bias**
+
+-   If the true ATE = \$25, what is the selection bias?
+
+    -   If true ATE = \$25, then: Selection Bias = Observed Difference - ATE = \$35 - \$25 = **\$10**
+
+        This means high-value customers were \$10 more likely to be in the treatment group.
+
+-   Explain why we cannot directly calculate ATT and ATU from the observed data alone.
+
+    -   We never observe the **counterfactual outcomes**:
+
+        -   For treated customers: We don't observe Y(0)\|D=1 (what they would have spent without personalization)
+        -   For control customers: We don't observe Y(1)\|D=0 (what they would have spent with personalization)
+
+-   Under what assumption would the observed difference in means equal the ATE? Is this assumption likely to hold in this marketing context?
+
+    -   **Exchangeability**: (Y(1), Y(0)) ⊥ D
+
+        This is **unlikely to hold** because the company deliberately sent personalized emails to high-value customers, creating selection bias.
+:::
+
+## Exercise 9: Instrumental Variables
+
+The estimator for instrumental variable $Z$ is conceptually two regressions, one the "reduced form" and the other the "first stage"
+
+$$
+\begin{align*}
+Y_{i} & =\kappa+\rho Z_{i}+\nu_{i}\;\text{the "reduced form"}\\
+D_{i} & =\mu+\pi Z_{i}+\eta_{i}\;\text{the "first stage"}
+\end{align*}
+$$
+
+where $\nu_1,\eta_i$ are noise terms and $\kappa,\mu$ are intercepts, and our estimate is $\beta^{IV}=\rho/\pi$.
+
+Show that $\beta^{IV}=\frac{\text{cov}\left(Z_i,Y_i\right)}{\text{cov}\left(Z_i,D_i\right)}$
+
+::: {.callout-note appearance="simple" icon="false"}
+## YOUR ANSWER:
+
+We can estimate the regression coefficients $\rho,\pi$ as follows:
+
+$\rho=\frac{\text{cov}\left(Z_i,Y_i\right)}{\text{var}(Z_i)}$
+
+$\pi=\frac{\text{cov}\left(Z_i,D_i\right)}{\text{var}(Z_i)}$
+
+then if $\beta^{IV}=\rho/\pi$ we can write
+
+$\beta^{IV}=\frac{\frac{\text{cov}\left(Z_i,Y_i\right)}{\text{var}(Z_i)}}{\frac{\text{cov}\left(Z_i,D_i\right)}{\text{var}(Z_i)}} = \frac{\text{cov}\left(Z_i,Y_i\right)}{\text{cov}\left(Z_i,D_i\right)}$
+:::
+
+## Exercise 10: Instrumental Variables
+
+An **elasticity** measures the percentage change in one variable (outcome) in response to a percentage change in another variable (treatment), typically written as: $\eta = \frac{\partial{Y}/Y}{\partial{X}/X}=\frac{d\log(Y)/dY}{d\log(X)/dx}$
+
+Common elasticities include the price elasticity of demand, but in regressing quantity on price it's very common that price and quantity are simultaneously determined, which leads to biased elasticity estimates (think of the DAG for this problem).
+
+The following code generates synthetic e-commerce data with an elasticity of demand equal -1.5 on total price, which includes list price plus shipping cost.
+
+Here you will use shipping costs (`shipping_cost`) as the instrument (IV), noting that it has variation (variation in shipping costs across regions and time) and shipping costs don't directly affect demand (it affects demand only through total price).
+
+```{r}
+#| echo: false
+#| code-fold: true
+#| code-summary: Generate synthetic e-commerce data
+# Set seed for reproducibility
+set.seed(123)
+
+# Generate synthetic e-commerce data
+generate_ecommerce_data <- function(n = 5000) {
+  # Create panel structure
+  regions <- c("Northeast", "Southeast", "Midwest", "West", "Southwest")
+  months <- 1:24
+  
+  # Expand grid for panel
+  data <- tidyr::expand_grid(
+    region = regions,
+    month = months,
+    customer_id = 1:200  # 200 customers per region-month
+  ) |>
+    dplyr::slice_sample(n = n) |>
+    dplyr::mutate(
+      # Geographic factors affecting shipping
+      distance_to_hub = dplyr::case_when(
+        region == "Northeast" ~ 500,
+        region == "Southeast" ~ 800,
+        region == "Midwest" ~ 300,
+        region == "West" ~ 1200,
+        region == "Southwest" ~ 900
+      ),
+      
+      # Time-varying factors
+      fuel_price = 3 + 0.5 * sin(2 * pi * month / 12) + rnorm(dplyr::n(), 0, 0.2),
+      seasonal_demand = 1 + 0.3 * cos(2 * pi * month / 12),
+      
+      # Unobserved demand shock (creates endogeneity)
+      demand_shock = rnorm(dplyr::n(), 0, 0.3),
+      
+      # Shipping cost (our instrument)
+      shipping_cost = 5 + 0.002 * distance_to_hub + 2 * fuel_price + rnorm(dplyr::n(), 0, 1),
+      
+      # Product price (endogenous - responds to demand)
+      base_price = 50,
+      price = base_price + 5 * seasonal_demand + 3 * demand_shock + 
+        0.5 * shipping_cost + rnorm(dplyr::n(), 0, 2),
+      
+      # Total price paid by consumer
+      total_price = price + shipping_cost,
+      
+      # Quantity demanded (true elasticity = -1.5)
+      log_quantity = 4 - 1.5 * log(total_price) + 0.5 * seasonal_demand + 
+        demand_shock + rnorm(dplyr::n(), 0, 0.2),
+      quantity = exp(log_quantity),
+      
+      # Revenue
+      revenue = price * quantity,
+      
+      # Add customer characteristics
+      income = exp(rnorm(dplyr::n(), 10.5, 0.3)),
+      age = sample(18:65, dplyr::n(), replace = TRUE)
+    ) |>
+    # Create some missing values to make realistic
+    dplyr::mutate(
+      price = ifelse(runif(dplyr::n()) < 0.02, NA, price),
+      quantity = ifelse(quantity < 0.1, 0.1, quantity)  # No negative quantities
+    ) |>
+    dplyr::filter(!is.na(price))
+  
+  return(data)
+}
+
+# Generate the dataset
+ecom_data <- generate_ecommerce_data(n = 5000)
+```
+
+::: {.callout-note appearance="simple" icon="false"}
+\(1\) use ecom_data to estimate the demand elasticity of total price with a naive model, using log(quantity) \~ log(total_price) and covariates region and month (as factors), income (as log) and age.
+
+Use broom::tidy to report the coefficient of log(price) (i.e. the elasticity)
+
+## YOUR ANSWER:
+
+```{r}
+naive_model <- 
+  lm(log(quantity) ~ log(total_price) + factor(region) + factor(month) +
+                    log(income) + age, data = ecom_data)
+
+naive_results <- broom::tidy(naive_model) |> 
+  dplyr::filter(term == "log(total_price)") |> 
+  dplyr::pull(estimate)
+
+print(stringr::str_glue("Naive OLS Results: {naive_results}"))
+
+```
+:::
+
+::: {.callout-note appearance="simple" icon="false"}
+\(2\) use ecom_data to model the "reduced form" stage by replacing log(total_price) with shipping_cost.
+
+Use broom::tidy to report the coefficient of shipping_cost (i.e. effect of shipping cost on demand)
+
+## YOUR ANSWER:
+
+```{r}
+reduced_form <- lm(log(quantity) ~ shipping_cost + factor(region) + factor(month) +
+                               log(income) + age, data = ecom_data)
+
+reduced_form_results <- broom::tidy(reduced_form) |> 
+  dplyr::filter(term == "shipping_cost") |> 
+  dplyr::pull(estimate)
+
+print(stringr::str_glue("Reduced Form Results: {reduced_form_results}"))
+```
+:::
+
+::: {.callout-note appearance="simple" icon="false"}
+\(3\) use ecom_data to model the "first stage" by regressing log(total_price) on shipping_cost
+
+Use broom::tidy to report the coefficient of shipping_cost (i.e. effect of shipping cost on log(total_price))
+
+## YOUR ANSWER:
+
+```{r}
+first_stage <- lm(log(total_price) ~ shipping_cost, data = ecom_data)
+
+first_stage_results <- broom::tidy(first_stage) |> 
+  dplyr::filter(term == "shipping_cost") |> 
+  dplyr::pull(estimate)
+
+print(stringr::str_glue("First Stage Results: {first_stage_results}"))
+
+```
+:::
+
+::: {.callout-note appearance="simple" icon="false"}
+\(4\) estimate elasticity by dividing the "reduced form" by the "first stage" coefficients
+
+## YOUR ANSWER:
+
+```{r}
+IV_elasticity_estimate <- reduced_form_results/first_stage_results
+
+print(stringr::str_glue("IV Elasticity Estimate: {IV_elasticity_estimate}"))
+```
+
+NOTE: the naive model gives the wrong sign for elasticity, while the iV estimate is close to the actual value of -1.5. Note the IV gives the LATE not the ATE.
+:::
+
+#### **Challenges and Limitations**
+
+##### LATE vs. ATE
+
+-   IV estimates Local Average Treatment Effect (LATE)
+-   Elasticity applies to "compliers" affected by the instrument
+-   May not represent population average elasticity
+
+##### Weak Instruments
+
+-   Instruments weakly correlated with endogenous variable
+-   Leads to biased estimates and large standard errors
+-   Rule of thumb: First-stage F-statistic \> 10
+
+##### Exclusion Restriction
+
+-   Hardest assumption to verify
+-   Instrument must affect outcome only through the treatment
+-   Often requires economic reasoning and institutional knowledge
+
+##### Monotonicity
+
+-   Instrument affects all units in the same direction
+-   No "defiers" who respond oppositely to instrument
+
 ## Grading
 
 Total points available: 30 points.
 
-| Component | Points |
-|-----------|--------|
-| Ex 1 - 6  | 30     |
+![](images/rubric10.png){fig-align="center" width="600"}

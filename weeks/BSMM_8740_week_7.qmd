@@ -30,10 +30,6 @@ Due date: Lab 7 - Sunday, Nov 03, 5pm ET
 
 ⌨️ [Lab 7 -Causality: DAGs](labs/BSSM_8740_lab_7.html)
 
-## Podcast
-
-[Listen here](https://notebooklm.google.com/notebook/18572607-448b-4e94-8437-194575d7574e/audio)
-
 ## Study
 
 ### Short Answer Questions
@@ -41,36 +37,45 @@ Due date: Lab 7 - Sunday, Nov 03, 5pm ET
 **Instructions**: Answer the following questions in 2-3 sentences each.
 
 1.  Explain the Fundamental Problem of Causal Inference (FPCI).
-2.  Define the Average Treatment Effect on the Treated (ATT) and provide an example.
-3.  What is selection bias and how does it affect causal inference?
-4.  Differentiate between a fork and a collider in a DAG and explain their implications for statistical
-5.  Explain the concept of an adjustment set and its role in identifying the causal effect.
-6.  What is M-Bias and how can it arise in causal inference?
-7.  Define an instrumental variable and describe its potential use in causal analysis.
-8.  Differentiate between a precision variable and a confounder.
-9.  What is a tipping point analysis and how is it useful in assessing the robustness of causal inferen
-10. Explain the concept of Inverse Probability Weighting (IPW) and its application in causal inference.
+2.  What are the three core building blocks of the Rubin Causal Model (RCM)?
+3.  Define "selection bias" in the context of intuitive causal estimators like the "with/without" comparison.
+4.  How does "exchangeability" relate to "identification" in causal inference?
+5.  Describe the key difference between a "fork" (confounder) and a "collider" in a DAG, regarding their implications for statistical correlation between two variables (X and Y) when conditioning on the third variable (Q).
+6.  Why is adjusting for a "collider" problematic when trying to estimate a causal effect?
+7.  What is an "adjustment set" in the context of DAGs, and what is its purpose?
+8.  Briefly explain why "time ordering" variables is a recommended practice when constructing a DAG.
+9.  What is the main goal of Inverse Probability Weighting (IPW) in causal inference?
+10. Why is bootstrapping often necessary when calculating confidence intervals for propensity-score weighted models?
 
 **Short-Answer Answer Key**
 
-1.  The FPCI states that it is impossible to observe both potential outcomes (treated and untreated) for the same unit at the same time. This makes it challenging to determine the true causal effect of a treatment because we can only observe one of the potential outcomes.
-2.  ATT is the average difference in outcomes between treated units and what their outcome would have been had they not been treated. For example, if a company offers a training program to its employees, the ATT would measure the average improvement in performance among those who participated in the training compared to what their performance would have been had they not participated.
-3.  Selection bias occurs when the treatment and control groups differ systematically on factors that also influence the outcome. This can lead to inaccurate estimates of the treatment effect because the observed difference in outcomes may be due to these pre-existing differences rather than the treatment itself.
-4.  A fork in a DAG represents a common cause, where a single variable influences both the treatment and the outcome. This can create a spurious association between the treatment and outcome. A collider, on the other hand, is a variable that is caused by both the treatment and the outcome. Adjusting for a collider can introduce bias by creating a spurious association between the treatment and outcome.
-5.  An adjustment set is a group of variables that, when controlled for, block backdoor paths in a DAG. By controlling for these variables, we can isolate the causal effect of the treatment on the outcome and reduce the risk of confounding.
-6.  M-Bias is a type of selection bias that occurs when we adjust for a collider that is part of an M-shaped path in a DAG. This can open a backdoor path and create a spurious association between the treatment and the outcome.
-7.  An instrumental variable is a variable that is correlated with the treatment but not with the outcome, except through its effect on the treatment. Instrumental variables can be used to estimate the causal effect of the treatment even when there are unmeasured confounders.
-8.  A precision variable is a variable that is associated with the outcome but not with the treatment. Including precision variables in a model can help to reduce the variance of the estimate of the treatment effect. A confounder, on the other hand, is a variable that is associated with both the treatment and the outcome and can distort the relationship between them.
-9.  Tipping point analysis is a sensitivity analysis that explores how strong an unmeasured confounder would have to be to change the conclusions of a study. This is useful for assessing the robustness of causal inferences to the presence of unmeasured confounders.
-10. Inverse Probability Weighting (IPW) is a statistical technique that can be used to adjust for confounding in causal inference. IPW involves creating weights for each individual based on their probability of receiving the treatment, given their observed characteristics. By weighting the data, we can create a pseudo-population in which the treatment and control groups are more comparable.
+1.  **Explain the Fundamental Problem of Causal Inference (FPCI).** The FPCI states that it is impossible to observe both potential outcomes (e.g., what happened if treated and what would have happened if not treated) for the same unit at the same time. This means that for any individual, one of these potential outcomes will always remain unobserved or counterfactual, making direct observation of the unit-level causal effect impossible.
+
+2.  **What are the three core building blocks of the Rubin Causal Model (RCM)?** The three core building blocks of the Rubin Causal Model are: a treatment allocation rule (deciding who gets treatment), a definition of potential outcomes (outcomes under treatment and control for each unit), and the switching equation (linking observed outcomes to potential outcomes based on treatment allocation).
+
+3.  **Define "selection bias" in the context of intuitive causal estimators like the "with/without" comparison.** Selection bias is the difference in the untreated potential outcomes between treatment groups (\$E\[Y\_{0i}\|D_i=1\] - E\[Y\_{0i}\|D_i=0\]\$). It arises when the treated and untreated groups differ systematically in ways that affect the outcome, even in the absence of treatment, leading to a biased estimate of the true causal effect if not accounted for.
+
+4.  **How does "exchangeability" relate to "identification" in causal inference?** Exchangeability is an untestable assumption stating that the treated and untreated populations are interchangeable, meaning the joint distribution of potential outcomes is independent of treatment assignment. If exchangeability holds, it often implies identification, which is a mathematical property meaning a causal parameter can be uniquely determined from observable data.
+
+5.  **Describe the key difference between a "fork" (confounder) and a "collider" in a DAG, regarding their implications for statistical correlation between two variables (X and Y) when conditioning on the third variable (Q).** In a fork (X \<- Q -\> Y), Q causes both X and Y, leading to a spurious correlation between X and Y. Conditioning on Q blocks this correlation. In contrast, for a collider (X -\> Q \<- Y), X and Y are not inherently correlated. However, conditioning on the collider Q *opens* a biasing pathway, inducing a spurious correlation between X and Y.
+
+6.  **Why is adjusting for a "collider" problematic when trying to estimate a causal effect?** Adjusting for a collider is problematic because it opens a biasing pathway between the two variables that cause the collider, even if they were originally uncorrelated. This can induce a spurious statistical association, leading to a biased estimate of the true causal effect between the exposure and outcome of interest.
+
+7.  **What is an "adjustment set" in the context of DAGs, and what is its purpose?** An adjustment set is a collection of variables identified from a DAG that, when controlled for (e.g., included in a regression model), can block all backdoor paths between the exposure and outcome. Its purpose is to eliminate confounding bias and allow for the identification of the true causal effect.
+
+8.  **Briefly explain why "time ordering" variables is a recommended practice when constructing a DAG.** Time ordering variables in a DAG helps clarify causal assumptions because a cause must logically precede its effect. This practice aids in correctly identifying causal relationships and ensures that the diagram accurately reflects the temporal sequence, preventing the inclusion of impossible causal links or cyclic structures.
+
+9.  **What is the main goal of Inverse Probability Weighting (IPW) in causal inference?** The main goal of IPW is to create a "pseudo-population" where the distributions of observed confounders are balanced between the treated and untreated groups. By re-weighting observations, IPW effectively makes the groups more exchangeable, thereby reducing selection bias and allowing for a more accurate estimation of the average treatment effect.
+
+10. **Why is bootstrapping often necessary when calculating confidence intervals for propensity-score weighted models?** Bootstrapping is necessary because the inverse probability weights are not fixed values; they are estimated from the data, introducing an additional source of variability. Standard confidence interval calculations would be too narrow and misleading because they do not account for this dependency and uncertainty in the estimated weights.
 
 **Essay Questions**
 
--   Describe the three main building blocks of the Rubin Causal Model (RCM) and discuss how they relate to the concept of potential outcomes.
--   Explain the importance of identifying and controlling for confounders in causal inference. Discuss different methods for controlling for confounding, such as regression adjustment and inverse probability weighting.
--   Explain how Directed Acyclic Graphs (DAGs) can be used to represent causal relationships and identify potential sources of bias. Provide an example of a DAG and discuss how it can be used to determine an appropriate adjustment set.
--   Discuss the challenges of estimating causal effects in observational studies. Describe different types of selection bias and explain how they can affect the validity of causal inferences.
--   Explain the concept of sensitivity analysis and discuss its importance in causal inference. Describe different types of sensitivity analyses and provide examples of how they can be used to assess the robustness of causal conclusions.
+1.  Discuss the critical role of identification assumptions in causal inference. Choose two specific assumptions (e.g., SUTVA, exchangeability, common support) and explain how their violation would lead to biased causal estimates. Provide a real-world example for each to illustrate the concept.
+2.  Compare and contrast the Average Treatment Effect (ATE) and the Average Treatment Effect on the Treated (ATT). When might a researcher be more interested in one over the other, and what are the implications for the types of data or methods used to estimate each?
+3.  Explain the concept of "selection bias" in detail, including its mathematical definition as presented in the source. Describe how Directed Acyclic Graphs (DAGs) can help identify potential sources of selection bias, specifically focusing on the role of colliders.
+4.  Outline the complete causal inference workflow as presented in the source. For each step, explain its purpose and briefly describe how a researcher would approach it in practice, emphasizing the iterative nature of the process and the importance of expert feedback.
+5.  You are tasked with estimating the causal effect of a new marketing campaign (binary treatment) on customer sales (outcome). Construct a plausible DAG for this scenario, including at least five variables (exposure, outcome, and relevant confounders/mediators/colliders). Based on your DAG, identify a minimal adjustment set and explain why controlling for these variables is necessary to achieve an unbiased estimate.
 
 <br><br>
 

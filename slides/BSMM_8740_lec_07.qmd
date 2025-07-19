@@ -1713,6 +1713,11 @@ mosquito_dag |>
 ::: {style="font-size: 65%"}
 For this DAG, we need to control for three variables: health, income, and temperature. These three variables are a minimal adjustment set, the minimum set (or sets) of variables you need to block all confounding pathways.
 
+```{r}
+#| echo: true
+mosquito_dag |> dagitty::adjustmentSets()
+```
+
 We could estimate the causal effect using [**Regression Adjustment**]{.underline}: including the minimal set of covariates in our regression.
 
 Instead we'll use a technique called [**Inverse Probability Weighting (IPW)**]{.underline} to control for these variables:
@@ -1986,6 +1991,30 @@ estimates
 
 The estimate for the average treatment effect is `r est_ci(estimates)`.
 :::
+
+## Example: Estimate the causal effect
+
+::: {style="font-size: 65%"}
+For completeness we can compare our estimate with that from a linear model that directly controls for the adjustment set.
+
+Note that the IPW estimate is based on a model that predicts net usage from income, health, and temperature, and then predicts malaria_risk from net usage. In contrast, the linear model predicts malaria_risk from net usage, controlling for income, health, and temperature.
+
+Both are consistent with a causal effect on malaria_risk of net usage in the range of \[-12.611, -11.320\], based on the overlap of their confidence intervals.
+:::
+
+```{r}
+#| echo: true
+#| code-fold: true
+modelsummary::msummary(
+  list(
+    "IPW estimate"=lm(malaria_risk ~ net, data = net_data_wts, weights = wts)
+    , "lm estimate" = lm(malaria_risk ~ net + income + health + temperature, data = net_data_wts)
+  )
+  , estimate = "{estimate} [{conf.low}, {conf.high}]"
+  , statistic = NULL, coef_map = "netTRUE", gof_map = "none", output="gt"
+) |> gtExtras::gt_theme_espn() |> gt::as_raw_html()
+
+```
 
 ## Example: Estimate the causal effect
 
