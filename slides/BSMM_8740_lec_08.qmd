@@ -31,6 +31,7 @@ execute:
 ## Recap of last week
 
 -   Last week we introduced DAGs as a method to represent our causal assumptions and infer how we might estimate the causal effects of interest.
+-   We briefly discussed regression adjustment and instrumental variables
 -   We worked through a method to estimate causal effects using IPW.
 
 ## This week
@@ -42,6 +43,7 @@ We will look at other methods used to estimate causal effects, along with method
 -   matching
 -   difference in differences
 -   fixed effects and methods for panel data
+-   g-methods
 
 ```{r}
 #| message: false
@@ -70,7 +72,7 @@ IPW requires us to build a model to predict the treatment, depending on the conf
 
 ## Inverse Probability Weighting
 
-Repeating our prior process, first we calculate the ipw weights and estimate the ATE using the weights.
+Repeating our our example with our prior process, first we calculate the ipw weights and estimate the ATE using the weights.
 
 ```{r}
 #| echo: true
@@ -78,6 +80,7 @@ Repeating our prior process, first we calculate the ipw weights and estimate the
 #| message: false
 #| warning: false
 #| code-summary: ATE estimate by IPW
+#| label: ATE estimate by IPW
 #| cache: false
 #| cache-comments: true
 dat_ <- causalworkshop::net_data |> dplyr::mutate(net = as.numeric(net))
@@ -95,7 +98,10 @@ net_data_wts <- propensity_model |>
 
 net_data_wts |>
   lm(malaria_risk ~ net, data = _, weights = wts) |>
-  broom::tidy(conf.int = TRUE) |> gt::gt() |> gtExtras::gt_theme_espn()
+  broom::tidy(conf.int = TRUE) |> 
+  gt::gt() |> 
+  gtExtras::gt_theme_espn() |> 
+  gt::as_raw_html()
 ```
 
 ## Inverse Probability Weighting
@@ -110,7 +116,7 @@ Let's explore the question of IPW stabilization a bit more.
 #| code-fold: true
 # fig.width: 8
 #| fig-asp: 2/5
-#| fig.height: 2
+#| fig.height: 1.8
 #| fig.cap: >
 #|   A density plot of the average treatment effect (ATE) weights. The plot is skewed, with higher values towards 8. This may indicate a problem with the model, but the weights aren't so extreme to destabilize the variance of the estimate.
 net_data_wts |>
@@ -141,7 +147,7 @@ Baseline covariates ($V\subset L$) are also used to stabilize IP weights: $SW^A(
 ## Inverse Probability Weighting
 
 ::: {style="font-size: x-large"}
-We know that IPW weighting should create a pseudo-population that make the covariates more balanced by treatment. In the last lecture we checked this using histograms. Here we check this via the statistics of the data:
+We know that IPW weighting should create a pseudo-population that makes the covariates more balanced by treatment. In the last lecture we checked this using histograms. Here we check this directly via the statistics of the data:
 :::
 
 ::: panel-tabset
@@ -150,6 +156,8 @@ We know that IPW weighting should create a pseudo-population that make the covar
 ```{r}
 #| echo: true
 #| code-fold: true
+#| code-summary: unweighted table composition
+#| label: unweighted table composition
 gtsummary::tbl_summary(
   net_data_wts 
   , by = net
@@ -164,6 +172,8 @@ gtsummary::tbl_summary(
 ```{r}
 #| echo: true
 #| code-fold: true
+#| code-summary: weighted table composition
+#| label: weighted table composition
 net_svy <- survey::svydesign(
   ids = ~1,
   data = net_data_wts,
@@ -378,7 +388,7 @@ dat |>
   mean = mean(`effect estimate`)
   , lower_ci = quantile(`effect estimate`, 0.025)
   , upper_ci = quantile(`effect estimate`, 0.975)
-) |> gt::gt() |> gtExtras::gt_theme_espn()
+) |> gt::gt() |> gtExtras::gt_theme_espn() |> gt::as_raw_html()
 
 ```
 
@@ -416,8 +426,12 @@ boot_out_reg <- boot::boot(
 CIs <- boot_out_reg |>
   boot::boot.ci(L = boot::empinf(boot_out_reg, index=1L, type="jack"))
 
-tibble::tibble(CI = c("lower", "upper"), normal = CIs$normal[-1], basic = CIs$basic[-(1:3)]
-               , percent = CIs$percent[-(1:3)]) |> gt::gt() |> gtExtras::gt_theme_espn()
+tibble::tibble(
+  CI = c("lower", "upper")
+  , normal = CIs$normal[-1]
+  , basic = CIs$basic[-(1:3)]
+  , percent = CIs$percent[-(1:3)]) |> 
+  gt::gt() |> gtExtras::gt_theme_espn() |> gt::as_raw_html()
 
 ```
 :::
@@ -426,9 +440,9 @@ tibble::tibble(CI = c("lower", "upper"), normal = CIs$normal[-1], basic = CIs$ba
 
 #### Don’t Put All your Eggs in One Basket
 
--   We’ve learned how to use linear regression and propensity score weighting to estimate $E[Y|D=1] - E[Y|D=0] | X$. But which one should we use and when?
+-   We’ve learned how to use linear regression and propensity score weighting to estimate $\left(E[Y|D=1] - E[Y|D=0]\right) | X$. But which one should we use and when?
 
--   When in doubt, just use both! **Doubly Robust Estimation** is a way of combining propensity score and linear regression in a way you don’t have to rely on either of them.
+-   When in doubt, just use both! **Doubly Robust Estimation** is a way of combining propensity score and linear regression in a way so you don’t have to choose only one of them.
 
 # Doubly Robust Estimation
 
@@ -460,6 +474,7 @@ First let's examine the code. Note we use a recipe with the regression to add th
 
 ```{r}
 #| echo: true
+#| label: DR data
 D <- "net"
 Y <- "malaria_risk"
 X <- paste0(c('income', 'health', 'temperature'),c(rep('_poly_1',3),rep('_poly_2',3)))
@@ -467,7 +482,7 @@ X <- paste0(c('income', 'health', 'temperature'),c(rep('_poly_1',3),rep('_poly_2
 doubly_robust_rec <- causalworkshop::net_data |> 
   dplyr::mutate(net = as.numeric(net)) |> 
   recipes::recipe(malaria_risk ~ net + income + health + temperature) |> 
-  # NOTE: these are orthogonal polynomial terms, were not used in regression adjustment earlier
+  # NOTE: these are orthogonal polynomial terms (not used in regression adjustment earlier)
   recipes::step_poly(income, health, temperature) |> 
   recipes::prep() 
 
@@ -478,6 +493,7 @@ doubly_robust_dat <- doubly_robust_rec |> recipes::bake(new_data=NULL)
 
 ```{r}
 #| echo: true
+#| label: DR function
 doubly_robust <- function(df, X, D, Y){
   ps <- # propensity score
     as.formula(paste(D, " ~ ", paste(X, collapse= "+"))) |>
@@ -512,6 +528,7 @@ doubly_robust <- function(df, X, D, Y){
 
 ```{r}
 #| echo: true
+#| label: DR calculation
 doubly_robust_dat |> 
   doubly_robust(X, D, Y)
 ```
@@ -596,7 +613,7 @@ dat |>
   mean = mean(`effect estimate`)
   , lower_ci = quantile(`effect estimate`, 0.025)
   , upper_ci = quantile(`effect estimate`, 0.975)
-) |> gt::gt() |> gtExtras::gt_theme_espn()
+) |> gt::gt() |> gtExtras::gt_theme_espn() |> gt::as_raw_html()
 ```
 
 ::: {style="font-size: x-large"}
@@ -718,13 +735,15 @@ dat |>
   mean = mean(`effect estimate`)
   , lower_ci = quantile(`effect estimate`, 0.025)
   , upper_ci = quantile(`effect estimate`, 0.975)
-) |> gt::gt() |> gtExtras::gt_theme_espn()
+) |> gt::gt() |> gtExtras::gt_theme_espn() |> gt::as_raw_html()
 ```
 
 ## Doubly Robust Estimation
 
 ::: {style="font-size: large"}
-Messing up the propensity score yields slightly different ATEs, but not by much. Now let’s again take a good look at the first part of the estimator, rearranging some terms:
+Messing up the propensity score yields slightly different ATEs, but not by much.
+
+Now let’s again take a good look at the first part of the estimator, rearranging some terms:
 
 $$
 \begin{align*}
@@ -832,7 +851,7 @@ dat |>
   mean = mean(`effect estimate`)
   , lower_ci = quantile(`effect estimate`, 0.025)
   , upper_ci = quantile(`effect estimate`, 0.975)
-) |> gt::gt() |> gtExtras::gt_theme_espn()
+) |> gt::gt() |> gtExtras::gt_theme_espn() |> gt::as_raw_html()
 ```
 
 ## Doubly Robust Estimation
@@ -895,6 +914,7 @@ If we fit a propensity score model using the one confounder $Z$ and calculate th
 #| echo: true
 #| code-fold: true
 #| code-summary: fit the propensity score model with finite samples
+#| label: fit the propensity score model with finite samples
 ## fit the propensity score model
 finite_sample_wts <- glm(
   x ~ z,
@@ -923,6 +943,7 @@ To explore the potential for finite sample bias, we can rerun this simulation ma
 #| cache-comments: true
 #| code-fold: true
 #| code-summary: fit the propensity score model with different number of finite samples
+#| label: fit the propensity score model with different number of finite samples
 #| echo: true
 #| warning: false
 #| message: false
@@ -1006,7 +1027,7 @@ Regression is good at controlling for additional variables when we do a test vs 
 
 To get some intuition about controlling for $X$, let’s remember the case when all variables $X$ are dummy variables.
 
-If that is the case, regression partitions the data into the dummy cells and computes the mean difference between test and control. Effectively we are calculating doing
+If that is the case, regression partitions the data into the dummy cells and computes the mean difference between test and control. Effectively we are calculating
 
 $$
 E[Y|D=1, X=x] - E[Y|D=0, X=x]
@@ -1020,13 +1041,14 @@ Regression then combines the estimate in each of the cells to produce a final AT
 ## Matching
 
 ::: {style="font-size: large"}
-To give an example, suppose we try to estimate the effect of a drug and I have drug data for 6 men and 4 women. The response variable is days hospitalised and I hope my drug can lower that. On men, the true causal effect is -3, so the drug lowers the stay period by 3 days. On women, it is -2.
+To give an example, suppose we try to estimate the effect of a drug and we have drug data for 6 men and 4 women. The response variable is days hospitalised and we hope our drug can lower that. On men, the true causal effect is -3, so the drug lowers the stay period by 3 days. On women, it is -2.
 
-To make matters more interesting, men are much more affected by this illness and stay longer at the hospital. They also get much more of the drug. Only 1 out of the 6 men does not get the drug. On the other hand, women are more resistant to this illness, so they stay less at the hospital. 50% of the women get the drug.
+To make matters more interesting, men are much more affected by this illness and stay longer at the hospital. They also get much more of the drug. Only 1 out of the 6 men do not get the drug. On the other hand, women are more resistant to this illness, so they stay less at the hospital. 50% of the women get the drug.
 :::
 
 ```{r}
 #| code-fold: true
+#| label: drug matching table
 data_drug <- tibble::tibble(
   sex= c("M","M","M","M","M","M", "W","W","W","W"),
     drug=c(1,1,1,1,1,0,  1,0,1,0),
@@ -1047,13 +1069,15 @@ In this case, the estimated ATE is smaller than the true one because men get mor
 :::
 
 ```{r}
+#| echo: true
 #| code-fold: true
+#| label: drug matching ATE
 data_drug |> 
   dplyr::group_by(drug) |> 
   dplyr::summarize(mean_effect = mean(days)) |> 
   dplyr::mutate(ATE = mean_effect - dplyr::lag( mean_effect) ) |> 
   gt::gt() |> 
-  gtExtras::gt_theme_espn()
+  gtExtras::gt_theme_espn() |> gt::as_raw_html()
 ```
 
 ## Matching
@@ -1107,7 +1131,7 @@ lm(days ~ drug + sex, data=data_drug) |>
   ) |> 
   gt::fmt_number(columns = -c(term,estimate), decimals = 3) |>
   gt::fmt_number(columns = estimate, decimals = 4) |>
-  gtExtras::gt_theme_espn()
+  gtExtras::gt_theme_espn() |> gt::as_raw_html()
 ```
 
 ## Matching
@@ -1121,7 +1145,7 @@ So we’ve seen that regression has its idiosyncrasies. It is linear, parametric
 
 Because of this, it’s important to be aware of other techniques we can use to control for confounders. Not only are they an extra tool in your causal tool belt, but understanding different ways to deal with confounding expands our understanding of the problem.
 
-For this reason, we'll now examne the Subclassification Estimator!
+For this reason, we'll now examine the Subclassification Estimator!
 :::
 
 ## Matching: subclassification
@@ -1185,13 +1209,15 @@ As an example, let’s suppose we are trying to estimate the effect of a trainee
 ```{r}
 #| echo: true
 #| code-fold: true
+#| code-summary: read trainees data & filter trainees
+#| label: filter trainees
 data_trainees <- readr::read_csv("data/trainees.csv", show_col_types = FALSE)
 
 data_trainees |> 
   dplyr::filter(trainees==1) |> 
   dplyr::slice_head(n=5) |> 
   gt::gt() |> 
-  gtExtras::gt_theme_espn()
+  gtExtras::gt_theme_espn() |> gt::as_raw_html()
 ```
 
 ## non trainees
@@ -1199,11 +1225,13 @@ data_trainees |>
 ```{r}
 #| echo: true
 #| code-fold: true
+#| code-summary: filter non-trainees from trainees data 
+#| label: filter non-trainees 
 data_trainees |> 
   dplyr::filter(trainees==0) |> 
   dplyr::slice_head(n=5) |> 
   gt::gt() |> 
-  gtExtras::gt_theme_espn()
+  gtExtras::gt_theme_espn() |> gt::as_raw_html()
 ```
 :::
 ::::
@@ -1211,22 +1239,24 @@ data_trainees |>
 ## Matching estimator
 
 ::: {style="font-size: x-large"}
-A simple comparison in means, identifies that the trainees earn less money than those that didn’t go through the program.
+A simple comparison in means identifies that the trainees earn less money than those that didn’t go through the program.
 :::
 
 ```{r}
 #| echo: true
 #| code-fold: true
+#| code-summary: compare non-trainees & trainees mean earnings
+#| label: compare trainee & non-trainee mean earnings
 data_trainees |> 
   dplyr::group_by(trainees) |> 
   dplyr::summarize(mean_effect = mean(earnings)) |> 
   dplyr::mutate(ATE = mean_effect - dplyr::lag( mean_effect) ) |> 
   gt::gt() |> 
-  gtExtras::gt_theme_espn()
+  gtExtras::gt_theme_espn() |> gt::as_raw_html()
 ```
 
 ::: {style="font-size: x-large"}
-However, if we look at the data tables, we notice that trainees are much younger than non trainees, which indicates that age is probably a confounder.
+However, if we look at the data tables, we notice that trainees are much younger than non trainees, which indicates that age could be a confounder.
 :::
 
 ## Matching estimator
@@ -1234,13 +1264,14 @@ However, if we look at the data tables, we notice that trainees are much younger
 ::: {style="font-size: x-large"}
 We can use matching on age to try to correct that.
 
-We will take unit 1 from the treated and pair it with unit 27, since both are 28 years old. Unit 2 we will pair it with unit 34, unit 3 with unit 37, unit 4 we will pair it with unit 35… When it comes to unit 5, we need to find someone with age 29 from the non treated, but that is unit 37, which is already paired.
+We will take unit 1 from the treated and pair it with unit 27, since both are 28 years old. Unit 2 we will pair it with unit 34, unit 3 with unit 37, unit 4 we will pair it with unit 35 and so on. When it comes to unit 5, we need to find someone with age 29 from the non treated, but that is unit 37, which is already paired.
 
 This is not a problem, since we can use the same unit multiple times. If more than 1 unit is a match, we can choose randomly between them.
 
 ```{r}
 #| echo: true
 #| code-fold: true
+#| code-summary: match on age
 #| label: matching on age
 unique_on_age <- data_trainees |> 
   dplyr::filter(trainees == 0) |> 
@@ -1253,22 +1284,24 @@ matches <- data_trainees |>
 
 matches |> dplyr::slice_head(n=5) |> 
   gt::gt() |> 
-  gtExtras::gt_theme_espn()
+  gtExtras::gt_theme_espn() |> gt::as_raw_html()
 ```
 :::
 
 ## Matching estimator
 
 ::: {style="font-size: x-large"}
-If we take the mean of this last column we get the ATET estimate while controlling for age. Notice how the estimate is now very positive, compared to the previous one where we used a simple difference in means.
+If we take the mean of this last column we get the ATE estimate while controlling for age. Notice how the estimate is now very positive, compared to the previous one where we used a simple difference in means.
 :::
 
 ```{r}
 #| echo: true
 #| code-fold: true
+#| code-summary: mean differences after matching on age
+#| label: mean differences after matching on age
 matches |> dplyr::summarize(ATE = mean(t1_minus_t0)) |> 
   gt::gt() |> 
-  gtExtras::gt_theme_espn()
+  gtExtras::gt_theme_espn() |> gt::as_raw_html()
 ```
 
 ::: {style="font-size: x-large"}
@@ -1282,7 +1315,7 @@ In practice, we usually have more than one feature and units don’t match perfe
 
 One common metric for this is the euclidean norm $||X_i - X_j||$. This difference, however, is not invariant to the scale of the features.
 
-This means that features like age, that take values on the tenths, will be much less important when computing this norm compared to features like income, which take the order of hundreds.
+This means that features like age, that take values on the tens, will be much less important when computing this norm compared to features like income, which take the order of thousands.
 
 For this reason, before applying the norm, we need to scale the features so that they are on roughly the same scale.
 :::
@@ -1308,9 +1341,9 @@ We scale by $2D_i - 1$ to match both ways: treated with controls and controls wi
 ## Matching estimator
 
 ::: {style="font-size: x-large"}
-To test this estimator, let’s consider a medicine example.
+To test this estimator, let’s consider a medical example.
 
-Once again, we want to find the effect of a medication on days until recovery.
+We want to find the effect of a medication on days until recovery.
 
 Unfortunately, this effect is confounded by severity, sex and age. We have reasons to believe that patients with more severe conditions have a higher chance of receiving the medicine.
 :::
@@ -1318,13 +1351,15 @@ Unfortunately, this effect is confounded by severity, sex and age. We have reaso
 ```{r}
 #| echo: true
 #| code-fold: true
+#| code-summary: read medical data and display sample
+#| label: read medical data and display sample
 data_med <- readr::read_csv("data/medicine_impact_recovery.csv", show_col_types = FALSE)
 
 data_med |> 
   dplyr::slice_head(n=5) |> 
   gt::gt() |> 
   gtExtras::gt_theme_espn() |> 
-  gt::as_raw_html()
+  gt::as_raw_html() |> gt::as_raw_html()
 ```
 
 ## Matching estimator
@@ -1338,6 +1373,8 @@ This is probably due to confounding, since we don’t expect the medicine to cau
 ```{r}
 #| echo: true
 #| code-fold: true
+#| code-summary: contrast recovery by treatment
+#| label: contrast recovery by treatment
 data_med |> 
   dplyr::group_by(medication) |> 
   dplyr::summarize(mean_effect = mean(recovery)) |> 
@@ -1360,6 +1397,8 @@ To do so, we can standardise the features.
 ```{r}
 #| echo: true
 #| code-fold: true
+#| code-summary: standardize medical covariates
+#| label: standardize medical covariates
 data_med <- data_med |> recipes::recipe(recovery ~ .) |> 
   recipes::update_role(medication, new_role = 'treatment') |> 
   recipes::step_normalize(recipes::all_predictors()) |> 
@@ -1390,7 +1429,8 @@ The other, $mt_1$, will store the treated point and will find matches in the tre
 ```{r}
 #| echo: true
 #| code-fold: true
-#| label: matching using knn
+#| code-summary: matching on medical covariates using knn
+#| label: matching on medical covariates using knn
 #| cache: false
 #| cache-comments: true
 treated   <- data_med |> dplyr::filter(medication==1)
@@ -1445,7 +1485,7 @@ predicted |>
 ## Matching estimator
 
 ::: {style="font-size: x-large"}
-With the matches, we can now apply the matching estimator formula
+With the matches, we can now apply the matching estimator formula:
 :::
 
 $$
@@ -1455,6 +1495,8 @@ $$
 ```{r}
 #| echo: true
 #| code-fold: true
+#| code-summary: estimate ATE using knn matching
+#| label: matching on medical covariates using knn
 predicted |> 
   dplyr::summarize(
     "ATE (est)" = mean( (2*medication - 1) * (recovery - match) )
@@ -1501,7 +1543,7 @@ $$
 $$
 
 ::: {style="font-size: x-large"}
-However, this doesn’t alway happen. If we define the mean outcome for the untreated given X, $\mu_0(x)=E[Y|X=x, D=0]$, we will have that
+However, this doesn’t always happen. If we define the mean outcome for the untreated given X, $\mu_0(x)=E[Y|X=x, D=0]$, we will have that
 :::
 
 $$
@@ -1514,7 +1556,7 @@ $$
 ## Matching bias
 
 ::: {style="font-size: x-large"}
-Now, $\mu_0(X_i) - \mu_0(X_j(i))$ is not so simple to understand, so let’s look at it more carefully.
+Looking at $\mu_0(X_i) - \mu_0(X_j(i))$ more carefully.
 
 -   $\mu_0(X_i)$ is the outcome Y value of a treated unit $i$ had it not been treated. It is the counterfactual outcome $Y^0$ for unit $i$.
 -   $\mu_0(X_j(i))$ is the outcome of the untreated unit $j$ that is the match of unit $i$.
@@ -1554,6 +1596,7 @@ where $\hat{\mu_0}(x)$ is some estimative of $E[Y|X, D=0]$, like a linear regres
 ```{r}
 #| echo: true
 #| code-fold: true
+#| code-summary: bias corrected match
 #| label: bias corrected match
 #| cache: false
 #| cache-comments: true
@@ -1637,12 +1680,13 @@ With the bias correction formula, I get the following ATE estimation.
 
 ```{r}
 #| echo: true
+#| label: ATE with matching
 predicted |> 
   dplyr::summarize(
     "ATE (est)" = 
       mean( (2*medication - 1) * (recovery - match - bias_correct) )) |> 
   gt::gt() |> 
-  gtExtras::gt_theme_espn()
+  gtExtras::gt_theme_espn() |> gt::as_raw_html()
 ```
 
 ## Matching CI
@@ -1650,7 +1694,7 @@ predicted |>
 ::: {style="font-size: large"}
 Of course, we also need to place a confidence interval around this measurement.
 
-In practice, we can simply use someone else’s code and just import a matching estimator. Here is one from the library Matching.
+In practice, we can simply use someone else’s code and just import a matching estimator. Here is one from the library `Matching`.
 :::
 
 ```{r}
@@ -1658,6 +1702,8 @@ In practice, we can simply use someone else’s code and just import a matching 
 #| message: false
 #| error: false
 #| code-fold: true
+#| code-summary: matching with the Matching package
+#| label: matching with the Matching package
 #| cache: false
 #| cache-comments: true
 require(Matching)
@@ -1682,7 +1728,7 @@ c("ATE", "ATC", "ATT") |>
     title = "Treatment Effect Estimates: Matching"
     , subtitle = "using R package Matching"
   ) |> 
-  gtExtras::gt_theme_espn()
+  gtExtras::gt_theme_espn() |> gt::as_raw_html()
 ```
 
 ::: {style="font-size: large"}
@@ -1704,7 +1750,7 @@ Let’s say we have 2 continuous features like age and income and we manage to d
 ## Matching bias again
 
 ::: {style="font-size: x-large"}
-In the context of the subclassification estimator, the curse of dimensionality means that it will suffer if we have lots of features.
+The curse of dimensionality means that it will suffer if we have lots of features.
 
 Lots of features imply multiple cells in X. If there are multiple cells, some of them will have very few data. Some of them might even have only treated or only control, so it won’t be possible to estimate the ATE there, which would break our estimator.
 
@@ -1725,7 +1771,7 @@ So, in some way, linear regression performs some sort of dimensionality reductio
 
 ## Fixed Effects
 
--   One problem we might have is that we can't really control for things if we can't measure them
+-   One problem we might have is that we can't really control for things if we can't measure them.
 -   And there are lots of things we can't measure or don't have data for!
 -   So what can we do?
 
@@ -1733,7 +1779,7 @@ So, in some way, linear regression performs some sort of dimensionality reductio
 
 ### The Solution
 
--   If we observe each entity/person/firm/country *multiple times*, then we can forget about controlling for the actual back-door variable we're interested in
+-   If we observe each entity/person/firm/country *multiple times*, then we can forget about controlling for the related back-door variables we're interested in
 -   And just control for *entity/person/firm/country identity* instead!
 -   This will control for EVERYTHING unique to that individual, whether we can measure it or not!
 
@@ -1781,7 +1827,7 @@ ggdag::ggdag_classic(dag,node_size=20) +
 
 ## Fixed Effects
 
--   There's no way we can identify this
+-   There's no way we can identify the ATE of GDP per capita on life expectancy
 -   The list of back doors is very long
 -   And likely includes some things we can't measure!
 
@@ -1794,13 +1840,14 @@ ggdag::ggdag_classic(dag,node_size=20) +
 #| echo: false
 #| code-fold: true
 #| label: fixed effects DAG country control
+#| fig-align: center
 
 dag <- ggdag::dagify(
-  LifeEx~GDPpc+Coun,
-  GDPpc~Coun,
+  LifeEx~GDPpc+Country,
+  GDPpc~Country,
   coords=list(
-    x=c(LifeEx=4,GDPpc=2,Coun=3),
-    y=c(LifeEx=2,GDPpc=2,Coun=3)
+    x=c(LifeEx=4,GDPpc=2,Country=3),
+    y=c(LifeEx=2,GDPpc=2,Country=3)
   )
 ) |>  ggdag::tidy_dagitty()
 ggdag::ggdag_classic(dag,node_size=20) + 
@@ -1911,12 +1958,13 @@ gganimate::animate(p,nframes=200)
 -   For example, earlier we mentioned war... that's not fixed within country! A given country is at war sometimes and not other times.
 
 ```{r}
+#| fig-align: center
 dag <- ggdag::dagify(
-  LifeEx~GDPpc+Coun+War,
-  GDPpc~Coun+War,
+  LifeEx~GDPpc+Country+War,
+  GDPpc~Country+War,
   coords=list(
-    x=c(LifeEx=4,GDPpc=2,Coun=3.5,War=2.5),
-    y=c(LifeEx=2,GDPpc=2,Coun=3,War=3)
+    x=c(LifeEx=4,GDPpc=2,Country=3.5,War=2.5),
+    y=c(LifeEx=2,GDPpc=2,Country=3,War=3)
   ) 
 ) |> ggdag::tidy_dagitty()
 ggdag::ggdag_classic(dag,node_size=20) + 
@@ -1934,16 +1982,16 @@ ggdag::ggdag_classic(dag,node_size=20) +
 
 ## Fixed Effects Regression
 
--   We can just do fixed effects as we did-subtract out the group means and analyze (perhaps with regression) what's left, or
+-   We can just calculate fixed effects as we did, i.e. subtract out the group means and analyze (perhaps with regression) what's left, or
 -   We can also include *dummy variables for each group/individual*, which accomplishes the same thing
 
-$$ Y = \beta_0 + \beta_1Group1 + \beta_2Group2 + ... + $$ $$ \beta_NGroupN + \beta_{N+1}X + \varepsilon $$ $$ Y = \beta_i + \beta_1X + \varepsilon $$ 
+$$ Y = \beta_0 + \beta_1Group1 + \beta_2Group2 + ... + $$ $$ \beta_NGroupN + \beta_{N+1}X + \varepsilon $$ $$ Y = \beta_i + \beta_1X + \varepsilon $$
 
 ## Fixed Effects Regression
 
 -   Why does that work?
--   We want to "control for group/individual" right? So... just... put in a control for group/individual
--   Of course, like all categorical variables as predictors, we leave out a reference group
+-   We want to control for "group/individual" right? So just put in a control for group/individual.
+-   Of course, like all categorical variables as predictors, we leave out a reference group.
 -   But here, unlike with, say, a binary predictor, we're rarely interested in the FE coefficients themselves. Most software works with the mean-subtraction approach (or a variant) and don't even report them!
 
 ## Fixed Effects Regression: Variation
@@ -1957,7 +2005,7 @@ $$ Y = \beta_0 + \beta_1Group1 + \beta_2Group2 + ... + $$ $$ \beta_NGroupN + \be
 
 -   It's common to *cluster standard errors* at the level of the fixed effects, since it seems likely that errors would be correlated over time (autocorrelated errors)
 -   It's possible to have *more than one set* of fixed effects. $Y = \beta_i + \beta_j + \beta_1X + \varepsilon$
--   But interpretation gets tricky - think through what variation in $X$ you're looking at at that point!
+-   But interpretation gets tricky - think through what variation in $X$ you have at that point!
 
 ## Coding up Fixed Effects
 
@@ -2029,7 +2077,7 @@ ggplot(mmdata,aes(x=year,y=robberyper1000,
 ## Fixed Effects
 
 -   You can tell that states are more or less likely to implement reform in a way that's correlated with the level of robbery they already had
--   So SOMETHING about the state is driving both the level of robberies AND the decision to implement reform
+-   So [**something**]{.underline} about the state is driving both the level of robberies [**and**]{.underline} the decision to implement reform
 -   Who knows what!
 -   Our diagram has `reform -> robberies` and `reform <- state -> robberies`, which is something we can address with fixed effects.
 
@@ -2040,9 +2088,9 @@ sentencing_ols <- lm(robberyper1000 ~ sentreform, data = mmdata)
 sentencing_fe <- fixest::feols(robberyper1000 ~ sentreform | state, data = mmdata)
 modelsummary::msummary(
   list('OLS' = sentencing_ols, 'FE' = sentencing_fe)
-  , stars = TRUE
+  , stars = TRUE, output = "gt"
   , gof_omit = 'AIC|BIC|F|Lik|Adj|Pseudo'
-)
+) |> gt::as_raw_html()
 ```
 
 ## Example
@@ -2076,7 +2124,7 @@ When Event Studies Work as Causal Inference
 
 ## Event studies
 
-::: {style="font-size: smaller"}
+::: {style="font-size: large"}
 **Validity Tests and Diagnostics**
 
 -   Pre-trend Analysis: Examine $β_k$ for $k < 0$
@@ -2095,13 +2143,12 @@ When Event Studies Work as Causal Inference
 -   Examine heterogeneity across subgroups
 :::
 
-
-
 ## Example
 
 ```{r}
 #| echo: true
 #| code-fold: true
+#| code-summary: event study example
 #| label: event study example
 set.seed(10)
 # Create data with 20 groups and 10 time periods
@@ -2123,7 +2170,7 @@ fixest::coefplot(m, drop = '(Intercept)',
 
 ## Difference-in-Differences (2x2 DiD)
 
--   Panel data on $Y_{it}$ for $t=1,2$ and $i = 1,...,N$
+-   Assume panel data on $Y_{it}$ for $t=1,2$ and $i = 1,...,N$
 -   **Treatment timing:** Some units ($D_i=1$) are treated in period $2$; every other unit is untreated $(D_i=0)$
 -   **Potential outcomes (POs):** Observe $Y_{it}(1) \equiv Y_{it}(0,1)$ for treated units; and $Y_{it}(0) \equiv Y_{it}(0,0)$ for comparison.
 
@@ -2156,6 +2203,7 @@ so $(Y_{i1}^1-Y_{i0}^1) - (Y_{i1}^0-Y_{i0}^0)=\delta$
 
 ## DiD Causal Inference
 
+::: {style="font-size: x-large"}
 Under what conditions does DiD have a causal interpretation?
 
 Our estimator is $$E[Y_{i2}(1) - Y_{i1}(1)| D_i =1] - E[Y_{i2}(0) - Y_{i1}(0)| D_i =0]$$
@@ -2171,6 +2219,7 @@ DID & =E[Y_{i2}(1)-Y_{i1}(1)]-E[Y_{i2}(0)-Y_{i1}(0)]\\
  & E[Y_{i2}(1)-Y_{i1}(1)|D_{i}=0]-E[Y_{i2}(0)-Y_{i1}(0)|D_{i}=0]
 \end{align*}
 $$
+:::
 
 ## Causal Inference
 

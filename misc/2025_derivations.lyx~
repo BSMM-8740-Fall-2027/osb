@@ -2960,5 +2960,17 @@ y_{t} & =\alpha\sum_{i=0}^{\infty}(1-\alpha)^{i}x_{t-i}
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+Y_{i} & =\kappa+\rho Z_{i}+\nu_{i}\;\text{the "reduced form"}\\
+D_{i} & =\mu+\pi Z_{i}+\eta_{i}\;\text{the "first stage"}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document

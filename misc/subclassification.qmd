@@ -1,0 +1,50 @@
+---
+title: "Untitled"
+---
+
+```{r}
+data_drug <- tibble::tibble(
+  sex= c("M","M","M","M","M","M", "W","W","W","W"),
+  drug=c(1,1,1,1,1,0,  1,0,1,0),
+  days=c(5,5,5,5,5,8,  2,4,2,4)
+) 
+
+data_rec <- data_drug |> recipes::recipe(days ~ drug + sex) |> 
+  recipes::step_dummy(sex) |> 
+  recipes::prep()
+
+data_bak <- data_rec |> recipes::bake(new_data = NULL) |> 
+  dplyr::group_by(sex_W) |> 
+  dplyr::arrange(drug) |> 
+  dplyr::ungroup()
+
+mm <- stats::model.matrix(~ sex_W+drug, data = data_bak)
+
+t(mm)
+data_bak$days
+
+```
+
+$\beta_D=e_D'\left(X'X\right)^{-1}X'Y$ for $e_D=(0,0,1)$
+
+The categorical covariates partition the sample into $J=2$ cells, indexed by $j=\{1,2\}$, where, for cell $j$
+
+-   $n_j^0$ is the number of controls
+-   $n_j^1$ is the number of treated units
+-   $n_j=n_j^0+n_j^1$ is the total in cell $j$, and
+-   $\tau_j=\mathbb{E}[Y|D=1,X\in\text{cell}_j]-\mathbb{E}[Y|D=0,X\in\text{cell}_j]$ is the cell specific treatment effect $Y_j^1-Y_j^0$
+
+Let $X_j$ denote the submatrix of $X$ corresponding to cell $j$ observations.
+
+Then $X'Y=\sum_{j=1}^J X_j' Y_j$
+
+and partitioning by treatment and control $X_j' Y_j=(X_{j}^{0})'Y_j^0+(X_j^1)' Y_j^1$
+
+### Step 5: Design Matrix Structure Within Cells
+
+In the design matrix, each row is one of
+
+-   $x_{j,i}^0=[1,z_j,0]$ for controls
+-   $x_{j,i}^1=[1,z_j,1]$ for treated
+
+so $X'Y = Σ_{j=1}^J ([n_j^0, n_j^0 z_j, 0]' Ȳ_j^0 + [n_j^1, n_j^1 z_j, n_j^1]' Ȳ_j^1)$
