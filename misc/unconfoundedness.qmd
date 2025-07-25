@@ -1,0 +1,151 @@
+---
+title: "Unconfoundedness and Propensity Scores"
+---
+
+# LaTeX Equations from Chapter 2: Unconfoundedness and the Propensity Score
+
+## Basic Unconfoundedness Assumption
+
+Conditional independence (unconfoundedness):
+$\{Y_i(0), Y_i(1)\} \perp W_i | X_i = x, \quad \text{for all } x \in \mathcal{X}$
+
+More general form:
+$\{Y_i(0), Y_i(1)\} \perp W_i | X_i$
+
+## Conditional Average Treatment Effect
+
+$\tau(x) = \mathbb{E}[Y_i(1) - Y_i(0) | X_i = x]$
+
+## Stratified Estimation
+
+Stratified estimator:
+$\hat{\tau}_{STRAT} = \sum_{x \in \mathcal{X}} \frac{n_x}{n} \hat{\tau}(x)$
+
+where:
+$\hat{\tau}(x) = \frac{1}{n_{x1}} \sum_{\{X_i=x, W_i=1\}} Y_i - \frac{1}{n_{x0}} \sum_{\{X_i=x, W_i=0\}} Y_i$
+
+Notation:
+- $n_x = |\{i : X_i = x\}|$
+- $n_{xw} = |\{i : X_i = x, W_i = w\}|$
+
+## Theorem 2.1 (Stratified Estimation)
+
+Central limit theorem for stratified estimator:
+$\sqrt{n}(\hat{\tau}_{STRAT} - \tau) \Rightarrow N(0, V_{STRAT})$
+
+Asymptotic variance:
+$V_{STRAT} = \text{Var}[\tau(X_i)] + \mathbb{E}\left[\frac{\sigma^2_{(1)}(X_i)}{e(X_i)} + \frac{\sigma^2_{(0)}(X_i)}{1-e(X_i)}\right]$
+
+where:
+- $e(x) = \mathbb{P}[W_i = 1 | X_i = x]$ (propensity score)
+- $\sigma^2_{(w)}(x) = \text{Var}[Y_i^{(w)} | X_i = x]$
+
+## Propensity Score
+
+Definition of propensity score:
+$e(x) = \mathbb{P}[W_i = 1 | X_i = x]$
+
+Balancing property:
+$\{Y_i(0), Y_i(1)\} \perp W_i | e(X_i)$
+
+Proof of balancing property:
+$\begin{align}
+\mathbb{P}[W_i = w | \{Y_i(w)\}, e(X_i)] &= \int_{\mathcal{X}} \mathbb{P}[W_i = w | \{Y_i(w)\}, X_i = x] \mathbb{P}[X_i = x | \{Y_i(w)\}, e(X_i)] dx \\
+&= \int_{\mathcal{X}} \mathbb{P}[W_i = w | X_i = x] \mathbb{P}[X_i = x | \{Y_i(w)\}, e(X_i)] dx \quad \text{(unconf.)} \\
+&= \begin{cases}
+e(X_i) & \text{if } w = 1 \\
+1 - e(X_i) & \text{else}
+\end{cases}
+\end{align}$
+
+## Propensity Stratification
+
+Sorting step:
+$\hat{e}(X_{i_1}) \leq \hat{e}(X_{i_2}) \leq \ldots \leq \hat{e}(X_{i_n})$
+
+Stratum-specific estimator:
+$\hat{\tau}_j = \frac{\sum_{j=\lfloor(j-1)n/J\rfloor+1}^{\lfloor jn/J\rfloor} W_i Y_i}{\sum_{j=\lfloor(j-1)n/J\rfloor+1}^{\lfloor jn/J\rfloor} W_i} - \frac{\sum_{j=\lfloor(j-1)n/J\rfloor+1}^{\lfloor jn/J\rfloor} (1-W_i) Y_i}{\sum_{j=\lfloor(j-1)n/J\rfloor+1}^{\lfloor jn/J\rfloor} (1-W_i)}$
+
+Propensity stratification estimator:
+$\hat{\tau}_{PSTRAT} = \frac{1}{J} \sum_{j=1}^J \hat{\tau}_j$
+
+## Inverse-Propensity Weighting (IPW)
+
+IPW estimator with estimated propensity scores:
+$\hat{\tau}_{IPW} = \frac{1}{n} \sum_{i=1}^n \left(\frac{W_i Y_i}{\hat{e}(X_i)} - \frac{(1-W_i) Y_i}{1-\hat{e}(X_i)}\right)$
+
+Oracle IPW estimator (true propensity scores):
+$\hat{\tau}^*_{IPW} = \frac{1}{n} \sum_{i=1}^n \left(\frac{W_i Y_i}{e(X_i)} - \frac{(1-W_i) Y_i}{1-e(X_i)}\right)$
+
+## Theorem 2.2 (Oracle IPW)
+
+Central limit theorem for oracle IPW:
+$\sqrt{n}(\hat{\tau}^*_{IPW} - \tau) \Rightarrow N(0, V_{IPW^*})$
+
+Asymptotic variance:
+$V_{IPW^*} = \text{Var}[\tau(X_i)] + \mathbb{E}\left[\frac{(\mu_{(0)}(X_i) + (1-e(X_i))\tau(X_i))^2}{e(X_i)(1-e(X_i))}\right] + \mathbb{E}\left[\frac{\sigma^2_{(1)}(X_i)}{e(X_i)} + \frac{\sigma^2_{(0)}(X_i)}{1-e(X_i)}\right]$
+
+Alternative decomposition in proof:
+$\frac{W_i Y_i}{e(X_i)} - \frac{(1-W_i) Y_i}{1-e(X_i)} = \tau(X_i) + \left(\frac{W_i}{e(X_i)} - \frac{1-W_i}{1-e(X_i)}\right) c(X_i) + \frac{W_i \varepsilon_i^{(1)}}{e(X_i)} - \frac{(1-W_i) \varepsilon_i^{(0)}}{1-e(X_i)}$
+
+where:
+- $c(x) = \mu_{(0)}(x) + (1-e(x))\tau(x)$
+- $\varepsilon_i^{(w)} = Y_i^{(w)} - \mu_{(w)}(X_i)$
+
+## Variance Comparison
+
+Relationship between IPW and stratified variances:
+$V_{IPW^*} = V_{STRAT} + \mathbb{E}\left[\frac{(\mu_{(0)}(X_i) + (1-e(X_i))\tau(X_i))^2}{e(X_i)(1-e(X_i))}\right]$
+
+Therefore: $V_{IPW^*} \geq V_{STRAT}$ (IPW is generally less efficient than stratification)
+
+## Overlap Assumptions
+
+Weak overlap:
+$\mathbb{E}[1/(e(X_i)(1-e(X_i)))] < \infty$
+
+Strong overlap:
+$\eta \leq e(x) \leq 1-\eta \quad \text{for all } x \in \mathcal{X}$
+
+for some $\eta > 0$.
+
+## Connection Between Stratified and IPW
+
+When $\mathcal{X}$ is discrete, the stratified estimator can be written as IPW:
+$\hat{\tau}_{STRAT} = \frac{1}{n} \sum_{i=1}^n \left(\frac{W_i Y_i}{\hat{e}(X_i)} - \frac{(1-W_i) Y_i}{1-\hat{e}(X_i)}\right)$
+
+where:
+$\hat{e}(x) = \frac{n_{x1}}{n_x}$
+
+## Auxiliary Functions and Notation
+
+Conditional mean functions:
+$\mu^{(w)}(x) = \mathbb{E}[Y_i^{(w)} | X_i = x]$
+
+Conditional variance functions:
+$\sigma^{(w)2}(x) = \text{Var}[Y_i^{(w)} | X_i = x]$
+
+Sample sizes by stratum and treatment:
+- $n_x = |\{i : X_i = x\}|$ (total in stratum $x$)
+- $n_{x1} = |\{i : X_i = x, W_i = 1\}|$ (treated in stratum $x$)  
+- $n_{x0} = |\{i : X_i = x, W_i = 0\}|$ (control in stratum $x$)
+
+## Estimation Error Terms
+
+Decomposition of stratified estimator:
+$\hat{\tau}_{STRAT} = \sum_{x \in \mathcal{X}} \lambda(x)\tau(x) + \sum_{x \in \mathcal{X}} (\hat{\lambda}(x) - \lambda(x)) \tau(x) + \sum_{x \in \mathcal{X}} \lambda(x) (\hat{\tau}(x) - \tau(x)) + \sum_{x \in \mathcal{X}} (\hat{\lambda}(x) - \lambda(x)) (\hat{\tau}(x) - \tau(x))$
+
+where:
+- $\lambda(x) = \mathbb{P}[X_i = x]$ (true probability)
+- $\hat{\lambda}(x) = n_x/n$ (empirical probability)
+
+## Examples from Text
+
+Palo Alto treatment effect calculation:
+$\hat{\tau}_{PA} = \frac{5}{152 + 5} - \frac{122}{2362 + 122} \approx -1.7\%$
+
+Geneva treatment effect calculation:
+$\hat{\tau}_{GVA} = \frac{350}{350 + 581} - \frac{1979}{2278 + 1979} \approx -8.9\%$
+
+Combined estimate:
+$\hat{\tau} = \frac{2641}{2641 + 5188} \hat{\tau}_{PA} + \frac{5188}{2641 + 5188} \hat{\tau}_{GVA} \approx -6.5\%$

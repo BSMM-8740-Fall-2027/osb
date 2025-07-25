@@ -1020,7 +1020,7 @@ Estimands that utilize weights that are unbounded (i.e. that theoretically can b
 
 # Matching
 
-## Matching
+## Matching {visibility="hidden"}
 
 ::: {style="font-size: x-large"}
 Regression is good at controlling for additional variables when we do a test vs control comparison. If we have independence, $(Y^0, Y^1)\perp D | X$, then regression can identify the ATE by controlling for $X$.
@@ -1359,7 +1359,7 @@ data_med |>
   dplyr::slice_head(n=5) |> 
   gt::gt() |> 
   gtExtras::gt_theme_espn() |> 
-  gt::as_raw_html() |> gt::as_raw_html()
+  gt::as_raw_html() 
 ```
 
 ## Matching estimator
@@ -1496,7 +1496,7 @@ $$
 #| echo: true
 #| code-fold: true
 #| code-summary: estimate ATE using knn matching
-#| label: matching on medical covariates using knn
+#| label: estimate ATE using knn matching
 predicted |> 
   dplyr::summarize(
     "ATE (est)" = mean( (2*medication - 1) * (recovery - match) )

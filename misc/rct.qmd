@@ -1,0 +1,133 @@
+---
+title: "RCT"
+---
+
+the individual causal effect is: $\Delta_i = Y_i(1) - Y_i(0)$ where the sample average treatment effect (SATE) is $\bar{\Delta}=\frac{1}{n}\sum_{i=1}^n Y_i(1) - Y_i(0)$ and the population average treatment effect (ATE)
+
+$$\tau = \mathbb{E}[Y_i(1) - Y_i(0)]$$
+In a randomized controlled trial one way (perhaps the most intuitive) is the difference in means estimator:
+
+$$
+\hat{\tau}_{DM} = \frac{1}{n^1}\sum_{D_i=1} Y_i(1) - \frac{1}{n^0}\sum_{D_i=0}Y_i(0)
+$$
+
+The assumption that the potential outcomes model is valid is also called the stable unit treatment value assumption (SUTVA): $Y_i = Y_i(W_i),\,\forall i$
+
+If the treatment is randomized, then the all units are treated with the same probability, conditional on the potential outcomes and the number treated 
+
+$$
+\mathbb{P}[W_i = 1 \mid \{Y_i(0), Y_i(1)\}_{i=1}^n, n_1] = \frac{n_1}{n}, \quad i = 1, \ldots, n
+$$
+
+then $\hat{\tau}_{DM}$ is finite-sample unbiased for 
+
+$\mathbb{E}[\hat{\tau}_{DM} \mid \{Y_i(0), Y_i(1)\}_{i=1}^n, n_1] = \tau_{SATE}$
+
+$\mathbb{E}[\hat{\tau}_{DM} | \{Y_i(0), Y_i(1)\}_{i=1}^n, n_0 > 0, n_1 > 0] = \bar{\Delta}$
+
+$$
+\begin{align*}
+ & \mathbb{E}\left[\frac{1}{n_{1}}\sum_{W_{i}=1}Y_{i}\Big|\{Y_{i}(0),Y_{i}(1)\}_{i=1}^{n},n_{1}\right]\\
+ & =\mathbb{E}\left[\frac{1}{n_{1}}\sum_{i=1}^{n}W_{i}Y_{i}\Big|\{Y_{i}(0),Y_{i}(1)\}_{i=1}^{n},n_{1}\right]\\
+ & =\mathbb{E}\left[\frac{1}{n_{1}}\sum_{i=1}^{n}W_{i}Y_{i}(1)\Big|\{Y_{i}(0),Y_{i}(1)\}_{i=1}^{n},n_{1}\right]\quad\text{(SUTVA)}\\
+ & ==\frac{1}{n_{1}}\sum_{i=1}^{n}Y_{i}(1)\mathbb{E}[W_{i}\mid\{Y_{i}(0),Y_{i}(1)\}_{i=1}^{n},n_{1}]\quad\text{(chain rule)}\\
+ & =\frac{1}{n}\sum_{i=1}^{n}Y_{i}(1)\quad\text{(random assignment)}
+\end{align*}
+$$
+an analagous result holds when $n^0>0$.
+
+Bernoulli Trial Assumption:
+
+$W_i | \{Y_i(0), Y_i(1)\} \stackrel{iid}{\sim} \text{Bernoulli}(\pi), \quad 0 < \pi < 1$
+
+$\sqrt{n}(\hat{\tau}_{DM} - \tau) \Rightarrow N(0, V_{DM}), \quad V_{DM} = \frac{\text{Var}[Y_i(0)]}{1-\pi} + \frac{\text{Var}[Y_i(1)]}{\pi}$
+
+with the plug-in variance calculation:
+
+$$
+\hat{V}_{DM} := \frac{n}{n_0^2} \sum_{W_i=0} \left(Y_i - \frac{1}{n_0} \sum_{W_i=0} Y_i\right)^2 + \frac{n}{n_1^2} \sum_{W_i=1} \left(Y_i - \frac{1}{n_1} \sum_{W_i=1} Y_i\right)^2
+$$
+
+#
+## Regression Adjustments
+
+Simple linear regression:
+$Y_i \sim \alpha + W_i\tau + X_i \cdot \beta$
+
+Interacted linear regression:
+$Y_i \sim \alpha + W_i\tau + X_i \cdot \beta + W_iX_i \cdot \gamma$
+
+Interacted regression estimator:
+$$
+\begin{align*}
+\hat{\tau}_{IREG} & =\frac{1}{n}\sum_{i=1}^{n}\hat{\alpha}+\hat{\tau}+X_{i}\cdot(\hat{\beta}+\hat{\gamma})-\frac{1}{n}\sum_{i=1}^{n}\hat{\alpha}+X_{i}\cdot\hat{\beta}\\
+ & =\hat{\tau}+\bar{X}\cdot\hat{\gamma}
+\end{align*}
+$$
+
+where: $\bar{X} := \frac{1}{n} \sum_{i=1}^n X_i$
+
+## Linear Model for Potential Outcomes
+
+with: 
+
+$Y_i(w) = \alpha^{(w)} + X_i \cdot \beta^{(w)} + \varepsilon_i^{(w)}$
+
+and
+
+$\mathbb{E}[\varepsilon_i^{(w)} | X_i] = 0, \quad \text{Var}[\varepsilon_i^{(w)} | X_i] =\sigma^2$
+
+Observables relationship:
+
+$$
+Y_i = \alpha^{(0)} + W_i(\alpha^{(1)} - \alpha^{(0)}) + X_i \cdot \beta^{(0)} + W_iX_i \cdot (\beta^{(1)} - \beta^{(0)}) + \varepsilon_i
+$$
+
+## Variance Analysis Under Linearity
+
+Difference-in-means variance (with $\pi= 0.5$):
+$V_{DM} = 4\sigma^2 + \|\beta^{(0)} + \beta^{(1)}\|_A^2 + \|\beta^{(0)} - \beta^{(1)}\|_A^2$
+
+where $\|v\|_A^2 = v^\top Av$ for convenience.
+
+Asymptotic behavior for regression coefficients:
+$$
+\sqrt{n_w} \left(\begin{pmatrix} \hat{\alpha}^{(w)} \\ \hat{\beta}^{(w)} \end{pmatrix} - \begin{pmatrix} \alpha^{(w)} \\ \beta^{(w)} \end{pmatrix}\right) \Rightarrow N\left(0, \sigma^2 \begin{pmatrix} 1 & 0 \\ 0 & A^{-1} \end{pmatrix}\right)
+$$
+
+Central limit theorem for interacted regression:
+$\sqrt{n}(\hat{\tau}_{IREG} - \tau) \Rightarrow N(0, V_{IREG}), \quad V_{IREG} = 4\sigma^2 + \|\beta^{(0)} - \beta^{(1)}\|_A^2$
+
+Variance comparison:
+$V_{IREG} = V_{DM} - \|\beta^{(0)} + \beta^{(1)}\|_A^2 \leq V_{DM}$
+
+## General Theory Without Linearity
+
+Conditional mean and variance functions:
+$\mu^{(w)}(x) = \mathbb{E}[Y_i^{(w)} | X_i = x], \quad \sigma^{(w)2}(x) = \text{Var}[Y_i^{(w)} | X_i = x]$
+
+Best linear projection coefficients:
+$(\alpha_*^{(w)}, \beta_*^{(w)}) = \arg\min_{\alpha, \beta} \mathbb{E}[(Y_i^{(w)} - \alpha - X_i \cdot \beta)^2]$
+
+## General Central Limit Theorem
+
+$\sqrt{n}(\hat{\tau}_{IREG} - \tau) \Rightarrow N(0, V_{IREG})$
+
+where:
+$$
+V_{IREG} = \text{Var}[X_i \cdot (\beta_*^{(1)} - \beta_*^{(0)})] + \frac{1}{\pi}\mathbb{E}[Y_i^{(1)} - \alpha_*^{(1)} - X_i \cdot \beta_*^{(1)}]^2 + \frac{1}{1-\pi}\mathbb{E}[Y_i^{(0)} - \alpha_*^{(0)} - X_i \cdot \beta_*^{(0)}]^2
+$$
+
+Mean squared error of best linear predictor:
+$\text{MSE}_*^{(w)} = \mathbb{E}[Y_i^{(w)} - X_i\beta_*^{(w)} - \hat{\alpha}_*^{(w)}]^2$
+
+For balanced RCTs with constant noise ($\pi = 0.5$, $\sigma^{(1)2}(x) = \sigma^{(0)2}(x) = \sigma^2$):
+$V_{IREG} = V_{DM} - \|\beta_*^{(0)} + \beta_*^{(1)}\|_A^2$
+
+## Regression as Average Difference in Predictions
+
+$$
+\hat{\tau}_{IREG} = \frac{1}{n} \sum_{i=1}^n \left[\underbrace{(\hat{\alpha}^{(1)} + X_i\hat{\beta}^{(1)})}_{\hat{\mu}^{(1)}(X_i)} - \underbrace{(\hat{\alpha}^{(0)} + X_i\hat{\beta}^{(0)})}_{\hat{\mu}^{(0)}(X_i)}\right]
+$$
+
+where $\hat{\mu}^{(w)}(x)$ denotes linear regression predictions at $x$ under treatment $w$.
