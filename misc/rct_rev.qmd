@@ -2,20 +2,20 @@
 title: "RCT"
 ---
 
-Under the Rubin causal model, the individual causal effect is: $\Delta_i = Y_i(1) - Y_i(0)$ and the sample average treatment effect (SATE) is $\bar{\Delta}=\frac{1}{n}\sum_{i=1}^n Y_i(1) - Y_i(0)$ where the corresponding population average treatment effect (ATE) is
+Under the Rubin causal model, the causal effect on unit $i$ is: $\Delta_i = Y_i(1) - Y_i(0)$ and the sample average treatment effect (SATE) is $\bar{\Delta}=\frac{1}{n}\sum_{i=1}^n Y_i(1) - Y_i(0)$ where the corresponding population average treatment effect (ATE) is
 
 $$\tau = \mathbb{E}[Y_i(1) - Y_i(0)]
 $$
 
 Both causal estimands SATE and ATE are unobservable.
 
-In a randomized controlled trial one (perhaps the most intuitive) way to estimate the causal estimands is the difference in means estimator:
+In a randomized controlled trial one (perhaps the most intuitive) way to estimate the causal estimands is the difference-in-means estimator:
 
 $$
 \hat{\tau}_{DM} = \frac{1}{n_1}\sum_{D_i=1} Y_i(1) - \frac{1}{n_0}\sum_{D_i=0}Y_i(0)
 $$
 
-We make the assumption that the potential outcomes model is valid – is also called the stable unit treatment value assumption (SUTVA): $Y_i = Y_i(D_i),\,\forall i$
+With this estimator we make the assumption that the potential outcomes model is valid – is also called the stable unit treatment value assumption (SUTVA): $Y_i = Y_i(D_i),\,\forall i$
 
 Then, if the treatment is randomized, all units are treated with the same probability, conditional on the potential outcomes and the number treated
 
@@ -25,9 +25,9 @@ $$
 
 and $\hat{\tau}_{DM}$ is finite-sample unbiased:
 
-$\mathbb{E}[\hat{\tau}_{DM} \mid \{Y_i(0), Y_i(1)\}_{i=1}^n, n_1] = \tau_{SATE}$
-
-$\mathbb{E}[\hat{\tau}_{DM} | \{Y_i(0), Y_i(1)\}_{i=1}^n, n_0 > 0, n_1 > 0] = \bar{\Delta}$
+$$
+\mathbb{E}[\hat{\tau}_{DM} | \{Y_i(0), Y_i(1)\}_{i=1}^n, n_0 > 0, n_1 > 0] = \bar{\Delta}
+$$
 
 To show this, consider just the first sum of the $\hat{\tau}_{DM}$, where
 
@@ -41,23 +41,23 @@ $$
 \end{align*}
 $$ an analagous result holds when $n_0>0$.
 
-Now, assuming the treatment randomization is described by a Bernoulli Trial, i.e.:
+Now, assuming the treatment randomization is described by a Bernoulli trial, i.e.:
 
 $D_i | \{Y_i(0), Y_i(1)\} \stackrel{iid}{\sim} \text{Bernoulli}(\pi), \quad 0 < \pi < 1$
 
-we have the plug-in variance calculation for the difference in means estimator (since $n_0/n$ and $n_2/n$ estimate $1-\pi$ and $\pi$ respectively):
+we have the plug-in variance calculation for the difference in means estimator (since $n_0/n$ and $n_1/n$ estimate $1-\pi$ and $\pi$ respectively):
 
 $$
 \hat{V}_{DM} := \frac{n}{n_0^2} \sum_{D_i=0} \left(Y_i - \frac{1}{n_0} \sum_{D_i=0} Y_i\right)^2 + \frac{n}{n_1^2} \sum_{D_i=1} \left(Y_i - \frac{1}{n_1} \sum_{D_i=1} Y_i\right)^2
 $$
 
-and $\sqrt{n}(\hat{\tau}_{DM} - \tau) \Rightarrow N(0, V_{DM}), \quad V_{DM} = \frac{\text{Var}[Y_i(0)]}{1-\pi} + \frac{\text{Var}[Y_i(1)]}{\pi}$.
+and, without proof, we write $\sqrt{n}(\hat{\tau}_{DM} - \tau) \Rightarrow N(0, V_{DM}), \quad V_{DM} = \frac{\text{Var}[Y_i(0)]}{1-\pi} + \frac{\text{Var}[Y_i(1)]}{\pi}$.
 
 ## Regression Adjustment(s)
 
 There are two standard ways to estimate treatment effects via linear regression. The first is to fit a simple linear regression: $Y_i \sim \alpha + D_i\tau + X_i \cdot \beta$ and report the resulting coefficient $\hat\tau_{SREG}:=\hat{\tau}$ as an estimate of the treatment effect.
 
-The second is to add treatment-covariate regressions and fit the interacted linear regression:
+The second is to add treatment-covariate interactions, fit the interacted linear regression:
 
 $$
 Y_i \sim \alpha + D_i\tau + X_i \cdot \beta + D_iX_i \cdot \gamma
@@ -86,15 +86,19 @@ $\hat{\tau}{IREG} = \sum_x \frac{n_x}{n} \hat{\tau}(x)$ where $\hat{\tau}(x)$ is
 
 ## Linear Model for Potential Outcomes
 
-with:
+We can understand the interacted regression, as separate regressions for observed treated and control groups:
 
-$Y_i(w) = \alpha^{(w)} + X_i \cdot \beta^{(w)} + \varepsilon_i^{(w)}$
+$$
+Y_i(w) = \alpha^{(w)} + X_i \cdot \beta^{(w)} + \varepsilon_i^{(w)}
+$$
 
-and
+with 
 
-$\mathbb{E}[\varepsilon_i^{(w)} | X_i] = 0, \quad \text{Var}[\varepsilon_i^{(w)} | X_i] =\sigma^2$
+$$
+\mathbb{E}[\varepsilon_i^{(d)} | X_i] = 0, \quad \text{Var}[\varepsilon_i^{(d)} | X_i] =\sigma^2
+$$
 
-Observables relationship:
+In this case we have the following observables relationship:
 
 $$
 Y_i = \alpha^{(0)} + D_i(\alpha^{(1)} - \alpha^{(0)}) + X_i \cdot \beta^{(0)} + D_iX_i \cdot (\beta^{(1)} - \beta^{(0)}) + \varepsilon_i
@@ -106,7 +110,9 @@ Difference-in-means variance (with $\pi= 0.5$): $V_{DM} = 4\sigma^2 + \|\beta^{(
 
 where $\|v\|_A^2 = v^\top Av$ for convenience.
 
-Asymptotic behavior for regression coefficients: $$
+Asymptotic behavior for regression coefficients: 
+
+$$
 \sqrt{n_w} \left(\begin{pmatrix} \hat{\alpha}^{(w)} \\ \hat{\beta}^{(w)} \end{pmatrix} - \begin{pmatrix} \alpha^{(w)} \\ \beta^{(w)} \end{pmatrix}\right) \Rightarrow N\left(0, \sigma^2 \begin{pmatrix} 1 & 0 \\ 0 & A^{-1} \end{pmatrix}\right)
 $$
 
@@ -124,7 +130,9 @@ Best linear projection coefficients: $(\alpha_*^{(w)}, \beta_*^{(w)}) = \arg\min
 
 $\sqrt{n}(\hat{\tau}_{IREG} - \tau) \Rightarrow N(0, V_{IREG})$
 
-where: $$
+where: 
+
+$$
 V_{IREG} = \text{Var}[X_i \cdot (\beta_*^{(1)} - \beta_*^{(0)})] + \frac{1}{\pi}\mathbb{E}[Y_i^{(1)} - \alpha_*^{(1)} - X_i \cdot \beta_*^{(1)}]^2 + \frac{1}{1-\pi}\mathbb{E}[Y_i^{(0)} - \alpha_*^{(0)} - X_i \cdot \beta_*^{(0)}]^2
 $$
 
