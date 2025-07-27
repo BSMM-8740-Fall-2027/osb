@@ -2974,9 +2974,25 @@ D_{i} & =\mu+\pi Z_{i}+\eta_{i}\;\text{the "first stage"}
 
 \begin_layout Standard
 \begin_inset Formula 
-\[
-X_{j}^{1}'
-\]
+\begin{align*}
+ & \mathbb{E}\left[\frac{1}{n_{1}}\sum_{W_{i}=1}Y_{i}\Big|\{Y_{i}(0),Y_{i}(1)\}_{i=1}^{n},n_{1}\right]\\
+ & =\mathbb{E}\left[\frac{1}{n_{1}}\sum_{i=1}^{n}W_{i}Y_{i}\Big|\{Y_{i}(0),Y_{i}(1)\}_{i=1}^{n},n_{1}\right]\\
+ & =\mathbb{E}\left[\frac{1}{n_{1}}\sum_{i=1}^{n}W_{i}Y_{i}(1)\Big|\{Y_{i}(0),Y_{i}(1)\}_{i=1}^{n},n_{1}\right]\quad\text{(SUTVA)}\\
+ & ==\frac{1}{n_{1}}\sum_{i=1}^{n}Y_{i}(1)\mathbb{E}[W_{i}\mid\{Y_{i}(0),Y_{i}(1)\}_{i=1}^{n},n_{1}]\quad\text{(chain rule)}\\
+ & =\frac{1}{n}\sum_{i=1}^{n}Y_{i}(1)\quad\text{(random assignment)}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\hat{\tau}_{IREG} & =\frac{1}{n}\sum_{i=1}^{n}\hat{\alpha}+\hat{\tau}+X_{i}\cdot(\hat{\beta}+\hat{\gamma})-\frac{1}{n}\sum_{i=1}^{n}\hat{\alpha}+X_{i}\cdot\hat{\beta}\\
+ & =\hat{\tau}+\bar{X}\cdot\hat{\gamma}
+\end{align*}
 
 \end_inset
 
