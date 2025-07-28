@@ -1038,7 +1038,7 @@ where $x$ is a dummy cell (all dummies set to 1, for example).
 Regression then combines the estimate in each of the cells to produce a final ATE. The way it does this is by applying weights to the cell proportional to the variance of the treatment on that group.
 :::
 
-## Matching
+## Matching {visibility="hidden"}
 
 ::: {style="font-size: large"}
 To give an example, suppose we try to estimate the effect of a drug and we have drug data for 6 men and 4 women. The response variable is days hospitalised and we hope our drug can lower that. On men, the true causal effect is -3, so the drug lowers the stay period by 3 days. On women, it is -2.
@@ -1060,7 +1060,7 @@ data_drug |>
   gtExtras::gt_theme_espn()
 ```
 
-## Matching
+## Matching {visibility="hidden"}
 
 ::: {style="font-size: x-large"}
 Note that simple comparison of treatment and control yields a negatively biased effect, that is, the drug seems less effective than it truly is. This is expected, since we’ve omitted the sex confounder.
@@ -1080,7 +1080,7 @@ data_drug |>
   gtExtras::gt_theme_espn() |> gt::as_raw_html()
 ```
 
-## Matching
+## Matching {visibility="hidden"}
 
 ::: {style="font-size: x-large"}
 Since the true effect for men is -3 and the true effect for women is -2, the ATE should be
@@ -1098,7 +1098,7 @@ This estimate is done by
 3.  combining the estimate with a weighted average, where the weight is the sample size of the cell or covariate group.
 :::
 
-## Matching
+## Matching {visibility="hidden"}
 
 ::: {style="font-size: x-large"}
 If we had exactly the same number of men and women in the data, the ATE estimate would be right in the middle of the ATE of the 2 groups, -2.5. Since there are more men than women in our dataset, the ATE estimate is a little bit closer to the men’s ATE.
@@ -1110,7 +1110,7 @@ If we control for sex using regression, we will add the assumption of linearity.
 So far, so good. However, when it comes to combining the effect on each group, it does not weigh them by the sample size.
 :::
 
-## Matching
+## Matching {visibility="hidden"}
 
 ::: {style="font-size: x-large"}
 Instead, regression uses weights that are proportional to the variance of the treatment in that group. In our case, the variance of the treatment in men is smaller than in women, since only one man is in the control group.
@@ -1134,7 +1134,7 @@ lm(days ~ drug + sex, data=data_drug) |>
   gtExtras::gt_theme_espn() |> gt::as_raw_html()
 ```
 
-## Matching
+## Matching {visibility="hidden"}
 
 ::: {style="font-size: x-large"}
 The result is more intuitive with dummy variables, but regression also keeps continuous variables constant while estimating the effect.
@@ -1148,7 +1148,7 @@ Because of this, it’s important to be aware of other techniques we can use to 
 For this reason, we'll now examine the Subclassification Estimator!
 :::
 
-## Matching: subclassification
+## Matching: subclassification {visibility="hidden"}
 
 ::: {style="font-size: x-large"}
 In general, if there is some causal effect we want to estimate, but it is hard to do so because of confounding of some variables X, what we need to do is make the treatment vs control comparison within small groups where X is the same.
@@ -1164,7 +1164,7 @@ $$
 What the integral does is it goes through all the space of the distribution of features X, computes the difference in means for all those tiny spaces and combines everything into the ATE.
 :::
 
-## Matching: subclassification
+## Matching: subclassification {visibility="hidden"}
 
 ::: {style="font-size: x-large"}
 Another way to see this is to think about a discrete set of features.
@@ -1178,7 +1178,7 @@ $$
 \hat{ATE} = \sum^K_{k=1}(\bar{Y}^1_k - \bar{Y}^0_k) * \dfrac{N_k}{N}
 $$
 
-## Matching: subclassification
+## Matching: subclassification {visibility="hidden"}
 
 $$
 \hat{ATE} = \sum^K_{k=1}(\bar{Y}^1_k - \bar{Y}^0_k) * \dfrac{N_k}{N}
@@ -1190,7 +1190,7 @@ As you can see, we are computing a local ATE for each cell and combining them us
 The subclassification estimator isn’t used much in practice, because of the curse of dimensionality.
 :::
 
-## Matching estimator
+## Matching estimator {visibility="hidden"}
 
 The subclassification estimator gives us a nice intuition of what a causal inference estimator should do, how it should control for confounders.
 
@@ -1239,7 +1239,7 @@ data_trainees |>
 ## Matching estimator
 
 ::: {style="font-size: x-large"}
-A simple comparison in means identifies that the trainees earn less money than those that didn’t go through the program.
+A simple comparison in means suggests that the trainees earn less money than those that didn’t go through the program.
 :::
 
 ```{r}
@@ -1256,7 +1256,7 @@ data_trainees |>
 ```
 
 ::: {style="font-size: x-large"}
-However, if we look at the data tables, we notice that trainees are much younger than non trainees, which indicates that age could be a confounder.
+However, if we look at the data, we notice that trainees are much younger than non trainees, which suggests that age could be a confounder.
 :::
 
 ## Matching estimator
@@ -1291,7 +1291,7 @@ matches |> dplyr::slice_head(n=5) |>
 ## Matching estimator
 
 ::: {style="font-size: x-large"}
-If we take the mean of this last column we get the ATE estimate while controlling for age. Notice how the estimate is now very positive, compared to the previous one where we used a simple difference in means.
+If we take the mean of the last column we get the ATE estimate while controlling for age. Notice how the estimate is now positive, compared to the previous one which compared the simple difference in means.
 :::
 
 ```{r}
@@ -1305,7 +1305,7 @@ matches |> dplyr::summarize(ATE = mean(t1_minus_t0)) |>
 ```
 
 ::: {style="font-size: x-large"}
-This is a contrived example, just to introduce matching.
+This is a contrived example, just to introduce the matching estimator.
 :::
 
 ## Matching estimator
@@ -1323,17 +1323,17 @@ For this reason, before applying the norm, we need to scale the features so that
 ## Matching estimator
 
 ::: {style="font-size: x-large"}
-Having defined a distance measure, we can now define the match as the nearest neighbour to that sample we wish to match.
+Having defined a distance measure, we can now define the match as the nearest neighbour to the sample we wish to match.
 
 We can write the matching estimator the following way:
 :::
 
 $$
-\hat{ATE} = \frac{1}{N} \sum^N_{i=1} (2D_i - 1)\big(Y_i - Y_{jm}(i)\big)
+\hat{\tau}_{ATE} = \frac{1}{N} \sum^N_{i=1} (2D_i - 1)\big(Y_i - Y_{j}(i)\big)
 $$
 
 ::: {style="font-size: x-large"}
-Where $Y_{jm}(i)$ is the sample from the other treatment group which is most similar to $Y_i$.
+Where $Y_{j}(i)$ is the sample from the other treatment group which is most similar to $Y_i$.
 
 We scale by $2D_i - 1$ to match both ways: treated with controls and controls with the treatment.
 :::
@@ -1365,7 +1365,7 @@ data_med |>
 ## Matching estimator
 
 ::: {style="font-size: x-large"}
-If we look at a simple difference in means, $E[Y|D=1]-E[Y|D=0]$, we get that the treated take, on average, 16.9 more days to recover than the untreated.
+Again looking at the simple difference in means, $E[Y|D=1]-E[Y|D=0]$, we estimate that the treated take, on average, 16.9 more days to recover than the untreated.
 
 This is probably due to confounding, since we don’t expect the medicine to cause harm to the patient.
 :::
@@ -1387,11 +1387,11 @@ data_med |>
 ## Matching estimator
 
 ::: {style="font-size: x-large"}
-To correct for this bias, we will control for X using matching.
+To correct for confounding, we will control for covariates using matching.
 
-First, we need to remember to scale our features, otherwise, features like age will have higher importance than features like severity when we compute the distance between points.
+First, we need to remember to scale our covariates, otherwise, features like age will have higher importance than features like severity when we compute the distance between points.
 
-To do so, we can standardise the features.
+To do this, we can standardise the features.
 :::
 
 ```{r}
@@ -1419,9 +1419,9 @@ Instead of coding a matching function, we will use the K nearest neighbour algor
 
 This algorithm makes predictions by finding the nearest data point in an estimation or training set.
 
-For matching, we will need 2 of those. One, $mt_0$, will store the untreated points and will find matches in the untreated when asked to do so.
+For matching, we will need 2 sets of predicted matches. One variable $mt_0$, will store the untreated points and will find matches in the untreated when asked to do so.
 
-The other, $mt_1$, will store the treated point and will find matches in the treated when asked to do so. After this fitting step, we can use these KNN models to make predictions, which will be our matches.
+The other variable $mt_1$, will store the treated point and will find matches in the treated when asked to do so. After this fitting step, we can use these KNN models to make predictions, which will be our matches.
 :::
 
 ## Matching estimator
@@ -1489,7 +1489,7 @@ With the matches, we can now apply the matching estimator formula:
 :::
 
 $$
-\hat{ATE} = \frac{1}{N} \sum^N_{i=1} (2D_i - 1)\big(Y_i - Y_{jm}(i)\big)
+\hat{\tau}_{ATE} = \frac{1}{N} \sum^N_{i=1} (2D_i - 1)\big(Y_i - Y_{j}(i)\big)
 $$
 
 ```{r}
@@ -1507,7 +1507,7 @@ predicted |>
 ```
 
 ::: {style="font-size: x-large"}
-Using this sort of matching, we can see that the effect of the medicine is not positive anymore.
+Using knn matching, our estimate suggests that the effect of the medicine is not positive anymore.
 
 This means that, controlling for $X$, the medicine reduces the recovery time by about 1 day, on average.
 
@@ -1519,76 +1519,49 @@ This is already a huge improvement on top of the biased estimate that predicted 
 ::: {style="font-size: x-large"}
 It turns out the matching estimator as we’ve designed above is biased.
 
-To see this, let’s consider the ATET estimator, instead of the ATE, just because it is simpler to write.
+To see this, let’s consider the ATT estimator, instead of the ATE, since it is simpler to write.
 
 The intuition will apply to the ATE as well.
 :::
 
 $$
-\hat{ATET} = \frac{1}{N_1}\sum (Y_i - Y_j(i))
+\hat{\tau}_{ATT} = \frac{1}{n_1}\sum_{i:D_i=1} (Y_i - Y_j(i))
 $$
 
 ::: {style="font-size: x-large"}
-where $N_1$ is the number of treated individuals and $Y_j(i)$ is the untreated match of treated unit i.
+where $n_1$ is the number of treated individuals and $Y_j(i)$ is the untreated match of treated unit i.
 :::
 
 ## Matching bias
 
 ::: {style="font-size: x-large"}
-To check for bias, what we do is hope we can apply the Central Limit Theorem so that this estimate converges to a normal distribution with mean zero.
-:::
+The bias in the matching estimator arises when the matching is not exact.
+
+To see this, consider the mean outcome for the untreated, given covariates X, $\mu_0(X_i)=E[Y|X_i, D=0]$.
+
+When we estimate the counterfactual of a treated unit by matching the covariates of the treated unit against the covariates of all untreated units, we may find
 
 $$
-\sqrt{N_1}(\hat{ATET} - ATET)
+\mu_0(X_i) \ne \mu_0(X_j(i))
 $$
 
-::: {style="font-size: x-large"}
-However, this doesn’t always happen. If we define the mean outcome for the untreated given X, $\mu_0(x)=E[Y|X=x, D=0]$, we will have that
-:::
-
-$$
-\begin{align*}
-\mathbb{E}\left [\sqrt{N_1}(\hat{ATET} - ATET)\right] & = \\
-\mathbb{E}\left[\sqrt{N_1}(\mu_0(X_i) - \mu_0(X_j(i))\right]
-\end{align*}
-$$
-
-## Matching bias
-
-::: {style="font-size: x-large"}
-Looking at $\mu_0(X_i) - \mu_0(X_j(i))$ more carefully.
-
--   $\mu_0(X_i)$ is the outcome Y value of a treated unit $i$ had it not been treated. It is the counterfactual outcome $Y^0$ for unit $i$.
--   $\mu_0(X_j(i))$ is the outcome of the untreated unit $j$ that is the match of unit $i$.
--   It is also the $Y^0$, but for unit $j$ now.
--   Only this time, it is a factual outcome, because $j$ is in the non treated group.
--   Now, because $j$ and $i$ are only similar, but not the same, this will likely not be zero. In other words, $X_i \approx X_j$, so, $Y^0_i \approx Y^0_j$.
+which leads to a bias in $\hat{\tau}_{ATT}$.
 :::
 
 ## Matching bias
 
 ::: {style="font-size: x-large"}
-As we increase the sample size, there will be more units to match, so the difference between unit $i$ and its match $j$ will also get smaller.
-
-But this difference converges to zero slowly.
-
-As a result $E[\sqrt{N_1}(\mu_0(X_i) - \mu_0(X_j(i)))]$ may not converge to zero, because the $\sqrt{N_1}$ grows faster than $(\mu_0(X_i) - \mu_0(X_j(i)))$ diminishes.
-:::
-
-## Matching bias
-
-::: {style="font-size: x-large"}
-Bias arises when the matching discrepancies are huge. Fortunately, we know how to correct it. Each observation contributes $(\mu_0(X_i) - \mu_0(X_j(i))$ to the bias so all we need to do is subtract this quantity from each matching comparison in our estimator.
+Bias arises from matching discrepancies. Fortunately, we know how to correct it. Each observation contributes $(\mu_0(X_i) - \mu_0(X_j(i))$ to the bias so all we need to do is subtract this quantity from each matching comparison in our estimator.
 
 To do so, we can replace $\mu_0(X_j(i))$ with some sort of estimate of this quantity $\hat{\mu}_0(X_j(i))$, which can be obtained with models like linear regression. This updates the ATET estimator to the following equation:
 :::
 
 $$
-\hat{ATET} = \frac{1}{N_1}\sum \big((Y_i - Y_{j(i)}) - (\hat{\mu_0}(X_i) - \hat{\mu_0}(X_{j(i)})\big)
+\hat{\tau}_{ATT} = \frac{1}{N_1}\sum \big((Y_i - Y_{j(i)}) - (\hat{\mu_0}(X_i) - \hat{\mu_0}(X_{j(i)})\big)
 $$
 
 ::: {style="font-size: x-large"}
-where $\hat{\mu_0}(x)$ is some estimative of $E[Y|X, D=0]$, like a linear regression fitted only on the untreated sample.
+where $\hat{\mu_0}(x)$ is some estimative of $E[Y|X, D=0]$, e.g. a linear regression fitted only on the untreated sample.
 :::
 
 ## Matching bias
@@ -1657,7 +1630,7 @@ predicted |>
 ## Matching bias
 
 ::: {style="font-size: x-large"}
-Doesn’t this defeat the point of matching? If I have to run a linear regression anyway, why don’t I use only that, instead of this complicated model.
+Doesn’t this defeat the point of matching? If we have to run a linear regression anyway, why don’t we ust use the regression instead of this complicated model.
 
 First of all, this linear regression that we are fitting doesn’t extrapolate on the treatment dimension to get the treatment effect. Instead, its purpose is just to correct bias.
 
@@ -1694,7 +1667,7 @@ predicted |>
 ::: {style="font-size: large"}
 Of course, we also need to place a confidence interval around this measurement.
 
-In practice, we can simply use someone else’s code and just import a matching estimator. Here is one from the library `Matching`.
+In practice, we can simply use someone else’s code and just import a matching estimator. Here is one from the library `Matching` ([**note**]{.underline} ATC = ATU).
 :::
 
 ```{r}
@@ -1737,51 +1710,27 @@ Finally, we can say with confidence that our medicine does indeed lower the time
 
 ## Matching bias again
 
-::: {style="font-size: large"}
+::: {style="font-size: x-large"}
 We saw that matching is biased when the unit and its match are not so similar. But what causes them to be so different?
 
 As it turns out, the answer is quite simple and intuitive. It is easy to find people that match on a few characteristics, like sex. But if we add more characteristics, like age, income, city of birth and so on, it becomes harder and harder to find matches. In more general terms, [**the more features we have, the higher will be the distance between units and their matches**]{.underline}.
-
-This is not something that hurts only the matching estimator. It ties back to the subclassification estimator we saw earlier. In that contrived medicine example where with man and woman, it was quite easy to build the subclassification estimator. That was because we only had 2 cells: man and woman. But what would happen if we had more?
-
-Let’s say we have 2 continuous features like age and income and we manage to discretise them into 5 buckets each. This will give us 25 cells, or $5^2$. And what if we had 10 covariates with 3 buckets each? Doesn’t seem like a lot right? Well, this would give us 59049 cells, or $3^{10}$. It’s easy to see how this can blow out of proportion pretty quickly. This is a phenomena pervasive in all data science, which is called the [**The Curse of Dimensionality**]{.underline}**!!!**
-:::
-
-## Matching bias again
-
-::: {style="font-size: x-large"}
-The curse of dimensionality means that it will suffer if we have lots of features.
-
-Lots of features imply multiple cells in X. If there are multiple cells, some of them will have very few data. Some of them might even have only treated or only control, so it won’t be possible to estimate the ATE there, which would break our estimator.
-
-In the matching context, this means that the feature space will be very sparse and units will be very far from each other. This will increase the distance between matches and cause bias problems.
-:::
-
-## Matching bias again
-
-::: {style="font-size: x-large"}
-As for linear regression, it actually handles this problem quite well.
-
-What it does is project all the features X into a single one, the Y dimension. It then makes treatment and control comparison on that projection.
-
-So, in some way, linear regression performs some sort of dimensionality reduction to estimate the ATE. It’s quite elegant.
 :::
 
 # Fixed Effects
 
 ## Fixed Effects
 
--   One problem we might have is that we can't really control for things if we can't measure them.
--   And there are lots of things we can't measure or don't have data for!
--   So what can we do?
+-   One problem we might have is that we can't really control for variables if we can't measure them.
+-   And there could be variables we need to control for but we can't measure or don't have data for! So what can we do?
+-   There is a solution, as long as these variables stay constant within some larger category.
 
 ## Fixed Effects
 
 ### The Solution
 
--   If we observe each entity/person/firm/country *multiple times*, then we can forget about controlling for the related back-door variables we're interested in
--   And just control for *entity/person/firm/country identity* instead!
--   This will control for EVERYTHING unique to that individual, whether we can measure it or not!
+-   If we observe each category (entity/person/firm/country) *multiple times*, then we can forget about controlling for the related back-door variables we're interested in, and
+-   Just control for *entity/person/firm/country identity* instead!
+-   This will control for EVERYTHING unique to that individual, whether we can measure it or not, as long as they are fixed within the category.
 
 ## Fixed Effects
 
@@ -1800,7 +1749,7 @@ gapminder <- gapminder |> dplyr::group_by(country) |>
   dplyr::ungroup()
 ```
 
-and then group by country, and estimate the effect of GDP per capita on life expectancy, controlling for country.
+Then group by country, and estimate the effect of GDP per capita on life expectancy, controlling for country.
 
 ## Fixed Effects
 
@@ -1839,6 +1788,7 @@ ggdag::ggdag_classic(dag,node_size=20) +
 ```{r}
 #| echo: false
 #| code-fold: true
+#| code-summary: DAG for GDP per capita on life expectancy
 #| label: fixed effects DAG country control
 #| fig-align: center
 
@@ -1937,6 +1887,7 @@ p <- ggplot(dffull, aes(y=Y, x=X, color=as.factor(Person) )) + geom_point() +
   ggthemes::scale_color_colorblind() +
   labs(title = 'The Relationship between Y and X, with Individual Fixed Effects \n{next_state}') +
   theme_minimal() +
+  theme(plot.margin=unit(c(2,1,1,1), 'cm')) +
   gganimate::transition_states(
     time, transition_length=c(12,32,12,32,12,12),
     state_length=c(160,100,75,100,75,160), wrap=FALSE
@@ -1959,6 +1910,7 @@ gganimate::animate(p,nframes=200)
 
 ```{r}
 #| fig-align: center
+#| label: add wr to DAG
 dag <- ggdag::dagify(
   LifeEx~GDPpc+Country+War,
   GDPpc~Country+War,
@@ -1975,8 +1927,8 @@ ggdag::ggdag_classic(dag,node_size=20) +
 
 ::: {style="font-size: smaller"}
 -   Of course, in this case, we could control for War as well and be good!
--   Time-varying things doesn't mean that fixed effects doesn't work, it just means you need to control for that stuff too
--   It always comes down to thinking carefully about your diagram
+-   Time-varying variables doesn't mean that fixed effects doesn't work, it just means you need to control for time-varying variables too
+-   It comes down to thinking carefully about your DAG
 -   Fixed effects mainly works as a convenient way of combining together lots of different constant-within-country back doors into something that lets us identify the model even if we can't measure them all
 :::
 
@@ -1991,8 +1943,8 @@ $$ Y = \beta_0 + \beta_1Group1 + \beta_2Group2 + ... + $$ $$ \beta_NGroupN + \be
 
 -   Why does that work?
 -   We want to control for "group/individual" right? So just put in a control for group/individual.
--   Of course, like all categorical variables as predictors, we leave out a reference group.
--   But here, unlike with, say, a binary predictor, we're rarely interested in the FE coefficients themselves. Most software works with the mean-subtraction approach (or a variant) and don't even report them!
+-   Like all categorical variables as predictors, we leave out a reference group.
+-   But here, unlike with, say, a binary predictor, we're rarely interested in the FE coefficients themselves. Most software works with the mean-subtraction approach (or a variant) and doesn't even report them!
 
 ## Fixed Effects Regression: Variation
 
@@ -2003,7 +1955,7 @@ $$ Y = \beta_0 + \beta_1Group1 + \beta_2Group2 + ... + $$ $$ \beta_NGroupN + \be
 
 ## Fixed Effects in Regression: Notes
 
--   It's common to *cluster standard errors* at the level of the fixed effects, since it seems likely that errors would be correlated over time (autocorrelated errors)
+-   It's common to *cluster standard errors* at the level of the fixed effects, since it seems likely that errors would be correlated over time (autocorrelated errors).
 -   It's possible to have *more than one set* of fixed effects. $Y = \beta_i + \beta_j + \beta_1X + \varepsilon$
 -   But interpretation gets tricky - think through what variation in $X$ you have at that point!
 
@@ -2011,12 +1963,12 @@ $$ Y = \beta_0 + \beta_1Group1 + \beta_2Group2 + ... + $$ $$ \beta_NGroupN + \be
 
 -   We can use the **fixest** package
 -   It's very fast, and can be easily adjusted to do FE with other regression methods like logit, or combined with instrumental variables
--   Clusters at the first listed fixed effect by default
+-   Clusters are at the first listed fixed effect by default
 
 ```{r}
 #| echo: true
 #| eval: false
-#| 
+#| label: fixest fixed effects
 m1 <- fixest::feols(outcome ~ predictors | FEs, data = data)
 msummary(m1)
 ```
@@ -2035,6 +1987,7 @@ msummary(m1)
 ```{r}
 #| echo: false
 #| code-fold: true
+#| label: fixest crime data
 mm <- as.data.frame(readLines('./data/marvel_moody_sentencing.txt'))
 mm1 <- as.data.frame(mm[rep(c(TRUE,FALSE),2100/2),]) |>
   dplyr::rename(mm1 = `mm[rep(c(TRUE, FALSE), 2100/2), ]`)
@@ -2051,9 +2004,10 @@ mmdata <- tibble::tibble(
   dplyr::mutate(sentreform = ceiling(sentreform)) |>
   stats::na.omit()
 
-mmdata |> head()
 mmdata <- mmdata |> 
-  dplyr::mutate(assaultper1000 = assault/pop1000,robberyper1000 = robbery/pop1000)
+  dplyr::mutate(assaultper1000 = assault/pop1000,robberyper1000 = robbery/pop1000) 
+mmdata |> dplyr::slice_sample(n=10) |> 
+  gt::gt() |> gtExtras::gt_theme_espn() |> gt::as_raw_html()
 ```
 
 ## Fixed Effects
@@ -2063,12 +2017,13 @@ mmdata <- mmdata |>
 ```{r}
 #| echo: false
 #| code-fold: true
+#| label: robbery rates by state by time
 #| fig-width: 8
 #| fig-height: 4.5
 
 ggplot(mmdata,aes(x=year,y=robberyper1000,
                 group=state,color=factor(sentreform)))+
-  geom_line(size=1) + ggthemes::scale_color_colorblind(name="Reform")+
+  geom_line(linewidth=1) + ggthemes::scale_color_colorblind(name="Reform")+
   labs(x="Year",y="Robberies per 1000 Population") + 
   ggpubr::theme_pubr() + 
   theme(legend.position = c(.8,.9))
@@ -2084,6 +2039,10 @@ ggplot(mmdata,aes(x=year,y=robberyper1000,
 ## Fixed Effects
 
 ```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: fixed effects vs regression
+#| label: fixed effects vs regression
 sentencing_ols <- lm(robberyper1000 ~ sentreform, data = mmdata)
 sentencing_fe <- fixest::feols(robberyper1000 ~ sentreform | state, data = mmdata)
 modelsummary::msummary(
@@ -2095,8 +2054,8 @@ modelsummary::msummary(
 
 ## Example
 
--   The `r scales::number(coef(sentencing_ols), accuracy = .001)` included the fact that different kinds of states tend to institute reform
--   The `r scales::number(coef(sentencing_fe), accuracy = .001)` doesn't!
+-   The coefficients `r scales::number(coef(sentencing_ols), accuracy = .001)` from OLS reflect the fact that different kinds of states tend to institute reform (between variance)
+-   The `r scales::number(coef(sentencing_fe), accuracy = .001)` doesn't! (within variance)
 -   Looks like the deterrent effect was real! Although important to consider if there might be time-varying back doors too, we don't account for those in our analysis
 -   What things might change within state over time that would be related to robberies and to sentencing reform?
 
@@ -2111,7 +2070,10 @@ modelsummary::msummary(
 
 Regression specification
 
-$$Y_{it} = α_i + λ_t + Σ_{k≠-1} β_k × D_{it}^k + ε_{it}$$ Where $D_{it}^k = 1$ if unit $i$ is $k$ periods from treatment at time $t$.
+$$Y_{it} = α_i + λ_t + Σ_{k≠-1} β_k × D_{it}^k + ε_{it}$$ Where $D_{it}^k = 1$ if unit $i$ is $k$ periods from treatment at time $t$. You include $q$ leads or anticipatory effects and $m$ lags or post-treatment effects.
+
+This allows you to check both the degree to which the post-treatment treatment effects were dynamic, and whether the two groups were
+comparable on outcome dynamics pre-treatment.
 
 ## Event studies
 
@@ -2160,8 +2122,8 @@ df <- tidyr::crossing(id = 1:20, t = 1:10) |>
 # specifying that we want to drop t = 5 as the reference
 m <- fixest::feols(Y ~ i(t, ref = 5), data = df, cluster = 'id')
 
-# Plot the results, except for the intercept,# and add a line joining 
-# them and a space and line for the reference group
+# Plot the results, except for the intercept, and add a line joining them 
+# and a space and line for the reference group
 fixest::coefplot(m, drop = '(Intercept)',
  pt.join = TRUE, ref = c('t:5' = 6), ref.line = TRUE)
 ```
