@@ -1,0 +1,821 @@
+---
+title: "Two stage DiD"
+---
+
+$E(\varepsilon_{igt}|D_{gt}, g, t) = 0$
+
+Static TWFE Model (Equation 1) $y_{igt} = \mu_g + \eta_t + \tau D_{gt} + \varepsilon_{igt}$
+
+Dynamic TWFE Model $y_{igt} = \mu_g + \eta_t + \tau_{gt}D_{gt} + \varepsilon_{igt}$
+
+Overall Average Treatment Effect $\tau \equiv \sum_{g,t} \frac{1}{N_{gt}} \tau_{gt}$
+
+Static TWFE Equivalence (FWL Application): $y_{igt} - \hat{\mu}_g - \hat{\eta}_t = \tau \tilde{D}_{gt} + \tilde{\varepsilon}_{gt}$
+
+-   starting with $y_{igt} = \mu_g + \eta_t + \tau_{gt}D_{gt} + \varepsilon_{igt}$ regress $y_{igt}$ on fixed effects $[μ_g, η_t]$
+
+    -   the fitted values are $\hat{y}_{igt} = \hat{\mu}_g + \hat{\eta}_t$ and so the residuals are $\tilde{y}_{igt} = y_{igt} - \hat{\mu}_g -\hat{\eta}_t$
+
+-   Regress the treatment indicator $D_{gt}$ on the same fixed effects $[μ_g, η_t]$
+
+    -   the fitted values are $\hat{D}_{gt}$ and so the residuals are $\tilde{D}_{gt} = D_{gt} -\hat{D}_{gt}$
+
+-   regress $\tilde{y}_{igt} = \tau\tilde{D}_{gt} + \tilde{\varepsilon}_{gt}$
+
+The key insight is that $\tilde{D}_{gt}$ (the residualized treatment indicator) varies across different group-time combinations in complex ways. When there's treatment effect heterogeneity ($\tau_{gt}$ varies), the FWL theorem shows that what we're actually estimating is:
+
+$τ̂ = Σ_{g,t} w_{gt} τ_{gt}$
+
+FWL Theorem Expression $\hat{\tau}_{gt} = \tau \tilde{D}_{gt} + \tilde{\varepsilon}_{gt}$
+
+# Why Residualized Treatment Indicators Create Problematic Weights
+
+## The Residualization Process
+
+When we apply FWL, we regress the treatment indicator $D_{gt}$ on group and time fixed effects:
+
+$$D_{gt} = \alpha_g + \delta_t + \text{residual}$$
+
+The residual is: $\tilde{D}_{gt} = D_{gt} - \hat{\alpha}_g - \hat{\delta}_t$
+
+## Key Insight: Treatment Patterns Matter
+
+Let's see why $\tilde{D}_{gt}$ varies across group-time combinations with a concrete example.
+
+### Example: Staggered Treatment Adoption
+
+Consider 3 groups adopting treatment in different years: - **Group A**: Treated starting year 3 - **Group B**: Treated starting year 5 - **Never-treated group**: Never treated
+
+**Treatment Matrix (**$D_{gt}$):
+
+$$         
+Year:    1  2  3  4  5  6
+Group A: 0  0  1  1  1  1
+Group B: 0  0  0  0  1  1  
+Never:   0  0  0  0  0  0
+$$
+
+## Step 1: Estimate Fixed Effects from Treatment Pattern
+
+### Group Fixed Effects ($\hat{\alpha}_g$)
+
+-   $\hat{\alpha}_A = \frac{4}{6} = 0.67$ (Group A treated 4 out of 6 periods)
+-   $\hat{\alpha}_B = \frac{2}{6} = 0.33$ (Group B treated 2 out of 6 periods)\
+-   $\hat{\alpha}_{Never} = 0$ (Never treated)
+
+### Time Fixed Effects ($\hat{\delta}_t$)
+
+-   $\hat{\delta}_1 = \hat{\delta}_2 = 0$ (No one treated in years 1-2)
+-   $\hat{\delta}_3 = \frac{1}{3} = 0.33$ (1 out of 3 groups treated in year 3)
+-   $\hat{\delta}_4 = \frac{1}{3} = 0.33$ (1 out of 3 groups treated in year 4)
+-   $\hat{\delta}_5 = \frac{2}{3} = 0.67$ (2 out of 3 groups treated in year 5)
+-   $\hat{\delta}_6 = \frac{2}{3} = 0.67$ (2 out of 3 groups treated in year 6)
+
+## Step 1(a): Estimate Fixed Effects from Treatment Pattern
+
+When we regress $D_{gt} = \alpha_g + \delta_t + \text{residual}$, we need **identification restrictions**.
+
+Standard approach: Set one group FE and one time FE to zero. - Set $\alpha_{Never} = 0$ (never-treated group as base) - Set $\delta_1 = 0$ (first period as base)
+
+The remaining fixed effects solve: $\hat{\alpha}_g + \hat{\delta}_t = \text{average of } D_{gt} \text{ for group } g \text{ in period } t$
+
+### From our treatment matrix, the cell means are:
+
+```         
+       Year 1  Year 2  Year 3  Year 4  Year 5  Year 6
+Group A:  0      0      1       1       1       1
+Group B:  0      0      0       0       1       1  
+Never:    0      0      0       0       0       0
+```
+
+### Solving the System:
+
+With $\alpha_{Never} = 0$ and $\delta_1 = 0$:
+
+-   $\hat{\alpha}_A + 0 = 0 \Rightarrow \hat{\alpha}_A = 0$
+-   $0 + \hat{\delta}_2 = 0 \Rightarrow \hat{\delta}_2 = 0$\
+-   $\hat{\alpha}_A + \hat{\delta}_3 = 1 \Rightarrow 0 + \hat{\delta}_3 = 1 \Rightarrow \hat{\delta}_3 = 1$
+-   $\hat{\alpha}_A + \hat{\delta}_4 = 1 \Rightarrow 0 + \hat{\delta}_4 = 1 \Rightarrow \hat{\delta}_4 = 1$
+-   $\hat{\alpha}_A + \hat{\delta}_5 = 1$ and $\hat{\alpha}_B + \hat{\delta}_5 = 1$
+
+This system is **over-identified** - we can't satisfy all constraints simultaneously!
+
+## The Real Issue: Perfect Collinearity
+
+The problem is that **treatment status is perfectly predictable** from group and time fixed effects in many staggered designs. This creates perfect or near-perfect collinearity.
+
+### What Actually Happens in Practice:
+
+1.  **Regularization**: Statistical software uses generalized inverses or drops redundant parameters
+2.  **Approximate relationships**: With heterogeneous treatment effects, there's variation around the fixed effect predictions
+3.  **Sample variation**: Real data has idiosyncratic variation that breaks perfect collinearity
+
+### More Realistic Example:
+
+The residuals $\tilde{D}_{gt}$ are typically **small but non-zero** due to: - Sampling variation in treatment effects - Slight deviations from perfect treatment timing - Heterogeneity within group-time cells
+
+The **key insight remains**: Even small residuals create problematic weights because: - Some $\tilde{D}_{gt} > 0$ for untreated units\
+- Some $\tilde{D}_{gt} < 0$ for treated units - Weights become inversely related to actual treatment probabilities
+
+## Step 2: Calculate Residualized Treatment $\tilde{D}_{gt}$
+
+For each group-time combination: $$\tilde{D}_{gt} = D_{gt} - \hat{\alpha}_g - \hat{\delta}_t$$
+
+### Group A Results:
+
+```         
+Year:    1     2     3     4     5     6
+D_gt:    0     0     1     1     1     1
+α̂_A:    0.67  0.67  0.67  0.67  0.67  0.67
+δ̂_t:    0     0     0.33  0.33  0.67  0.67
+D̃_gt:  -0.67 -0.67  0     0     -0.33 -0.33
+```
+
+### Group B Results:
+
+```         
+Year:    1     2     3     4     5     6
+D_gt:    0     0     0     0     1     1
+α̂_B:    0.33  0.33  0.33  0.33  0.33  0.33
+δ̂_t:    0     0     0.33  0.33  0.67  0.67
+D̃_gt:  -0.33 -0.33 -0.67 -0.67  0     0
+```
+
+### Never-Treated Group Results:
+
+```         
+Year:    1     2     3     4     5     6
+D_gt:    0     0     0     0     0     0
+α̂_N:    0     0     0     0     0     0
+δ̂_t:    0     0     0.33  0.33  0.67  0.67
+D̃_gt:   0     0    -0.33 -0.33 -0.67 -0.67
+```
+
+## Key Observations
+
+### 1. Negative Residuals for Treated Observations
+
+Notice that **many treated observations** (where $D_{gt} = 1$) have **negative** $\tilde{D}_{gt}$ values: - Group A in years 5-6: $\tilde{D}_{gt} = -0.33$ - This happens because these groups are "over-treated" relative to the average
+
+### 2. Positive Residuals for Some Untreated Observations
+
+Some **untreated observations** have **positive** $\tilde{D}_{gt}$ values: - This creates the wrong sign relationship
+
+### 3. Magnitude Varies by Treatment Timing
+
+-   **Early adopters** (Group A) have different residual patterns than **late adopters** (Group B)
+-   **Never-treated** units have consistently negative residuals in later periods
+
+## The Weighting Problem
+
+When we run the second-stage regression: $$\tilde{y}_{igt} = \tau \tilde{D}_{gt} + \tilde{\varepsilon}_{gt}$$
+
+The weight on each $\tau_{gt}$ in the final estimate $\hat{\tau}$ is proportional to: $$w_{gt} \propto \text{Var}(\tilde{D}_{gt}) \times N_{gt}$$
+
+### Problems:
+
+1.  **Negative weights**: Groups with negative $\tilde{D}_{gt}$ get negative weights
+2.  **Unequal weights**: Groups treated at different times get very different weights
+3.  **Wrong magnitudes**: The weights don't reflect the actual sample sizes or treatment intensities
+
+## Why Gardner's Method Fixes This
+
+Gardner's two-stage approach: 1. **Estimates fixed effects using only untreated observations** ($D_{gt} = 0$) 2. **Never residualizes the treatment indicator** 3. **Uses original** $D_{gt}$ in second stage, giving equal weight ($\frac{1}{N_{gt}}$) to each group-time combination
+
+This ensures: $$\hat{\tau} = \sum_{g,t} \frac{1}{N_{gt}} \tau_{gt}$$
+
+Rather than the problematic: $$\hat{\tau} = \sum_{g,t} w_{gt} \tau_{gt} \quad \text{where some } w_{gt} < 0$$
+
+2x2 (two groups, two periods)
+
+```{r}
+# Simple 2x2 Example: Traditional TWFE vs Gardner's Method
+# 2 groups, 2 periods, one group treated only in period 2
+
+library(fixest)
+library(dplyr)
+
+# =============================================================================
+# CREATE SIMPLE 2x2 DATA
+# =============================================================================
+
+# Create the classic 2x2 difference-in-differences setup
+data <- data.frame(
+  group = c("control", "control", "treatment", "treatment"),
+  period = c(1, 2, 1, 2),
+  treated = c(0, 0, 0, 1),
+  # Create outcomes with known treatment effect
+  outcome = c(10, 11, 12, 16)  # Treatment effect = 3
+)
+
+# Add group and period as factors for fixed effects
+data$group_id <- ifelse(data$group == "control", 1, 2)
+data$period_id <- data$period
+
+print("Data:")
+print(data)
+
+# =============================================================================
+# CALCULATE TRUE TREATMENT EFFECT MANUALLY
+# =============================================================================
+
+# Classic DiD calculation: (Y_treat_post - Y_treat_pre) - (Y_control_post - Y_control_pre)
+true_effect <- (16 - 12) - (11 - 10)
+cat("\nTRUE Treatment Effect (manual DiD):", true_effect, "\n\n")
+
+# =============================================================================
+# METHOD 1: TRADITIONAL TWFE (WRONG!)
+# =============================================================================
+
+cat("=== TRADITIONAL TWFE ESTIMATION ===\n")
+
+# This applies FWL and gives wrong answer due to perfect collinearity
+traditional_twfe <- feols(outcome ~ treated | group_id + period_id, data = data)
+
+cat("Traditional TWFE Estimate:", coef(traditional_twfe)["treated"], "\n")
+cat("Standard Error:", se(traditional_twfe)[1], "\n\n")
+
+# Let's see what's happening under the hood with FWL
+cat("--- Understanding the FWL Problem ---\n")
+
+# Step 1: Regress treatment on fixed effects
+treatment_on_fe <- feols(treated ~ 1 | group_id + period_id, data = data)
+data$treated_resid <- resid(treatment_on_fe)
+
+cat("Residualized treatment (D_tilde):\n")
+print(data[, c("group", "period", "treated", "treated_resid")])
+
+# Step 2: Regress outcome on fixed effects  
+outcome_on_fe <- feols(outcome ~ 1 | group_id + period_id, data = data)
+data$outcome_resid <- resid(outcome_on_fe)
+
+cat("\nResidualized outcomes (y_tilde):\n")
+print(data[, c("group", "period", "outcome", "outcome_resid")])
+
+# Step 3: Regress residualized outcome on residualized treatment
+fwl_manual <- lm(outcome_resid ~ treated_resid - 1, data = data)
+cat("\nManual FWL estimate:", coef(fwl_manual)[1], "\n")
+cat("(Should match traditional TWFE above)\n\n")
+
+# Show the problem: which observations drive identification?
+cat("Key insight: Only observations with non-zero treated_resid matter!\n")
+contributing_obs <- data[abs(data$treated_resid) > 1e-10, ]
+print(contributing_obs[, c("group", "period", "treated", "treated_resid", "outcome_resid")])
+
+resid(outcome_on_fe) |> matrix(nrow=2)
+outcome_on_fe$fitted.values |> matrix(nrow=2)
+(outcome_on_fe$fitted.values -outcome_on_fe$fitted.values[1]) |> matrix(nrow=2)
+
+resid(treatment_on_fe) |> matrix(nrow=2)
+treatment_on_fe$fitted.values |> matrix(nrow=2)
+(treatment_on_fe$fitted.values -treatment_on_fe$fitted.values[1]) |> matrix(nrow=2)
+
+
+# =============================================================================
+# METHOD 2: GARDNER'S TWO-STAGE METHOD (CORRECT!)
+# =============================================================================
+
+cat("\n=== GARDNER'S TWO-STAGE METHOD ===\n")
+
+# Stage 1: Estimate fixed effects using ONLY UNTREATED observations
+untreated_data <- data[data$treated == 0, ]
+cat("Stage 1 data (untreated only):\n")
+print(untreated_data[, c("group", "period", "outcome")])
+
+stage1 <- feols(outcome ~ 1 | group_id + period_id, data = untreated_data)
+
+# Get predicted values for all observations
+data$outcome_pred_stage1 <- predict(stage1, newdata = data)
+data$outcome_resid_gardner <- data$outcome - data$outcome_pred_stage1
+
+
+
+cat("\nStage 1 predictions and residuals:\n")
+print(data[, c("group", "period", "outcome", "outcome_pred_stage1", "outcome_resid_gardner")])
+
+# Stage 2: Regress residualized outcome on ORIGINAL treatment indicator
+stage2 <- feols(outcome_resid_gardner ~ treated, data = data)
+
+cat("\nGardner Two-Stage Estimate:", coef(stage2)[1], "\n")
+cat("Standard Error:", se(stage2)[1], "\n\n")
+
+# =============================================================================
+# MANUAL CALCULATION TO VERIFY GARDNER'S METHOD
+# =============================================================================
+
+cat("=== MANUAL VERIFICATION ===\n")
+
+# Stage 1 manual calculation
+control_period1 <- 10
+control_period2 <- 11
+treatment_period1 <- 12
+
+# Estimate fixed effects from untreated obs
+group_effect_control <- 0  # normalization
+group_effect_treatment <- treatment_period1 - control_period1  # 12 - 10 = 2
+time_effect_period1 <- 0   # normalization  
+time_effect_period2 <- control_period2 - control_period1      # 11 - 10 = 1
+
+cat("Estimated fixed effects (from untreated obs only):\n")
+cat("Group effect (treatment):", group_effect_treatment, "\n")
+cat("Time effect (period 2):", time_effect_period2, "\n")
+
+# Predict counterfactual for treated unit in period 2
+counterfactual_treated_period2 <- group_effect_treatment + time_effect_period2 + control_period1
+# = 2 + 1 + 10 = 13
+
+actual_treated_period2 <- 16
+manual_treatment_effect <- actual_treated_period2 - counterfactual_treated_period2
+
+cat("Counterfactual for treated unit in period 2:", counterfactual_treated_period2, "\n")
+cat("Actual outcome for treated unit in period 2:", actual_treated_period2, "\n")
+cat("Manual Gardner estimate:", manual_treatment_effect, "\n\n")
+
+# =============================================================================
+# SUMMARY COMPARISON
+# =============================================================================
+
+cat("=== SUMMARY ===\n")
+cat("True treatment effect:          ", true_effect, "\n")
+cat("Traditional TWFE estimate:      ", round(coef(traditional_twfe)[1], 3), "\n") 
+cat("Gardner two-stage estimate:     ", round(coef(stage2)[1], 3), "\n")
+cat("Manual Gardner calculation:     ", manual_treatment_effect, "\n\n")
+
+if (abs(coef(traditional_twfe)[1] - true_effect) > 0.001) {
+  cat("❌ Traditional TWFE is WRONG!\n")
+} else {
+  cat("✅ Traditional TWFE is correct\n")
+}
+
+if (abs(coef(stage2)[1] - true_effect) < 0.001) {
+  cat("✅ Gardner's method is CORRECT!\n")
+} else {
+  cat("❌ Gardner's method is wrong\n")
+}
+
+# =============================================================================
+# SHOW WHY TRADITIONAL TWFE FAILS
+# =============================================================================
+
+cat("\n=== WHY TRADITIONAL TWFE FAILS ===\n")
+cat("The problem: Perfect collinearity in 2x2 design\n")
+cat("Treatment is perfectly predicted by group + time fixed effects\n")
+cat("This makes the residualized treatment indicator problematic\n\n")
+
+cat("Residualized treatment values:\n")
+for(i in 1:nrow(data)) {
+  cat(sprintf("Group %s, Period %d: D_tilde = %.3f\n", 
+              data$group[i], data$period[i], data$treated_resid[i]))
+}
+
+cat("\nNotice: The actually treated observation (treatment, period 2) has D_tilde ≈ 0\n")
+cat("So it contributes almost nothing to the TWFE estimate!\n")
+cat("Identification comes from the wrong observations.\n")
+```
+
+3x3 (3 groups, 3 periods, homogeneous)
+
+```{r}
+# Staggered Treatment with HOMOGENEOUS Effects: TWFE vs Gardner
+# Testing whether TWFE works when treatment effects are constant across groups/time
+
+library(fixest)
+library(dplyr)
+
+# =============================================================================
+# CREATE STAGGERED DATA WITH HOMOGENEOUS (CONSTANT) TREATMENT EFFECTS
+# =============================================================================
+
+data <- data.frame(
+  group = rep(c("A", "B", "C"), each = 3),
+  period = rep(1:3, 3),
+  group_id = rep(c(1, 2, 3), each = 3),
+  period_id = rep(1:3, 3)
+) %>%
+  dplyr::mutate(
+    # Treatment indicator (staggered timing)
+    treated = case_when(
+      group == "A" & period >= 2 ~ 1,
+      group == "B" & period >= 3 ~ 1,
+      TRUE ~ 0
+    )
+  )
+
+# Create outcomes with HOMOGENEOUS (constant) treatment effects
+data <- data %>%
+  dplyr::mutate(
+    # Base outcome (group and time fixed effects)
+    base_outcome = case_when(
+      group == "A" ~ 10,  # Group A baseline
+      group == "B" ~ 12,  # Group B baseline  
+      group == "C" ~ 8    # Group C baseline
+    ) + (period - 1) * 1.5,  # Common time trend
+    
+    # HOMOGENEOUS treatment effect: same for all treated units!
+    treatment_effect = ifelse(treated == 1, 3.0, 0),  # Constant effect of 3.0
+    
+    # Final outcome
+    outcome = base_outcome + treatment_effect
+  )
+
+print("Data with HOMOGENEOUS treatment effects:")
+print(data[, c("group", "period", "treated", "treatment_effect", "outcome")])
+
+# =============================================================================
+# TRUE TREATMENT EFFECT (should be 3.0 for all)
+# =============================================================================
+
+true_effects <- data %>%
+  filter(treated == 1) %>%
+  select(group, period, treatment_effect)
+
+true_att <- mean(true_effects$treatment_effect)
+cat("\nTRUE Average Treatment Effect:", true_att, "\n")
+cat("Individual treatment effects (all the same):\n")
+print(true_effects)
+
+# =============================================================================
+# METHOD 1: TRADITIONAL TWFE
+# =============================================================================
+
+cat("\n=== TRADITIONAL TWFE ESTIMATION ===\n")
+
+traditional_twfe <- feols(outcome ~ treated | group_id + period_id, data = data)
+
+cat("Traditional TWFE Estimate:", round(coef(traditional_twfe)[1], 3), "\n")
+cat("Standard Error:", round(se(traditional_twfe)[1], 3), "\n")
+
+# Analyze the weighting
+treatment_on_fe <- feols(treated ~ 1 | group_id + period_id, data = data)
+data$treated_resid <- resid(treatment_on_fe)
+
+outcome_on_fe <- feols(outcome ~ 1 | group_id + period_id, data = data)
+data$outcome_resid <- resid(outcome_on_fe)
+
+lm(treated_resid ~ outcome_resid, data = data)
+
+cat("\nResidualized treatment and outcomes:\n")
+print(data[, c("group", "period", "treated", "treated_resid", "outcome_resid")])
+
+# Calculate implicit weights
+nonzero_resid <- data[abs(data$treated_resid) > 1e-10, ]
+if(nrow(nonzero_resid) > 0) {
+  weights <- nonzero_resid$treated_resid^2 / sum(nonzero_resid$treated_resid^2)
+  
+  cat("\nImplicit weights in TWFE estimation:\n")
+  weight_table <- data.frame(
+    group = nonzero_resid$group,
+    period = nonzero_resid$period,
+    treated = nonzero_resid$treated,
+    treated_resid = round(nonzero_resid$treated_resid, 3),
+    weight = round(weights, 3),
+    true_effect = nonzero_resid$treatment_effect
+  )
+  print(weight_table)
+  
+  # Since all treatment effects are the same, weighted average = unweighted average
+  weighted_estimate <- sum(weights * weight_table$true_effect)
+  cat("\nWeighted average using TWFE weights:", round(weighted_estimate, 3), "\n")
+}
+
+# =============================================================================
+# METHOD 2: GARDNER'S TWO-STAGE METHOD
+# =============================================================================
+
+cat("\n=== GARDNER'S TWO-STAGE METHOD ===\n")
+
+# Stage 1: Estimate fixed effects using ONLY UNTREATED observations
+untreated_data <- data[data$treated == 0, ]
+stage1 <- feols(outcome ~ 1 | group_id + period_id, data = untreated_data)
+
+# Stage 2: Regress residualized outcome on treatment
+data$outcome_resid_gardner <- data$outcome - predict(stage1, newdata = data)
+stage2 <- feols(outcome_resid_gardner ~ treated, data = data)
+
+cat("Gardner Two-Stage Estimate:", round(coef(stage2)[1], 3), "\n")
+cat("Standard Error:", round(se(stage2)[1], 3), "\n")
+
+# =============================================================================
+# COMPARE WITH HETEROGENEOUS EFFECTS CASE
+# =============================================================================
+
+cat("\n=== COMPARISON: HOMOGENEOUS vs HETEROGENEOUS EFFECTS ===\n")
+
+# Now create the same data but with heterogeneous effects
+data_hetero <- data %>%
+  dplyr::mutate(
+    # HETEROGENEOUS treatment effects (like previous example)
+    treatment_effect_hetero = dplyr::case_when(
+      group == "A" & period == 2 ~ 3.0,  # Same timing, different effects
+      group == "A" & period == 3 ~ 4.0,  
+      group == "B" & period == 3 ~ 2.0,  
+      TRUE ~ 0
+    ),
+    outcome_hetero = base_outcome + treatment_effect_hetero
+  )
+
+# Traditional TWFE with heterogeneous effects
+twfe_hetero <- feols(outcome_hetero ~ treated | group_id + period_id, data = data_hetero)
+
+# Gardner with heterogeneous effects
+data_hetero$outcome_resid_hetero <- data_hetero$outcome_hetero - predict(stage1, newdata = data_hetero)
+gardner_hetero <- feols(outcome_resid_hetero ~ treated, data = data_hetero)
+
+true_att_hetero <- mean(data_hetero[data_hetero$treated == 1, "treatment_effect_hetero"])
+
+cat("HOMOGENEOUS Effects:\n")
+cat("  True effect:          ", round(true_att, 3), "\n")
+cat("  Traditional TWFE:     ", round(coef(traditional_twfe)[1], 3), "\n")
+cat("  Gardner method:       ", round(coef(stage2)[3], 3), "\n\n")
+
+cat("HETEROGENEOUS Effects:\n")
+cat("  True average effect:  ", round(true_att_hetero, 3), "\n")
+cat("  Traditional TWFE:     ", round(coef(twfe_hetero)[1], 3), "\n")
+cat("  Gardner method:       ", round(coef(gardner_hetero)[2], 3), "\n\n")
+
+# =============================================================================
+# KEY INSIGHT
+# =============================================================================
+
+cat("=== KEY INSIGHT ===\n")
+
+homo_twfe_error <- abs(coef(traditional_twfe)[1] - true_att)
+homo_gardner_error <- abs(coef(stage2)[1] - true_att)
+
+hetero_twfe_error <- abs(coef(twfe_hetero)[1] - true_att_hetero)
+hetero_gardner_error <- abs(coef(gardner_hetero)[1] - true_att_hetero)
+
+cat("Errors with HOMOGENEOUS effects:\n")
+cat("  TWFE error:           ", round(homo_twfe_error, 3), "\n")
+cat("  Gardner error:        ", round(homo_gardner_error, 3), "\n\n")
+
+cat("Errors with HETEROGENEOUS effects:\n")
+cat("  TWFE error:           ", round(hetero_twfe_error, 3), "\n")
+cat("  Gardner error:        ", round(hetero_gardner_error, 3), "\n\n")
+
+if (homo_twfe_error < 0.1 && homo_gardner_error < 0.1) {
+  cat("✅ With HOMOGENEOUS effects: Both methods work!\n")
+} else {
+  cat("❌ Problem even with homogeneous effects\n")
+}
+
+if (hetero_twfe_error > 0.1 && hetero_gardner_error < 0.1) {
+  cat("❌ With HETEROGENEOUS effects: Only Gardner works!\n")
+} else if (hetero_twfe_error < 0.1 && hetero_gardner_error < 0.1) {
+  cat("✅ With HETEROGENEOUS effects: Both methods work\n")
+}
+
+cat("\nCONCLUSION: The TWFE weighting problem only matters when treatment\n")
+cat("effects are HETEROGENEOUS across groups or time periods.\n")
+```
+
+Diagnostic
+
+```{r}
+# Diagnostic: Understanding why Gardner's method gives 0 instead of 3
+
+library(fixest)
+library(dplyr)
+
+# Simple 3x3 homogeneous case
+data <- data.frame(
+  group = rep(c("A", "B", "C"), each = 3),
+  period = rep(1:3, 3),
+  group_id = rep(c(1, 2, 3), each = 3)
+) %>%
+  dplyr::mutate(
+    treated = dplyr::case_when(
+      group == "A" & period >= 2 ~ 1,
+      group == "B" & period >= 3 ~ 1,
+      TRUE ~ 0
+    ),
+    # Simple structure: group effects + time effects + treatment effect
+    outcome = dplyr::case_when(
+      group == "A" ~ 10,
+      group == "B" ~ 12,  
+      group == "C" ~ 8
+    ) + (period - 1) * 1.5 + ifelse(treated == 1, 3.0, 0)
+  )
+
+print("Data:")
+print(data)
+
+cat("\n=== STEP-BY-STEP DIAGNOSTIC ===\n")
+
+# Traditional TWFE
+twfe <- feols(outcome ~ treated | group_id + period, data = data)
+cat("Traditional TWFE:", coef(twfe)[1], "\n\n")
+
+# Gardner's method step by step
+cat("Gardner's Method:\n")
+cat("Step 1: Untreated observations only:\n")
+untreated <- data[data$treated == 0, ]
+print(untreated)
+
+cat("\nStep 1 regression (outcome ~ 1 | group_id + period on untreated):\n")
+stage1 <- feols(outcome ~ 1 | group_id + period, data = untreated)
+
+# Show what stage1 estimates
+cat("Stage 1 coefficients (group effects):\n")
+print(fixef(stage1)$group_id)
+cat("Stage 1 coefficients (period effects):\n") 
+print(fixef(stage1)$period)
+
+cat("\nPredictions for all observations:\n")
+data$pred <- predict(stage1, newdata = data)
+data$resid <- data$outcome - data$pred
+print(data[, c("group", "period", "treated", "outcome", "pred", "resid")])
+
+cat("\nStep 2: Regress residuals on treatment:\n")
+stage2 <- feols(resid ~ treated, data = data)
+cat("Gardner estimate:", coef(stage2)[1], "\n\n")
+
+# Manual calculation to verify
+cat("=== MANUAL VERIFICATION ===\n")
+treated_obs <- data[data$treated == 1, ]
+cat("Treated observations residuals:\n")
+print(treated_obs[, c("group", "period", "outcome", "pred", "resid")])
+cat("Average residual for treated obs:", mean(treated_obs$resid), "\n")
+
+untreated_obs <- data[data$treated == 0, ]
+cat("Average residual for untreated obs:", mean(untreated_obs$resid), "\n")
+
+cat("\nDifference (treated - untreated residuals):", 
+    mean(treated_obs$resid) - mean(untreated_obs$resid), "\n")
+```
+
+# The TWFE Decomposition
+
+## Starting Point: FWL Second-Stage Regression
+
+Starting with the FWL second-stage regression:
+
+$$
+\tilde{y}_{igt} = \tau \tilde{D}_{gt} + \tilde{\varepsilon}_{igt}
+$$
+
+The OLS estimator is:
+
+$$
+\hat{\tau}_{TWFE} = \frac{\sum_{i,g,t} \tilde{D}_{gt} \tilde{y}_{igt}}{\sum_{i,g,t} \tilde{D}_{gt}^2}
+$$
+
+## Decomposition by Group-Time Cells
+
+We can rewrite this by grouping observations within each $(g,t)$ cell:
+
+$$
+\hat{\tau}_{TWFE} = \frac{\sum_{g,t} \tilde{D}_{gt} \sum_{i=1}^{N_{gt}} \tilde{y}_{igt}}{\sum_{g,t} N_{gt} \tilde{D}_{gt}^2}
+$$
+
+$$
+= \frac{\sum_{g,t} N_{gt} \tilde{D}_{gt} \bar{\tilde{y}}_{gt}}{\sum_{g,t} N_{gt} \tilde{D}_{gt}^2}
+$$
+
+Where the average residualized outcome in cell $(g,t)$ is:
+
+$$
+\bar{\tilde{y}}_{gt} = \frac{1}{N_{gt}} \sum_{i=1}^{N_{gt}} \tilde{y}_{igt}
+$$
+
+## Weighted Average Form
+
+This can be expressed as:
+
+$$
+\hat{\tau}_{TWFE} = \sum_{g,t} w_{gt} \bar{\tilde{y}}_{gt}
+$$
+
+Where the weights are:
+
+$$
+w_{gt} = \frac{N_{gt} \tilde{D}_{gt}}{\sum_{g',t'} N_{g't'} \tilde{D}_{g't'}}
+$$
+
+**Note:** These weights can be **negative** when $\tilde{D}_{gt} < 0$, and they sum to 1:
+
+$$
+\sum_{g,t} w_{gt} = 1
+$$
+
+## Connection to True Treatment Effects
+
+Under parallel trends, $\bar{\tilde{y}}_{gt} \approx \tau_{gt}$ for treated cells and $\bar{\tilde{y}}_{gt} \approx 0$ for untreated cells. Therefore:
+
+$$
+\hat{\tau}_{TWFE} \approx \sum_{g,t: D_{gt}=1} w_{gt} \tau_{gt}
+$$
+
+## The Problem
+
+The issue is that the weights $w_{gt}$ depend on the residualized treatment indicators $\tilde{D}_{gt}$, not on the natural sample sizes or treatment intensities. This leads to the problematic weighting identified in the modern DiD literature, where:
+
+1.  Some weights can be **negative**
+2.  Weights don't correspond to **intuitive sample-size weighting**
+3.  The estimate can have the **wrong sign** relative to the true average treatment effect
+
+## Gardner's Solution
+
+Gardner's method avoids this by ensuring:
+
+$$
+\hat{\tau}_{Gardner} = \sum_{g,t: D_{gt}=1} \frac{1}{N_{treated}} \tau_{gt}
+$$
+
+Where each treated group-time combination gets equal weight $\frac{1}{N_{treated}}$ in the final average.
+
+# Derivation: Residualized Outcomes Under Parallel Trends
+
+## Starting Assumptions
+
+### The True Data Generating Process
+
+Under parallel trends, outcomes follow: $$
+y_{igt} = \mu_g + \eta_t + \tau_{gt} D_{gt} + \varepsilon_{igt}
+$$
+
+Where:
+
+-   $\mu_g$ = group fixed effect -
+
+-   $\eta_t$ = time fixed effect
+
+-   $\tau_{gt}$ = group-time specific treatment effect
+
+-   $\varepsilon_{igt}$ = idiosyncratic error with $E[\varepsilon_{igt}] = 0$
+
+### The FWL First Stage
+
+In the FWL first stage, we regress $y_{igt}$ on group and time fixed effects using **all observations**: $$
+y_{igt} = \hat{\mu}_g + \hat{\eta}_t + \text{residual}_{igt}
+$$
+
+The residualized outcome is: $$
+\tilde{y}_{igt} = y_{igt} - \hat{\mu}_g - \hat{\eta}_t
+$$
+
+## Derivation for Different Cases
+
+### Case 1: Untreated Cells ($D_{gt} = 0$)
+
+For untreated observations, the true DGP becomes: $$
+y_{igt} = \mu_g + \eta_t + \varepsilon_{igt}
+$$
+
+Under standard fixed effects estimation, we have: $$
+\hat{\mu}_g + \hat{\eta}_t \approx \mu_g + \eta_t
+$$ (asymptotically, when the fixed effects are well-identified)
+
+Therefore: $$
+\tilde{y}_{igt} = y_{igt} - \hat{\mu}_g - \hat{\eta}_t \approx (\mu_g + \eta_t + \varepsilon_{igt}) - (\mu_g + \eta_t) = \varepsilon_{igt}
+$$
+
+Taking the average within cell $(g,t)$: $$
+\bar{\tilde{y}}_{gt} = \frac{1}{N_{gt}} \sum_{i=1}^{N_{gt}} \tilde{y}_{igt} \approx \frac{1}{N_{gt}} \sum_{i=1}^{N_{gt}} \varepsilon_{igt} \approx 0
+$$
+
+**Result for untreated cells:** $\bar{\tilde{y}}_{gt} \approx 0$
+
+### Case 2: Treated Cells ($D_{gt} = 1$)
+
+For treated observations, the true DGP is:
+
+$$
+y_{igt} = \mu_g + \eta_t + \tau_{gt} + \varepsilon_{igt}
+$$
+
+The key insight is that the fixed effects $\hat{\mu}_g$ and $\hat{\eta}_t$ are estimated from **both treated and untreated observations**. Under parallel trends, these estimates capture the **counterfactual** group and time effects that would apply to treated units in the absence of treatment.
+
+Specifically: $$
+\hat{\mu}_g + \hat{\eta}_t \approx \mu_g + \eta_t
+$$
+
+Therefore: $$
+\tilde{y}_{igt} = y_{igt} - \hat{\mu}_g - \hat{\eta}_t \approx (\mu_g + \eta_t + \tau_{gt} + \varepsilon_{igt}) - (\mu_g + \eta_t) = \tau_{gt} + \varepsilon_{igt}
+$$
+
+Taking the average within cell $(g,t)$: $$
+\bar{\tilde{y}}_{gt} = \frac{1}{N_{gt}} \sum_{i=1}^{N_{gt}} \tilde{y}_{igt} \approx \frac{1}{N_{gt}} \sum_{i=1}^{N_{gt}} (\tau_{gt} + \varepsilon_{igt}) = \tau_{gt} + \frac{1}{N_{gt}} \sum_{i=1}^{N_{gt}} \varepsilon_{igt} \approx \tau_{gt}
+$$
+
+**Result for treated cells:** $\bar{\tilde{y}}_{gt} \approx \tau_{gt}$
+
+## The Parallel Trends Assumption is Crucial
+
+The key step in both derivations is that: $$
+\hat{\mu}_g + \hat{\eta}_t \approx \mu_g + \eta_t
+$$
+
+This relies on the **parallel trends assumption**: the fixed effects estimated from the data (including both treated and untreated observations) provide valid counterfactuals for what the treated units' outcomes would have been without treatment.
+
+If parallel trends fails, then $\hat{\mu}_g + \hat{\eta}_t$ would not equal the true counterfactual $\mu_g + \eta_t$ for treated units, and the approximations would break down.
+
+## Summary
+
+Under parallel trends: - **Untreated cells**: $\bar{\tilde{y}}_{gt} \approx 0$ (residuals average to zero) - **Treated cells**: $\bar{\tilde{y}}_{gt} \approx \tau_{gt}$ (residuals capture the treatment effect)
+
+This is why the TWFE estimate can be written as: $$
+\hat{\tau}_{TWFE} \approx \sum_{g,t: D_{gt}=1} w_{gt} \tau_{gt}
+$$
+
+The residualized outcomes for treated cells directly estimate the group-time treatment effects, while untreated cells contribute essentially zero to the estimate.

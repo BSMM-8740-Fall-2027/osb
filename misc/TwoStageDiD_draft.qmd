@@ -1,0 +1,297 @@
+---
+title: "TwoStageDiD_draft"
+---
+
+::: cell
+```{css}
+#| echo: false
+pre code {
+  font-size: 0.7em;
+}
+```
+:::
+
+## Starting Assumptions
+
+### The True Data Generating Process
+
+Under parallel trends, outcomes follow: $$
+y_{igt} = \mu_g + \eta_t + \tau_{gt} D_{gt} + \varepsilon_{igt}
+$$
+
+Where:
+
+-   $\mu_g$ = group fixed effect
+-   $\eta_t$ = time fixed effect
+-   $D_{gt}\equiv \textbf{1}_{g\le t}$
+-   $\tau_{gt}$ = group-time specific treatment effect
+-   $\varepsilon_{igt}$ = idiosyncratic error with $E[\varepsilon_{igt}] = 0$
+
+## Simplest case:
+
+$2\times 2$ DiD: two groups, two periods ($t\in\{1,2\}$); one group (A aka *control* ; $g=\infty$) never treated, the other group (B aka *treatment* ; $g=2$) treated in the second period.
+
+Under the assumptions:
+
+1.  **parallel trends**: that the untreated potential outcomes for both groups have parallel trends.
+2.  **no anticipation**: treatment effects are zero in all periods before treatment actually begins.
+
+then $\tau_{gt}$ represents a causal treatment effect.
+
+In this case, one estimator is "four means and three subtractions", the reason this method is called diff-in-diff.
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: classic 2x2 example data
+#| label: classic 2x2 example data
+# Create the classic 2x2 difference-in-differences setup
+data <- data.frame(
+  group = c("control", "control", "treatment", "treatment"),
+  period = c(1, 2, 1, 2),
+  treated = c(0, 0, 0, 1),
+  # Create outcomes with known treatment effect
+  outcome = c(10, 11, 12, 16)  # Treatment effect = 3
+)
+
+data$group_id <- ifelse(data$group == "control", 1, 2)
+data$period_id <- data$period
+
+data |> gt::gt() |> gtExtras::gt_theme_espn()
+```
+
+with matrix representation:
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: classic 2x2 data matrix
+#| label: classic 2x2 data matrix
+data$outcome |> 
+  matrix(nrow=2, dimnames = list(c("A","B"),c("1","2")))
+```
+
+The estimator is calculated by taking the means of each group, subtracting the *pre* means from the *post* means of each group, and then subtracting the treated differences from the untreated differences:
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: classic 2x2 four means and three subtractions
+#| label: classic 2x2 four means and three subtractions
+# Classic DiD calculation: 
+# (Y_treat_post - Y_treat_pre) - (Y_control_post - Y_control_pre)
+true_effect <- (16 - 12) - (11 - 10)
+cat("\nTRUE Treatment Effect (manual DiD):", true_effect, "\n\n")
+```
+
+The fixed effects regression gives the same estimate (The `fixest` package offers a family of functions to perform estimations with multiple fixed-effects):
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: classic 2x2 by TWFE
+#| label: classic 2x2 by TWFE
+
+traditional_twfe <- fixest::feols(outcome ~ treated | group_id + period_id, data = data)
+
+cat("Traditional TWFE Estimate:", coef(traditional_twfe)["treated"], "\n")
+```
+
+Finally, we use the Frisch-Waugh-Lovell (FWL) Theorem to estimate the TWFE model.
+
+Per the FWL Theorem, the TWFE model is equivalent to the residualized regression: $y_{igt} - \hat{\mu}_g - \hat{\eta}_t = \tau \tilde{D}_{gt} + \tilde{\varepsilon}_{gt}$
+
+-   starting with $y_{igt} = \mu_g + \eta_t + \tau_{gt}D_{gt} + \varepsilon_{igt}$ regress $y_{igt}$ on fixed effects (say $[\mu_g, \eta_t]$)
+    -   the fitted values are $\hat{y}_{igt} = \hat{\mu}_g + \hat{\eta}_t$ and so the residuals are $\tilde{y}_{igt} = y_{igt} - \hat{\mu}_g -\hat{\eta}_t$
+-   Regress the treatment indicator $D_{gt}$ on fixed effects (say $[\alpha_g, \delta_t]$)
+    -   the fitted values are $\hat{D}_{gt}$ and so the residuals are $\tilde{D}_{gt} = D_{gt} -\hat{D}_{gt}$
+-   regress $\tilde{y}_{igt} = \tau\tilde{D}_{gt} + \tilde{\varepsilon}_{gt}$
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: Step 1 - Regress outcome on fixed effects
+#| label: Step 1 - Regress outcome on fixed effects
+outcome_on_fe <- 
+  fixest::feols(outcome ~ 1 | group_id + period_id, data = data)
+data$outcome_resid <- resid(outcome_on_fe)
+```
+
+:::::: columns
+::: {.column width="45%"}
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: Step 1 - outcome fitted values
+#| label: Step 1 - outcome fitted values
+outcome_on_fe$fitted.values |>
+  matrix(nrow=2, dimnames = list(c("A","B"),c("1","2")))
+```
+:::
+
+::: {.column width="10%"}
+<!-- empty column to create gap -->
+:::
+
+::: {.column width="45%"}
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: Step 1 - outcome fitted residuals
+#| label: Step 1 - outcome fitted residuals
+resid(outcome_on_fe) |> 
+  matrix(nrow=2, dimnames = list(c("A","B"),c("1","2")))
+```
+:::
+::::::
+
+The fitted values returned by `fixest::feols` do not fully identify the fixed effects, since we don't have the intercept values from the regression. This leaves us with four equations and six unknowns. So we make the following identification assumptions
+
+$$
+\mu_{\infty} = 0\;\text{and}\;\eta_1 = 0
+$$
+
+Under these assumption we can force the unit level fixed effect for the untreated units to be zero by subtracting $\hat{y}_{\infty 1}$ from the fitted values:
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: Step 1 - forcing mu_{infty} = 0
+#| label: Step 1 - forcing mu_{infty} = 0
+(outcome_on_fe$fitted.values - outcome_on_fe$fitted.values[1]) |>
+  matrix(nrow=2, dimnames = list(c("A","B"),c("1","2")))
+```
+
+then, given $\eta_1 = 0$ , we have $\mu_2=2.5$. Finally, since $\mu_\infty=0$ we have $\eta_2=3.5$.
+
+We can now compute the treatment residuals the same way.
+
+We want to compute
+
+$$\tilde{D}_{gt} = D_{gt} - \hat{\alpha}_g - \hat{\delta}_t$$
+
+and then we can regress the outcome residuals on the treatment residuals, per FWL
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: Step 2 - Regress outcome residuals on treatment residuals
+#| label: Step 2 - Regress outcome residuals on treatment residuals
+#| warning: false
+# regress treatment on fixed effects
+treatment_on_fe <- 
+  fixest::feols(treated ~ 1 | group_id + period_id, data = data)
+data$treated_resid <- resid(treatment_on_fe)
+
+# use residuals to estimate TWFE regression
+lm(outcome_resid ~ treated_resid, data = data) |> broom::tidy()
+```
+
+And we see that the answer is the same as computers from the other two estimators.
+
+Let look a little deeper at how the result was arrived at with the FWL estimator.
+
+## The TWFE Decomposition
+
+### Starting Point: FWL Second-Stage Regression
+
+Starting with the FWL second-stage regression:
+
+$$
+\tilde{y}_{igt} = \tau \tilde{D}_{gt} + \tilde{\varepsilon}_{igt}
+$$
+
+The OLS estimator is:
+
+$$
+\hat{\tau}_{TWFE} = \frac{\sum_{i,g,t} \tilde{D}_{gt} \tilde{y}_{igt}}{\sum_{i,g,t} \tilde{D}_{gt}^2}
+$$
+
+### Decomposition by Group-Time Cells
+
+We can rewrite this by grouping observations within each $(g,t)$ cell where, in general, we have $N_{gt}$ samples:
+
+$$
+\hat{\tau}_{TWFE} = \frac{\sum_{g,t} \tilde{D}_{gt} \sum_{i=1}^{N_{gt}} \tilde{y}_{igt}}{\sum_{g,t} N_{gt} \tilde{D}_{gt}^2}
+$$
+
+$$
+= \frac{\sum_{g,t} N_{gt} \tilde{D}_{gt} \bar{\tilde{y}}_{gt}}{\sum_{g,t} N_{gt} \tilde{D}_{gt}^2}
+$$
+
+Where the average residualized outcome in cell $(g,t)$ is:
+
+$$
+\bar{\tilde{y}}_{gt} = \frac{1}{N_{gt}} \sum_{i=1}^{N_{gt}} \tilde{y}_{igt}
+$$
+
+### Weighted Average Form
+
+This can be expressed as:
+
+$$
+\hat{\tau}_{TWFE} = \sum_{g,t} w_{gt} \bar{\tilde{y}}_{gt}
+$$
+
+Where the weights are:
+
+$$
+w_{gt} = \frac{N_{gt} \tilde{D}_{gt}}{\sum_{g',t'} N_{g't'} \tilde{D}_{g't'}}
+$$
+
+**Note:** These weights can be **negative** when $\tilde{D}_{gt} < 0$, and they sum to 1:
+
+$$
+\sum_{g,t} w_{gt} = 1
+$$
+
+```{r}
+sum(data$treated_resid * data$outcome_resid) /
+  sum(data$treated_resid^2)
+
+data$treated_resid/sum(data$treated_resid^2)
+
+```
+
+```{r}
+fixeff_out <- 
+  (outcome_on_fe$fitted.values - outcome_on_fe$fitted.values[1]) |>
+    matrix(nrow=2, dimnames = list(c("A","B"),c("1","2")))
+
+fixeff_treat <- 
+  (treatment_on_fe$fitted.values - treatment_on_fe$fitted.values[1]) |>
+    matrix(nrow=2, dimnames = list(c("A","B"),c("1","2")))
+
+data$treated |>
+    matrix(nrow=2, dimnames = list(c("A","B"),c("1","2")))
+
+data$treated - (treatment_on_fe$fitted.values - treatment_on_fe$fitted.values[1])|>
+    matrix(nrow=2, dimnames = list(c("A","B"),c("1","2")))
+
+data$outcome - (outcome_on_fe$fitted.values - outcome_on_fe$fitted.values[1])|>
+    matrix(nrow=2, dimnames = list(c("A","B"),c("1","2")))
+
+(data$treated - (treatment_on_fe$fitted.values - treatment_on_fe$fitted.values[1]))^2 |> sum()
+```
+
+```{r}
+
+untreated_data <- data[data$treated == 0, ]
+cat("Stage 1 data (untreated only):\n")
+print(untreated_data[, c("group", "period", "outcome")])
+
+stage1 <- feols(outcome ~ 1 | group_id + period_id, data = untreated_data)
+
+# Get predicted values for all observations
+data$outcome_pred_stage1 <- predict(stage1, newdata = data)
+data$outcome_resid_gardner <- data$outcome - data$outcome_pred_stage1
+
+cat("\nStage 1 predictions and residuals:\n")
+print(data[, c("group", "period", "outcome", "outcome_pred_stage1", "outcome_resid_gardner")])
+
+# Stage 2: Regress residualized outcome on ORIGINAL treatment indicator
+stage2 <- feols(outcome_resid_gardner ~ treated, data = data)
+
+resid(stage1)
+
+```
