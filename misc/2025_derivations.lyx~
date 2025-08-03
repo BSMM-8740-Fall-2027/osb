@@ -2999,5 +2999,29 @@ D_{i} & =\mu+\pi Z_{i}+\eta_{i}\;\text{the "first stage"}
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\hat{\tau}(x) & =\frac{1}{n_{x,1}}\sum_{\{X_{i}=x,D_{i}=1\}}Y_{i}-\frac{1}{n_{x,0}}\sum_{\{X_{i}=x,D_{i}=0\}}Y_{i}\\
+ & =\frac{1}{n_{x}}\sum_{\{X_{i}=x\}}\frac{D_{i}Y_{i}}{\hat{e(x)}}-\frac{\left(1-D_{i}\right)Y_{i}}{1-\hat{e(x)}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\hat{\tau}_{TWFE} & =\frac{\sum_{i,g,t}\tilde{D}_{gt}\tilde{y}_{igt}}{\sum_{i,g,t}\tilde{D}_{gt}^{2}}\\
+ & =\frac{\sum_{i,g,t}\tilde{D}_{gt}\tilde{y}_{igt}}{\sum_{i,g,t}\tilde{D}_{gt}D_{gt}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document

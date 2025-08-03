@@ -452,7 +452,7 @@ data$treated_resid <- resid(treatment_on_fe)
 outcome_on_fe <- feols(outcome ~ 1 | group_id + period_id, data = data)
 data$outcome_resid <- resid(outcome_on_fe)
 
-lm(treated_resid ~ outcome_resid, data = data)
+lm(outcome_resid ~ treated_resid, data = data_h3)
 
 cat("\nResidualized treatment and outcomes:\n")
 print(data[, c("group", "period", "treated", "treated_resid", "outcome_resid")])
@@ -493,7 +493,7 @@ data$outcome_resid_gardner <- data$outcome - predict(stage1, newdata = data)
 stage2 <- feols(outcome_resid_gardner ~ treated, data = data)
 
 cat("Gardner Two-Stage Estimate:", round(coef(stage2)[1], 3), "\n")
-cat("Standard Error:", round(se(stage2)[1], 3), "\n")
+cat("Standard Error:", round(se(stage2)[2], 3), "\n")
 
 # =============================================================================
 # COMPARE WITH HETEROGENEOUS EFFECTS CASE

@@ -191,6 +191,124 @@ And we see that the answer is the same as computers from the other two estimator
 
 Let look a little deeper at how the result was arrived at with the FWL estimator.
 
+## Outcome Residuals in Terms of Potential Outcomes
+
+### Setup: The Data Generating Process
+
+Under the potential outcomes framework, each unit has two potential outcomes: - $Y_{igt}^0$ = potential outcome under no treatment - $Y_{igt}^1$ = potential outcome under treatment
+
+The observed outcome is: $$
+Y_{igt} = Y_{igt}^0 + D_{gt}(Y_{igt}^1 - Y_{igt}^0) = Y_{igt}^0 + D_{gt}\tau_{igt}
+$$
+
+Where $\tau_{igt} = Y_{igt}^1 - Y_{igt}^0$ is the individual treatment effect.
+
+### Parallel Trends Assumption
+
+Under parallel trends, the untreated potential outcomes follow: $$
+Y_{igt}^0 = \mu_g + \eta_t + \varepsilon_{igt}
+$$
+
+Where: - $\mu_g$ = group fixed effect (time-invariant group characteristics) - $\eta_t$ = time fixed effect (group-invariant time shocks) - $\varepsilon_{igt}$ = idiosyncratic error with $E[\varepsilon_{igt}] = 0$
+
+### The FWL First Stage: Outcome on Fixed Effects
+
+When we regress outcomes on fixed effects using **all observations**: $$
+Y_{igt} = \hat{\mu}_g + \hat{\eta}_t + \text{residual}_{igt}
+$$
+
+The outcome residuals are: $$
+\tilde{Y}_{igt} = Y_{igt} - \hat{\mu}_g - \hat{\eta}_t
+$$
+
+### Decomposition by Treatment Status
+
+#### Case 1: Untreated Observations ($D_{gt} = 0$)
+
+For untreated units, the observed outcome is: $$
+Y_{igt} = Y_{igt}^0 = \mu_g + \eta_t + \varepsilon_{igt}
+$$
+
+Under consistent fixed effects estimation: $$
+\hat{\mu}_g \xrightarrow{p} \mu_g \quad \text{and} \quad \hat{\eta}_t \xrightarrow{p} \eta_t
+$$
+
+Therefore, the outcome residual is: $$
+\tilde{Y}_{igt} = Y_{igt} - \hat{\mu}_g - \hat{\eta}_t \xrightarrow{p} (\mu_g + \eta_t + \varepsilon_{igt}) - (\mu_g + \eta_t) = \varepsilon_{igt}
+$$
+
+**For untreated units:** $\tilde{Y}_{igt} \approx \varepsilon_{igt}$ (idiosyncratic error)
+
+#### Case 2: Treated Observations ($D_{gt} = 1$)
+
+For treated units, the observed outcome is: $$
+Y_{igt} = Y_{igt}^1 = Y_{igt}^0 + \tau_{igt} = \mu_g + \eta_t + \varepsilon_{igt} + \tau_{igt}
+$$
+
+The crucial insight is that $\hat{\mu}_g$ and $\hat{\eta}_t$ are estimated from **both treated and untreated observations**. Under parallel trends, these estimates converge to the **counterfactual** fixed effects: $$
+\hat{\mu}_g \xrightarrow{p} \mu_g \quad \text{and} \quad \hat{\eta}_t \xrightarrow{p} \eta_t
+$$
+
+Therefore, the outcome residual is: $$
+\tilde{Y}_{igt} = Y_{igt} - \hat{\mu}_g - \hat{\eta}_t \xrightarrow{p} (\mu_g + \eta_t + \varepsilon_{igt} + \tau_{igt}) - (\mu_g + \eta_t) = \varepsilon_{igt} + \tau_{igt}
+$$
+
+**For treated units:** $\tilde{Y}_{igt} \approx \varepsilon_{igt} + \tau_{igt}$ (idiosyncratic error + treatment effect)
+
+### Cell-Level Averages
+
+#### Untreated Cells ($D_{gt} = 0$)
+
+The average outcome residual in an untreated cell is: $$
+\bar{\tilde{Y}}_{gt} = \frac{1}{N_{gt}} \sum_{i=1}^{N_{gt}} \tilde{Y}_{igt} \approx \frac{1}{N_{gt}} \sum_{i=1}^{N_{gt}} \varepsilon_{igt} \xrightarrow{p} 0
+$$
+
+**Untreated cell average:** $\bar{\tilde{Y}}_{gt} \approx 0$
+
+#### Treated Cells ($D_{gt} = 1$)
+
+The average outcome residual in a treated cell is: $$
+\bar{\tilde{Y}}_{gt} = \frac{1}{N_{gt}} \sum_{i=1}^{N_{gt}} \tilde{Y}_{igt} \approx \frac{1}{N_{gt}} \sum_{i=1}^{N_{gt}} (\varepsilon_{igt} + \tau_{igt})
+$$
+
+$$
+= \frac{1}{N_{gt}} \sum_{i=1}^{N_{gt}} \varepsilon_{igt} + \frac{1}{N_{gt}} \sum_{i=1}^{N_{gt}} \tau_{igt} \xrightarrow{p} 0 + \bar{\tau}_{gt} = \bar{\tau}_{gt}
+$$
+
+Where $\bar{\tau}_{gt} = \frac{1}{N_{gt}} \sum_{i=1}^{N_{gt}} \tau_{igt}$ is the average treatment effect in cell $(g,t)$.
+
+**Treated cell average:** $\bar{\tilde{Y}}_{gt} \approx \bar{\tau}_{gt}$
+
+### Key Insights
+
+#### 1. **Residuals Capture Treatment Effects**
+
+For treated observations, the outcome residuals capture both: - The individual treatment effect $\tau_{igt}$ - The idiosyncratic error $\varepsilon_{igt}$
+
+#### 2. **Cell Averages Isolate Treatment Effects**
+
+When we average within cells, the idiosyncratic errors $\varepsilon_{igt}$ cancel out, leaving: - Untreated cells: $\bar{\tilde{Y}}_{gt} \approx 0$ - Treated cells: $\bar{\tilde{Y}}_{gt} \approx \bar{\tau}_{gt}$
+
+#### 3. **Fixed Effects Provide Counterfactuals**
+
+The estimated fixed effects $\hat{\mu}_g + \hat{\eta}_t$ represent the **counterfactual outcome** that treated units would have had without treatment (their $Y_{igt}^0$).
+
+#### 4. **Parallel Trends is Crucial**
+
+This decomposition only works under parallel trends. If parallel trends fails, then: $$
+\hat{\mu}_g + \hat{\eta}_t \not\xrightarrow{p} \mu_g + \eta_t
+$$ for treated units, and the residuals won't cleanly separate treatment effects from errors.
+
+## Connection to TWFE Estimation
+
+This explains why the TWFE estimate becomes: $$
+\hat{\tau}_{TWFE} = \sum_{g,t} w_{gt} \bar{\tilde{Y}}_{gt} \approx \sum_{g,t: D_{gt}=1} w_{gt} \bar{\tau}_{gt}
+$$
+
+The outcome residuals for treated cells directly estimate the cell-specific average treatment effects $\bar{\tau}_{gt}$, which is why TWFE becomes a weighted average of these treatment effects.
+
+The problem is that the weights $w_{gt}$ depend on the problematic treatment residuals $\tilde{D}_{gt}$, not on natural sample-size weighting.
+
 ## The TWFE Decomposition
 
 ### Starting Point: FWL Second-Stage Regression
@@ -205,6 +323,12 @@ The OLS estimator is:
 
 $$
 \hat{\tau}_{TWFE} = \frac{\sum_{i,g,t} \tilde{D}_{gt} \tilde{y}_{igt}}{\sum_{i,g,t} \tilde{D}_{gt}^2}
+$$
+
+but the residuals $\tilde{y}_{igt}$ are zero when $D_{gt}=0$ and $\bar{\tau}_{gt}$ otherwise, so
+
+$$
+\hat{\tau}_{TWFE} = \frac{\sum_{igt:D_{g,t}=1} \tilde{D}_{gt} \bar{\tau}_{gt}}{\sum_{igt} \tilde{D}_{gt}^2}
 $$
 
 ### Decomposition by Group-Time Cells
@@ -246,6 +370,7 @@ $$
 $$
 
 ```{r}
+#| echo: false
 sum(data$treated_resid * data$outcome_resid) /
   sum(data$treated_resid^2)
 
@@ -254,6 +379,7 @@ data$treated_resid/sum(data$treated_resid^2)
 ```
 
 ```{r}
+#| echo: false
 fixeff_out <- 
   (outcome_on_fe$fitted.values - outcome_on_fe$fitted.values[1]) |>
     matrix(nrow=2, dimnames = list(c("A","B"),c("1","2")))
@@ -275,12 +401,12 @@ data$outcome - (outcome_on_fe$fitted.values - outcome_on_fe$fitted.values[1])|>
 ```
 
 ```{r}
-
+#| echo: false
 untreated_data <- data[data$treated == 0, ]
 cat("Stage 1 data (untreated only):\n")
 print(untreated_data[, c("group", "period", "outcome")])
 
-stage1 <- feols(outcome ~ 1 | group_id + period_id, data = untreated_data)
+stage1 <- fixest::feols(outcome ~ 1 | group_id + period_id, data = untreated_data)
 
 # Get predicted values for all observations
 data$outcome_pred_stage1 <- predict(stage1, newdata = data)
@@ -290,8 +416,221 @@ cat("\nStage 1 predictions and residuals:\n")
 print(data[, c("group", "period", "outcome", "outcome_pred_stage1", "outcome_resid_gardner")])
 
 # Stage 2: Regress residualized outcome on ORIGINAL treatment indicator
-stage2 <- feols(outcome_resid_gardner ~ treated, data = data)
+stage2 <- fixest::feols(outcome_resid_gardner ~ treated, data = data)
 
 resid(stage1)
 
+```
+
+```{r}
+#| echo: false
+data_h3 <- data.frame(
+  group = rep(c("A", "B", "C"), each = 3),
+  period = rep(1:3, 3),
+  group_id = rep(c(1, 2, 3), each = 3),
+  period_id = rep(1:3, 3)
+) |> 
+  dplyr::mutate(
+    # Treatment indicator (staggered timing)
+    treated = dplyr::case_when(
+      group == "A" & period >= 2 ~ 1,
+      group == "B" & period >= 3 ~ 1,
+      TRUE ~ 0
+    )
+  )
+
+# Create outcomes with HOMOGENEOUS (constant) treatment effects
+data_h3 <- data_h3 |> 
+  dplyr::mutate(
+    # Base outcome (group and time fixed effects)
+    base_outcome = dplyr::case_when(
+      group == "A" ~ 10,  # Group A baseline
+      group == "B" ~ 12,  # Group B baseline  
+      group == "C" ~ 8    # Group C baseline
+    ) + (period - 1) * 1.5,  # Common time trend
+    
+    # HOMOGENEOUS treatment effect: same for all treated units!
+    treatment_effect = ifelse(treated == 1, 3.0, 0),  # Constant effect of 3.0
+    
+    # Final outcome
+    outcome = base_outcome + treatment_effect
+  )
+
+# estimators
+traditional_twfe_h3 <- fixest::feols(outcome ~ treated | group_id + period_id, data = data_h3)
+
+cat("Traditional TWFE Estimate:", round(coef(traditional_twfe_h3)[1], 3), "\n")
+
+# true_effect
+true_effects <- data_h3 |>
+  dplyr::filter(treated == 1) |>
+  dplyr::select(group, period, treatment_effect)
+
+true_att <- mean(true_effects$treatment_effect)
+
+# Analyze the weighting
+treatment_on_fe_h3 <- fixest::feols(treated ~ 1 | group_id + period_id, data = data_h3)
+data_h3$treated_resid <- resid(treatment_on_fe_h3)
+
+outcome_on_fe_h3 <- fixest::feols(outcome ~ 1 | group_id + period_id, data = data_h3)
+data_h3$outcome_resid <- resid(outcome_on_fe_h3)
+
+lm(outcome_resid ~ treated_resid, data = data_h3)
+
+# Calculate implicit weights
+nonzero_resid_h3 <- data_h3[abs(data_h3$treated_resid) > 1e-10, ]
+if(nrow(nonzero_resid_h3) > 0) {
+  weights <- nonzero_resid_h3$treated_resid^2 / sum(nonzero_resid_h3$treated_resid^2)
+  
+  cat("\nImplicit weights in TWFE estimation:\n")
+  weight_table <- data.frame(
+    group = nonzero_resid_h3$group,
+    period = nonzero_resid_h3$period,
+    treated = nonzero_resid_h3$treated,
+    treated_resid = round(nonzero_resid_h3$treated_resid, 3),
+    weight = round(weights, 3),
+    true_effect = nonzero_resid_h3$treatment_effect
+  )
+  print(weight_table)
+  
+  # Since all treatment effects are the same, weighted average = unweighted average
+  weighted_estimate <- sum(weights * weight_table$true_effect)
+  cat("\nWeighted average using TWFE weights:", round(weighted_estimate, 3), "\n")
+}
+
+nonzero_resid_h3 |> 
+  dplyr::mutate(
+    weight = treated_resid / sum(treated_resid^2)
+    , comp = outcome_resid * weight)
+```
+
+```{r}
+#| echo: false
+data_nh3 <- data.frame(
+  group = rep(c("A", "B", "C"), each = 3),
+  period = rep(1:3, 3),
+  group_id = rep(c(1, 2, 3), each = 3),
+  period_id = rep(1:3, 3)
+) |> 
+  dplyr::mutate(
+    # Treatment indicator (staggered timing)
+    treated = dplyr::case_when(
+      group == "A" & period >= 2 ~ 1,
+      group == "B" & period >= 3 ~ 1,
+      TRUE ~ 0
+    )
+  )
+
+# Create outcomes with HOMOGENEOUS (constant) treatment effects
+data_nh3 <- data_nh3 |> 
+  dplyr::mutate(
+    # Base outcome (group and time fixed effects)
+    base_outcome = dplyr::case_when(
+      group == "A" ~ 10,  # Group A baseline
+      group == "B" ~ 12,  # Group B baseline  
+      group == "C" ~ 8    # Group C baseline
+    ) + (period - 1) * 1.5,  # Common time trend
+    
+    # HOMOGENEOUS treatment effect: same for all treated units!
+    #treatment_effect = ifelse(treated == 1, 3.0, 0),  # Constant effect of 3.0
+    treatment_effect = dplyr::case_when(
+      group == "A" & treated == 1 ~ 3,
+      group == "B" & treated == 1 ~ 4,
+      TRUE ~ 0
+    ),
+    # Final outcome
+    outcome = base_outcome + treatment_effect
+  )
+
+# ===========================
+# estimators
+traditional_twfe_nh3 <- fixest::feols(outcome ~ treated | group_id + period_id, data = data_nh3)
+
+cat("Traditional TWFE Estimate:", round(coef(traditional_twfe_nh3)[1], 3), "\n")
+
+# true_effect
+true_effects <- data_nh3 |>
+  dplyr::filter(treated == 1) |>
+  dplyr::select(group, period, treatment_effect)
+
+true_att <- mean(true_effects$treatment_effect)
+
+# Analyze the weighting
+treatment_on_fe_nh3 <- fixest::feols(treated ~ 1 | group_id + period_id, data = data_nh3)
+data_nh3$treated_resid <- resid(treatment_on_fe_nh3)
+
+outcome_on_fe_nh3 <- fixest::feols(outcome ~ 1 | group_id + period_id, data = data_nh3)
+data_nh3$outcome_resid <- resid(outcome_on_fe_nh3)
+
+# lm(outcome_resid ~ treated_resid, data = data_nh3) |> 
+#   broom::tidy() |> dplyr::pull(treated_resid)
+
+# Calculate implicit weights
+nonzero_resid_nh3 <- data_nh3[abs(data_nh3$treated_resid) > 1e-10, ]
+if(nrow(nonzero_resid_nh3) > 0) {
+  weights <- nonzero_resid_nh3$treated_resid^2 / sum(nonzero_resid_nh3$treated_resid^2)
+  
+  cat("\nImplicit weights in TWFE estimation:\n")
+  weight_table <- data.frame(
+    group = nonzero_resid_nh3$group,
+    period = nonzero_resid_nh3$period,
+    treated = nonzero_resid_nh3$treated,
+    treated_resid = round(nonzero_resid_nh3$treated_resid, 3),
+    weight = round(weights, 3),
+    true_effect = nonzero_resid_nh3$treatment_effect
+  )
+  print(weight_table)
+  
+  # Since all treatment effects are the same, weighted average = unweighted average
+  weighted_estimate <- sum(weights * weight_table$true_effect)
+  cat("\nWeighted average using TWFE weights:", round(weighted_estimate, 3), "\n")
+}
+
+nonzero_resid_nh3 |> 
+  dplyr::mutate(
+    weight = treated_resid / sum(treated_resid^2)
+    , comp = outcome_resid * weight) |> 
+  dplyr::summarize(effect = sum(comp))
+
+# Stage 1: Estimate fixed effects using ONLY UNTREATED observations
+untreated_data_nh3 <- data_nh3[data_nh3$treated == 0, ]
+stage1 <- fixest::feols(outcome ~ 1 | group_id + period_id, data = untreated_data_nh3)
+
+# Stage 2: Regress residualized outcome on treatment
+data_nh3$outcome_resid_gardner <- data_nh3$outcome - predict(stage1, newdata = data_nh3)
+stage2 <- fixest::feols(outcome_resid_gardner ~ treated, data = data_nh3)
+
+cat("Gardner Two-Stage Estimate:", round(coef(stage2)[2], 3), "\n")
+
+tibble::tibble(
+  "True ATT" = true_att
+  , "Traditional TWFE Estimate" = coef(traditional_twfe_nh3)[1]
+  , "FWL Estimated" = lm(outcome_resid ~ treated_resid, data = data_nh3) |> 
+  broom::tidy() |> dplyr::filter(term == 'treated_resid') |> dplyr::pull(estimate)
+  , "Weighted average using TWFE weights" =
+    nonzero_resid_nh3 |> 
+      dplyr::mutate(
+        weight = treated_resid / sum(treated_resid^2)
+        , comp = outcome_resid * weight
+      ) |> 
+      dplyr::summarize(effect = sum(comp)) |> 
+      dplyr::pull(effect)
+  , "Gardner Two-Stage Estimate" = coef(stage2)[2]
+) |> 
+  tidyr::pivot_longer(everything()) |> gt::gt()
+
+```
+
+```{r}
+#| echo: false
+data_nh3$treated_resid |> mean()
+
+denom <- data_nh3 |> dplyr::filter(treated == 1) |> dplyr::pull(treated_resid) |> mean()
+unscaled_weights <- data_nh3 |> dplyr::filter(treated == 1) |> dplyr::pull(treated_resid)
+
+weights <- data_nh3 |> dplyr::filter(treated == 1) |> dplyr::pull(treated_resid)/(data_nh3 |> dplyr::filter(treated == 1) |> dplyr::pull(treated_resid) |> mean())
+
+data_nh3$treated_resid |> matrix(ncol = 3)
+
+data_nh3$outcome_resid
 ```
