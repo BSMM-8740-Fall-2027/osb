@@ -189,6 +189,7 @@ Rather than the problematic: $$\hat{\tau} = \sum_{g,t} w_{gt} \tau_{gt} \quad \t
 2x2 (two groups, two periods)
 
 ```{r}
+#| eval: false
 # Simple 2x2 Example: Traditional TWFE vs Gardner's Method
 # 2 groups, 2 periods, one group treated only in period 2
 
@@ -376,6 +377,7 @@ cat("Identification comes from the wrong observations.\n")
 3x3 (3 groups, 3 periods, homogeneous)
 
 ```{r}
+#| eval: false
 # Staggered Treatment with HOMOGENEOUS Effects: TWFE vs Gardner
 # Testing whether TWFE works when treatment effects are constant across groups/time
 
@@ -572,6 +574,7 @@ cat("effects are HETEROGENEOUS across groups or time periods.\n")
 Diagnostic
 
 ```{r}
+#| eval: false
 # Diagnostic: Understanding why Gardner's method gives 0 instead of 3
 
 library(fixest)

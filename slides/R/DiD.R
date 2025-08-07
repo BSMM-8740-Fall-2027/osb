@@ -576,7 +576,7 @@ rbind(
   labs(x = "Time variable", y = "Ouroleome variable", col = "ID", lty = "Role")
 
 # Goodman-Bacon decomposition
-bgd <- bacon(y ~ D, dat4, id_var = "id", time_var = "tt")
+bgd <- bacondecomp::bacon(y ~ D, dat4, id_var = "id", time_var = "tt")
 
 # check that the weighted mean of these estimates is exactly the same as our earlier (naive) TWFE coefficient estimate
 bgd_wm <- weighted.mean(bgd$estimate, bgd$weight)
@@ -591,6 +591,65 @@ ggplot(bgd, aes(x = weight, y = estimate, shape = type, col = type)) +
     caption = "Note: The horizontal dotted line depicts the full TWFE estimate."
   )
 
+# ^^^^^^^^^^^^^^^^^^^^^^ based on TwoStageDiD.qmd
+dat4_rev <- dat4 |>
+  dplyr::rename(
+    group_id = id
+    , period_id = tt
+    , outcome = y
+    , treated = D
+  ) |>
+  dplyr::mutate(
+    treated = as.numeric(treated)
+    , treatment_effect =
+      dplyr::case_when(
+        group_id == 2 & period_id >= 5 ~ 2
+        , group_id == 3 & period_id >= 8 ~ 4
+        , TRUE ~ 0
+      )
+  )
+# regress treatment on fixed effects
+treatment_on_fe <-
+  fixest::feols(treated ~ 1 | group_id + period_id, data = dat4_rev)
+dat4_rev$treated_resid <- resid(treatment_on_fe)
+# regress outcome on fixed effects
+outcome_on_fe <-
+  fixest::feols(outcome ~ 1 | group_id + period_id, data = dat4_rev)
+dat4_rev$outcome_resid <- resid(outcome_on_fe)
+
+# use residuals to estimate TWFE regression
+lm(outcome_resid ~ treated_resid, data = dat4_rev) |> broom::tidy()
+
+denom <-
+  (dat4_rev |> dplyr::filter(treated == 1) |> dplyr::pull(treated_resid)) |> sum()
+
+unscaled_weights <- dat4_rev |> dplyr::filter(treated == 1) |> dplyr::pull(treated_resid)
+
+weights <- unscaled_weights/denom
+
+treated_eff <-
+  dat4_rev |> dplyr::filter(treated == 1) |> dplyr::pull(treatment_effect)
+
+treated_eff %*% weights
+
+# Stage 1: Estimate fixed effects using ONLY UNTREATED observations
+untreated_data4_rev <- dat4_rev[dat4_rev$treated == 0, ]
+stage1 <- fixest::feols(outcome ~ 1 | group_id + period_id, data = untreated_data4_rev)
+
+# Stage 2: Regress residualized outcome on treatment
+dat4_rev$outcome_resid_gardner <- dat4_rev$outcome - predict(stage1, newdata = dat4_rev)
+stage2 <- fixest::feols(outcome_resid_gardner ~ treated, data = dat4_rev)
+
+cat("Gardner Two-Stage Estimate:", round(coef(stage2)[2], 3), "\n")
+
+# true_effect
+true_effects <- dat4_rev |>
+  dplyr::filter(treated == 1) |>
+  dplyr::select(treatment_effect)
+
+true_att <- mean(true_effects$treatment_effect)
+
+# ^^^^^^^^^^^^^^^^^^^^^^
 
 # translating from stata
 units <- 3

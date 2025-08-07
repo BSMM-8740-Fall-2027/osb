@@ -11,6 +11,7 @@ logo: "images/logo.png"
 format: 
   revealjs: 
     chalkboard: true
+    scrollable: true
     theme: slides.scss
     multiplex: true
     transition: fade
@@ -2764,6 +2765,394 @@ ggplot(eventplotdf,
 ```
 ::::::
 :::::::::
+
+## Heterogeneity & Differential Timing
+
+Consider when we have multiple groups of units, some treated, some perhaps not treated, where we could have heterogeneous effects (i.e. different causal effects by group or time) and/or differential timing (treatment starts at different times for different groups.
+
+In this case, the TWFE regression is known to not estimate the causal effect.
+
+## Heterogeneity & Differential Timing
+
+::: {style="font-size: x-large"}
+Along with continuous outcomes $y_{igt}$, our data consists of (discrete) units $i$, (discrete) times $t$, and (discrete) groups, indexed by time first treated $g$. Under parallel trends, outcomes follow:
+
+$$
+\begin{align}
+y_{igt} = \mu_g + \eta_t + \tau_{gt} D_{gt} + \varepsilon_{igt}
+\end{align}
+$$
+
+Where units are indexed by $i$ and:
+
+-   $\mu_g$ = group fixed effect: *effects constant over all time, by group*
+-   $\eta_t$ = time fixed effect: *effects constant over all groups, by time*
+-   $D_{gt}\equiv \textbf{1}_{g\le t}$: *treatment indicator ([**note**]{.underline} - once treated, always treated)*
+-   $\tau_{gt}$ = group-time specific treatment effect: *i.e.* $\mathbb{E}[Y^1_{gt}-Y^0_{gt}]$ *in potential outcomes notation*
+-   $\varepsilon_{igt}$ = idiosyncratic error with $E[\varepsilon_{igt}] = 0$
+:::
+
+## The simplest case (again):
+
+::: {style="font-size: x-large"}
+$2\times 2$ DiD: two groups, two periods ($t\in\{1,2\}$); one group (A, aka *control* ; $g=\infty$) never treated, the other group (B, aka *treatment* ; $g=2$) treated in the second period. In the data here we have one unit per group, but in practice there will be $N_{gt}$ units in a group-time.
+
+Under the assumptions:
+
+1.  **parallel trends**: that the untreated potential outcomes for both groups have parallel trends.
+2.  **no anticipation**: treatment effects are zero in all periods before treatment actually begins.
+
+then $\tau_{gt}$ represents a causal treatment effect (the estimand).
+
+We have seen this case already.
+:::
+
+## The simplest case (again):
+
+::: {style="font-size: x-large"}
+Finally, we can use the Frisch-Waugh-Lovell (FWL) Theorem to estimate the TWFE model.
+
+Per the FWL Theorem, the TWFE model is equivalent to the residualized regression: $y_{igt} - \hat{\mu}_g - \hat{\eta}_t = \tau \tilde{D}_{gt} + \tilde{\varepsilon}_{gt}$
+
+1.  starting with $y_{igt} = \mu_g + \eta_t + \tau_{gt}D_{gt} + \varepsilon_{igt}$ regress the output $y_{igt}$ on fixed effects (say $[\mu_g, \eta_t]$)
+    -   the fitted values are $\hat{y}_{igt} = \hat{\mu}_g + \hat{\eta}_t$ and so the residuals are $\tilde{y}_{igt} = y_{igt} - \hat{\mu}_g -\hat{\eta}_t$
+2.  regress the treatment indicator $D_{gt}$ on fixed effects (say $[\alpha_g, \delta_t]$)
+    -   the fitted values are $\hat{D}_{gt}$ and so the residuals are $\tilde{D}_{gt} = D_{gt} -\hat{D}_{gt}$
+3.  regress the output residuals on the treatment residuals $\tilde{y}_{igt} = \tau\tilde{D}_{gt} + \tilde{\varepsilon}_{gt}$
+:::
+
+## The simplest case (FWL):
+
+::: {style="font-size: x-large"}
+And we see that the calculation per FWL is the same as computed by the other two estimators. Note that the FWL estimate can be calculated directly using the residuals
+
+$$
+\beta_{FWL}=\frac{\text{cov}(\tilde{D}_{gt},\tilde{y}_{igt})}{\text{var}(\tilde{D}_{gt})}
+$$
+
+This is equal to the alternative formulation using the mean of the outcomes and the treatment indicator.
+
+$$
+\beta_{FWL}=\frac{\text{cov}(\tilde{D}_{gt},\hat{y}_{igt})}{\text{cov}(\tilde{D}_{gt},D_{gt})}
+$$
+:::
+
+## In general (FWL):
+
+::: {style="font-size: x-large"}
+When we regress outcomes on fixed effects using **all observations**: $$
+Y_{igt} = \hat{\mu}_g + \hat{\eta}_t + \epsilon_{igt}
+$$
+
+We estimate the fixed effects, which encapsulate the parallel trends assumption. The outcome residuals are: $$
+\tilde{Y}_{igt} = Y_{igt} - \hat{\mu}_g - \hat{\eta}_t
+$$
+
+The estimated fixed effects $\hat{\mu}_g + \hat{\eta}_t$ represent the **counterfactual outcome** that treated units would have had without treatment (their $Y_{igt}^0$).
+:::
+
+## Goodman-Bacon decomposition {.scrollable}
+
+::: {style="font-size: large"}
+The introduction of differential treatment timing makes it hard to draw a bright line between *pre* and *post* treatment periods.
+
+To show this we use the following data:
+
+```{r}
+#| class-output: .scrolling
+#| echo: true
+#| code-fold: true
+#| code-summary: new data - 3 groups x 10 periods
+#| label: new data - 3 groups x 10 periods
+dat4_rev = data.frame(
+  group_id = rep(1:3, times = 10),
+  period_id = rep(1:10, each = 3)
+) |>
+  within({
+    treated = (group_id == 2 & period_id >= 5) | (group_id == 3 & period_id >= 8)
+    btrue = ifelse(treated & group_id == 3, 4, ifelse(treated & group_id == 2, 2, 0))
+    outcome = group_id + 1 * period_id + btrue * treated
+  }) |> 
+    dplyr::mutate(
+    treated = as.numeric(treated)
+    , treatment_effect = 
+      dplyr::case_when(
+        group_id == 2 & period_id >= 5 ~ 2
+        , group_id == 3 & period_id >= 8 ~ 4
+        , TRUE ~ 0
+      )
+  )
+dat4_rev |> gt::gt()
+```
+:::
+
+## Goodman-Bacon decomposition
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: new data plotted
+#| label: new data plotted
+require(ggplot2, quietly = TRUE)
+#theme_set(theme_bw(base_size = 22))
+ggplot(dat4_rev, aes(x = period_id, y = outcome, col = factor(group_id))) +
+  geom_point() + geom_line() +
+  geom_vline(xintercept = c(4.5, 7.5), lty = 2) +
+  scale_x_continuous(breaks = scales::pretty_breaks()) +
+  labs(x = "Time period", y = "Outcome variable", col = "ID") +
+  theme_light(base_size = 18) 
+```
+
+## Goodman-Bacon decomposition
+
+::: {style="font-size: x-large"}
+Here we see that our simulation includes two distinct treatment periods. The first treatment occurs at period 5, where group_id=2’s trendline jumps by 2 units. The second treatment occurs in period 8, where group_id=3’s trendline jumps by 4 units. In contrast, id=1 remains untreated for the duration of the experiment.
+
+It’s not immediately clear how to calculate the ATT. For example, how should the late treated unit (group_id=3) regard the early treated unit (group_id=2)? Can the latter be used as control group for the former? After all, they didn’t receive treatment at the same time… but, on the other hand, group_id=2’s path was already altered by the initial treatment wave.
+:::
+
+## Goodman-Bacon decomposition
+
+Start by estimating a simple TWFE model (three ways):
+
+::: {style="font-size: large"}
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: TWFE estimated with new data
+#| label: TWFE estimated with new data
+
+# (1) using fixest::feols directly
+traditional_twfe4_rev <- fixest::feols(outcome ~ treated | group_id + period_id, data = dat4_rev)
+
+# (2) using straight FWL
+treatment_on_fe4_rev <- fixest::feols(treated ~ 1 | group_id + period_id, data = dat4_rev)
+dat4_rev$treated_resid <- resid(treatment_on_fe4_rev)
+
+outcome_on_fe4_rev <- fixest::feols(outcome ~ 1 | group_id + period_id, data = dat4_rev)
+dat4_rev$outcome_resid <- resid(outcome_on_fe4_rev)
+
+# (3) calculate ATT directly
+treated <- dat4_rev |>
+  dplyr::filter(treated == 1)
+true_ATT <- treated |>
+  dplyr::pull(treatment_effect) |> mean()
+
+tibble::tibble(
+  "True ATT" = true_ATT
+  , "Traditional TWFE Estimate" = coef(traditional_twfe4_rev)[1]
+  , "FWL Estimated" = lm(outcome_resid ~ treated_resid, data = dat4_rev) |> 
+  broom::tidy() |> dplyr::filter(term == 'treated_resid') |> dplyr::pull(estimate)
+) |> 
+  tidyr::pivot_longer(everything()) |> gt::gt('name')
+```
+:::
+
+## Goodman-Bacon decomposition
+
+::: {style="font-size: x-large"}
+So all our methods agree to 6 digits, and they are all wrong. What is going on?
+
+The short answer is that each estimate comprises a *weighted average* of four distinct 2x2 groups (or comparisons):
+
+1.  **treated** vs **untreated** (i) *early treated* (Te) vs *untreated* (U) (ii) *late treated* (Tl) vs *untreated* (U)
+
+2.  **differentially treated** (i) *early treated* (Te) vs *late control* (Cl) (ii) *late treated* (Tl) vs *early control* (Ce)
+
+We can visualize these four comparison sets as follows:
+:::
+
+## Goodman-Bacon decomposition
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: Goodman-Bacon decomposition plot
+#| label: Goodman-Bacon decomposition plot
+rbind(
+  dat4_rev |> subset(group_id %in% c(1,2)) |> 
+    transform(role = ifelse(group_id==2, "Treatment", "Control"), comp = "1.1. Early vs Untreated"),
+  dat4_rev |> subset(group_id %in% c(1,3)) |> 
+    transform(role = ifelse(group_id==3, "Treatment", "Control"), comp = "1.2. Late vs Untreated"),
+  dat4_rev |> subset(group_id %in% c(2,3) & period_id<8) |> 
+    transform(role = ifelse(group_id==2, "Treatment", "Control"), comp = "2.1. Early vs Late"),
+  dat4_rev |> subset(group_id %in% c(2:3) & period_id>4) |> 
+    transform(role = ifelse(group_id==3, "Treatment", "Control"), comp = "2.2. Late vs Early")
+) |>
+  ggplot(aes(period_id, outcome, group = group_id, col = factor(group_id), lty = role)) +
+  geom_point() + geom_line() +
+  facet_wrap(~comp) +
+  scale_x_continuous(breaks = scales::pretty_breaks()) +
+  scale_linetype_manual(values = c("Control" = 5, "Treatment" = 1)) +
+  labs(x = "Time period", y = "Outcome variable", col = "ID", lty = "Role") +
+  theme_light(base_size = 14) 
+```
+
+## Goodman-Bacon decomposition
+
+The Goodman-Bacon decomposition reveals a fundamental issue with two-way fixed effects (TWFE) difference-in-differences estimators when treatment timing varies across units: 
+
+the overall treatment effect estimate is a weighted average of all possible 2×2 DD comparisons, including problematic ones where already-treated units serve as controls for newly-treated units.
+
+## Goodman-Bacon decomposition
+
+::: {style="font-size: x-large"}
+How to explain the failure of TWFE regression to compute the correct ATT when we have differential treatment timing or heterogeneous effects? One explanation is that the treated values bias the computation of the fixed effects.
+
+Looking at the group-time outcomes $y_{gt}$ (since we have just one unit of data per group-time):
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: show data by group-time
+#| label: show data by group-time
+#| fig-cap: Outcome data by group-time
+dmnms <- 
+  list(
+    paste("group",as.character(1:3))
+    , as.character(1:10)
+    )
+dat4_rev |> dplyr::arrange(group_id) |> 
+  dplyr::pull(outcome) |> round(2) |> 
+  matrix(nrow = 3,byrow =T, dimnames = dmnms) |> 
+  as.data.frame() |> 
+  knitr::kable("html",digits=2,table.attr = "style='width:40%;'") |> 
+  kableExtra::column_spec(column = 1, width = "5em") |> 
+  kableExtra::column_spec(column = 2:11, width = "3em") |> 
+  kableExtra::kable_styling(full_width = F) |> 
+  kableExtra::footnote(footnote_as_chunk=T, general = "group 1 is never treated.")
+```
+:::
+
+## Goodman-Bacon decomposition
+
+::: {style="font-size: x-large"}
+By definition fixed effects are constant by group and by time. By convention, the group effects are zero for group-times (1,.) and the time effects are zero for group-times (.,1). Regressing the output against the fixed effects, should estimate the fixed effect, and the residual outcomes should then just be the causal effects, but this does not happen if we use all the outcomes in the regression:
+:::
+
+::: {style="font-size: x-large"}
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: show residuals by group-time using all outcome data
+#| label: show residuals by group-time using all outcome data
+#| fig-cap: Residual outcome data by group-time, estimates using all outomes
+dat4_rev |> dplyr::arrange(group_id) |> 
+  dplyr::pull(outcome_resid) |> round(2) |> 
+  matrix(nrow = 3,byrow =T, dimnames = dmnms) |> 
+  as.data.frame() |> 
+  knitr::kable("html", digits=2, table.attr = "style='width:40%;'") |> 
+  kableExtra::column_spec(column = 1, width = "5em") |> 
+  kableExtra::column_spec(column = 2:11, width = "3em") |> 
+  kableExtra::kable_styling(full_width = F) |> 
+  kableExtra::footnote(footnote_as_chunk=T, general = "group 1 is never treated.")
+```
+:::
+
+## Goodman-Bacon decomposition
+
+::: {style="font-size: x-large"}
+However, if we use only the non-treated data to estimate the fixed effects, we get what we expect under the parallel trends assumption: after removing fixed effects, all that is left is treatment effects (easy to see with only one unit per group-time).
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: show residuals by group-time using only non-treated outcome data
+#| label: show residuals by group-time using only non-treated outcome data
+#| fig-cap: Residual outcome data by group-time, estimates only non-treated outomes
+
+# Stage 1: Estimate fixed effects using ONLY UNTREATED observations
+untreated_data4_rev <- dat4_rev[dat4_rev$treated == 0, ]
+stage1 <- fixest::feols(outcome ~ 1 | group_id + period_id, data = untreated_data4_rev)
+# compute residuals
+dat4_rev$outcome_resid_gardner <- 
+  dat4_rev$outcome - predict(stage1, newdata = dat4_rev)
+
+dat4_rev |> dplyr::arrange(group_id) |> 
+  dplyr::pull(outcome_resid_gardner) |> round(2) |> 
+  matrix(nrow = 3,byrow =T, dimnames = dmnms) |> 
+  as.data.frame() |> 
+  knitr::kable("html",digits=2,table.attr = "style='width:40%;'") |> 
+  kableExtra::column_spec(column = 1, width = "5em") |> 
+  kableExtra::column_spec(column = 2:11, width = "3em") |> 
+  kableExtra::kable_styling(full_width = F) |> 
+  kableExtra::footnote(footnote_as_chunk=T, general = "group 1 is never treated.")
+```
+:::
+
+## Two-stage DiD
+
+We can now regress these residuals against the treatment indicator and estimate the ATT:
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: estimating fixed effects with untreated only
+#| label: estimating fixed effects with untreated only
+
+# Stage 2: Regress residualized outcome on treatment
+stage2 <- fixest::feols(outcome_resid_gardner ~ treated, data = dat4_rev)
+
+cat("Gardner Two-Stage Estimate:", round(coef(stage2)[2], 6), "\n")
+```
+
+## Two-stage DiD
+
+Which is the ATT as constructed in this example.
+
+This two-stage DiD calculation is implemented in the `did2s` package, which we call as follows:
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: estimate treatment effects with 2sdid
+#| label: estimate treatment effects with 2sdid
+#| message: false
+#| fig-width: 4
+#| fig-align: "center"
+# output: asis
+res <- did2s::did2s(data = dat4_rev
+  , yname = 'outcome', treatment = 'treated'
+  , first_stage = ~ 0 | group_id + period_id
+  , second_stage = ~i(treated, ref=FALSE)
+  , cluster_var = 'group_id', verbose = FALSE
+)
+# fixest::etable(
+#   res, fitstat=c('n'), markdown = "images/" #tex = FALSE
+# )
+as.list(res) |> broom::tidy() |> gt::gt()
+```
+
+## Two-stage DiD
+
+and did2s will also prepare an event study plot:
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: event study using 2sdid
+#| label: event study using 2sdid
+#| message: false
+
+out <- did2s::event_study(
+    data = dat4_rev |> 
+      dplyr::mutate(
+        g = dplyr::case_when(
+          group_id == 1 ~ 0
+          , group_id == 5 ~ 0
+          , TRUE ~ 8
+        )
+      )
+  , yname = 'outcome'
+  , idname = 'group_id'
+  , gname = 'g'
+  , tname = 'period_id'
+  , estimator = "did2s"
+)
+did2s::plot_event_study(out) + 
+  theme_light(base_size = 18) + 
+  theme(axis.title = element_text(size = 14, face = "bold"), legend.position="none")
+```
 
 ## Difference-in-Differences {visibility="hidden"}
 

@@ -3024,5 +3024,61 @@ D_{i} & =\mu+\pi Z_{i}+\eta_{i}\;\text{the "first stage"}
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\hat{\tau}_{TWFE}=\frac{\sum_{i,g,t}\tilde{D}_{gt}\tilde{y}_{igt}}{\sum_{i,g,t}\tilde{D}_{gt}^{2}}=\frac{\sum_{g,t}N_{gt}\tilde{D}_{gt}\frac{1}{N_{gt}}\sum_{i=1}^{N_{gt}}\tilde{y}_{igt}}{\sum_{i,g,t}\tilde{D}_{gt}^{2}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\hat{\tau}_{TWFE}=\frac{\sum_{igt:D_{g,t}=1}N_{gt}\tilde{D}_{gt}\bar{\tau}_{gt}}{\sum_{igt:D_{g,t}=1}N_{gt}\tilde{D}_{gt}}=\sum_{igt:D_{g,t}=1}\frac{N_{gt}}{N_{1}}w_{gt}\tau_{gt}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\hat{\tau}_{TWFE} & =\frac{\sum_{i,g,t}\tilde{D}_{gt}y_{igt}}{\sum_{i,g,t}\tilde{D}_{gt}D_{gt}}\\
+ & =\frac{\sum_{g,t}N_{gt}\tilde{D}_{gt}\frac{1}{N_{gt}}\sum_{i=1}^{N_{gt}}y_{igt}}{\sum_{g,t}N_{gt}\tilde{D}_{gt}\frac{1}{N_{gt}}\sum_{i=1}^{N_{gt}}D_{gt}}\\
+ & =\frac{\sum_{gt:D_{g,t}=1}N_{gt}\tilde{D}_{gt}\bar{\tau}_{gt}}{\sum_{gt:D_{g,t}=1}N_{gt}\tilde{D}_{gt}}\\
+ & =\sum_{gt:D_{g,t}=1}\frac{N_{gt}}{N_{1}}w_{gt}\tau_{gt}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $w_{gt}=\frac{\tilde{D}_{gt}}{\sum_{gt:D_{g,t}=1}N_{gt}\tilde{D}_{gt}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\hat{\tau}_{ATE} & =\frac{1}{N}\sum_{i=1}^{N}(2D_{i}-1)\big(Y_{i}-Y_{j}(i)\big)\\
+ & =\frac{1}{N}\sum_{i=1}^{N}D_{i}\big(Y_{i}^{1}-Y_{j}^{0}(i)\big)+\frac{1}{N}\sum_{i=1}^{N}\left(D_{i}-1\right)\big(Y_{i}^{1}-Y_{j}^{0}(i)\big)\\
+ & =\frac{n_{1}}{N}\left(\frac{1}{n_{1}}\sum_{i:D_{i}=1}^{n_{1}}D_{i}\big(Y_{i}^{1}-Y_{j}^{0}(i)\big)\right)-\frac{n_{0}}{N}\left(\frac{1}{n_{0}}\sum_{i:D_{i}=0}^{n_{0}}\left(1-D_{i}\right)\big(Y_{i}^{1}-Y_{j}^{0}(i)\big)\right)\\
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document

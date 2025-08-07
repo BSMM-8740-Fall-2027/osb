@@ -3014,8 +3014,9 @@ D_{i} & =\mu+\pi Z_{i}+\eta_{i}\;\text{the "first stage"}
 \begin_layout Standard
 \begin_inset Formula 
 \begin{align*}
-\hat{\tau}_{TWFE} & =\frac{\sum_{i,g,t}\tilde{D}_{gt}\tilde{y}_{igt}}{\sum_{i,g,t}\tilde{D}_{gt}^{2}}\\
- & =\frac{\sum_{i,g,t}\tilde{D}_{gt}\tilde{y}_{igt}}{\sum_{i,g,t}\tilde{D}_{gt}D_{gt}}
+\hat{\tau}_{TWFE} & =\frac{\sum_{igt:D_{g,t}=1}\tilde{D}_{gt}\bar{\tau}_{gt}}{\sum_{igt}\tilde{D}_{gt}^{2}}\\
+ & =\frac{\sum_{igt:D_{g,t}=1}\tilde{D}_{gt}\bar{\tau}_{gt}}{\sum_{ig}\tilde{D}_{gt}D_{gt}}\\
+ & =\frac{\sum_{igt:D_{g,t}=1}\tilde{D}_{gt}\bar{\tau}_{gt}}{\sum_{igt:D_{g,t}=1}\tilde{D}_{gt}}
 \end{align*}
 
 \end_inset

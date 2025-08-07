@@ -18,7 +18,7 @@ By the end of the lab you will...
 
 ## Getting started
 
--   To complete the lab, log on to **your** github account and then go to the class [GitHub organization](https://github.com/bsmm-8740-fall-2024) and find the **2025-lab-8-\[your github username\]** repository .
+-   To complete the lab, log on to **your** github account and then go to the class [GitHub organization](https://github.com/bsmm-8740-fall-2025) and find the **2025-lab-8-\[your github username\]** repository .
 
     Create an R project using your **2025-lab-8-\[your github username\]** repository (remember to create a PAT, etc.) and add your answers by editing the `2025-lab-8.qmd` file in your repository.
 
@@ -53,11 +53,19 @@ if (! "librarian" %in% rownames(installed.packages()) ){
 librarian::shelf(
   tidyverse, broom, rsample, ggdag, causaldata, halfmoon, ggokabeito
   , magrittr, ggplot2, estimatr, Formula, r-causal/propensity, gt, gtExtras
-  , r-causal/causalworkshop, ggplot2, causaldata)
+  , r-causal/causalworkshop, ggplot2, causaldata, did2s)
 
 # set the default theme for plotting
 theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 ```
+
+::: callout-warning
+## Package installs
+
+If you install packages outside of the ones below, [**remove**]{.underline} your `install.packages(.)` code [**before submitting your solutions**]{.underline}.
+
+Leaving instructions that will install packages may cause your code to fail, but more importantly, it can corrupt the TA/instructor's system.
+:::
 
 ## Q1
 
@@ -592,6 +600,61 @@ The un-corrected treatment effect is: \_\_\_\_
 ```
 
 The un-corrected treatment effect is: \_\_\_\_
+:::
+
+## Q6
+
+Show that our matching estimator
+
+$$
+\hat{\tau}_{ATE} = \frac{1}{N} \sum^N_{i=1} (2D_i - 1)\big(Y_i - Y_{j}(i)\big)
+$$is equal to
+
+$$
+\hat{\tau}_{ATE}=\frac{n_1}{N}\hat{\tau}_{ATT}-\frac{n_0}{N}\hat{\tau}_{ATU}
+$$
+
+::: {.callout-note icon="false"}
+## YOUR ANSWER
+:::
+
+## Q7
+
+TechMart, a major retail chain with 200 stores across urban, suburban, and rural markets, began rolling out their revolutionary "SmartFlow" inventory management system in early 2020, starting with their flagship large urban locations that could handle the complex implementation. The technology promised to streamline operations through AI-powered stock optimization and automated reordering, but executives knew the benefits would vary dramatically across their diverse store portfolio.
+
+As months passed, the largest urban stores saw remarkable productivity gains of 15-20% that continued growing as employees mastered the system, while smaller rural locations experienced more modest improvements around 3-5% when they finally received the technology in late 2021. The staggered rollout created a natural experiment that would later prove invaluable for understanding how technological innovations impact different types of retail environments.
+
+Please analyse the data provided by TechMart and estimate the average change in productivity for employees in stores using the "SmartFlow" system, compared to the baseline of stores without the technology.
+
+Productivity is measured in sales per employee per month. Other columns should be self explanatory.
+
+```{r}
+#| eval = false
+# load data
+retail_data <- 
+  readr::read_csv("data/retail_data.csv", show_col_types = FALSE)
+```
+
+::: {.callout-note icon="false"}
+## YOUR ANSWER
+
+(1a) Please give the treatment definition
+
+(1b) Please list the key identification assumptions (what needs to be true for our computation to be creditably causal).
+
+\(a\)
+
+\(b\)
+
+\(c\)
+
+estimate the ATT
+
+```{r}
+# PLEASE SHOW ALL YOUR WORK
+
+
+```
 :::
 
 ::: callout-important
