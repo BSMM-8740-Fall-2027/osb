@@ -3489,9 +3489,9 @@ Say for instance you don’t have data on what each of our customers from Floria
 In this case, you will still be able to estimate the causal effect by Diff-in-Diff, but you won’t know the variance of it. That’s because all the variability in your data got squashed out in aggregation.
 :::
 
-# Panel Data and Fixed Effects
+# Panel Data and Fixed Effects {visibility="hidden"}
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 ::: {style="font-size: x-large"}
 In the simple Diff-in-Diff setup, we have a treated and a control group (the city of POA and FLN, respectively) and only two periods, a pre-intervention and a post-intervention period. But what would happen if we had more periods? Or more groups?
@@ -3503,7 +3503,7 @@ A panel is when we have repeated observations of the same unit over multiple per
 To understand how we can leverage such data structure, let’s first continue with our diff-in-diff example, where we wanted to estimate the impact of placing a billboard (treatment) in the city of Porto Alegre (POA). Specifically, we want to know how much deposits in our investments account would increase if we placed more billboards.
 :::
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 ::: {style="font-size: x-large"}
 In the previous section, we motivated the DiD estimator as an imputation strategy of what would have happened to Porto Alegre had we not placed the billboards in it.
@@ -3513,7 +3513,7 @@ We said that the counterfactual outcome $Y^0$ for Porto Alegre **after the inter
 This growth factor was estimated in a control city, Florianopolis (FLN).
 :::
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 ::: {style="font-size: xx-large"}
 To recap some notation, here is how we can estimate this counterfactual outcome
@@ -3536,7 +3536,7 @@ $$
 where $t$ denotes time, $D$ denotes the treatment (since $t$ is taken), $Y^D(t)$ denote the potential outcome for treatment $D$ in period $t$ (for example, $Y^0(1)$ is the outcome under the control in period 1).
 :::
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 ::: {style="font-size: x-large"}
 Now, if we take that imputed potential outcome, we can recover the treatment effect for POA (ATT) as follows
@@ -3552,7 +3552,7 @@ $$
 The effect of placing a billboard in POA is the outcome we saw on POA after placing the billboard minus our estimate of what would have happened if we hadn’t placed the billboard. Recall that the power of DiD comes from the fact that estimating the mentioned counterfactual only requires that the growth deposits in POA matches the growth in deposits in FLW. This is the key **parallel trends assumption**.
 :::
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Parallel Trends
 
@@ -3572,7 +3572,7 @@ If the marketing manager decides to add billboards only to cities that already h
 This violates the independence assumption: we are giving the treatment to cities with high $Y^0$.
 :::
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Parallel Trends
 
@@ -3592,7 +3592,7 @@ $$
 \big(Y^d(t) - Y^d(t-1) \big)  \perp D
 $$
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Parallel Trends
 
@@ -3604,7 +3604,7 @@ In our billboard example, this means it is OK to place billboards only in cities
 Remember that DiD is imputing the counterfactual growth in the treated unit with the growth in the control unit. If growth in the treated unit under the control is different than the growth in the control unit, then we are in trouble.
 :::
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Controlling What you Cannot See
 
@@ -3620,7 +3620,7 @@ $$
 To put it in words, they require that all the confounders are known and measured, so that we can condition on them and make the treatment as good as random.
 :::
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Controlling What you Cannot See
 
@@ -3632,7 +3632,7 @@ It could be that more educated men are both more likely to marry and more likely
 But another confounder could be physical attractiveness. It could be that more handsome men are both more likely to get married and more likely to have a high paying job. Unfortunately, attractiveness is one of those characteristics like intelligence. It’s something we can’t measure very well.
 :::
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Fixed Effects
 
@@ -3672,7 +3672,7 @@ Finally, $e_{it}$ is the error term. For the education example, $y_{it}$ is log 
 ::::
 :::::::
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Fixed Effects
 
@@ -3686,7 +3686,7 @@ Imagine a dataset where we have 1 million customers. If we add one dummy for eac
 We’ve seen this before, but now is a good time to recap it.
 :::
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Fixed Effects
 
@@ -3707,7 +3707,7 @@ where $X_1$ and $X_2$ are feature matrices (one row per feature and one column p
 
 [^2]: See the FWL Theorem
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Fixed Effects
 
@@ -3715,7 +3715,7 @@ The parameter from this last regression will be exactly the same as running the 
 
 But how exactly does this help us? Well, we can break the estimation of the model with the entity dummies into 2. First, we use the dummies to predict the outcome and the features. These are steps 1 and 2 above.
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Fixed Effects
 
@@ -3729,7 +3729,7 @@ lm(lwage ~ year, data = data_panel |> dplyr::mutate(year = factor(year))) |>
 ```
 :::
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Fixed Effects
 
@@ -3747,7 +3747,7 @@ data_panel |> dplyr::group_by(year) |>
   gtExtras::gt_theme_espn()
 ```
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Fixed Effects
 
@@ -3764,7 +3764,7 @@ $$
 $$ 2. Regress $\ddot{Y}_{it}$ on $\ddot{X}_{it}$
 :::
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Fixed Effects
 
@@ -3781,7 +3781,7 @@ Y_{it} & = \beta X_{it} + \gamma U_i + e_{it} \\
 \end{split}
 $$
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Fixed Effects
 
@@ -3803,7 +3803,7 @@ $$
 which wipes out all unobserved that are constant across time. To be honest, not only do the unobserved variables vanish. This happens to all the variables that are constant in time. For this reason, you can’t include any variables that are constant across time, as they would be a linear combination of the dummy variables and the model wouldn’t run.
 :::
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Fixed Effects
 
@@ -3825,7 +3825,7 @@ data_panel |> dplyr::group_by(nr) |>
   gtExtras::gt_theme_espn()
 ```
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Fixed Effects
 
@@ -3849,7 +3849,7 @@ data_panel |> dplyr::group_by(nr) |>
   
 ```
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Fixed Effects
 
@@ -3886,7 +3886,7 @@ data_panel_baked |>
   gtExtras::gt_theme_espn()
 ```
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Fixed Effects
 
@@ -3901,7 +3901,7 @@ lm(lwage ~ married + expersq + union + hours, data = data_panel_baked) |>
   broom::tidy()
 ```
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Fixed Effects
 
@@ -3919,7 +3919,7 @@ estimatr::lm_robust(
   , fixed_effects = ~nr ) |> broom::tidy()
 ```
 
-## Panel Data and Fixed Effects
+## Panel Data and Fixed Effects {visibility="hidden"}
 
 #### Fixed Effects
 
