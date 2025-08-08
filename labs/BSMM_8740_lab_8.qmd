@@ -629,7 +629,7 @@ Please analyse the data provided by TechMart and estimate the average change in 
 Productivity is measured in sales per employee per month. Other columns should be self explanatory.
 
 ```{r}
-#| eval = false
+#| eval: false
 # load data
 retail_data <- 
   readr::read_csv("data/retail_data.csv", show_col_types = FALSE)
