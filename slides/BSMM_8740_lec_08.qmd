@@ -2990,7 +2990,7 @@ rbind(
 
 ## Goodman-Bacon decomposition
 
-The Goodman-Bacon decomposition reveals a fundamental issue with two-way fixed effects (TWFE) difference-in-differences estimators when treatment timing varies across units: 
+The Goodman-Bacon decomposition reveals a fundamental issue with two-way fixed effects (TWFE) difference-in-differences estimators when treatment timing varies across units:
 
 the overall treatment effect estimate is a weighted average of all possible 2×2 DD comparisons, including problematic ones where already-treated units serve as controls for newly-treated units.
 
@@ -3125,7 +3125,7 @@ as.list(res) |> broom::tidy() |> gt::gt()
 
 ## Two-stage DiD
 
-and did2s will also prepare an event study plot:
+and `did2s` will also prepare an event study plot:
 
 ```{r}
 #| echo: true
