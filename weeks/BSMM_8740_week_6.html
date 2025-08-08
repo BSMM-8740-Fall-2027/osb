@@ -542,7 +542,6 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#prepare" id="toc-prepare" class="nav-link active" data-scroll-target="#prepare">Prepare</a></li>
   <li><a href="#participate" id="toc-participate" class="nav-link" data-scroll-target="#participate">Participate</a></li>
   <li><a href="#perform" id="toc-perform" class="nav-link" data-scroll-target="#perform">Perform</a></li>
-  <li><a href="#podcast" id="toc-podcast" class="nav-link" data-scroll-target="#podcast">Podcast</a></li>
   <li><a href="#study" id="toc-study" class="nav-link" data-scroll-target="#study">Study</a>
   <ul class="collapse">
   <li><a href="#short-answer-questions" id="toc-short-answer-questions" class="nav-link" data-scroll-target="#short-answer-questions">Short Answer Questions</a></li>
@@ -604,52 +603,48 @@ Important
 <h2 class="anchored" data-anchor-id="perform">Perform</h2>
 <p>⌨️ <a href="labs/BSMM_8740_lab_6.html">Lab 6 - Time Series Methods</a></p>
 </section>
-<section id="podcast" class="level2">
-<h2 class="anchored" data-anchor-id="podcast">Podcast</h2>
-<p><a href="https://notebooklm.google.com/notebook/2d123a52-aa80-4ae5-b402-03f8177508b0/audio">Listen here</a></p>
-</section>
 <section id="study" class="level2">
 <h2 class="anchored" data-anchor-id="study">Study</h2>
 <section id="short-answer-questions" class="level3">
 <h3 class="anchored" data-anchor-id="short-answer-questions">Short Answer Questions</h3>
 <p><strong>Instructions</strong>: Answer the following questions in 2-3 sentences each.</p>
 <ol type="1">
-<li>What is a time series and why is it a separate area of study?</li>
-<li>What are the key characteristics of economic and financial time series?</li>
-<li>Describe the difference between deterministic and stochastic processes.</li>
-<li>What are the defining characteristics of a white noise process?</li>
-<li>Explain the concept of a random walk and how it differs from a random walk with drift.</li>
-<li>Define a Markov chain and state its key properties.</li>
-<li>Describe the key features of an autoregressive (AR) process.</li>
-<li>What are the conditions for stationarity in an AR process?</li>
-<li>Explain the difference between the autocorrelation function (ACF) and the partial autocorrelation function (PACF).</li>
-<li>What are the components of an ARIMA model, and what does each component represent?</li>
+<li><strong>Define Time Series Data:</strong> What distinguishes time series data from typical cross-sectional or panel data, and why does this distinction matter for analysis?</li>
+<li><strong>Explain the Limitation of OLS for Time Series:</strong> Why is a simple linear regression model (Ordinary Least Squares) generally not suitable for analyzing time series data?</li>
+<li><strong>Describe the Components of Time Series Dynamics:</strong> What are the three primary components into which the dynamic evolution of time series variables is often broken down? Briefly explain each.</li>
+<li><strong>Differentiate Deterministic and Stochastic Processes:</strong> How do deterministic and stochastic processes differ in the context of time series, and provide an example of a stochastic process.</li>
+<li><strong>What is White Noise?</strong> Characterize a white noise series. What are its key statistical properties, particularly concerning correlation and mean?</li>
+<li><strong>Explain the Concept of a Random Walk:</strong> Describe a random walk process and its primary characteristic regarding the impact of shocks.</li>
+<li><strong>What is an AR(1) Process?</strong> How is the current value in an AR(1) process determined, and what does it imply about the relationship between observations over time?</li>
+<li><strong>Distinguish between ACF and PACF:</strong> What is the primary difference in what the Autocorrelation Function (ACF) and Partial Autocorrelation Function (PACF) measure in a time series?</li>
+<li><strong>Explain Stationarity and its Importance:</strong> What does it mean for a time series to be stationary, and why is this property crucial for applying many time series models?</li>
+<li><strong>Describe the ARIMA Model Components:</strong> What do the ‘AR’, ‘I’, and ‘MA’ components of an ARIMA(p, d, q) model represent?</li>
 </ol>
 </section>
 <section id="short-answer-answer-key" class="level3">
 <h3 class="anchored" data-anchor-id="short-answer-answer-key"><strong>Short-Answer Answer Key</strong></h3>
 <ol type="1">
-<li>A time series is a collection of data points indexed in time order. It is a separate area of study because it often exhibits serial correlation, violating assumptions of simple linear regression.</li>
-<li>Economic and financial time series typically exhibit serial correlation, meaning past values influence present and future values. Changes in one period can impact future periods, and shocks can affect variables over successive quarters.</li>
-<li>Deterministic processes produce the same output from a given starting point, while stochastic processes involve randomness and are described by statistical distributions.</li>
-<li>A white noise process is characterized by serially uncorrelated random variables with zero mean and constant variance. They are often assumed to be independent and identically distributed.</li>
-<li>A random walk is a stochastic process where the current value is equal to the previous value plus a random shock. A random walk with drift includes a constant term, introducing a trend component.</li>
-<li>A Markov chain is a stochastic process where the probability of transitioning to the next state depends only on the current state (Markov Property). It’s characterized by a state space and a transition matrix governing probabilities between states.</li>
-<li>An AR process models the current value as a linear function of its past values. The order of the AR process (AR(p)) indicates the number of lagged values used. The errors are typically assumed to be white noise.</li>
-<li>For an AR process to be stationary, its statistical properties must remain constant over time. This typically requires the roots of the characteristic equation, derived from the autoregressive parameters, to lie outside the unit circle.</li>
-<li>The ACF measures the correlation between a time series and its lagged values. The PACF measures the correlation between a time series and its lagged values after removing the influence of intermediate lags.</li>
-<li>An ARIMA model combines autoregression (AR), differencing (I), and moving average (MA) components. AR captures the relationship with lagged values, I makes the series stationary, and MA models the relationship with past forecast errors.</li>
+<li><p><strong>Define Time Series Data:</strong> Time series data is a dataset where each observation includes a time measurement, and these measurements are ordered. This ordered temporal measurement implies that error terms may be correlated and not independent, which violates fundamental assumptions of standard statistical methods.</p></li>
+<li><p><strong>Explain the Limitation of OLS for Time Series:</strong> Simple linear regression (OLS) assumes independent measurements. In time series, observations are often serially correlated, meaning error terms are not independent, which seriously compromises the fundamental OLS assumptions and leads to biased variance estimates.</p></li>
+<li><p><strong>Describe the Components of Time Series Dynamics:</strong> Time series dynamics are often broken into three parts: trend ($T_t$), which represents the long-term direction; seasonality ($S_t$), which accounts for regular, periodic fluctuations; and noise ($I_t$), which represents the irregular or random component after accounting for trend and seasonality.</p></li>
+<li><p><strong>Differentiate Deterministic and Stochastic Processes:</strong> Deterministic processes always produce the same output from a given starting point, meaning their future state is perfectly predictable. Stochastic processes, conversely, have indeterminacy and are described by statistical distributions, with examples including white noise or random walks.</p></li>
+<li><p><strong>What is White Noise?</strong> A white noise series consists of serially uncorrelated random variables with a zero mean and finite variance. This implies that current errors have no dependence on past errors, and their expected value is zero.</p></li>
+<li><p><strong>Explain the Concept of a Random Walk:</strong> A random walk is a stochastic process where the current value is the previous value plus a random shock. Its defining characteristic is that the effect of any past shock is permanent and does not dissipate, giving it an infinite memory.</p></li>
+<li><p><strong>What is an AR(1) Process?</strong> In an AR(1) process, the current value of the time series is a linear function of its immediately preceding value plus a random error term. This means that the current observation is directly influenced by the observation from the previous time step.</p></li>
+<li><p><strong>Distinguish between ACF and PACF:</strong> The Autocorrelation Function (ACF) measures the correlation between a time series and its lagged values, including indirect correlations passed through intermediate lags. The Partial Autocorrelation Function (PACF), however, eliminates these pass-through effects, focusing solely on the direct, independent relationship between an observation and a lagged observation.</p></li>
+<li><p><strong>Explain Stationarity and its Importance:</strong> A time series is strictly stationary if its statistical properties (like mean, variance, and autocorrelation) do not change over time. This property is crucial because many time series models and statistical tests assume stationarity to ensure reliable and consistent results.</p></li>
+<li><p><strong>Describe the ARIMA Model Components:</strong> In an ARIMA(p, d, q) model, ‘AR’ (AutoRegressive) denotes the number of lagged observations included in the model; ‘I’ (Integrated) refers to the number of times the raw observations are differenced to make the series stationary; and ‘MA’ (Moving Average) represents the number of lagged forecast errors in the model.</p></li>
 </ol>
 </section>
 <section id="essay-questions" class="level3">
 <h3 class="anchored" data-anchor-id="essay-questions"><strong>Essay Questions</strong></h3>
-<ul>
-<li>Discuss the importance of stationarity in time series analysis. Explain how to identify and address non-stationarity in a time series.</li>
-<li>Compare and contrast AR, MA, and ARMA processes. Provide examples of real-world phenomena that can be modeled by each process.</li>
-<li>Explain the concept of exponential smoothing and its different variations. Discuss the strengths and limitations of exponential smoothing models.</li>
-<li>Describe the steps involved in building a time series forecasting model using the tidymodels and timetk frameworks in R. Provide an example using a real-world dataset.</li>
-<li>Discuss the challenges and considerations in evaluating the performance of time series forecasting models. Explain different performance metrics and their interpretations.</li>
-</ul>
+<ol type="1">
+<li><p>Discuss the fundamental challenges that time series data present for traditional econometric methods, particularly concerning the assumptions of Ordinary Least Squares (OLS) regression. How do characteristics like trends, seasonality, and lag structures necessitate different analytical approaches?</p></li>
+<li><p>Compare and contrast the concepts of strict stationarity and covariance (weak) stationarity in time series. Explain why stationarity is a critical assumption for many time series models, and describe how unit root tests are used in practice to assess this property.</p></li>
+<li><p>Explain the concept of an Autoregressive (AR) process, including the meaning of an AR(p) model. Detail the conditions required for an AR process to be stationary, specifically referencing the roots of the characteristic equation and their relation to the unit circle.</p></li>
+<li><p>Describe the core idea behind Exponential Smoothing (ETS) models. Explain how additive components for trend and seasonality can be incorporated into the basic exponential smoothing formula, and discuss what the ‘smoothing factor’ ($\alpha$) signifies in this context.</p></li>
+<li><p>Outline a typical workflow for building and evaluating time series models using the timetk and modeltime packages within the Tidymodels framework. Include discussions on data manipulation, feature engineering, model specification, forecasting, and accuracy evaluation, highlighting key functions or concepts at each stage.</p></li>
+</ol>
 <p><br><br></p>
 <div style="font-size: 0.875em;">
 <p>Back to <a href=".." title="Course schedule">course schedule</a> ⏎</p>
