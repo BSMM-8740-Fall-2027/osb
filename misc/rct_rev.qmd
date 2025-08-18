@@ -92,7 +92,7 @@ $$
 Y_i(w) = \alpha^{(w)} + X_i \cdot \beta^{(w)} + \varepsilon_i^{(w)}
 $$
 
-with 
+with
 
 $$
 \mathbb{E}[\varepsilon_i^{(d)} | X_i] = 0, \quad \text{Var}[\varepsilon_i^{(d)} | X_i] =\sigma^2
@@ -110,7 +110,7 @@ Difference-in-means variance (with $\pi= 0.5$): $V_{DM} = 4\sigma^2 + \|\beta^{(
 
 where $\|v\|_A^2 = v^\top Av$ for convenience.
 
-Asymptotic behavior for regression coefficients: 
+Asymptotic behavior for regression coefficients:
 
 $$
 \sqrt{n_w} \left(\begin{pmatrix} \hat{\alpha}^{(w)} \\ \hat{\beta}^{(w)} \end{pmatrix} - \begin{pmatrix} \alpha^{(w)} \\ \beta^{(w)} \end{pmatrix}\right) \Rightarrow N\left(0, \sigma^2 \begin{pmatrix} 1 & 0 \\ 0 & A^{-1} \end{pmatrix}\right)
@@ -130,7 +130,7 @@ Best linear projection coefficients: $(\alpha_*^{(w)}, \beta_*^{(w)}) = \arg\min
 
 $\sqrt{n}(\hat{\tau}_{IREG} - \tau) \Rightarrow N(0, V_{IREG})$
 
-where: 
+where:
 
 $$
 V_{IREG} = \text{Var}[X_i \cdot (\beta_*^{(1)} - \beta_*^{(0)})] + \frac{1}{\pi}\mathbb{E}[Y_i^{(1)} - \alpha_*^{(1)} - X_i \cdot \beta_*^{(1)}]^2 + \frac{1}{1-\pi}\mathbb{E}[Y_i^{(0)} - \alpha_*^{(0)} - X_i \cdot \beta_*^{(0)}]^2

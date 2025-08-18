@@ -250,7 +250,7 @@ Answer the following questions, given that the bank's records indicate 60% of th
 
 ```
 
-\_\_\_? percent of good loans are paid in full after 20 years
+\$\$\_\_\_? percent of good loans are paid in full after 20 years
 
 ```{r}
 # What percentage of good loans are paid in full after 20 years
@@ -260,8 +260,42 @@ Answer the following questions, given that the bank's records indicate 60% of th
 \_\_\_? percent of risk loans are paid in full after 20 years
 :::
 
+## Exercise 6: A New Covariance Calculation
+
+Given $\bar{a}\equiv\frac{1}{T}\sum_{t=1}^T a_t$ (the mean) and sequences $\left\{a_t\right\}_{t=1}^T$ and $\left\{b_t\right\}_{t=1}^T$, we have the following calculation for the population covariance:
+
+$$
+\frac{1}{T}\sum_{t=1}^T(a_t-\bar{a})(b_t-\bar{b})
+$$
+
+Statisticians have long interpreted this as a measure of how much the measurements $a_t$ and $b_t$ co-vary. If $a_t=b_t$ then this formula calculates the population variance of $a_t$, a measure of the dispersion or spread of the values of $a_t$.
+
+Some data scientists have suggested that this formula does not measure variation at all, since self-evidently there are no differences in the formula that would capture the variation. Instead, data scientists have suggested that the following calculation should be use to estimate co-variation. With $\Delta_k a_t \equiv a_{t+k}-a_t$ (the $k^{th}$ difference) the co-variation is calculated as:
+
+$$\frac{1}{T^2}\sum_{k=1}^{T-1}\sum_{t=1}^{T-k} \Delta_k a_t \Delta_k b_t$$
+
+Use samples of 10, 20, 50, 100, 200, 500, 1000, 2000, 5000 from $a\sim\mathcal{N}(1,1)$ and $b\sim a+\mathcal{N}(4,2)$, and calculate the covariance both ways, putting the result into a table.
+
+How do the calculations compare?
+
+Make sure to use the calculations above, not the base R function.
+
+::: {.callout-note appearance="simple" icon="false"}
+## YOUR ANSWER:
+
+```{r}
+# NOTE: you may be able to use some version of the following expression as part of your solution:
+# (dplyr::lead(a,k) - a)
+set.seed(8740)
+
+
+
+
+```
+:::
+
 ::: render-commit-push
-You're done and ready to submit your work! **Save**, **stage**, **commit**, and **push** all remaining changes. You can use the commit message "Done with Lab 6!" , and make sure you have committed and pushed all changed files to GitHub (your Git pane in RStudio should be empty) and that **all** documents are updated in your repo on GitHub.
+You're done and ready to submit your work! **Save**, **stage**, **commit**, and **push** all remaining changes. You can use the commit message "Done with Lab 9!" , and make sure you have committed and pushed all changed files to GitHub (your Git pane in RStudio should be empty) and that **all** documents are updated in your repo on GitHub.
 :::
 
 ::: callout-important

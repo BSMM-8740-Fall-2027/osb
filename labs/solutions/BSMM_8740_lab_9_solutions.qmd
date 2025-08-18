@@ -276,7 +276,7 @@ c(0, 1, 0, 0) %*% (P %^% 20)
 ```
 
 ::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+## SOLUTION:
 
 ```{r}
 # describe the current loan portfolio by state at the end of one year. 
@@ -299,6 +299,69 @@ c(0, 1, 0, 0) %*% (P %^% 20)
 ```
 
 19.6 percent of good loans are paid in full after 20 years
+:::
+
+## Exercise 6: A New Covariance Calculation
+
+Given $\bar{a}\equiv\frac{1}{T}\sum_{t=1}^T a_t$ (the mean) and sequences $\left\{a_t\right\}_{t=1}^T$ and $\left\{b_t\right\}_{t=1}^T$, we have the following calculation for the population covariance:
+
+$$
+\frac{1}{T}\sum_{t=1}^T(a_t-\bar{a})(b_t-\bar{b})
+$$
+
+Statisticians have long interpreted this as a measure of how much the measurements $a_t$ and $b_t$ co-vary. If $a_t=b_t$ then this formula calculates the population variance of $a_t$, a measure of the dispersion or spread of the values of $a_t$.
+
+Some data scientists have suggested that this formula does not measure variation at all, since self-evidently there are no differences in the formula that would capture the variation. Instead, data scientists have suggested that the following calculation should be use to estimate co-variation. With $\Delta_k a_t \equiv a_{t+k}-a_t$ (the $k^{th}$ difference) the co-variation is calculated as:
+
+$$\frac{1}{T^2}\sum_{k=1}^{T-1}\sum_{t=1}^{T-k} \Delta_k a_t \Delta_k b_t$$
+
+Use samples of 10, 20, 50, 100, 200, 500, 1000, 2000, 5000 from $a\sim\mathcal{N}(1,1)$ and $b\sim a+\mathcal{N}(4,2)$, and calculate the covariance both ways, putting the result into a table.
+
+How do the calculations compare?
+
+::: {.callout-note appearance="simple" icon="false"}
+## SOLUTION:
+
+```{r}
+# NOTE: you may be able to use some version of the following expression as part of your solution:
+# (dplyr::lead(a,k) - a)
+set.seed(8740)
+
+count <- c(10,20,50)
+tibble::tibble(
+  T = c(count, count*10, count*100)
+) |> 
+  dplyr::mutate(
+    result =
+      purrr::map(
+        T
+        , (\(t){
+          a <- rnorm(n = t, mean = 1, sd = 1)
+          b <- a + rnorm(n = t, mean = 4, sd = 2)
+          tibble::tibble(
+            cov = mean((a - mean(a))*(b - mean(b)))
+            # , r_cov = cov(a,b)
+            , alt_cov = 
+              1:(t-1) |> 
+              purrr::map_vec(
+                (\(k){ 
+                  (
+                    (dplyr::lead(a,k) - a) * (dplyr::lead(b,k) - b)) |> 
+                    sum(na.rm=TRUE) 
+                })
+              ) |> sum(na.rm=TRUE) / (t*t)
+          )
+        })
+      )
+  ) |> tidyr::unnest(result)
+
+
+```
+
+The calculations are identical, i.e.
+
+$$\frac{1}{T}\sum_{t=1}^T(a_t-\bar{a})(b_t-\bar{b})= \frac{1}{T^2}\sum_{k=1}^{T-1}\sum_{t=1}^{T-k} \Delta_k a_t \Delta_k b_t
+$$
 :::
 
 ## Grading

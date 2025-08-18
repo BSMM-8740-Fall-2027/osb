@@ -32,20 +32,20 @@ You can change your username later, but better to get this right the first time.
 
 -   <https://help.github.com/articles/what-happens-when-i-change-my-username/>
 
-We will be switching between the console and the terminal, in class and in assignments. The **Console** is where you can execute R code, while the **Terminal** is where you can execute system functions like git.
+Within RStudio we will be switching between the console and the terminal, in class and in assignments. The **Console** is where you can execute R code, while the **Terminal** is where you can execute system functions like git.
 
 ![](images/Screen%20Shot%202023-09-12%20at%2012.25.57%20PM.png){fig-align="center" width="300"}
 
 ### 2. Git already installed?
 
-Go to the **Terminal** tab in RStudio and enter `git --version` to see its version:
+Go to the **Terminal** tab in RStudio and enter `git --version` to see the installed version:
 
 If this instruction gives an error, it's possible that *git* is not installed on your machine. If so, let your instructor know. All machines in the lab should have *git* installed.
 
 ::: callout-note
 ## FYI - some common git commands
 
-Here are short definitions for key Git commands. Most of these are built into the RStudio IDE, and we'll use them through RStudio:
+Here are short definitions for key Git commands. Most of these are built into the RStudio IDE, and [we'll use them through RStudio]{.underline}:
 
 1.  **git init**: Initializes a new Git repository in the current directory \[**use RStudio**\].
 2.  **git add**: Stages changes (files or modifications) for the next commit \[**use RStudio**\].
@@ -72,7 +72,7 @@ You can set your Git user name and email from within R (i.e. go back to the **Co
 #| echo: true
 #| eval: false
 usethis::use_git_config(
-  # user.name does not have to be your GitHub user name
+  # user.name does not have to be your GitHub user name - this user.name is local to your machine.
   user.name = "Jane Doe"
   # user.email MUST be the email associated with your GitHub account.
   , user.email = "jane@example.org"
@@ -103,7 +103,7 @@ If this is your first time generating a PAT, just accept the defaults and scroll
 
 ##### **4.1 Click "Generate token"**.
 
-You won't be able to see this token again, so don't close or navigate away from this browser window until you store the PAT. Copy the PAT to the clipboard or a text file in RStudio.
+[**You won't be able to see this token again**]{.underline}, so don't close or navigate away from this browser window until you [**store the PAT**]{.underline}. Copy the PAT to the clipboard or a text file in RStudio.
 
 Treat this PAT like a password! Do not ever hard-wire your PAT into your code! A PAT should always be retrieved implicitly, for example, from the Git credential store, a safe place, where command line Git, RStudio, and R packages can discover it.
 
@@ -200,3 +200,13 @@ In order to push your changes to GitHub, you must have **staged** your changes, 
 To make sure all the changes went to GitHub. You can go to your GitHub repo (at the course site) and refresh the page. You should see your commit message next to the updated files. If you see this, all your changes are on GitHub and you're good to go!
 
 More on the basic use of git [here](https://happygitwithr.com/git-intro).
+
+::: callout-note
+## TLDR;
+
+1.  Sign up at github.com → choose a short, timeless username.
+2.  In Terminal: git --version → install if missing (<https://gitforwindows.org/> or <https://git-scm.com/downloads/mac>.
+3.  In R Console: usethis::use_git_config("Your Name", "your\@email.com")
+4.  Create PAT: usethis::create_github_token() → copy & store securely.
+5.  Save PAT: gitcreds::gitcreds_set() → paste token when prompted.
+:::

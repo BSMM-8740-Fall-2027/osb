@@ -18,6 +18,8 @@ Due date: Lab 8 - Sunday, Nov 10, 5pm ET
 
 📖 Read *Matching and Subclassification*, Chp 5 in: [Causal Inference the Mixtape](https://mixtape.scunning.com/05-matching_and_subclassification)
 
+📖 Read *Difference-in-Differences*, Chp 9 in: [Causal Inference the Mixtape](https://mixtape.scunning.com/09-difference_in_differences)
+
 ## Participate
 
 🖥️ [Lecture 8 - Causality: Methods](/slides/BSMM_8740_lec_08.html)
@@ -32,37 +34,37 @@ Due date: Lab 8 - Sunday, Nov 10, 5pm ET
 
 **Instructions**: Answer the following questions in 2-3 sentences each.
 
--   Explain the concept of Inverse Probability Weighting (IPW) and its purpose in causal inference.
--   What are stabilized weights in IPW, and why are they used?
--   How does regression adjustment help in estimating causal effects?
--   Describe the principle of doubly robust estimation and its advantages.
--   Explain the concept of finite sample bias and factors influencing its likelihood.
--   What is the main idea behind matching in causal inference?
--   Explain the concept of subclassification and its limitations in practice.
--   How does matching estimator work, and how is it different from regression adjustment?
--   Explain the core principle of difference-in-differences (DID) estimation.
--   What is the parallel trends assumption in DID, and why is it important?
+1.  **Inverse Probability Weighting (IPW):** How does IPW create a "pseudopopulation" and what is the primary goal of this method in causal inference?
+2.  **Stabilized Weights in IPW:** Why are stabilized weights often used in IPW, and how do they address potential issues with unstabilized weights?
+3.  **Regression Adjustment vs. IPW:** Briefly compare and contrast regression adjustment and IPW as methods for estimating causal effects. What is a key difference in their modeling approach?
+4.  **Doubly Robust Estimation:** Explain the concept of "doubly robust" estimation. What is its key advantage over methods that rely on only one model (e.g., IPW or regression adjustment)?
+5.  **Finite Sample Bias:** What is finite sample bias, and how can it manifest even when all confounders are accounted for? What factors influence the likelihood of this bias?
+6.  **Matching Estimator:** Describe the fundamental principle of the matching estimator. How does it attempt to make treated and untreated groups comparable?
+7.  **Bias Correction in Matching:** Why can the simple matching estimator be biased, and how is this bias typically corrected? What is the role of linear regression in this bias correction?
+8.  **Fixed Effects:** When is the fixed effects method particularly useful for causal inference, especially in situations where unmeasured confounders might be present? What key assumption about these unmeasured variables enables its use?
+9.  **Difference-in-Differences (DiD) 2x2:** Explain the core idea behind the 2x2 Difference-in-Differences (DiD) estimator. What are the two main assumptions required for it to have a causal interpretation?
+10. **Goodman-Bacon Decomposition:** What problem does the Goodman-Bacon decomposition highlight regarding Two-Way Fixed Effects (TWFE) Difference-in-Differences estimators with heterogeneous treatment timing?
 
 ### Short Answer Key
 
--   IPW is a technique that creates a pseudo-population where the distribution of confounders is balanced between the treatment and control groups. This helps to estimate causal effects by reducing bias due to confounding.
--   Stabilized weights are a modified version of IPW weights that are multiplied by the mean of the treatment or a subset of baseline covariates. They are used to reduce the variance of the IPW estimator and improve stability.
--   Regression adjustment estimates causal effects by building a regression model that predicts the outcome based on the treatment and confounders. By controlling for confounders in the model, it aims to isolate the effect of the treatment.
--   Doubly robust estimation combines propensity score weighting and regression adjustment. It provides an unbiased estimate of the causal effect if either the propensity score model or the outcome model is correctly specified, offering greater robustness.
--   Finite sample bias occurs when estimates of causal effects are biased due to the limited size of the sample. The likelihood of finite sample bias depends on the estimand, overlap between treatment groups, and sample size.
--   Matching aims to create comparable treatment and control groups by pairing individuals based on similarities in their observed characteristics (confounders). This reduces bias by creating a more balanced comparison.
--   Subclassification involves dividing the data into subgroups based on confounder values and estimating the causal effect within each subgroup. Its practical limitation is the curse of dimensionality, as the number of subgroups grows exponentially with the number of confounders.
--   Matching estimator directly pairs treated and control units based on proximity in confounder space, while regression adjustment uses a model to control for confounders. Matching focuses on finding similar individuals, while regression statistically adjusts for differences.
--   DID estimates the causal effect of a treatment by comparing the change in outcomes over time between a treatment group and a control group. It leverages both time and group comparisons to isolate the treatment effect.
--   The parallel trends assumption in DID states that the treatment and control groups would have followed similar trends in the outcome variable had the treatment not been implemented. It is crucial because DID estimates the treatment effect based on the difference in these trends.
+1.  **Inverse Probability Weighting (IPW):** IPW creates a pseudopopulation by weighting individuals such that the numbers of treated and untreated are balanced across all levels of measured confounders. The primary goal is to adjust for confounding bias, allowing for an unbiased estimate of the average treatment effect (ATE) as if treatment assignment were randomized.
+2.  **Stabilized Weights in IPW:** Stabilized weights are used to address potential instability in IPW estimates caused by very large or very small unstabilized weights. They do this by multiplying the unstabilized weights by the mean of the treatment (for simple stabilization) or by incorporating baseline covariates in the numerator (for V-stabilization), thereby making the weights less extreme and improving the precision of the estimates.
+3.  **Regression Adjustment vs. IPW:** Regression adjustment estimates causal effects by modeling the outcome based on treatment and confounders, directly predicting the outcome given different treatment statuses. IPW, on the other hand, models the probability of receiving treatment (propensity score) based on confounders, creating a balanced pseudopopulation before estimating the outcome difference. The key difference lies in what they model: outcome vs. treatment assignment.
+4.  **Doubly Robust Estimation:** Doubly robust estimation combines both propensity score modeling (like IPW) and outcome modeling (like regression adjustment). Its key advantage is that it only requires *one* of these two models to be correctly specified for the estimator to be consistent and unbiased, providing a "fallback" if one model is misspecified.
+5.  **Finite Sample Bias:** Finite sample bias refers to the phenomenon where causal estimates can still be biased even when all confounders are accounted for, particularly when the sample size is not sufficiently large. This bias is more likely with unbounded weights, poor overlap (positivity violations), and smaller sample sizes.
+6.  **Matching Estimator:** The matching estimator's fundamental principle is to make treated and untreated groups comparable by finding "twins" or similar units from the untreated group for each treated unit based on their covariates. This creates a balanced comparison group, mimicking a randomized experiment.
+7.  **Bias Correction in Matching:** The simple matching estimator can be biased when the matches are not exact, meaning the matched untreated unit may not perfectly represent the counterfactual outcome for the treated unit. This bias is corrected by adding a term that estimates the difference in mean outcomes between the treated unit and its inexact match, often obtained through a linear regression on the untreated sample, which serves to adjust for residual imbalances.
+8.  **Fixed Effects:** Fixed effects are particularly useful when there are unmeasured confounders that remain constant within specific categories (e.g., individuals, firms, countries) over time. It addresses these unmeasured confounders by essentially comparing units to themselves across different time periods, controlling for everything unique to that entity, whether measured or not.
+9.  **Difference-in-Differences (DiD) 2x2:** The core idea of the 2x2 DiD estimator is to compare the change in outcomes over time in a treated group to the change in outcomes over the same time period in a control group. The two main assumptions for causal interpretation are "No Anticipation" (no treatment effects before actual treatment) and "Parallel Trends" (the treated and control groups would have followed parallel outcome trends in the absence of treatment).
+10. **Goodman-Bacon Decomposition:** The Goodman-Bacon decomposition highlights that with heterogeneous treatment timing, the overall treatment effect estimate from Two-Way Fixed Effects (TWFE) DiD models is a weighted average of various 2x2 comparisons. Crucially, this includes problematic comparisons where units that have already received treatment are incorrectly used as control groups for units that are newly receiving treatment, potentially leading to biased estimates when treatment effects are heterogeneous.
 
 ### Essay Questions
 
--   Discuss the strengths and limitations of both Inverse Probability Weighting (IPW) and regression adjustment in estimating causal effects. When might you prefer one method over the other?
--   Explain the concept of doubly robust estimation in detail. Why is it considered "doubly robust"? Provide an example scenario where doubly robust estimation would be particularly advantageous.
--   Discuss the challenges associated with matching in causal inference. How can these challenges be addressed in practice? Explain different distance metrics and their implications in matching.
--   Describe the difference-in-differences (DID) estimator and its underlying assumptions. What are potential threats to the validity of DID estimates, and how can they be mitigated?
--   Explain the concept of fixed effects in panel data analysis. How do fixed effects help to control for unobserved confounders? Discuss the advantages and limitations of using fixed effects models.
+1.  Discuss the trade-offs and underlying assumptions of Inverse Probability Weighting (IPW), Regression Adjustment, and Doubly Robust Estimation in estimating causal effects. In what scenarios might one method be preferred over the others, and why?
+2.  Explain the concept of finite sample bias in causal inference. Using examples from the provided text, describe how this bias can occur even with correctly specified models and discuss the factors that contribute to its presence. What strategies can researchers employ to mitigate finite sample bias?
+3.  Compare and contrast the strengths and limitations of the Matching estimator and Fixed Effects models for controlling confounding in observational studies. Provide specific examples from the source material to illustrate how each method addresses different types of confounding.
+4.  Elaborate on the "Parallel Trends" assumption in Difference-in-Differences (DiD) analysis. Discuss how event studies can be used to visually assess this assumption and what violations of parallel trends imply for the causal interpretation of DiD estimates.
+5.  The Goodman-Bacon decomposition reveals critical issues with Two-Way Fixed Effects (TWFE) DiD when treatment timing is heterogeneous. Explain why this problem arises and how the Two-Stage DiD approach (as implemented in did2s) provides a solution. Discuss the implications of this finding for applied causal inference research.
 
 ::: {style="font-size: 0.875em;"}
 Back to [course schedule](/ "Course schedule") ⏎

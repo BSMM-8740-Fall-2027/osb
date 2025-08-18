@@ -102,7 +102,7 @@ For each of the units, one of the two potential outcomes is unobserved - it is *
 :::::: columns
 :::: {.column width="60%"}
 ::: {style="font-size: large"}
-In this example, we have 4 units, 2 treated and 2 untreated. The unit treatment effect is $Y_i^1-Y_i^0$, and we have at least 3 [**estimands**]{.underline}:
+In this example, we have 4 units, 2 treated and 2 untreated. The unit treatment effect is $Y_i^1-Y_i^0$, and we have at least 3 potential [**estimands**]{.underline}:
 
 -   average treatment effect ($\text{ATE}$)
 -   average treatment effect on the treated ($\text{ATT}$)
@@ -323,6 +323,37 @@ $$
 :::
 
 where $\Delta_{ATE}^{Y}$ is the average treatment effect in the population.
+
+## Identification assumption(s)
+
+::: {style="font-size: x-large"}
+In our first example we had a balanced data set: the same number of units are treated and untreated. If this is not the case, then
+
+$$
+\Delta_{WW}^{Y} = \frac{1}{n_1}\sum_{D_i=1} Y_i(1) - \frac{1}{n_0}\sum_{D_i=0}Y_i(0)
+$$
+
+If in addition we have a covariate $x$ that split our data into groups, we can imagine a causal effect estimate by groups, which is then combined into an overall estimate:
+
+$$
+\Delta_{STRAT}^{Y} = \sum_{x \in \mathcal{X}} \frac{n_x}{n} \hat{\tau}(x);\;\hat{\tau}(x) = \frac{1}{n_{x1}} \sum_{\{X_i=x, D_i=1\}} Y_i - \frac{1}{n_{x0}} \sum_{\{X_i=x, D_i=0\}} Y_i
+$$
+:::
+
+## Identification assumption(s)
+
+::: {style="font-size: x-large"}
+$$
+\begin{align*}
+\Delta_{STRAT}^{Y} & =\sum_{x\in\mathcal{X}}\frac{n_{x}}{n}\hat{\tau}(x)\\
+ & =\sum_{x\in\mathcal{X}}\frac{n_{x}}{n}\left(\frac{1}{n_{x1}}\sum_{\{X_{i}=x,D_{i}=1\}}Y_{i}-\frac{1}{n_{x0}}\sum_{\{X_{i}=x,D_{i}=0\}}Y_{i}\right)\\
+ & =\frac{1}{n}\sum_{x\in\mathcal{X}}\left(\frac{n_{x}}{n_{x1}}\sum_{\{X_{i}=x,D_{i}=1\}}Y_{i}-\frac{n_{x}}{n_{x0}}\sum_{\{X_{i}=x,D_{i}=0\}}Y_{i}\right)\\
+ & =\frac{1}{n}\sum_{x\in\mathcal{X}}\left(\frac{1}{\pi_{x}}\sum_{\{X_{i}=x,D_{i}=1\}}Y_{i}-\frac{1}{1-\pi_{x}}\sum_{\{X_{i}=x,D_{i}=0\}}Y_{i}\right)
+\end{align*}
+$$
+
+where: (i) $n_x = |\{i : X_i = x\}|$ , (ii) $n_{xw} = |\{i : X_i = x, D_i = w\}|$
+:::
 
 ## Fundamental problems
 

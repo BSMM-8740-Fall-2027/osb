@@ -11,6 +11,7 @@ logo: "images/logo.png"
 format: 
   revealjs: 
     chalkboard: true
+    scrollable: true
     theme: slides.scss
     multiplex: true
     transition: fade
@@ -29,7 +30,7 @@ execute:
 ## Recap of last week
 
 -   Last week we looked at causal effect estimation methods in greater depth, including
-    -   inverse probaiity weighting
+    -   inverse probability weighting
     -   regression adjustment
     -   doubly robust estimation
     -   matching estimation
@@ -38,7 +39,7 @@ execute:
 
 ## This week
 
--   We will explore Monte Carlo methods as a way to integrate difficult functions, and to sample from difficult probability distributions.
+-   We will explore Monte Carlo methods as a way to numerically integrate difficult functions, and to sample from difficult probability distributions.
 -   Along the way we will look at Markov Chains, which can both underlie sampling methods and provide a way to model the generation of data.
 -   Finally, we look at Markov Chain Monte Carlo (MCMC) methods to sample from probability distributions.
 
@@ -77,6 +78,209 @@ Random numbers from a given distribution are drawn using random numbers from a (
 
 This method applies broadly to any distribution where you can compute or approximate the inverse CDF.
 :::
+
+## Sampling Examples
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: inverse CFD sampling example
+#| label: inverse CFD sampling example
+set.seed(42)  # For reproducibility
+
+# Function to demonstrate inverse CDF sampling
+inverse_cdf_demo <- function(n_samples = 1000) {
+  
+  # Generate uniform random variables
+  u <- runif(n_samples)
+  
+  # Example 1: Exponential Distribution (lambda = 1)
+  # Inverse CDF: F^(-1)(u) = -ln(1-u)/lambda
+  lambda <- 1
+  exp_samples <- -log(1 - u) / lambda
+  
+  # Example 2: Weibull Distribution (shape = 2, scale = 1)
+  # Inverse CDF: F^(-1)(u) = scale * (-ln(1-u))^(1/shape)
+  shape <- 2
+  scale <- 1
+  weibull_samples <- scale * (-log(1 - u))^(1/shape)
+  
+  # Example 3: Logistic Distribution (location = 0, scale = 1)
+  # Inverse CDF: F^(-1)(u) = location + scale * ln(u/(1-u))
+  location <- 0
+  scale_logistic <- 1
+  logistic_samples <- location + scale_logistic * log(u / (1 - u))
+  
+  # Create data frame for plotting
+  data.frame(
+    uniform = u,
+    exponential = exp_samples,
+    weibull = weibull_samples,
+    logistic = logistic_samples
+  )
+}
+```
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| label: inverse CFD sampling plots
+#| warning: false
+# Generate samples
+samples <- inverse_cdf_demo(1000)
+
+# Plot 1: Uniform distribution used for sampling
+p1 <- ggplot(samples, aes(x = uniform)) +
+  geom_histogram(aes(y = ..density..), bins = 30, alpha = 0.7, 
+                 fill = "steelblue", color = "white") +
+  geom_hline(yintercept = 1, color = "red", linetype = "dashed", linewidth = 1) +
+  labs(title = "Step 1: Uniform Random Variables U ~ Uniform(0,1)",
+       x = "u", y = "Density") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 10))
+
+# Plot 2: Exponential distribution
+p2 <- ggplot(samples, aes(x = exponential)) +
+  geom_histogram(aes(y = ..density..), bins = 30, alpha = 0.7, 
+                 fill = "lightcoral", color = "white") +
+  stat_function(fun = dexp, args = list(rate = 1), color = "darkred", size = 1) +
+  labs(title = "Exponential: X = -ln(1-U)",
+       x = "x", y = "Density") +
+  xlim(0, 6) +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 10))
+
+# Plot 3: Weibull distribution
+p3 <- ggplot(samples, aes(x = weibull)) +
+  geom_histogram(aes(y = ..density..), bins = 30, alpha = 0.7, 
+                 fill = "lightgreen", color = "white") +
+  stat_function(fun = dweibull, args = list(shape = 2, scale = 1), 
+                color = "darkgreen", size = 1) +
+  labs(title = "Weibull: X = (-ln(1-U))^(1/2)",
+       x = "x", y = "Density") +
+  xlim(0, 3) +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 10))
+
+# Plot 4: Logistic distribution
+p4 <- ggplot(samples, aes(x = logistic)) +
+  geom_histogram(aes(y = ..density..), bins = 30, alpha = 0.7, 
+                 fill = "plum", color = "white") +
+  stat_function(fun = dlogis, args = list(location = 0, scale = 1), 
+                color = "purple", size = 1) +
+  labs(title = "Logistic: X = ln(U/(1-U))",
+       x = "x", y = "Density") +
+  xlim(-6, 6) +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 10))
+
+# Combine plots
+gridExtra::grid.arrange(p1, p2, p3, p4, nrow = 2, ncol = 2,
+             top = "Inverse CDF Sampling: From U(0,1) to Target Distributions")
+```
+
+## Sampling Examples
+
+```{r}
+#| echo: false
+#| code-fold: true
+#| code-summary: inverse CFD sampling - exponential
+#| label: inverse CFD sampling - exponential
+# Demonstration of the inverse CDF method step-by-step
+demo_inverse_transform <- function() {
+  # Show the transformation process for exponential distribution
+  n <- 100
+  u_vals <- runif(n)
+  
+  # Create a sequence for plotting the inverse CDF
+  u_seq <- seq(0.01, 0.99, length.out = 100)
+  x_seq <- -log(1 - u_seq)
+  
+  # Sample a few points to highlight the transformation
+  sample_idx <- c(10, 25, 50, 75, 90)
+  u_sample <- u_vals[sample_idx]
+  x_sample <- -log(1 - u_sample)
+  
+  # Create transformation plot
+  transform_data <- data.frame(u = u_seq, x = x_seq)
+  points_data <- data.frame(u = u_sample, x = x_sample)
+  
+  p_transform <- ggplot(transform_data, aes(x = u, y = x)) +
+    geom_line(color = "blue", size = 1.2) +
+    geom_point(data = points_data, color = "red", size = 3) +
+    geom_segment(data = points_data, 
+                 aes(xend = u, yend = 0), 
+                 color = "red", linetype = "dashed", alpha = 0.7) +
+    geom_segment(data = points_data, 
+                 aes(x = 0, xend = u, y = x, yend = x), 
+                 color = "red", linetype = "dashed", alpha = 0.7) +
+    labs(title = "Inverse CDF Transformation: F⁻¹(U) = -ln(1-U)",
+         x = "U ~ Uniform(0,1)", 
+         y = "X = F^-1(U) ~ Exponential(1)",
+         subtitle = "Red points show the transformation of uniform samples to exponential samples") +
+    theme_minimal() +
+    theme(plot.title = element_text(size = 12),
+          plot.subtitle = element_text(size = 10))
+  
+  return(p_transform)
+}
+# Create the transformation demonstration
+demo_inverse_transform()
+```
+
+## Sampling Examples
+
+```{r}
+#| echo: false
+#| code-fold: true
+#| code-summary: QQ smapling verification
+#| label: QQ smapling verification
+# QQ-plot to verify our sampling worked correctly
+qq_comparison <- function() {
+  n <- 1000
+  
+  # Our inverse CDF samples
+  u <- runif(n)
+  our_exp <- -log(1 - u)
+  our_weibull <- (-log(1 - u))^(1/2)
+  
+  # R's built-in random generators for comparison
+  r_exp <- rexp(n, rate = 1)
+  r_weibull <- rweibull(n, shape = 2, scale = 1)
+  
+  # Create QQ-plot data
+  qq_data <- data.frame(
+    theoretical_exp = sort(r_exp),
+    our_exp = sort(our_exp),
+    theoretical_weibull = sort(r_weibull),
+    our_weibull = sort(our_weibull)
+  )
+  
+  # Exponential QQ-plot
+  p_qq_exp <- ggplot(qq_data, aes(x = theoretical_exp, y = our_exp)) +
+    geom_point(alpha = 0.6, color = "darkred") +
+    geom_abline(slope = 1, intercept = 0, color = "blue", linetype = "dashed") +
+    labs(title = "QQ-Plot: Inverse CDF vs Built-in rexp()",
+         x = "Theoretical Quantiles (rexp)", 
+         y = "Sample Quantiles (Inverse CDF)") +
+    theme_minimal()
+  
+  # Weibull QQ-plot
+  p_qq_weibull <- ggplot(qq_data, aes(x = theoretical_weibull, y = our_weibull)) +
+    geom_point(alpha = 0.6, color = "darkgreen") +
+    geom_abline(slope = 1, intercept = 0, color = "blue", linetype = "dashed") +
+    labs(title = "QQ-Plot: Inverse CDF vs Built-in rweibull()",
+         x = "Theoretical Quantiles (rweibull)", 
+         y = "Sample Quantiles (Inverse CDF)") +
+    theme_minimal()
+  
+  gridExtra::grid.arrange(p_qq_exp, p_qq_weibull, nrow = 1, ncol = 2,
+               top = "Validation: Our Inverse CDF Samples vs R's Built-in Generators")
+}
+
+# Create validation plots
+qq_comparison()
+```
 
 ## Random Number Generation
 
@@ -123,6 +327,8 @@ It can be proved that $x_1$ and $x_2$ are independent $\mathscr{N}(0, 1)$ random
 ```{r}
 #| echo: true
 #| code-fold: true
+#| code-summary: Box Meuller RNG for uniform rv's
+#| label: Box Meuller RNG for uniform rv's
 #| fig-cap: "Normal y1 vs Normal y2; independent random RVs"
 #| column: page
 #| fig-align: center
@@ -198,6 +404,8 @@ $$ In which case it is easier to just use R and calculate:
 ```{r}
 #| echo: true
 #| code-fold: true
+#| code-summary: probability of event Z in [0,3]
+#| label: probability of event Z in [0,3]
 pnorm(3, mean=1, sd=sqrt(3)) - pnorm(0, mean=1, sd=sqrt(3))
 ```
 
@@ -213,6 +421,7 @@ In case we don't know that `pnorm` exists, we could do this:
 #| echo: true
 #| code-fold: true
 #| code-summary: MC computation
+#| label: MC computation
 # define the event
 event_E_happened <- function( x ) {
   if( 0 <= x & x <= 3 ) {
@@ -267,15 +476,15 @@ The $k$-th moment of a random variable $X$ is the expected value of: $X$ raised 
 
 $$
 \acute{\mu}_k(X)=\mathbb{E}[X^k]
-$$ which is known as the $k$-th raw moment.
+$$ which is known as the $k$-th [**raw**]{.underline} moment.
 
-The $k$-th moment of a random variable $X$ around some value $c$ is known as the $k$-th central moment of $X$. It is the $k$-th raw moment of $X-c$.
+The $k$-th moment of a random variable $X$ around some value $c$ is known as the $k$-th [**central**]{.underline} moment of $X$. It is the $k$-th raw moment of $X-c$.
 
 $$
 \mu_k(X)=\mathbb{E}[(X-c)^k]
 $$
 
-The $k$-th standardized moment of a random variable $X$ is the $k$-th central moment of $X$ divided by the $k$-th power of the standard deviation of $X$.
+The $k$-th [**standardized**]{.underline} moment of a random variable $X$ is the $k$-th central moment of $X$ divided by the $k$-th power of the standard deviation of $X$.
 :::
 
 ## Moments and the MGF
@@ -286,7 +495,7 @@ $$
 e^{tX} = \sum_{k=0}^\infty\frac{(tX)^k}{k!}=1+\frac{t}{1!}X+\frac{t^2}{2!}X^2+\cdots
 $$
 
-The Moment Generating Function (MGF) is $\mathbb{E}[e^{tX}]$
+The [**Moment Generating Function**]{.underline} (MGF) is $\mathbb{E}[e^{tX}]$
 
 $$
 \begin{align*}
@@ -297,7 +506,7 @@ $$
 
 ## Moments and the MGF
 
-Note that the derivatives evaluated at $t=0$ give the corresponding moments
+Note that the derivatives of the MGF evaluated at $t=0$ give the corresponding moments
 
 $$
 \begin{align*}
@@ -310,7 +519,7 @@ and so $\left.\frac{d^{n}}{dt^{n}}M_{X}(t)\right|_{t=0}=\mathbb{E}\left[X^{n}\ri
 
 ## Moments and the MGF
 
-#### Key facts needed for the CLT
+#### Key facts needed for the Central Limit Theorem
 
 ::: {style="font-size: x-large"}
 The exponential function can be defined by the limit[^1]:
@@ -436,13 +645,13 @@ i.e. the sum of $n$ IID samples of a random variable converges to a Gaussian in 
 The CLT says that for $f=\mathbb{P}(E)$ if $\sigma^2\equiv\mathrm{Var}\left(f\right)$ is finite then the error of the MC estimate
 
 $$
-e_N(f)=\bar{f}-\mathbb{E}[f]
+e_M(f)=\bar{f}-\mathbb{E}[f]
 $$
 
 is approximately Normal in distribution for large $M$, i.e.
 
 $$
-e_N(f)\sim\sigma M^{1/2}Z
+e_M(f)\sim\sigma M^{1/2}Z
 $$ where $Z\sim\mathscr{N}(0,1)$
 
 ## MC Methods
@@ -627,7 +836,7 @@ $$
 #### rejection sampling
 
 ::: {style="font-size: large"}
-Similarly, for any $y\in\mathbb{R}$, we can calculate the joint probability
+Equivalently, for any $y\in\mathbb{R}$, we can calculate the joint probability
 
 $$
 \begin{align*}
@@ -748,9 +957,9 @@ The past and the future are conditionally independent given the present.
 ::: {style="font-size: x-large"}
 Consider the following **simple random walk** on the positive integers $\mathbb Z$:
 
-We start at $0$, then at each time step, we go up by one with probability $p$ and down by one with probability $q = 1-p$. When $p = q = \frac12$, we're equally as likely to go up as down, and we call this the **simple symmetric random walk**.
+We start at $0$, then at each time step, we go up by one with probability $p$ and down by one with probability $q = 1-p$. When $p = q = \frac12$, we're equally as likely to go up as down, and we call this the [**simple symmetric random walk**]{.underline}.
 
-The simple random walk is a simple but very useful model for lots of processes, like stock prices, sizes of populations, or positions of gas particles. (In many modern models, however, these have been replaced by more complicated continuous time and space models.) The simple random walk is sometimes called the "drunkard's walk."
+The simple random walk is a simple but very useful model for lots of processes, like stock prices, sizes of populations, or time series. (In many modern models, however, these have been replaced by more complicated continuous time and space models.) The simple random walk is sometimes called the "drunkard's walk."
 :::
 
 ## Markov Chains
@@ -848,7 +1057,7 @@ $$
 ::: {style="font-size: xx-large"}
 For the random walk (and also the gambler's ruin), the transition probabilities $\mathbb P(X_{n+1} = j \mid X_n = i)$ don't depend on $n$; in other words, the transition probabilities stay the same over time.
 
-A Markov process with this property is called time homogeneous. We will only consider time homogeneous processes in this course.
+A Markov process with this property is called [**time homogeneous**]{.underline}. We will only consider time homogeneous processes in this course.
 :::
 
 ## Markov Chains
@@ -1018,7 +1227,7 @@ or, equivalently, if $\boldsymbol \pi = \boldsymbol \pi\mathsf P$.
 ::: {style="font-size: xx-large"}
 Note that we're saying the *distribution* $\mathbb P(X_n = i)$ stays the same; the Markov chain $(X_n)$ itself will keep moving.
 
-One way to think is that if we started off a thousand Markov chains, choosing each starting position to be $i$ with probability $\pi_i$, then (roughly) $1000 \pi_j$ of them would be in state $j$ at any time in the future -- but not necessarily the same ones each time.
+One way to think of this is that if we started off a thousand Markov chains, choosing each starting position to be $i$ with probability $\pi_i$, then (roughly) $1000 \pi_j$ of them would be in state $j$ at any time in the future -- but not necessarily the same ones each time.
 :::
 
 ## Markov Chains
@@ -1860,11 +2069,196 @@ plot(mcm_chain)
 
 ```
 
+# Sampling Algorithms
+
+## Multi-armed Bandits
+
+::: {style="font-size: xx-large"}
+Businesses often face the the exploration vs exploitation dilemma. For example, managers might try to find a balance between the known most attractive ads/promotions/prices and the new ads/promotions/prices that might be even more successful.
+
+If we have learned all the information about the environment, we are able to find the best strategy by even just simulating brute-force. The dilemma comes from ***incomplete*** information: we need to gather enough information to make best overall decisions while keeping the risk under control.
+:::
+
+## Multi-armed Bandits
+
+A **multi-armed bandit** is a decision problem where a player repeatedly chooses between several uncertain options (the “arms,” like slot machines), each with an unknown payoff distribution, and must balance **exploration** (testing arms to learn about them) with **exploitation** (choosing the arm believed to give the best reward) to maximize cumulative returns.
+
+## Thompson sampling
+
+Thompson Sampling is a Bayesian approach to **sequential decision-making** that lets businesses experiment and optimize simultaneously. It is widely used in digital marketing, product experimentation, pricing, and recommender systems because it **maximizes cumulative performance while still learning**.
+
+## Thompson sampling
+
+:::::: columns
+:::: {.column width="50%"}
+::: {style="font-size: x-large"}
+Core Idea: At each decision point:
+
+1.  For each option (arm), sample a parameter (e.g., conversion rate) from its posterior distribution.
+2.  Select the option with the highest sampled value.
+3.  Observe the outcome (e.g., click or no-click).
+4.  Update the posterior distribution with the new data.
+
+Over time, this stochastic process ensures:
+
+-   Bad options are dropped.
+-   Promising options get more attention.
+-   Uncertainty is respected—options with little data still get tested occasionally.
+:::
+::::
+
+::: {.column width="50%"}
+![](images/thompson.png){fig-align="center" width="325"}
+:::
+::::::
+
+## Thompson sampling example
+
+A marketing team is running an online advertising campaign. Each ad shown to a user results either in a *click* (success) or *no click* (failure). The underlying *true click-through rate (CTR)* is unknown and lies between 0 and 1.
+
+## Thompson sampling example
+
+-   Decision Problem: The company wants to allocate budget across multiple ad campaigns to maximize total conversions.
+-   Data Generating Process: Each campaign’s CTR $p_i$ is assumed to be drawn from a Beta distribution, say $p_i \sim \text{Beta}(\alpha, \beta)$ where $\alpha$ and $\beta$ capture the average conversion tendency and variability across campaigns.
+-   Observed Data: For campaign $i$, the number of clicks $k_i$ out of impressions $n_i$ is $k_i \sim \text{Binomial}(n_i, p_i)$.
+
+## Thompson sampling example
+
+In this case
+
+$$
+\text{Beta}(\alpha,\beta)=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}
+\pi^{\alpha-1}(1-\pi)^{\beta-1}  \text{ for } \pi \in[0,1]
+$$
+
+$$
+\text{Binomial}(y \mid \pi, N)=P(Y=y \mid \pi)=\binom{N}{y} \pi^y(1-\pi)^{N-y}
+$$
+
+## Thompson sampling example
+
+::: {style="font-size: xx-large"}
+So for each campaign, our prior for the conversion probability is $\text{Beta}(\alpha,\beta)$ and the likelihood of observing $y$ click-thoughs on $N$ exposures given the click-through rate is $\text{Binomial}(y \mid \pi, N)$, so our updated CLR is
+
+$$
+\begin{align*}
+\text{Binomial}(y\vert\pi,N)\times\text{Beta}(\alpha,\beta) & =\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\pi^{\alpha-1}(1-\pi)^{\beta-1}\times\\
+ & \quad\binom{N}{y}\pi^{y}(1-\pi)^{N-y}\\
+ & =\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\binom{N}{y}\pi^{y+\alpha-1}(1-\pi)^{N-y+\beta-1}\\
+ & \sim\text{Beta}(y+\alpha,N-y+\beta)
+\end{align*}
+$$
+:::
+
+## Thompson sampling example
+
+::: panel-tabset
+## setup
+
+```{r}
+#| echo: true
+#| label: thompson sampling set up
+set.seed(8740)
+
+# True (unknown) CTRs for 3 campaigns
+true_p <- c(A = 0.020, B = 0.050, C = 0.035); K <- length(true_p)
+
+# Prior Beta(α, β) per campaign (uninformative)
+alpha <- rep(1, K)
+beta  <- rep(1, K)
+
+# Simulation length: number of ad impressions to allocate sequentially
+T <- 5000
+
+# Storage
+history <- data.frame(
+  t = integer(T),
+  chosen = character(T),
+  click = integer(T),
+  stringsAsFactors = FALSE
+)
+```
+
+## sampling
+
+```{r}
+#| echo: true
+#| label: thompson sampler
+# Thompson sampler
+for (t in 1:T) {
+  # sample one theta from each campaign's posterior Beta
+  thetas <- rbeta(K, shape1 = alpha, shape2 = beta)
+  arm <- which.max(thetas)       # choose the arm with max sampled theta
+  arm_name <- names(true_p)[arm]
+
+  # simulate the outcome (click/no-click) from the true CTR
+  y <- rbinom(1, size = 1, prob = true_p[arm])
+
+  # update posterior for the chosen arm
+  alpha[arm] <- alpha[arm] + y
+  beta[arm]  <- beta[arm]  + (1 - y)
+
+  # record
+  history$t[t] <- t
+  history$chosen[t] <- arm_name
+  history$click[t] <- y
+}
+```
+
+## results
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: thompson sampling results
+#| label: thompson sampling results
+# Summaries
+post_summary <- tibble::tibble(
+  campaign = names(true_p),
+  alpha = alpha,
+  beta  = beta,
+  posterior_mean = alpha / (alpha + beta),
+  posterior_sd   = sqrt((alpha * beta) / ((alpha + beta)^2 * (alpha + beta + 1))),
+  true_ctr = as.numeric(true_p)
+) %>%
+  dplyr::arrange(desc(posterior_mean))
+
+alloc_summary <- history %>%
+  dplyr::count(chosen, name = "allocated_impressions") %>%
+  dplyr::rename(campaign = chosen) %>%
+  dplyr::right_join(tibble(campaign = names(true_p)), by = "campaign") %>%
+  dplyr::mutate(allocated_impressions = tidyr::replace_na(allocated_impressions, 0L)) %>%
+  dplyr::arrange(desc(allocated_impressions))
+
+performance <- history %>%
+  dplyr::summarize(total_clicks = sum(click),
+            ctr_overall = mean(click),
+            .groups = "drop")
+
+per_campaign_perf <- history %>%
+  dplyr::group_by(chosen) %>%
+  dplyr::summarize(clicks = sum(click),
+            impressions = n(),
+            empirical_ctr = ifelse(impressions > 0, clicks / impressions, NA_real_),
+            .groups = "drop") %>%
+  dplyr::rename(campaign = chosen) %>%
+  dplyr::arrange(desc(empirical_ctr))
+
+list(
+  allocation = alloc_summary,
+  posterior  = post_summary,
+  overall    = performance,
+  per_campaign_empirical = per_campaign_perf
+)
+```
+:::
+
 ## More
 
 -   The Random Walk Metropolis: [Linking Theory and Practice Through a Case Study](https://arxiv.org/pdf/1011.6217)
 -   “The Metropolis-Hastings Algorithm.” April 12, 2023. <https://blog.djnavarro.net/posts/2023-04-12_metropolis-hastings/>.
 -   [Why Metropolis–Hastings Works](https://gregorygundersen.com/blog/2019/11/02/metropolis-hastings/)
+-   [The Multi-Armed Bandit Problem and Its Solutions](https://lilianweng.github.io/posts/2018-01-23-multi-armed-bandit/?utm_source=chatgpt.com)
 
 ## Recap
 

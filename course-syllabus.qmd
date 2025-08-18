@@ -2,7 +2,7 @@
 title: "BSMM 8740 Syllabus"
 ---
 
-[Click here](/documents/BSMM-8740-Fall%202024.pdf "PDF of syllabus") **to download a PDF copy of the syllabus.**
+[Click here](/documents/BSMM-8740-Fall%202025.pdf "PDF of syllabus") **to download a PDF copy of the syllabus.**
 
 ```{r}
 #| echo: false
@@ -72,9 +72,9 @@ The general objectives of this course are to:
 
 ## Master of Management Competencies
 
-| **Program Competencies**                                                                                                                                       | **Course Competencies**                                                                                                                                        | Tested by                                           |
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|
-| Apply an evidence-based decision model to evaluate and recommend the best available alternative to resolve an international business problem.                  | Apply an evidence-based decision model to evaluate and recommend the best available alternative to resolve an international business problem.                  | Lab Assessments                                     |
+| **Program Competencies** | **Course Competencies** | Tested by |
+|----------------------------|----------------------------|----------------|
+| Apply an evidence-based decision model to evaluate and recommend the best available alternative to resolve an international business problem. | Apply an evidence-based decision model to evaluate and recommend the best available alternative to resolve an international business problem. | Lab Assessments |
 | Analyze both qualitative and quantitative data and findings, distinguishing and evaluating their relevance to the resolution of international business issues. | Analyze both qualitative and quantitative data and findings, distinguishing and evaluating their relevance to the resolution of international business issues. | Quizzes, Midterm Examination, and Final Examination |
 
 ## Textbooks
@@ -95,18 +95,18 @@ While there is no official textbook for the course, the following textbooks are 
 
 | Date           | Topic                               |
 |----------------|-------------------------------------|
-| *Sep 11, 2024* | The Tidyverse, EDA & Git            |
-| *Sep 18, 2024* | The Recipes Package                 |
-| *Sep 25, 2024* | Regression Methods                  |
-| *Oct 02, 2024* | The TidyModels Package              |
-| *Oct 09, 2024* | Classification & Clustering Methods |
-| *Oct 23, 2024* | Time Series Methods                 |
-| *Oct 30, 2024* | Causality: DAGs                     |
-| *Nov 06, 2024* | Causality: Methods                  |
-| *Nov 13, 2024* | Monte Carlo Methods                 |
-| *Nov 20, 2024* | Bayesian Methods                    |
-| *Nov 27, 2024* | Advanced Topics                     |
-| *Dec 04, 2024* | Final Exam                          |
+| *Sep 10, 2025* | The Tidyverse, EDA & Git            |
+| *Sep 17, 2025* | The Recipes Package                 |
+| *Sep 24, 2025* | Regression Methods                  |
+| *Oct 01, 2025* | The TidyModels Package              |
+| *Oct 08, 2025* | Classification & Clustering Methods |
+| *Oct 22, 2025* | Time Series Methods                 |
+| *Oct 29, 2025* | Causality: DAGs                     |
+| *Nov 05, 2025* | Causality: Methods                  |
+| *Nov 12, 2025* | Monte Carlo Methods                 |
+| *Nov 19, 2025* | Bayesian Methods                    |
+| *Nov 26, 2025* | Advanced Topics                     |
+| *Dec 03, 2025* | Final Exam                          |
 
 ## Key Dates For Exams/Assignments[^1]
 
@@ -114,10 +114,10 @@ While there is no official textbook for the course, the following textbooks are 
 
 | Date           | Exam/Assignment     |
 |----------------|---------------------|
-| *Oct 09, 2024* | Quiz1               |
-| *Nov 06, 2024* | Midterm Examination |
-| *Nov 20, 2024* | Quiz 2              |
-| *Dec 04, 2024* | Final Examination   |
+| *Oct 08, 2025* | Quiz1               |
+| *Nov 05, 2025* | Midterm Examination |
+| *Nov 19, 2025* | Quiz 2              |
+| *Dec 03, 2025* | Final Examination   |
 
 ## Grading
 
@@ -261,10 +261,10 @@ In the event of inclement weather or other connectivity-related events that proh
 
 ## Important Academic Dates
 
-| FALL 2024                |                                      |
+| FALL 2025                |                                      |
 |--------------------------|--------------------------------------|
 | September 2              | Labour Day (University closed)       |
-| September 5              | all 2024 classes begin               |
+| September 5              | all 2025 classes begin               |
 | September 18             | Add/Drop Date                        |
 | October 3                | Financial Drop Date                  |
 | October 14               | Thanksgiving Day (University closed) |

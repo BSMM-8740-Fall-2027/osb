@@ -1142,3 +1142,252 @@ plot(agg_effects, main = "Event Study: Callaway & Sant’Anna (2021)")
 # %%%%%%%%%%%%%%%%%%%%%%
 print("TWFE Event Study Coefficients:")
 print(twfe_event_study)
+
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# Simulated Retail Technology Adoption Dataset ----
+# Features: Staggered treatment timing and heterogeneous treatment effects
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+set.seed(12345)
+library(dplyr)
+
+# Parameters
+n_stores <- 200
+n_periods <- 48  # 4 years of monthly data
+start_year <- 2019
+start_month <- 1
+
+# Create store and time identifiers
+stores <- 1:n_stores
+periods <- 1:n_periods
+
+# Create full panel
+data <- expand.grid(store_id = stores, period = periods)
+data <- data %>% arrange(store_id, period)
+
+# Create calendar date
+data$year <- start_year + floor((data$period - 1) / 12)
+data$month <- ((data$period - 1) %% 12) + 1
+data$date <- as.Date(paste(data$year, data$month, "01", sep = "-"))
+
+# Store characteristics that determine heterogeneous effects
+set.seed(123)
+store_chars <- data.frame(
+  store_id = 1:n_stores,
+  store_size = sample(c("Small", "Medium", "Large"), n_stores, replace = TRUE, prob = c(0.3, 0.4, 0.3)),
+  location_type = sample(c("Urban", "Suburban", "Rural"), n_stores, replace = TRUE, prob = c(0.4, 0.4, 0.2)),
+  baseline_productivity = rnorm(n_stores, 100, 15)
+)
+
+# Assign staggered treatment timing
+# Treatment occurs at different periods for different groups
+set.seed(456)
+treatment_assignment <- store_chars %>%
+  mutate(
+    # Treatment probability varies by characteristics
+    treatment_prob = case_when(
+      store_size == "Large" & location_type == "Urban" ~ 0.9,
+      store_size == "Medium" ~ 0.7,
+      store_size == "Small" & location_type == "Rural" ~ 0.4,
+      TRUE ~ 0.6
+    ),
+    is_treated = rbinom(n_stores, 1, treatment_prob)
+  )
+
+# Assign treatment periods for treated stores
+treatment_assignment <- treatment_assignment %>%
+  rowwise() %>%
+  mutate(
+    treatment_period = case_when(
+      !is_treated ~ NA_real_,
+      store_size == "Large" ~ sample(13:18, 1),
+      store_size == "Medium" ~ sample(19:30, 1),
+      store_size == "Small" ~ sample(25:36, 1)
+    )
+  ) %>%
+  ungroup() %>%
+  select(store_id, is_treated, treatment_period, store_size, location_type, baseline_productivity)
+
+# Merge treatment assignment with panel data
+data <- data %>%
+  left_join(treatment_assignment, by = "store_id")
+
+# Create treatment indicator (absorbing - once treated, always treated)
+data$treated <- ifelse(data$is_treated == 1 & data$period >= data$treatment_period, 1, 0)
+data$treated[is.na(data$treated)] <- 0
+
+# Create post-treatment periods indicator
+data$periods_since_treatment <- ifelse(data$is_treated == 1 & data$period >= data$treatment_period,
+                                       data$period - data$treatment_period, NA)
+
+# Generate outcome variable with heterogeneous treatment effects
+set.seed(789)
+data <- data %>%
+  mutate(
+    # Store fixed effects
+    store_fe = baseline_productivity + rnorm(n(), 0, 5),
+
+    # Time trend
+    time_trend = 0.2 * period + 0.1 * sin(2 * pi * period / 12), # Linear trend + seasonal
+
+    # Treatment effect varies by store characteristics (absorbing treatment)
+    treatment_effect = case_when(
+      is_treated == 0 ~ 0,  # Never-treated units
+      period < treatment_period ~ 0,  # Pre-treatment periods
+      store_size == "Large" & location_type == "Urban" ~ 15 + 2 * (period - treatment_period),
+      store_size == "Large" & location_type != "Urban" ~ 12 + 1.5 * (period - treatment_period),
+      store_size == "Medium" & location_type == "Urban" ~ 8 + 1 * (period - treatment_period),
+      store_size == "Medium" & location_type != "Urban" ~ 6 + 0.8 * (period - treatment_period),
+      store_size == "Small" ~ 3 + 0.5 * (period - treatment_period),
+      TRUE ~ 0
+    ),
+
+    # Random error
+    error = rnorm(n(), 0, 8),
+
+    # Final outcome: Store productivity (sales per employee hour)
+    productivity = store_fe + time_trend + treatment_effect + error
+  )
+
+# Create final clean dataset
+retail_data <- data %>%
+  select(
+    store_id,
+    period,
+    year,
+    month,
+    date,
+    productivity,
+    treated,
+    treatment_period,
+    periods_since_treatment,
+    store_size,
+    location_type
+  ) %>%
+  arrange(store_id, period)
+
+# Display summary statistics
+cat("=== RETAIL TECHNOLOGY ADOPTION DATASET ===\n\n")
+
+cat("Dataset Dimensions:\n")
+cat("- Stores:", length(unique(retail_data$store_id)), "\n")
+cat("- Time periods:", max(retail_data$period), "months\n")
+cat("- Total observations:", nrow(retail_data), "\n\n")
+
+cat("Treatment Timing Summary:\n")
+treatment_summary <- retail_data %>%
+  filter(!is.na(treatment_period)) %>%
+  group_by(treatment_period) %>%
+  summarise(n_stores = n_distinct(store_id), .groups = 'drop') %>%
+  arrange(treatment_period)
+
+print(treatment_summary)
+
+cat("\nTreatment by Store Characteristics:\n")
+char_summary <- retail_data %>%
+  group_by(store_size, location_type) %>%
+  summarise(
+    total_stores = n_distinct(store_id),
+    treated_stores = n_distinct(store_id[!is.na(treatment_period)]),
+    treatment_rate = round(treated_stores/total_stores, 2),
+    .groups = 'drop'
+  )
+print(char_summary)
+
+cat("\nOutcome Variable Summary:\n")
+outcome_summary <- retail_data %>%
+  group_by(treated) %>%
+  summarise(
+    mean_productivity = round(mean(productivity), 2),
+    sd_productivity = round(sd(productivity), 2),
+    min_productivity = round(min(productivity), 2),
+    max_productivity = round(max(productivity), 2),
+    .groups = 'drop'
+  )
+print(outcome_summary)
+
+# Save first 20 observations as example
+cat("\nFirst 20 observations:\n")
+print(head(retail_data, 20))
+
+# Export data (uncomment to save)
+# write.csv(retail_data, "retail_technology_did_data.csv", row.names = FALSE)
+
+cat("\n=== TREATMENT ABSORBING PROPERTY VERIFICATION ===\n")
+
+# Verify treatment is absorbing
+treatment_check <- retail_data %>%
+  arrange(store_id, period) %>%
+  group_by(store_id) %>%
+  mutate(
+    treatment_switch_down = lag(treated, 1) == 1 & treated == 0,
+    treatment_switch_down = ifelse(is.na(treatment_switch_down), FALSE, treatment_switch_down)
+  ) %>%
+  summarise(
+    any_switch_down = any(treatment_switch_down),
+    .groups = 'drop'
+  )
+
+cat("Stores that switch from treated to untreated:", sum(treatment_check$any_switch_down), "\n")
+cat("(Should be 0 for proper absorbing treatment)\n\n")
+
+cat("=== KEY FEATURES FOR DiD ANALYSIS ===\n")
+cat("1. Staggered Treatment: Treatment occurs in months 13-36 with different timing by store type\n")
+cat("2. Heterogeneous Effects: Treatment effects vary by store_size and location_type\n")
+cat("3. Dynamic Effects: Treatment effects grow over time (periods_since_treatment)\n")
+cat("4. No Covariates: Clean data structure for methodological focus\n")
+cat("5. Realistic Structure: Mimics retail chain technology rollout\n\n")
+
+cat("Suggested DiD Estimators:\n")
+cat("- Callaway & Sant'Anna (2021) for heterogeneous treatment effects\n")
+cat("- Sun & Abraham (2021) for event study with staggered adoption\n")
+cat("- Borusyak et al. (2021) imputation estimator\n")
+cat("- de Chaisemartin & D'Haultfoeuille (2020) for robustness\n")
+
+
+group_id = store_id
+period_id = period
+treated = treated
+outcome = productivity
+
+res <- did2s::did2s(
+  data = retail_data
+  , yname = 'productivity'
+  , treatment = 'treated'
+  , first_stage = ~ 0 | store_id + period
+  , second_stage = ~i(treated, ref=FALSE)
+  , cluster_var = 'store_id'
+  , verbose = FALSE
+)
+
+fixest::etable(
+  res, fitstat=c('n'), fixef_sizes = TRUE, family= TRUE #markdown = "images/" #tex = FALSE
+)
+
+retail_data |>
+  readr::write_csv("/Users/louisodette/Documents/R_projects/osb_2025_site/labs/data/retail_data.csv")
+
+retail_data |> dplyr::filter(treated==0) |> dplyr::pull(productivity) |> mean()
+
+out <- did2s::event_study(
+  data = retail_data |>
+    dplyr::mutate(
+      treatment_period =
+        dplyr::case_when(
+          treated == 0 ~ 0
+          , TRUE ~ treatment_period
+        )
+    ) #tidyr::replace_na(list(treatment_period = 0))
+  , yname = 'productivity'
+  , idname = 'store_id'
+  , gname = 'treatment_period'
+  , tname = 'period_'
+  , estimator = "did2s"
+)
+did2s::plot_event_study(out) +
+  theme_light(base_size = 18) +
+  theme(axis.title = element_text(size = 10, face = "bold"), legend.position="none")
+
+
+
