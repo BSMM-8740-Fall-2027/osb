@@ -292,7 +292,7 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 <div class="columns">
 <div class="column" style="width:60%;">
 <div style="font-size: large">
-<p>In this example, we have 4 units, 2 treated and 2 untreated. The unit treatment effect is <span class="math inline">\(Y_i^1-Y_i^0\)</span>, and we have at least 3 <u><strong>estimands</strong></u>:</p>
+<p>In this example, we have 4 units, 2 treated and 2 untreated. The unit treatment effect is <span class="math inline">\(Y_i^1-Y_i^0\)</span>, and we have at least 3 potential <u><strong>estimands</strong></u>:</p>
 <ul>
 <li>average treatment effect (<span class="math inline">\(\text{ATE}\)</span>)</li>
 <li>average treatment effect on the treated (<span class="math inline">\(\text{ATT}\)</span>)</li>
@@ -302,7 +302,7 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 </div><div class="column" style="width:40%;">
 <div class="cell">
 <div class="cell-output-display">
-<div id="octydwdikk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="dqkyavdoab" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   
 <table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" data-bgcolor="#FFFFFF">
@@ -400,7 +400,7 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
-<div id="dhgzermttd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="eihwtzhtko" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   
 <table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" data-bgcolor="#FFFFFF">
@@ -548,6 +548,33 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 \]</span></p>
 </div>
 <p>where <span class="math inline">\(\Delta_{ATE}^{Y}\)</span> is the average treatment effect in the population.</p>
+</section>
+<section id="identification-assumptions-3" class="slide level2">
+<h2>Identification assumption(s)</h2>
+<div style="font-size: x-large">
+<p>In our first example we had a balanced data set: the same number of units are treated and untreated. If this is not the case, then</p>
+<p><span class="math display">\[
+\Delta_{WW}^{Y} = \frac{1}{n_1}\sum_{D_i=1} Y_i(1) - \frac{1}{n_0}\sum_{D_i=0}Y_i(0)
+\]</span></p>
+<p>If in addition we have a covariate <span class="math inline">\(x\)</span> that split our data into groups, we can imagine a causal effect estimate by groups, which is then combined into an overall estimate:</p>
+<p><span class="math display">\[
+\Delta_{STRAT}^{Y} = \sum_{x \in \mathcal{X}} \frac{n_x}{n} \hat{\tau}(x);\;\hat{\tau}(x) = \frac{1}{n_{x1}} \sum_{\{X_i=x, D_i=1\}} Y_i - \frac{1}{n_{x0}} \sum_{\{X_i=x, D_i=0\}} Y_i
+\]</span></p>
+</div>
+</section>
+<section id="identification-assumptions-4" class="slide level2">
+<h2>Identification assumption(s)</h2>
+<div style="font-size: x-large">
+<p><span class="math display">\[
+\begin{align*}
+\Delta_{STRAT}^{Y} &amp; =\sum_{x\in\mathcal{X}}\frac{n_{x}}{n}\hat{\tau}(x)\\
+&amp; =\sum_{x\in\mathcal{X}}\frac{n_{x}}{n}\left(\frac{1}{n_{x1}}\sum_{\{X_{i}=x,D_{i}=1\}}Y_{i}-\frac{1}{n_{x0}}\sum_{\{X_{i}=x,D_{i}=0\}}Y_{i}\right)\\
+&amp; =\frac{1}{n}\sum_{x\in\mathcal{X}}\left(\frac{n_{x}}{n_{x1}}\sum_{\{X_{i}=x,D_{i}=1\}}Y_{i}-\frac{n_{x}}{n_{x0}}\sum_{\{X_{i}=x,D_{i}=0\}}Y_{i}\right)\\
+&amp; =\frac{1}{n}\sum_{x\in\mathcal{X}}\left(\frac{1}{\pi_{x}}\sum_{\{X_{i}=x,D_{i}=1\}}Y_{i}-\frac{1}{1-\pi_{x}}\sum_{\{X_{i}=x,D_{i}=0\}}Y_{i}\right)
+\end{align*}
+\]</span></p>
+<p>where: (i) <span class="math inline">\(n_x = |\{i : X_i = x\}|\)</span> , (ii) <span class="math inline">\(n_{xw} = |\{i : X_i = x, D_i = w\}|\)</span></p>
+</div>
 </section>
 <section id="fundamental-problems" class="slide level2">
 <h2>Fundamental problems</h2>

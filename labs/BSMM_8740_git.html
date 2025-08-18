@@ -635,7 +635,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><a href="https://help.github.com/articles/changing-your-github-username/" class="uri">https://help.github.com/articles/changing-your-github-username/</a></p></li>
 <li><p><a href="https://help.github.com/articles/what-happens-when-i-change-my-username/" class="uri">https://help.github.com/articles/what-happens-when-i-change-my-username/</a></p></li>
 </ul>
-<p>We will be switching between the console and the terminal, in class and in assignments. The <strong>Console</strong> is where you can execute R code, while the <strong>Terminal</strong> is where you can execute system functions like git.</p>
+<p>Within RStudio we will be switching between the console and the terminal, in class and in assignments. The <strong>Console</strong> is where you can execute R code, while the <strong>Terminal</strong> is where you can execute system functions like git.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/Screen Shot 2023-09-12 at 12.25.57 PM.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="300"></p>
@@ -645,7 +645,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="git-already-installed" class="level3">
 <h3 class="anchored" data-anchor-id="git-already-installed">2. Git already installed?</h3>
-<p>Go to the <strong>Terminal</strong> tab in RStudio and enter <code>git --version</code> to see its version:</p>
+<p>Go to the <strong>Terminal</strong> tab in RStudio and enter <code>git --version</code> to see the installed version:</p>
 <p>If this instruction gives an error, it’s possible that <em>git</em> is not installed on your machine. If so, let your instructor know. All machines in the lab should have <em>git</em> installed.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -657,7 +657,7 @@ FYI - some common git commands
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Here are short definitions for key Git commands. Most of these are built into the RStudio IDE, and we’ll use them through RStudio:</p>
+<p>Here are short definitions for key Git commands. Most of these are built into the RStudio IDE, and <u>we’ll use them through RStudio</u>:</p>
 <ol type="1">
 <li><strong>git init</strong>: Initializes a new Git repository in the current directory [<strong>use RStudio</strong>].</li>
 <li><strong>git add</strong>: Stages changes (files or modifications) for the next commit [<strong>use RStudio</strong>].</li>
@@ -692,7 +692,7 @@ Important
 <p>You can set your Git user name and email from within R (i.e.&nbsp;go back to the <strong>Console</strong> tab):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">use_git_config</span>(</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># user.name does not have to be your GitHub user name</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># user.name does not have to be your GitHub user name - this user.name is local to your machine.</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">user.name =</span> <span class="st">"Jane Doe"</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># user.email MUST be the email associated with your GitHub account.</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  , <span class="at">user.email =</span> <span class="st">"jane@example.org"</span></span>
@@ -724,7 +724,7 @@ Tip
 </div>
 <section id="click-generate-token." class="level5">
 <h5 class="anchored" data-anchor-id="click-generate-token."><strong>4.1 Click “Generate token”</strong>.</h5>
-<p>You won’t be able to see this token again, so don’t close or navigate away from this browser window until you store the PAT. Copy the PAT to the clipboard or a text file in RStudio.</p>
+<p><u><strong>You won’t be able to see this token again</strong></u>, so don’t close or navigate away from this browser window until you <u><strong>store the PAT</strong></u>. Copy the PAT to the clipboard or a text file in RStudio.</p>
 <p>Treat this PAT like a password! Do not ever hard-wire your PAT into your code! A PAT should always be retrieved implicitly, for example, from the Git credential store, a safe place, where command line Git, RStudio, and R packages can discover it.</p>
 </section>
 <section id="save-your-pat" class="level5">

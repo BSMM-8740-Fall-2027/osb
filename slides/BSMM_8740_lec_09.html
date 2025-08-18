@@ -113,6 +113,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -220,7 +221,7 @@ L.L. Odette
 <ul>
 <li>Last week we looked at causal effect estimation methods in greater depth, including
 <ul>
-<li>inverse probaiity weighting</li>
+<li>inverse probability weighting</li>
 <li>regression adjustment</li>
 <li>doubly robust estimation</li>
 <li>matching estimation</li>
@@ -232,7 +233,7 @@ L.L. Odette
 <section id="this-week" class="slide level2">
 <h2>This week</h2>
 <ul>
-<li>We will explore Monte Carlo methods as a way to integrate difficult functions, and to sample from difficult probability distributions.</li>
+<li>We will explore Monte Carlo methods as a way to numerically integrate difficult functions, and to sample from difficult probability distributions.</li>
 <li>Along the way we will look at Markov Chains, which can both underlie sampling methods and provide a way to model the generation of data.</li>
 <li>Finally, we look at Markov Chain Monte Carlo (MCMC) methods to sample from probability distributions.</li>
 </ul>
@@ -248,7 +249,7 @@ L.L. Odette
 <p>Especially those that arise from probability distributions.</p>
 <p>First we consider how ‘random numbers’ are computer generated.</p>
 </section>
-<section id="random-number-generation" class="slide level2">
+<section id="random-number-generation" class="slide level2 scrollable">
 <h2>Random Number Generation</h2>
 <div style="font-size: x-large">
 <p>Random numbers from a given distribution are drawn using random numbers from a (<span class="math inline">\([0,1]\)</span>) uniform distribution, using the <strong>inverse transform sampling method</strong> as follows:</p>
@@ -272,6 +273,56 @@ L.L. Odette
 <p>This method applies broadly to any distribution where you can compute or approximate the inverse CDF.</p>
 </div>
 </section>
+<section id="sampling-examples" class="slide level2">
+<h2>Sampling Examples</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>inverse CFD sampling example</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">set.seed</span>(<span class="dv">42</span>)  <span class="co"># For reproducibility</span></span>
+<span id="cb1-2"><a></a></span>
+<span id="cb1-3"><a></a><span class="co"># Function to demonstrate inverse CDF sampling</span></span>
+<span id="cb1-4"><a></a>inverse_cdf_demo <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n_samples =</span> <span class="dv">1000</span>) {</span>
+<span id="cb1-5"><a></a>  </span>
+<span id="cb1-6"><a></a>  <span class="co"># Generate uniform random variables</span></span>
+<span id="cb1-7"><a></a>  u <span class="ot">&lt;-</span> <span class="fu">runif</span>(n_samples)</span>
+<span id="cb1-8"><a></a>  </span>
+<span id="cb1-9"><a></a>  <span class="co"># Example 1: Exponential Distribution (lambda = 1)</span></span>
+<span id="cb1-10"><a></a>  <span class="co"># Inverse CDF: F^(-1)(u) = -ln(1-u)/lambda</span></span>
+<span id="cb1-11"><a></a>  lambda <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb1-12"><a></a>  exp_samples <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">log</span>(<span class="dv">1</span> <span class="sc">-</span> u) <span class="sc">/</span> lambda</span>
+<span id="cb1-13"><a></a>  </span>
+<span id="cb1-14"><a></a>  <span class="co"># Example 2: Weibull Distribution (shape = 2, scale = 1)</span></span>
+<span id="cb1-15"><a></a>  <span class="co"># Inverse CDF: F^(-1)(u) = scale * (-ln(1-u))^(1/shape)</span></span>
+<span id="cb1-16"><a></a>  shape <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb1-17"><a></a>  scale <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb1-18"><a></a>  weibull_samples <span class="ot">&lt;-</span> scale <span class="sc">*</span> (<span class="sc">-</span><span class="fu">log</span>(<span class="dv">1</span> <span class="sc">-</span> u))<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>shape)</span>
+<span id="cb1-19"><a></a>  </span>
+<span id="cb1-20"><a></a>  <span class="co"># Example 3: Logistic Distribution (location = 0, scale = 1)</span></span>
+<span id="cb1-21"><a></a>  <span class="co"># Inverse CDF: F^(-1)(u) = location + scale * ln(u/(1-u))</span></span>
+<span id="cb1-22"><a></a>  location <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb1-23"><a></a>  scale_logistic <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb1-24"><a></a>  logistic_samples <span class="ot">&lt;-</span> location <span class="sc">+</span> scale_logistic <span class="sc">*</span> <span class="fu">log</span>(u <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> u))</span>
+<span id="cb1-25"><a></a>  </span>
+<span id="cb1-26"><a></a>  <span class="co"># Create data frame for plotting</span></span>
+<span id="cb1-27"><a></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb1-28"><a></a>    <span class="at">uniform =</span> u,</span>
+<span id="cb1-29"><a></a>    <span class="at">exponential =</span> exp_samples,</span>
+<span id="cb1-30"><a></a>    <span class="at">weibull =</span> weibull_samples,</span>
+<span id="cb1-31"><a></a>    <span class="at">logistic =</span> logistic_samples</span>
+<span id="cb1-32"><a></a>  )</span>
+<span id="cb1-33"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+
+<img data-src="BSMM_8740_lec_09_files/figure-revealjs/inverse CFD sampling plots-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<section id="sampling-examples-1" class="slide level2">
+<h2>Sampling Examples</h2>
+
+<img data-src="BSMM_8740_lec_09_files/figure-revealjs/inverse CFD sampling - exponential-1.png" width="960" class="r-stretch"></section>
+<section id="sampling-examples-2" class="slide level2">
+<h2>Sampling Examples</h2>
+
+<img data-src="BSMM_8740_lec_09_files/figure-revealjs/QQ smapling verification-1.png" width="960" class="r-stretch"></section>
 <section id="random-number-generation-2" class="slide level2">
 <h2>Random Number Generation</h2>
 <p>Pseudo-random generators found in computers use a deterministic (i.e.&nbsp;repeatable) algorithm to generate a sequence of (apparently) random numbers on the <span class="math inline">\((0, 1)\)</span> interval.</p>
@@ -311,45 +362,40 @@ x_2&amp; =\sqrt{-2\log y_{1}}\sin(2\pi y_{2})
 <h2>Random Number Generation</h2>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="co"># The Box-Muller transformation</span></span>
-<span id="cb1-2"><a></a>samples <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">10000</span>), <span class="at">ncol=</span><span class="dv">2</span>) <span class="sc">|&gt;</span> <span class="fu">data.frame</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb1-3"><a></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb1-4"><a></a>    <span class="at">normals =</span> </span>
-<span id="cb1-5"><a></a>      purrr<span class="sc">::</span><span class="fu">map2</span>(</span>
-<span id="cb1-6"><a></a>        X1, X2</span>
-<span id="cb1-7"><a></a>        ,(\(x1,x2){</span>
-<span id="cb1-8"><a></a>          <span class="fu">data.frame</span>(</span>
-<span id="cb1-9"><a></a>            <span class="at">y1 =</span> <span class="fu">sqrt</span>( <span class="sc">-</span><span class="dv">2</span> <span class="sc">*</span> <span class="fu">log</span>(x1) ) <span class="sc">*</span> <span class="fu">cos</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> x2)</span>
-<span id="cb1-10"><a></a>            , <span class="at">y2 =</span> <span class="fu">sqrt</span>( <span class="sc">-</span><span class="dv">2</span> <span class="sc">*</span> <span class="fu">log</span>(x1) ) <span class="sc">*</span> <span class="fu">sin</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> x2) </span>
-<span id="cb1-11"><a></a>          )</span>
-<span id="cb1-12"><a></a>        })</span>
-<span id="cb1-13"><a></a>      )</span>
-<span id="cb1-14"><a></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb1-15"><a></a>  tidyr<span class="sc">::</span><span class="fu">unnest</span>(normals)  </span>
-<span id="cb1-16"><a></a>  </span>
-<span id="cb1-17"><a></a></span>
-<span id="cb1-18"><a></a>p0 <span class="ot">&lt;-</span> samples <span class="sc">|&gt;</span> </span>
-<span id="cb1-19"><a></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(X1,X2)) <span class="sc">|&gt;</span> </span>
-<span id="cb1-20"><a></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>value, <span class="at">color=</span>name, <span class="at">fill=</span>name)) <span class="sc">+</span> </span>
-<span id="cb1-21"><a></a>  <span class="fu">geom_histogram</span>(</span>
-<span id="cb1-22"><a></a>    <span class="fu">aes</span>(<span class="at">y=</span>..density..), <span class="at">bins =</span> <span class="dv">60</span>, <span class="at">position=</span><span class="st">"identity"</span>, <span class="at">alpha=</span><span class="fl">0.3</span></span>
-<span id="cb1-23"><a></a>  ) <span class="sc">+</span> </span>
-<span id="cb1-24"><a></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Value"</span>, <span class="at">y=</span><span class="st">"Density"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span>
-<span id="cb1-25"><a></a></span>
-<span id="cb1-26"><a></a>p1 <span class="ot">&lt;-</span> samples <span class="sc">|&gt;</span> </span>
-<span id="cb1-27"><a></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>y1, <span class="at">y=</span>y2)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">coord_fixed</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span>
-<span id="cb1-28"><a></a></span>
-<span id="cb1-29"><a></a>p0<span class="sc">+</span>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<summary>Box Meuller RNG for uniform rv’s</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="co"># The Box-Muller transformation</span></span>
+<span id="cb2-2"><a></a>samples <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">10000</span>), <span class="at">ncol=</span><span class="dv">2</span>) <span class="sc">|&gt;</span> <span class="fu">data.frame</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb2-3"><a></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb2-4"><a></a>    <span class="at">normals =</span> </span>
+<span id="cb2-5"><a></a>      purrr<span class="sc">::</span><span class="fu">map2</span>(</span>
+<span id="cb2-6"><a></a>        X1, X2</span>
+<span id="cb2-7"><a></a>        ,(\(x1,x2){</span>
+<span id="cb2-8"><a></a>          <span class="fu">data.frame</span>(</span>
+<span id="cb2-9"><a></a>            <span class="at">y1 =</span> <span class="fu">sqrt</span>( <span class="sc">-</span><span class="dv">2</span> <span class="sc">*</span> <span class="fu">log</span>(x1) ) <span class="sc">*</span> <span class="fu">cos</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> x2)</span>
+<span id="cb2-10"><a></a>            , <span class="at">y2 =</span> <span class="fu">sqrt</span>( <span class="sc">-</span><span class="dv">2</span> <span class="sc">*</span> <span class="fu">log</span>(x1) ) <span class="sc">*</span> <span class="fu">sin</span>(<span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> x2) </span>
+<span id="cb2-11"><a></a>          )</span>
+<span id="cb2-12"><a></a>        })</span>
+<span id="cb2-13"><a></a>      )</span>
+<span id="cb2-14"><a></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb2-15"><a></a>  tidyr<span class="sc">::</span><span class="fu">unnest</span>(normals)  </span>
+<span id="cb2-16"><a></a>  </span>
+<span id="cb2-17"><a></a></span>
+<span id="cb2-18"><a></a>p0 <span class="ot">&lt;-</span> samples <span class="sc">|&gt;</span> </span>
+<span id="cb2-19"><a></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(X1,X2)) <span class="sc">|&gt;</span> </span>
+<span id="cb2-20"><a></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>value, <span class="at">color=</span>name, <span class="at">fill=</span>name)) <span class="sc">+</span> </span>
+<span id="cb2-21"><a></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb2-22"><a></a>    <span class="fu">aes</span>(<span class="at">y=</span>..density..), <span class="at">bins =</span> <span class="dv">60</span>, <span class="at">position=</span><span class="st">"identity"</span>, <span class="at">alpha=</span><span class="fl">0.3</span></span>
+<span id="cb2-23"><a></a>  ) <span class="sc">+</span> </span>
+<span id="cb2-24"><a></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Value"</span>, <span class="at">y=</span><span class="st">"Density"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span>
+<span id="cb2-25"><a></a></span>
+<span id="cb2-26"><a></a>p1 <span class="ot">&lt;-</span> samples <span class="sc">|&gt;</span> </span>
+<span id="cb2-27"><a></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>y1, <span class="at">y=</span>y2)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">coord_fixed</span>() <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span>
+<span id="cb2-28"><a></a></span>
+<span id="cb2-29"><a></a>p0<span class="sc">+</span>p1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: The dot-dot notation (`..density..`) was deprecated in
-ggplot2 3.4.0.
-ℹ Please use `after_stat(density)` instead.</code></pre>
-</div>
 
 </div>
-<img data-src="BSMM_8740_lec_09_files/figure-html/unnamed-chunk-2-1.png" width="672" class="r-stretch quarto-figure-center"><p class="caption">Normal y1 vs Normal y2; independent random RVs</p></section>
+<img data-src="BSMM_8740_lec_09_files/figure-revealjs/Box Meuller RNG for uniform rv's-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Normal y1 vs Normal y2; independent random RVs</p></section>
 <section id="random-number-generation-7" class="slide level2">
 <h2>Random Number Generation</h2>
 <div style="font-size: x-large">
@@ -389,7 +435,7 @@ ggplot2 3.4.0.
 \]</span> In which case it is easier to just use R and calculate:</p>
 <div class="cell">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>probability of event Z in [0,3]</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="fu">pnorm</span>(<span class="dv">3</span>, <span class="at">mean=</span><span class="dv">1</span>, <span class="at">sd=</span><span class="fu">sqrt</span>(<span class="dv">3</span>)) <span class="sc">-</span> <span class="fu">pnorm</span>(<span class="dv">0</span>, <span class="at">mean=</span><span class="dv">1</span>, <span class="at">sd=</span><span class="fu">sqrt</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -457,12 +503,12 @@ ggplot2 3.4.0.
 <p>The <span class="math inline">\(k\)</span>-th moment of a random variable <span class="math inline">\(X\)</span> is the expected value of: <span class="math inline">\(X\)</span> raised to the <span class="math inline">\(k\)</span>-th power.</p>
 <p><span class="math display">\[
 \acute{\mu}_k(X)=\mathbb{E}[X^k]
-\]</span> which is known as the <span class="math inline">\(k\)</span>-th raw moment.</p>
-<p>The <span class="math inline">\(k\)</span>-th moment of a random variable <span class="math inline">\(X\)</span> around some value <span class="math inline">\(c\)</span> is known as the <span class="math inline">\(k\)</span>-th central moment of <span class="math inline">\(X\)</span>. It is the <span class="math inline">\(k\)</span>-th raw moment of <span class="math inline">\(X-c\)</span>.</p>
+\]</span> which is known as the <span class="math inline">\(k\)</span>-th <u><strong>raw</strong></u> moment.</p>
+<p>The <span class="math inline">\(k\)</span>-th moment of a random variable <span class="math inline">\(X\)</span> around some value <span class="math inline">\(c\)</span> is known as the <span class="math inline">\(k\)</span>-th <u><strong>central</strong></u> moment of <span class="math inline">\(X\)</span>. It is the <span class="math inline">\(k\)</span>-th raw moment of <span class="math inline">\(X-c\)</span>.</p>
 <p><span class="math display">\[
 \mu_k(X)=\mathbb{E}[(X-c)^k]
 \]</span></p>
-<p>The <span class="math inline">\(k\)</span>-th standardized moment of a random variable <span class="math inline">\(X\)</span> is the <span class="math inline">\(k\)</span>-th central moment of <span class="math inline">\(X\)</span> divided by the <span class="math inline">\(k\)</span>-th power of the standard deviation of <span class="math inline">\(X\)</span>.</p>
+<p>The <span class="math inline">\(k\)</span>-th <u><strong>standardized</strong></u> moment of a random variable <span class="math inline">\(X\)</span> is the <span class="math inline">\(k\)</span>-th central moment of <span class="math inline">\(X\)</span> divided by the <span class="math inline">\(k\)</span>-th power of the standard deviation of <span class="math inline">\(X\)</span>.</p>
 </div>
 </section>
 <section id="moments-and-the-mgf-1" class="slide level2">
@@ -471,7 +517,7 @@ ggplot2 3.4.0.
 <p><span class="math display">\[
 e^{tX} = \sum_{k=0}^\infty\frac{(tX)^k}{k!}=1+\frac{t}{1!}X+\frac{t^2}{2!}X^2+\cdots
 \]</span></p>
-<p>The Moment Generating Function (MGF) is <span class="math inline">\(\mathbb{E}[e^{tX}]\)</span></p>
+<p>The <u><strong>Moment Generating Function</strong></u> (MGF) is <span class="math inline">\(\mathbb{E}[e^{tX}]\)</span></p>
 <p><span class="math display">\[
 \begin{align*}
 M_X(t)=\mathbb{E}[e^{tX}] &amp; =\sum_{k=0}^{\infty}\mathbb{E}\left[\frac{(tX)^{k}}{k!}\right]\\
@@ -481,7 +527,7 @@ M_X(t)=\mathbb{E}[e^{tX}] &amp; =\sum_{k=0}^{\infty}\mathbb{E}\left[\frac{(tX)^{
 </section>
 <section id="moments-and-the-mgf-2" class="slide level2">
 <h2>Moments and the MGF</h2>
-<p>Note that the derivatives evaluated at <span class="math inline">\(t=0\)</span> give the corresponding moments</p>
+<p>Note that the derivatives of the MGF evaluated at <span class="math inline">\(t=0\)</span> give the corresponding moments</p>
 <p><span class="math display">\[
 \begin{align*}
 \left.\frac{d^{2}}{dt^{2}}M_{X}(t)\right|_{t=0} &amp; =\mathbb{E}\left[X^{2}\right]\\
@@ -490,9 +536,9 @@ M_X(t)=\mathbb{E}[e^{tX}] &amp; =\sum_{k=0}^{\infty}\mathbb{E}\left[\frac{(tX)^{
 \]</span></p>
 <p>and so <span class="math inline">\(\left.\frac{d^{n}}{dt^{n}}M_{X}(t)\right|_{t=0}=\mathbb{E}\left[X^{n}\right]\)</span></p>
 </section>
-<section id="moments-and-the-mgf-3" class="slide level2">
+<section id="moments-and-the-mgf-3" class="slide level2 scrollable">
 <h2>Moments and the MGF</h2>
-<h4 id="key-facts-needed-for-the-clt">Key facts needed for the CLT</h4>
+<h4 id="key-facts-needed-for-the-central-limit-theorem">Key facts needed for the Central Limit Theorem</h4>
 <div style="font-size: x-large">
 <p>The exponential function can be defined by the limit<sup>1</sup>:</p>
 <p><span class="math display">\[
@@ -529,7 +575,7 @@ M_Y(t) = \prod_{i=1}^n M_{X_i}(t)
 M_Y(t) = \left(M_{X}(t)\right)^n
 \]</span></p>
 </section>
-<section id="moments-and-the-mgf-6" class="slide level2">
+<section id="moments-and-the-mgf-6" class="slide level2 scrollable">
 <h2>Moments and the MGF</h2>
 <h4 id="other-properties-of-the-mgf3">Other properties of the MGF<sup>1</sup></h4>
 <p>if <span class="math inline">\(Y=\mathscr{N}(0,1)\)</span> then starting with the Taylor series expansion of <span class="math inline">\(e^{t^2/2}\)</span>:</p>
@@ -596,11 +642,11 @@ e^x=\lim_{n\rightarrow\infty}\left(1+\frac{x}{n}\right)^n
 <h2>Central Limit Theorem</h2>
 <p>The CLT says that for <span class="math inline">\(f=\mathbb{P}(E)\)</span> if <span class="math inline">\(\sigma^2\equiv\mathrm{Var}\left(f\right)\)</span> is finite then the error of the MC estimate</p>
 <p><span class="math display">\[
-e_N(f)=\bar{f}-\mathbb{E}[f]
+e_M(f)=\bar{f}-\mathbb{E}[f]
 \]</span></p>
 <p>is approximately Normal in distribution for large <span class="math inline">\(M\)</span>, i.e.</p>
 <p><span class="math display">\[
-e_N(f)\sim\sigma M^{1/2}Z
+e_M(f)\sim\sigma M^{1/2}Z
 \]</span> where <span class="math inline">\(Z\sim\mathscr{N}(0,1)\)</span></p>
 </section>
 <section id="mc-methods-5" class="slide level2">
@@ -654,7 +700,7 @@ e_N(f)\sim\sigma M^{1/2}Z
 \]</span></p>
 </div>
 </section>
-<section id="mc-methods-9" class="slide level2">
+<section id="mc-methods-9" class="slide level2 scrollable">
 <h2>MC Methods</h2>
 <div style="font-size: x-large">
 <p>This method is called importance sampling (IS).</p>
@@ -780,7 +826,7 @@ w(x_i)=\frac{f(x_{i})}{g_1(x_{i})}
 </ul>
 </div>
 </section>
-<section id="mc-methods-13" class="slide level2">
+<section id="mc-methods-13" class="slide level2 scrollable">
 <h2>MC Methods</h2>
 <h4 id="rejection-sampling-1">rejection sampling</h4>
 <div style="font-size: xx-large">
@@ -813,7 +859,7 @@ w(x_i)=\frac{f(x_{i})}{g_1(x_{i})}
 <h2>MC Methods</h2>
 <h4 id="rejection-sampling-3">rejection sampling</h4>
 <div style="font-size: large">
-<p>Similarly, for any <span class="math inline">\(y\in\mathbb{R}\)</span>, we can calculate the joint probability</p>
+<p>Equivalently, for any <span class="math inline">\(y\in\mathbb{R}\)</span>, we can calculate the joint probability</p>
 <p><span class="math display">\[
 \begin{align*}
 \mathbb{P}\left(X\le y,U\le\frac{g(X)}{Kf(X)}\right) &amp; =\mathbb{E}_f\left[1_{X\le y}1_{U\le\frac{g(X)}{Kf(X)}}\right]\\
@@ -867,7 +913,7 @@ w(x_i)=\frac{f(x_{i})}{g_1(x_{i})}
 \]</span></p>
 </div>
 </section>
-<section id="mc-methods-19" class="slide level2">
+<section id="mc-methods-19" class="slide level2 scrollable">
 <h2>MC Methods</h2>
 <h4 id="rejection-sampling-proof-for-discrete-rv-2">rejection sampling: proof for discrete rv</h4>
 <div style="font-size: xx-large">
@@ -921,8 +967,8 @@ w(x_i)=\frac{f(x_{i})}{g_1(x_{i})}
 <h2>Markov Chains</h2>
 <div style="font-size: x-large">
 <p>Consider the following <strong>simple random walk</strong> on the positive integers <span class="math inline">\(\mathbb Z\)</span>:</p>
-<p>We start at <span class="math inline">\(0\)</span>, then at each time step, we go up by one with probability <span class="math inline">\(p\)</span> and down by one with probability <span class="math inline">\(q = 1-p\)</span>. When <span class="math inline">\(p = q = \frac12\)</span>, we’re equally as likely to go up as down, and we call this the <strong>simple symmetric random walk</strong>.</p>
-<p>The simple random walk is a simple but very useful model for lots of processes, like stock prices, sizes of populations, or positions of gas particles. (In many modern models, however, these have been replaced by more complicated continuous time and space models.) The simple random walk is sometimes called the “drunkard’s walk.”</p>
+<p>We start at <span class="math inline">\(0\)</span>, then at each time step, we go up by one with probability <span class="math inline">\(p\)</span> and down by one with probability <span class="math inline">\(q = 1-p\)</span>. When <span class="math inline">\(p = q = \frac12\)</span>, we’re equally as likely to go up as down, and we call this the <u><strong>simple symmetric random walk</strong></u>.</p>
+<p>The simple random walk is a simple but very useful model for lots of processes, like stock prices, sizes of populations, or time series. (In many modern models, however, these have been replaced by more complicated continuous time and space models.) The simple random walk is sometimes called the “drunkard’s walk.”</p>
 </div>
 </section>
 <section id="markov-chains-1" class="slide level2">
@@ -970,7 +1016,7 @@ w(x_i)=\frac{f(x_{i})}{g_1(x_{i})}
 <div class="cell quarto-layout-panel" data-layout-ncol="1">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
-<p><img data-src="BSMM_8740_lec_09_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
+<p><img data-src="BSMM_8740_lec_09_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -1014,7 +1060,7 @@ X_n - 1 &amp; \text{with probability $1-p$}
 <h2>Markov Chains</h2>
 <div style="font-size: xx-large">
 <p>For the random walk (and also the gambler’s ruin), the transition probabilities <span class="math inline">\(\mathbb P(X_{n+1} = j \mid X_n = i)\)</span> don’t depend on <span class="math inline">\(n\)</span>; in other words, the transition probabilities stay the same over time.</p>
-<p>A Markov process with this property is called time homogeneous. We will only consider time homogeneous processes in this course.</p>
+<p>A Markov process with this property is called <u><strong>time homogeneous</strong></u>. We will only consider time homogeneous processes in this course.</p>
 </div>
 </section>
 <section id="markov-chains-6" class="slide level2">
@@ -1036,7 +1082,7 @@ X_n - 1 &amp; \text{with probability $1-p$}
 <section id="markov-chains-8" class="slide level2">
 <h2>Markov Chains</h2>
 
-<img data-src="BSMM_8740_lec_09_files/figure-html/unnamed-chunk-10-1.png" width="384" class="r-stretch quarto-figure-center"><p class="caption">Transition diagram for the two-state Markov chain</p></section>
+<img data-src="BSMM_8740_lec_09_files/figure-revealjs/unnamed-chunk-7-1.png" width="384" class="r-stretch quarto-figure-center"><p class="caption">Transition diagram for the two-state Markov chain</p></section>
 <section id="markov-chains-9" class="slide level2">
 <h2>Markov Chains</h2>
 <div style="font-size: xx-large">
@@ -1118,7 +1164,7 @@ p_{ij}(n) = \sum_{k_1, k_2, \dots, k_{n-1} \in \mathcal S} p_{ik_1} p_{k_1k_2} \
 <p>Of course, once we know that <span class="math inline">\(\mathsf P(n) = \mathsf P^n\)</span> is given by the matrix power, it’s clear to see that <span class="math inline">\(\mathsf P(n+m) = \mathsf P^{n+m} = \mathsf P^n \mathsf P^m = \mathsf P(n)\mathsf P(m)\)</span>.</p>
 </div>
 </section>
-<section id="markov-chains-16" class="slide level2">
+<section id="markov-chains-16" class="slide level2 scrollable">
 <h2>Markov Chains</h2>
 <h4 id="initial-distribution">initial distribution</h4>
 <div style="font-size: xx-large">
@@ -1143,7 +1189,7 @@ p_{ij}(n) = \sum_{k_1, k_2, \dots, k_{n-1} \in \mathcal S} p_{ik_1} p_{k_1k_2} \
 <h2>Markov Chains</h2>
 <div style="font-size: xx-large">
 <p>Note that we’re saying the <em>distribution</em> <span class="math inline">\(\mathbb P(X_n = i)\)</span> stays the same; the Markov chain <span class="math inline">\((X_n)\)</span> itself will keep moving.</p>
-<p>One way to think is that if we started off a thousand Markov chains, choosing each starting position to be <span class="math inline">\(i\)</span> with probability <span class="math inline">\(\pi_i\)</span>, then (roughly) <span class="math inline">\(1000 \pi_j\)</span> of them would be in state <span class="math inline">\(j\)</span> at any time in the future – but not necessarily the same ones each time.</p>
+<p>One way to think of this is that if we started off a thousand Markov chains, choosing each starting position to be <span class="math inline">\(i\)</span> with probability <span class="math inline">\(\pi_i\)</span>, then (roughly) <span class="math inline">\(1000 \pi_j\)</span> of them would be in state <span class="math inline">\(j\)</span> at any time in the future – but not necessarily the same ones each time.</p>
 </div>
 </section>
 <section id="markov-chains-19" class="slide level2">
@@ -1253,7 +1299,7 @@ p_{ij}(n) = \sum_{k_1, k_2, \dots, k_{n-1} \in \mathcal S} p_{ik_1} p_{k_1k_2} \
 <section id="markov-chains-22" class="slide level2">
 <h2>Markov Chains</h2>
 
-<img data-src="BSMM_8740_lec_09_files/figure-html/unnamed-chunk-15-1.png" width="480" class="r-stretch quarto-figure-center"><p class="caption">MC with cycle</p></section></section>
+<img data-src="BSMM_8740_lec_09_files/figure-revealjs/unnamed-chunk-12-1.png" width="480" class="r-stretch quarto-figure-center"><p class="caption">MC with cycle</p></section></section>
 <section>
 <section id="markov-chain-monte-carlo" class="title-slide slide level1 center">
 <h1>Markov Chain Monte Carlo</h1>
@@ -1271,7 +1317,7 @@ p_{ij}(n) = \sum_{k_1, k_2, \dots, k_{n-1} \in \mathcal S} p_{ik_1} p_{k_1k_2} \
 <p>where <span class="math inline">\(B\)</span> (“burn-in”) is chosen large enough so <span class="math inline">\(X_B\sim\pi\)</span>, and <span class="math inline">\(M\)</span> is chosen large enough to get good Monte Carlo estimates.</p>
 </div>
 </section>
-<section id="mcmc-metropolis-algo" class="slide level2">
+<section id="mcmc-metropolis-algo" class="slide level2 scrollable">
 <h2>MCMC Metropolis Algo</h2>
 <div style="font-size: x-large">
 <ol type="1">
@@ -1869,7 +1915,7 @@ p_{ij}(n) = \sum_{k_1, k_2, \dots, k_{n-1} \in \mathcal S} p_{ik_1} p_{k_1k_2} \
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="BSMM_8740_lec_09_files/figure-html/unnamed-chunk-18-1.png" width="864"></p>
+<p><img data-src="BSMM_8740_lec_09_files/figure-revealjs/unnamed-chunk-15-1.png" width="864"></p>
 </figure>
 </div>
 </div>
@@ -1897,7 +1943,7 @@ p_{ij}(n) = \sum_{k_1, k_2, \dots, k_{n-1} \in \mathcal S} p_{ik_1} p_{k_1k_2} \
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="BSMM_8740_lec_09_files/figure-html/unnamed-chunk-19-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
+<p><img data-src="BSMM_8740_lec_09_files/figure-revealjs/unnamed-chunk-16-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
 </figure>
 </div>
 </div>
@@ -1943,7 +1989,7 @@ p_{ij}(n) = \sum_{k_1, k_2, \dots, k_{n-1} \in \mathcal S} p_{ik_1} p_{k_1k_2} \
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="BSMM_8740_lec_09_files/figure-html/unnamed-chunk-21-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
+<p><img data-src="BSMM_8740_lec_09_files/figure-revealjs/unnamed-chunk-18-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
 </figure>
 </div>
 </div>
@@ -1962,7 +2008,7 @@ p_{ij}(n) = \sum_{k_1, k_2, \dots, k_{n-1} \in \mathcal S} p_{ik_1} p_{k_1k_2} \
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="BSMM_8740_lec_09_files/figure-html/unnamed-chunk-22-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
+<p><img data-src="BSMM_8740_lec_09_files/figure-revealjs/unnamed-chunk-19-1.png" class="quarto-figure quarto-figure-center" width="576"></p>
 </figure>
 </div>
 </div>
@@ -2144,15 +2190,10 @@ A_n = \frac{\pi(Y_n)q(X_{n-1})}{\pi(X_{n-1})q(Y_n)}
 </div>
 <div id="tabset-3-3">
 <div class="cell" data-layout-align="center">
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: Using `size` aesthetic for lines was deprecated in
-ggplot2 3.4.0.
-ℹ Please use `linewidth` instead.</code></pre>
-</div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="BSMM_8740_lec_09_files/figure-html/unnamed-chunk-25-1.png" class="quarto-figure quarto-figure-center" width="1152"></p>
+<p><img data-src="BSMM_8740_lec_09_files/figure-revealjs/unnamed-chunk-22-1.png" class="quarto-figure quarto-figure-center" width="1152"></p>
 </figure>
 </div>
 </div>
@@ -2162,27 +2203,27 @@ ggplot2 3.4.0.
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Plots of Bayesian updating steps</summary>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a></a>dat <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">group_by</span>(step) <span class="sc">|&gt;</span></span>
-<span id="cb32-2"><a></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
-<span id="cb32-3"><a></a>    <span class="at">title =</span></span>
-<span id="cb32-4"><a></a>      dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
-<span id="cb32-5"><a></a>        step <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> stringr<span class="sc">::</span><span class="fu">str_glue</span>(<span class="st">"Step {step}: prior mean is {(parameters*prob) |&gt; sum() |&gt; round(digits=3)}"</span>)</span>
-<span id="cb32-6"><a></a>        , <span class="cn">TRUE</span> <span class="sc">~</span> stringr<span class="sc">::</span><span class="fu">str_glue</span>(<span class="st">"Step {step}: sample is {x} &amp; posterior mean is {(parameters*prob) |&gt; sum() |&gt; round(digits=3)}"</span>)</span>
-<span id="cb32-7"><a></a>      )</span>
-<span id="cb32-8"><a></a>  )</span>
-<span id="cb32-9"><a></a></span>
-<span id="cb32-10"><a></a>labels <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">distinct</span>(step, title) <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">step =</span> <span class="fu">factor</span>(step))</span>
-<span id="cb32-11"><a></a>step_labels <span class="ot">&lt;-</span> <span class="fu">split</span>(labels<span class="sc">$</span>title, labels<span class="sc">$</span>step)</span>
-<span id="cb32-12"><a></a>step_labeller <span class="ot">&lt;-</span> <span class="cf">function</span>(value){<span class="fu">return</span>(step_labels[value])}</span>
-<span id="cb32-13"><a></a></span>
-<span id="cb32-14"><a></a>dat <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">step =</span> <span class="fu">factor</span>(step)) <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">group_by</span>(step) <span class="sc">|&gt;</span></span>
-<span id="cb32-15"><a></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> parameters, <span class="at">y=</span>prob, <span class="at">color =</span> step)) <span class="sc">+</span></span>
-<span id="cb32-16"><a></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb32-17"><a></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fl">0.5</span>, <span class="at">color=</span><span class="st">"grey"</span>, <span class="at">size=</span><span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb32-18"><a></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(step), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">labeller=</span><span class="fu">labeller</span>(<span class="at">step =</span> step_labeller)) <span class="sc">+</span></span>
-<span id="cb32-19"><a></a>  <span class="fu">theme</span>(<span class="at">plot.margin=</span><span class="fu">unit</span>(<span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">1</span>), <span class="st">'cm'</span>)) <span class="sc">+</span></span>
-<span id="cb32-20"><a></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
-<span id="cb32-21"><a></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Bayesian updating"</span>, <span class="at">subtitle =</span> <span class="st">"Binomial data; n known, true p = 0.5"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a></a>dat <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">group_by</span>(step) <span class="sc">|&gt;</span></span>
+<span id="cb31-2"><a></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb31-3"><a></a>    <span class="at">title =</span></span>
+<span id="cb31-4"><a></a>      dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb31-5"><a></a>        step <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> stringr<span class="sc">::</span><span class="fu">str_glue</span>(<span class="st">"Step {step}: prior mean is {(parameters*prob) |&gt; sum() |&gt; round(digits=3)}"</span>)</span>
+<span id="cb31-6"><a></a>        , <span class="cn">TRUE</span> <span class="sc">~</span> stringr<span class="sc">::</span><span class="fu">str_glue</span>(<span class="st">"Step {step}: sample is {x} &amp; posterior mean is {(parameters*prob) |&gt; sum() |&gt; round(digits=3)}"</span>)</span>
+<span id="cb31-7"><a></a>      )</span>
+<span id="cb31-8"><a></a>  )</span>
+<span id="cb31-9"><a></a></span>
+<span id="cb31-10"><a></a>labels <span class="ot">&lt;-</span> dat <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">distinct</span>(step, title) <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">step =</span> <span class="fu">factor</span>(step))</span>
+<span id="cb31-11"><a></a>step_labels <span class="ot">&lt;-</span> <span class="fu">split</span>(labels<span class="sc">$</span>title, labels<span class="sc">$</span>step)</span>
+<span id="cb31-12"><a></a>step_labeller <span class="ot">&lt;-</span> <span class="cf">function</span>(value){<span class="fu">return</span>(step_labels[value])}</span>
+<span id="cb31-13"><a></a></span>
+<span id="cb31-14"><a></a>dat <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">step =</span> <span class="fu">factor</span>(step)) <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">group_by</span>(step) <span class="sc">|&gt;</span></span>
+<span id="cb31-15"><a></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> parameters, <span class="at">y=</span>prob, <span class="at">color =</span> step)) <span class="sc">+</span></span>
+<span id="cb31-16"><a></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb31-17"><a></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fl">0.5</span>, <span class="at">color=</span><span class="st">"grey"</span>, <span class="at">size=</span><span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb31-18"><a></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(step), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">labeller=</span><span class="fu">labeller</span>(<span class="at">step =</span> step_labeller)) <span class="sc">+</span></span>
+<span id="cb31-19"><a></a>  <span class="fu">theme</span>(<span class="at">plot.margin=</span><span class="fu">unit</span>(<span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">1</span>), <span class="st">'cm'</span>)) <span class="sc">+</span></span>
+<span id="cb31-20"><a></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span> </span>
+<span id="cb31-21"><a></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Bayesian updating"</span>, <span class="at">subtitle =</span> <span class="st">"Binomial data; n known, true p = 0.5"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </div>
@@ -2212,69 +2253,69 @@ ggplot2 3.4.0.
 <div class="tab-content">
 <div id="tabset-4-1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a></a><span class="fu">set.seed</span>(<span class="dv">8740</span>)</span>
-<span id="cb33-2"><a></a>a <span class="ot">=</span> <span class="dv">0</span>; b <span class="ot">=</span> <span class="dv">5</span>; sigma <span class="ot">=</span> <span class="dv">10</span>; sampleSize <span class="ot">=</span> <span class="dv">31</span></span>
-<span id="cb33-3"><a></a></span>
-<span id="cb33-4"><a></a>data <span class="ot">&lt;-</span> </span>
-<span id="cb33-5"><a></a>  tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
-<span id="cb33-6"><a></a>    <span class="at">x =</span> (<span class="sc">-</span>(sampleSize<span class="dv">-1</span>)<span class="sc">/</span><span class="dv">2</span>)<span class="sc">:</span>((sampleSize<span class="dv">-1</span>)<span class="sc">/</span><span class="dv">2</span>)</span>
-<span id="cb33-7"><a></a>    , <span class="at">y =</span>  a <span class="sc">+</span> b <span class="sc">*</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="at">n=</span>sampleSize, <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span>sigma)</span>
-<span id="cb33-8"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a></a><span class="fu">set.seed</span>(<span class="dv">8740</span>)</span>
+<span id="cb32-2"><a></a>a <span class="ot">=</span> <span class="dv">0</span>; b <span class="ot">=</span> <span class="dv">5</span>; sigma <span class="ot">=</span> <span class="dv">10</span>; sampleSize <span class="ot">=</span> <span class="dv">31</span></span>
+<span id="cb32-3"><a></a></span>
+<span id="cb32-4"><a></a>data <span class="ot">&lt;-</span> </span>
+<span id="cb32-5"><a></a>  tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb32-6"><a></a>    <span class="at">x =</span> (<span class="sc">-</span>(sampleSize<span class="dv">-1</span>)<span class="sc">/</span><span class="dv">2</span>)<span class="sc">:</span>((sampleSize<span class="dv">-1</span>)<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb32-7"><a></a>    , <span class="at">y =</span>  a <span class="sc">+</span> b <span class="sc">*</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="at">n=</span>sampleSize, <span class="at">mean=</span><span class="dv">0</span>, <span class="at">sd=</span>sigma)</span>
+<span id="cb32-8"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-4-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a></a>prior <span class="ot">=</span> <span class="cf">function</span>(param){</span>
-<span id="cb34-2"><a></a>  aprior <span class="ot">=</span> <span class="fu">dunif</span>(param[<span class="dv">1</span>], <span class="at">min=</span><span class="dv">0</span>, <span class="at">max=</span><span class="dv">10</span>, <span class="at">log =</span> T)</span>
-<span id="cb34-3"><a></a>  bprior <span class="ot">=</span> <span class="fu">dnorm</span>(param[<span class="dv">2</span>], <span class="at">sd =</span> <span class="dv">5</span>, <span class="at">log =</span> T)</span>
-<span id="cb34-4"><a></a>  sdprior <span class="ot">=</span> <span class="fu">dunif</span>(param[<span class="dv">3</span>], <span class="at">min=</span><span class="dv">0</span>, <span class="at">max=</span><span class="dv">30</span>, <span class="at">log =</span> T)</span>
-<span id="cb34-5"><a></a>  <span class="co"># return the log of the product of probabilities (parameters)</span></span>
-<span id="cb34-6"><a></a>  <span class="fu">return</span>(aprior<span class="sc">+</span>bprior<span class="sc">+</span>sdprior)</span>
-<span id="cb34-7"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a></a>prior <span class="ot">=</span> <span class="cf">function</span>(param){</span>
+<span id="cb33-2"><a></a>  aprior <span class="ot">=</span> <span class="fu">dunif</span>(param[<span class="dv">1</span>], <span class="at">min=</span><span class="dv">0</span>, <span class="at">max=</span><span class="dv">10</span>, <span class="at">log =</span> T)</span>
+<span id="cb33-3"><a></a>  bprior <span class="ot">=</span> <span class="fu">dnorm</span>(param[<span class="dv">2</span>], <span class="at">sd =</span> <span class="dv">5</span>, <span class="at">log =</span> T)</span>
+<span id="cb33-4"><a></a>  sdprior <span class="ot">=</span> <span class="fu">dunif</span>(param[<span class="dv">3</span>], <span class="at">min=</span><span class="dv">0</span>, <span class="at">max=</span><span class="dv">30</span>, <span class="at">log =</span> T)</span>
+<span id="cb33-5"><a></a>  <span class="co"># return the log of the product of probabilities (parameters)</span></span>
+<span id="cb33-6"><a></a>  <span class="fu">return</span>(aprior<span class="sc">+</span>bprior<span class="sc">+</span>sdprior)</span>
+<span id="cb33-7"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-4-3">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a></a>likelihood <span class="ot">=</span> <span class="cf">function</span>(param, x, y){</span>
-<span id="cb35-2"><a></a>  pred <span class="ot">=</span> param[<span class="dv">2</span>] <span class="sc">+</span> param[<span class="dv">1</span>] <span class="sc">*</span> x </span>
-<span id="cb35-3"><a></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> param[<span class="dv">3</span>], <span class="at">log =</span> T)</span>
-<span id="cb35-4"><a></a>  sumll <span class="ot">=</span> <span class="fu">sum</span>(singlelikelihoods)</span>
-<span id="cb35-5"><a></a>  <span class="co"># return the log of the product of probabilities (data)</span></span>
-<span id="cb35-6"><a></a>  <span class="fu">return</span>(sumll)</span>
-<span id="cb35-7"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a></a>likelihood <span class="ot">=</span> <span class="cf">function</span>(param, x, y){</span>
+<span id="cb34-2"><a></a>  pred <span class="ot">=</span> param[<span class="dv">2</span>] <span class="sc">+</span> param[<span class="dv">1</span>] <span class="sc">*</span> x </span>
+<span id="cb34-3"><a></a>  singlelikelihoods <span class="ot">=</span> <span class="fu">dnorm</span>(y, <span class="at">mean =</span> pred, <span class="at">sd =</span> param[<span class="dv">3</span>], <span class="at">log =</span> T)</span>
+<span id="cb34-4"><a></a>  sumll <span class="ot">=</span> <span class="fu">sum</span>(singlelikelihoods)</span>
+<span id="cb34-5"><a></a>  <span class="co"># return the log of the product of probabilities (data)</span></span>
+<span id="cb34-6"><a></a>  <span class="fu">return</span>(sumll)</span>
+<span id="cb34-7"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-4-4">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a></a>proposalfunction <span class="ot">=</span> <span class="cf">function</span>(param){</span>
-<span id="cb36-2"><a></a>  <span class="fu">return</span>( <span class="fu">rnorm</span>(<span class="dv">3</span>, <span class="at">mean =</span> param, <span class="at">sd=</span> <span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.5</span>,<span class="fl">0.3</span>)) )</span>
-<span id="cb36-3"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a></a>proposalfunction <span class="ot">=</span> <span class="cf">function</span>(param){</span>
+<span id="cb35-2"><a></a>  <span class="fu">return</span>( <span class="fu">rnorm</span>(<span class="dv">3</span>, <span class="at">mean =</span> param, <span class="at">sd=</span> <span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.5</span>,<span class="fl">0.3</span>)) )</span>
+<span id="cb35-3"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-4-5">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a></a>run_metropolis_MCMC <span class="ot">=</span> <span class="cf">function</span>(startvalue, iterations, data){</span>
-<span id="cb37-2"><a></a>  <span class="co"># initialize</span></span>
-<span id="cb37-3"><a></a>  chain <span class="ot">=</span> <span class="fu">array</span>(<span class="at">dim =</span> <span class="fu">c</span>(iterations<span class="sc">+</span><span class="dv">1</span>,<span class="dv">3</span>))</span>
-<span id="cb37-4"><a></a>  chain[<span class="dv">1</span>,] <span class="ot">&lt;-</span> startvalue</span>
-<span id="cb37-5"><a></a>  </span>
-<span id="cb37-6"><a></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>iterations){</span>
-<span id="cb37-7"><a></a>    proposal <span class="ot">=</span> <span class="fu">proposalfunction</span>(chain[i,])</span>
-<span id="cb37-8"><a></a>    probab <span class="ot">=</span> </span>
-<span id="cb37-9"><a></a>      <span class="fu">exp</span>(</span>
-<span id="cb37-10"><a></a>        <span class="fu">likelihood</span>(proposal, data<span class="sc">$</span>x, data<span class="sc">$</span>y) <span class="sc">+</span> </span>
-<span id="cb37-11"><a></a>        <span class="fu">prior</span>(proposal) <span class="sc">-</span> </span>
-<span id="cb37-12"><a></a>        <span class="fu">likelihood</span>(chain[i,], data<span class="sc">$</span>x, data<span class="sc">$</span>y) <span class="sc">-</span> </span>
-<span id="cb37-13"><a></a>        <span class="fu">prior</span>(chain[i,])</span>
-<span id="cb37-14"><a></a>      )</span>
-<span id="cb37-15"><a></a>    <span class="cf">if</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;</span> probab){</span>
-<span id="cb37-16"><a></a>      chain[i<span class="sc">+</span><span class="dv">1</span>,] <span class="ot">=</span> proposal</span>
-<span id="cb37-17"><a></a>    }<span class="cf">else</span>{</span>
-<span id="cb37-18"><a></a>      chain[i<span class="sc">+</span><span class="dv">1</span>,] <span class="ot">=</span> chain[i,]</span>
-<span id="cb37-19"><a></a>    }</span>
-<span id="cb37-20"><a></a>  }</span>
-<span id="cb37-21"><a></a>  <span class="fu">return</span>(chain)</span>
-<span id="cb37-22"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a></a>run_metropolis_MCMC <span class="ot">=</span> <span class="cf">function</span>(startvalue, iterations, data){</span>
+<span id="cb36-2"><a></a>  <span class="co"># initialize</span></span>
+<span id="cb36-3"><a></a>  chain <span class="ot">=</span> <span class="fu">array</span>(<span class="at">dim =</span> <span class="fu">c</span>(iterations<span class="sc">+</span><span class="dv">1</span>,<span class="dv">3</span>))</span>
+<span id="cb36-4"><a></a>  chain[<span class="dv">1</span>,] <span class="ot">&lt;-</span> startvalue</span>
+<span id="cb36-5"><a></a>  </span>
+<span id="cb36-6"><a></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>iterations){</span>
+<span id="cb36-7"><a></a>    proposal <span class="ot">=</span> <span class="fu">proposalfunction</span>(chain[i,])</span>
+<span id="cb36-8"><a></a>    probab <span class="ot">=</span> </span>
+<span id="cb36-9"><a></a>      <span class="fu">exp</span>(</span>
+<span id="cb36-10"><a></a>        <span class="fu">likelihood</span>(proposal, data<span class="sc">$</span>x, data<span class="sc">$</span>y) <span class="sc">+</span> </span>
+<span id="cb36-11"><a></a>        <span class="fu">prior</span>(proposal) <span class="sc">-</span> </span>
+<span id="cb36-12"><a></a>        <span class="fu">likelihood</span>(chain[i,], data<span class="sc">$</span>x, data<span class="sc">$</span>y) <span class="sc">-</span> </span>
+<span id="cb36-13"><a></a>        <span class="fu">prior</span>(chain[i,])</span>
+<span id="cb36-14"><a></a>      )</span>
+<span id="cb36-15"><a></a>    <span class="cf">if</span> (<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;</span> probab){</span>
+<span id="cb36-16"><a></a>      chain[i<span class="sc">+</span><span class="dv">1</span>,] <span class="ot">=</span> proposal</span>
+<span id="cb36-17"><a></a>    }<span class="cf">else</span>{</span>
+<span id="cb36-18"><a></a>      chain[i<span class="sc">+</span><span class="dv">1</span>,] <span class="ot">=</span> chain[i,]</span>
+<span id="cb36-19"><a></a>    }</span>
+<span id="cb36-20"><a></a>  }</span>
+<span id="cb36-21"><a></a>  <span class="fu">return</span>(chain)</span>
+<span id="cb36-22"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -2285,19 +2326,19 @@ ggplot2 3.4.0.
 <div class="cell">
 <details class="code-fold">
 <summary>MH algorithm generating posterior parameter probabilities</summary>
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a></a>startvalue <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">8</span>)</span>
-<span id="cb38-2"><a></a>chain <span class="ot">=</span> <span class="fu">run_metropolis_MCMC</span>(startvalue, <span class="dv">20000</span>, data)</span>
-<span id="cb38-3"><a></a></span>
-<span id="cb38-4"><a></a>mcm_chain <span class="ot">&lt;-</span> coda<span class="sc">::</span><span class="fu">mcmc</span>(chain)</span>
-<span id="cb38-5"><a></a>smry <span class="ot">&lt;-</span> <span class="fu">summary</span>(mcm_chain)</span>
-<span id="cb38-6"><a></a>smry<span class="sc">$</span>statistics <span class="sc">|&gt;</span> tibble<span class="sc">::</span><span class="fu">as_tibble</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb38-7"><a></a>  dplyr<span class="sc">::</span><span class="fu">bind_cols</span>(smry<span class="sc">$</span>quantiles <span class="sc">|&gt;</span> tibble<span class="sc">::</span><span class="fu">as_tibble</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb38-8"><a></a>  tibble<span class="sc">::</span><span class="fu">add_column</span>(<span class="at">param =</span> <span class="fu">c</span>(<span class="st">'b'</span>,<span class="st">'a'</span>,<span class="st">'sigma'</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb38-9"><a></a>  gt<span class="sc">::</span><span class="fu">gt</span>(<span class="st">"param"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb38-10"><a></a>  gt<span class="sc">::</span><span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">"percentiles"</span>, <span class="at">columns =</span> <span class="fu">ends_with</span>(<span class="st">"%"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb38-11"><a></a>  gt<span class="sc">::</span><span class="fu">tab_options</span>( <span class="at">table.font.size =</span> gt<span class="sc">::</span><span class="fu">px</span>(<span class="dv">48</span>) ) <span class="sc">%&gt;%</span> </span>
-<span id="cb38-12"><a></a>  gtExtras<span class="sc">::</span><span class="fu">gt_theme_espn</span>() <span class="sc">|&gt;</span></span>
-<span id="cb38-13"><a></a>  gt<span class="sc">::</span><span class="fu">as_raw_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a></a>startvalue <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">8</span>)</span>
+<span id="cb37-2"><a></a>chain <span class="ot">=</span> <span class="fu">run_metropolis_MCMC</span>(startvalue, <span class="dv">20000</span>, data)</span>
+<span id="cb37-3"><a></a></span>
+<span id="cb37-4"><a></a>mcm_chain <span class="ot">&lt;-</span> coda<span class="sc">::</span><span class="fu">mcmc</span>(chain)</span>
+<span id="cb37-5"><a></a>smry <span class="ot">&lt;-</span> <span class="fu">summary</span>(mcm_chain)</span>
+<span id="cb37-6"><a></a>smry<span class="sc">$</span>statistics <span class="sc">|&gt;</span> tibble<span class="sc">::</span><span class="fu">as_tibble</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb37-7"><a></a>  dplyr<span class="sc">::</span><span class="fu">bind_cols</span>(smry<span class="sc">$</span>quantiles <span class="sc">|&gt;</span> tibble<span class="sc">::</span><span class="fu">as_tibble</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb37-8"><a></a>  tibble<span class="sc">::</span><span class="fu">add_column</span>(<span class="at">param =</span> <span class="fu">c</span>(<span class="st">'b'</span>,<span class="st">'a'</span>,<span class="st">'sigma'</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb37-9"><a></a>  gt<span class="sc">::</span><span class="fu">gt</span>(<span class="st">"param"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb37-10"><a></a>  gt<span class="sc">::</span><span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">"percentiles"</span>, <span class="at">columns =</span> <span class="fu">ends_with</span>(<span class="st">"%"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb37-11"><a></a>  gt<span class="sc">::</span><span class="fu">tab_options</span>( <span class="at">table.font.size =</span> gt<span class="sc">::</span><span class="fu">px</span>(<span class="dv">48</span>) ) <span class="sc">%&gt;%</span> </span>
+<span id="cb37-12"><a></a>  gtExtras<span class="sc">::</span><span class="fu">gt_theme_espn</span>() <span class="sc">|&gt;</span></span>
+<span id="cb37-13"><a></a>  gt<span class="sc">::</span><span class="fu">as_raw_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div id="masivlamnb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
@@ -2384,13 +2425,224 @@ percentiles
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>posterior parameter probability plots</summary>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a></a><span class="fu">plot</span>(mcm_chain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a></a><span class="fu">plot</span>(mcm_chain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="BSMM_8740_lec_09_files/figure-html/unnamed-chunk-33-1.png" class="quarto-figure quarto-figure-center r-stretch" width="672"></section>
+<img data-src="BSMM_8740_lec_09_files/figure-revealjs/unnamed-chunk-30-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
 <section id="mcmc-and-bayesian-analysis-6" class="slide level2">
 <h2>MCMC and Bayesian Analysis</h2>
+</section></section>
+<section>
+<section id="sampling-algorithms" class="title-slide slide level1 center">
+<h1>Sampling Algorithms</h1>
+
+</section>
+<section id="multi-armed-bandits" class="slide level2">
+<h2>Multi-armed Bandits</h2>
+<div style="font-size: xx-large">
+<p>Businesses often face the the exploration vs exploitation dilemma. For example, managers might try to find a balance between the known most attractive ads/promotions/prices and the new ads/promotions/prices that might be even more successful.</p>
+<p>If we have learned all the information about the environment, we are able to find the best strategy by even just simulating brute-force. The dilemma comes from <strong><em>incomplete</em></strong> information: we need to gather enough information to make best overall decisions while keeping the risk under control.</p>
+</div>
+</section>
+<section id="multi-armed-bandits-1" class="slide level2">
+<h2>Multi-armed Bandits</h2>
+<p>A <strong>multi-armed bandit</strong> is a decision problem where a player repeatedly chooses between several uncertain options (the “arms,” like slot machines), each with an unknown payoff distribution, and must balance <strong>exploration</strong> (testing arms to learn about them) with <strong>exploitation</strong> (choosing the arm believed to give the best reward) to maximize cumulative returns.</p>
+</section>
+<section id="thompson-sampling" class="slide level2">
+<h2>Thompson sampling</h2>
+<p>Thompson Sampling is a Bayesian approach to <strong>sequential decision-making</strong> that lets businesses experiment and optimize simultaneously. It is widely used in digital marketing, product experimentation, pricing, and recommender systems because it <strong>maximizes cumulative performance while still learning</strong>.</p>
+</section>
+<section id="thompson-sampling-1" class="slide level2 scrollable">
+<h2>Thompson sampling</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div style="font-size: x-large">
+<p>Core Idea: At each decision point:</p>
+<ol type="1">
+<li>For each option (arm), sample a parameter (e.g., conversion rate) from its posterior distribution.</li>
+<li>Select the option with the highest sampled value.</li>
+<li>Observe the outcome (e.g., click or no-click).</li>
+<li>Update the posterior distribution with the new data.</li>
+</ol>
+<p>Over time, this stochastic process ensures:</p>
+<ul>
+<li>Bad options are dropped.</li>
+<li>Promising options get more attention.</li>
+<li>Uncertainty is respected—options with little data still get tested occasionally.</li>
+</ul>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/thompson.png" class="quarto-figure quarto-figure-center" width="325"></p>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="thompson-sampling-example" class="slide level2">
+<h2>Thompson sampling example</h2>
+<p>A marketing team is running an online advertising campaign. Each ad shown to a user results either in a <em>click</em> (success) or <em>no click</em> (failure). The underlying <em>true click-through rate (CTR)</em> is unknown and lies between 0 and 1.</p>
+</section>
+<section id="thompson-sampling-example-1" class="slide level2">
+<h2>Thompson sampling example</h2>
+<ul>
+<li>Decision Problem: The company wants to allocate budget across multiple ad campaigns to maximize total conversions.</li>
+<li>Data Generating Process: Each campaign’s CTR <span class="math inline">\(p_i\)</span> is assumed to be drawn from a Beta distribution, say <span class="math inline">\(p_i \sim \text{Beta}(\alpha, \beta)\)</span> where <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> capture the average conversion tendency and variability across campaigns.</li>
+<li>Observed Data: For campaign <span class="math inline">\(i\)</span>, the number of clicks <span class="math inline">\(k_i\)</span> out of impressions <span class="math inline">\(n_i\)</span> is <span class="math inline">\(k_i \sim \text{Binomial}(n_i, p_i)\)</span>.</li>
+</ul>
+</section>
+<section id="thompson-sampling-example-2" class="slide level2">
+<h2>Thompson sampling example</h2>
+<p>In this case</p>
+<p><span class="math display">\[
+\text{Beta}(\alpha,\beta)=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}
+\pi^{\alpha-1}(1-\pi)^{\beta-1}  \text{ for } \pi \in[0,1]
+\]</span></p>
+<p><span class="math display">\[
+\text{Binomial}(y \mid \pi, N)=P(Y=y \mid \pi)=\binom{N}{y} \pi^y(1-\pi)^{N-y}
+\]</span></p>
+</section>
+<section id="thompson-sampling-example-3" class="slide level2">
+<h2>Thompson sampling example</h2>
+<div style="font-size: xx-large">
+<p>So for each campaign, our prior for the conversion probability is <span class="math inline">\(\text{Beta}(\alpha,\beta)\)</span> and the likelihood of observing <span class="math inline">\(y\)</span> click-thoughs on <span class="math inline">\(N\)</span> exposures given the click-through rate is <span class="math inline">\(\text{Binomial}(y \mid \pi, N)\)</span>, so our updated CLR is</p>
+<p><span class="math display">\[
+\begin{align*}
+\text{Binomial}(y\vert\pi,N)\times\text{Beta}(\alpha,\beta) &amp; =\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\pi^{\alpha-1}(1-\pi)^{\beta-1}\times\\
+&amp; \quad\binom{N}{y}\pi^{y}(1-\pi)^{N-y}\\
+&amp; =\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\binom{N}{y}\pi^{y+\alpha-1}(1-\pi)^{N-y+\beta-1}\\
+&amp; \propto\text{Beta}(y+\alpha,N-y+\beta)
+\end{align*}
+\]</span></p>
+</div>
+</section>
+<section id="thompson-sampling-example-4" class="slide level2">
+<h2>Thompson sampling example</h2>
+<div class="panel-tabset">
+<ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">setup</a></li><li><a href="#tabset-5-2">sampling</a></li><li><a href="#tabset-5-3">results</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a></a><span class="fu">set.seed</span>(<span class="dv">8740</span>)</span>
+<span id="cb39-2"><a></a></span>
+<span id="cb39-3"><a></a><span class="co"># True (unknown) CTRs for 3 campaigns</span></span>
+<span id="cb39-4"><a></a>true_p <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">A =</span> <span class="fl">0.020</span>, <span class="at">B =</span> <span class="fl">0.050</span>, <span class="at">C =</span> <span class="fl">0.035</span>); K <span class="ot">&lt;-</span> <span class="fu">length</span>(true_p)</span>
+<span id="cb39-5"><a></a></span>
+<span id="cb39-6"><a></a><span class="co"># Prior Beta(α, β) per campaign (uninformative)</span></span>
+<span id="cb39-7"><a></a>alpha <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, K)</span>
+<span id="cb39-8"><a></a>beta  <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>, K)</span>
+<span id="cb39-9"><a></a></span>
+<span id="cb39-10"><a></a><span class="co"># Simulation length: number of ad impressions to allocate sequentially</span></span>
+<span id="cb39-11"><a></a>T <span class="ot">&lt;-</span> <span class="dv">5000</span></span>
+<span id="cb39-12"><a></a></span>
+<span id="cb39-13"><a></a><span class="co"># Storage</span></span>
+<span id="cb39-14"><a></a>history <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb39-15"><a></a>  <span class="at">t =</span> <span class="fu">integer</span>(T),</span>
+<span id="cb39-16"><a></a>  <span class="at">chosen =</span> <span class="fu">character</span>(T),</span>
+<span id="cb39-17"><a></a>  <span class="at">click =</span> <span class="fu">integer</span>(T),</span>
+<span id="cb39-18"><a></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb39-19"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-5-2">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a></a><span class="co"># Thompson sampler</span></span>
+<span id="cb40-2"><a></a><span class="cf">for</span> (t <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>T) {</span>
+<span id="cb40-3"><a></a>  <span class="co"># sample one theta from each campaign's posterior Beta</span></span>
+<span id="cb40-4"><a></a>  thetas <span class="ot">&lt;-</span> <span class="fu">rbeta</span>(K, <span class="at">shape1 =</span> alpha, <span class="at">shape2 =</span> beta)</span>
+<span id="cb40-5"><a></a>  arm <span class="ot">&lt;-</span> <span class="fu">which.max</span>(thetas)       <span class="co"># choose the arm with max sampled theta</span></span>
+<span id="cb40-6"><a></a>  arm_name <span class="ot">&lt;-</span> <span class="fu">names</span>(true_p)[arm]</span>
+<span id="cb40-7"><a></a></span>
+<span id="cb40-8"><a></a>  <span class="co"># simulate the outcome (click/no-click) from the true CTR</span></span>
+<span id="cb40-9"><a></a>  y <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> true_p[arm])</span>
+<span id="cb40-10"><a></a></span>
+<span id="cb40-11"><a></a>  <span class="co"># update posterior for the chosen arm</span></span>
+<span id="cb40-12"><a></a>  alpha[arm] <span class="ot">&lt;-</span> alpha[arm] <span class="sc">+</span> y</span>
+<span id="cb40-13"><a></a>  beta[arm]  <span class="ot">&lt;-</span> beta[arm]  <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> y)</span>
+<span id="cb40-14"><a></a></span>
+<span id="cb40-15"><a></a>  <span class="co"># record</span></span>
+<span id="cb40-16"><a></a>  history<span class="sc">$</span>t[t] <span class="ot">&lt;-</span> t</span>
+<span id="cb40-17"><a></a>  history<span class="sc">$</span>chosen[t] <span class="ot">&lt;-</span> arm_name</span>
+<span id="cb40-18"><a></a>  history<span class="sc">$</span>click[t] <span class="ot">&lt;-</span> y</span>
+<span id="cb40-19"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-5-3">
+<div class="cell">
+<details class="code-fold">
+<summary>thompson sampling results</summary>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a></a><span class="co"># Summaries</span></span>
+<span id="cb41-2"><a></a>post_summary <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb41-3"><a></a>  <span class="at">campaign =</span> <span class="fu">names</span>(true_p),</span>
+<span id="cb41-4"><a></a>  <span class="at">alpha =</span> alpha,</span>
+<span id="cb41-5"><a></a>  <span class="at">beta  =</span> beta,</span>
+<span id="cb41-6"><a></a>  <span class="at">posterior_mean =</span> alpha <span class="sc">/</span> (alpha <span class="sc">+</span> beta),</span>
+<span id="cb41-7"><a></a>  <span class="at">posterior_sd   =</span> <span class="fu">sqrt</span>((alpha <span class="sc">*</span> beta) <span class="sc">/</span> ((alpha <span class="sc">+</span> beta)<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> (alpha <span class="sc">+</span> beta <span class="sc">+</span> <span class="dv">1</span>))),</span>
+<span id="cb41-8"><a></a>  <span class="at">true_ctr =</span> <span class="fu">as.numeric</span>(true_p)</span>
+<span id="cb41-9"><a></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb41-10"><a></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(<span class="fu">desc</span>(posterior_mean))</span>
+<span id="cb41-11"><a></a></span>
+<span id="cb41-12"><a></a>alloc_summary <span class="ot">&lt;-</span> history <span class="sc">%&gt;%</span></span>
+<span id="cb41-13"><a></a>  dplyr<span class="sc">::</span><span class="fu">count</span>(chosen, <span class="at">name =</span> <span class="st">"allocated_impressions"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb41-14"><a></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">campaign =</span> chosen) <span class="sc">%&gt;%</span></span>
+<span id="cb41-15"><a></a>  dplyr<span class="sc">::</span><span class="fu">right_join</span>(<span class="fu">tibble</span>(<span class="at">campaign =</span> <span class="fu">names</span>(true_p)), <span class="at">by =</span> <span class="st">"campaign"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb41-16"><a></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">allocated_impressions =</span> tidyr<span class="sc">::</span><span class="fu">replace_na</span>(allocated_impressions, <span class="dv">0</span>L)) <span class="sc">%&gt;%</span></span>
+<span id="cb41-17"><a></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(<span class="fu">desc</span>(allocated_impressions))</span>
+<span id="cb41-18"><a></a></span>
+<span id="cb41-19"><a></a>performance <span class="ot">&lt;-</span> history <span class="sc">%&gt;%</span></span>
+<span id="cb41-20"><a></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">total_clicks =</span> <span class="fu">sum</span>(click),</span>
+<span id="cb41-21"><a></a>            <span class="at">ctr_overall =</span> <span class="fu">mean</span>(click),</span>
+<span id="cb41-22"><a></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb41-23"><a></a></span>
+<span id="cb41-24"><a></a>per_campaign_perf <span class="ot">&lt;-</span> history <span class="sc">%&gt;%</span></span>
+<span id="cb41-25"><a></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(chosen) <span class="sc">%&gt;%</span></span>
+<span id="cb41-26"><a></a>  dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">clicks =</span> <span class="fu">sum</span>(click),</span>
+<span id="cb41-27"><a></a>            <span class="at">impressions =</span> <span class="fu">n</span>(),</span>
+<span id="cb41-28"><a></a>            <span class="at">empirical_ctr =</span> <span class="fu">ifelse</span>(impressions <span class="sc">&gt;</span> <span class="dv">0</span>, clicks <span class="sc">/</span> impressions, <span class="cn">NA_real_</span>),</span>
+<span id="cb41-29"><a></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb41-30"><a></a>  dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">campaign =</span> chosen) <span class="sc">%&gt;%</span></span>
+<span id="cb41-31"><a></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(<span class="fu">desc</span>(empirical_ctr))</span>
+<span id="cb41-32"><a></a></span>
+<span id="cb41-33"><a></a><span class="fu">list</span>(</span>
+<span id="cb41-34"><a></a>  <span class="at">allocation =</span> alloc_summary,</span>
+<span id="cb41-35"><a></a>  <span class="at">posterior  =</span> post_summary,</span>
+<span id="cb41-36"><a></a>  <span class="at">overall    =</span> performance,</span>
+<span id="cb41-37"><a></a>  <span class="at">per_campaign_empirical =</span> per_campaign_perf</span>
+<span id="cb41-38"><a></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>$allocation
+  campaign allocated_impressions
+1        B                  4192
+2        C                   613
+3        A                   195
+
+$posterior
+# A tibble: 3 × 6
+  campaign alpha  beta posterior_mean posterior_sd
+  &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;
+1 B          190  4004         0.0453      0.00321
+2 C           22   593         0.0358      0.00748
+3 A            3   194         0.0152      0.00870
+# ℹ 1 more variable: true_ctr &lt;dbl&gt;
+
+$overall
+  total_clicks ctr_overall
+1          212      0.0424
+
+$per_campaign_empirical
+# A tibble: 3 × 4
+  campaign clicks impressions empirical_ctr
+  &lt;chr&gt;     &lt;int&gt;       &lt;int&gt;         &lt;dbl&gt;
+1 B           189        4192        0.0451
+2 C            21         613        0.0343
+3 A             2         195        0.0103</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="more" class="slide level2">
 <h2>More</h2>
@@ -2398,6 +2650,7 @@ percentiles
 <li>The Random Walk Metropolis: <a href="https://arxiv.org/pdf/1011.6217">Linking Theory and Practice Through a Case Study</a></li>
 <li>“The Metropolis-Hastings Algorithm.” April 12, 2023. <a href="https://blog.djnavarro.net/posts/2023-04-12_metropolis-hastings/" class="uri">https://blog.djnavarro.net/posts/2023-04-12_metropolis-hastings/</a>.</li>
 <li><a href="https://gregorygundersen.com/blog/2019/11/02/metropolis-hastings/">Why Metropolis–Hastings Works</a></li>
+<li><a href="https://lilianweng.github.io/posts/2018-01-23-multi-armed-bandit/?utm_source=chatgpt.com">The Multi-Armed Bandit Problem and Its Solutions</a></li>
 </ul>
 </section>
 <section id="recap" class="slide level2">
@@ -2632,6 +2885,44 @@ percentiles
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
