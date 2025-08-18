@@ -2145,7 +2145,7 @@ $$
 \text{Binomial}(y\vert\pi,N)\times\text{Beta}(\alpha,\beta) & =\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\pi^{\alpha-1}(1-\pi)^{\beta-1}\times\\
  & \quad\binom{N}{y}\pi^{y}(1-\pi)^{N-y}\\
  & =\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\binom{N}{y}\pi^{y+\alpha-1}(1-\pi)^{N-y+\beta-1}\\
- & \sim\text{Beta}(y+\alpha,N-y+\beta)
+ & \propto\text{Beta}(y+\alpha,N-y+\beta)
 \end{align*}
 $$
 :::

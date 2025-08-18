@@ -1390,8 +1390,6 @@ did2s::plot_event_study(out) +
   theme(axis.title = element_text(size = 10, face = "bold"), legend.position="none")
 
 
+<<<<<<< HEAD
 
 
-=======
-# fixed
->>>>>>> 9645d18 (recovering)
