@@ -1,0 +1,116 @@
+---
+title: "EM algorithm"
+---
+
+-   Observed data: $\mathbf{X} = \{x_1, x_2, \ldots, x_n\}$
+-   Hidden variables: $\mathbf{Z} = \{z_1, z_2, \ldots, z_n\}$
+-   Parameters: $\boldsymbol{\theta} = \{\theta_A, \theta_B, \pi\}$
+
+**The Likelihood Function Challenge**
+
+Now, if we could observe everything, how would we write our likelihood?
+
+Complete Data Likelihood:
+
+$$
+\mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z}) = \prod_{i=1}^n P(x_i|z_i,\boldsymbol{\theta})P(z_i|\boldsymbol{\theta})
+$$
+
+Discovery Questions:
+
+-   What does each term $P(x_i|z_i,\boldsymbol{\theta})$ represent in our coin example?
+-   What about $P(z_i|\boldsymbol{\theta})$ - what's this modeling?"
+-   Why can't we just maximize this expression directly?
+
+**The Real Problem - Marginal Likelihood:**
+
+Since we don't observe $\mathbf{Z}$, we need: $\mathcal{L}(\boldsymbol{\theta}|\mathbf{X}) = \sum_{\mathbf{Z}} \mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})P(\mathbf{Z}|\boldsymbol{\theta})$
+
+What makes this summation computationally challenging? How many terms are we summing over?
+
+**The EM Strategy: Lower Bound Maximization**
+
+Since direct optimization is intractable, what mathematical trick can we use?
+
+Log-likelihood:
+
+$$\ell(\boldsymbol{\theta}) = \log \mathcal{L}(\boldsymbol{\theta}|\mathbf{X}) = \log \sum_{\mathbf{Z}} \mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})P(\mathbf{Z}|\boldsymbol{\theta})
+$$
+
+**The Key Insight - Jensen's Inequality:**
+
+How might we move the logarithm inside the sum to make this more tractable?
+
+For any distribution $q(\mathbf{Z})$ over the hidden variables:
+
+$$
+\ell(\boldsymbol{\theta}) = \log \sum_{\mathbf{Z}} q(\mathbf{Z}) \frac{\mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})P(\mathbf{Z}|\boldsymbol{\theta})}{q(\mathbf{Z})}
+$$
+
+By Jensen's inequality (since log is concave):
+
+$$
+\ell(\boldsymbol{\theta}) \geq \sum_{\mathbf{Z}} q(\mathbf{Z}) \log \frac{\mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})P(\mathbf{Z}|\boldsymbol{\theta})}{q(\mathbf{Z})} = \mathcal{F}(q,\boldsymbol{\theta})
+$$ What choice of $q(\mathbf{Z})$ would make this bound tight? When does equality hold in Jensen's inequality?
+
+The Q-Function
+
+What happens when we choose the optimal $q(\mathbf{Z})$?
+
+Optimal choice: $q(\mathbf{Z}) = P(\mathbf{Z}|\mathbf{X},\boldsymbol{\theta}^{(t)})$ (posterior given current parameters)
+
+This gives us the Q-function: $$
+Q(\boldsymbol{\theta}|\boldsymbol{\theta}^{(t)}) = \sum_{\mathbf{Z}} P(\mathbf{Z}|\mathbf{X},\boldsymbol{\theta}^{(t)}) \log \mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})
+$$ In expectation form:
+
+$$
+Q(\boldsymbol{\theta}|\boldsymbol{\theta}^{(t)}) = \mathbb{E}_{\mathbf{Z}|\mathbf{X},\boldsymbol{\theta}^{(t)}}[\log \mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})]
+$$
+
+**Critical Understanding Check:** Why does maximizing $Q(\boldsymbol{\theta}|\boldsymbol{\theta}^{(t)})$ guarantee that we increase $\ell(\boldsymbol{\theta})$ ?
+
+The Two-Step Dance - Now can you see why EM alternates between two steps?
+
+E-step: Compute $P(\mathbf{Z}|\mathbf{X},\boldsymbol{\theta}^{(t)})$
+
+"What are we 'expecting' over?"
+
+M-step: Find $\boldsymbol{\theta}^{(t+1)} = \arg\max_{\boldsymbol{\theta}} Q(\boldsymbol{\theta}|\boldsymbol{\theta}^{(t)})$
+
+"What are we 'maximizing'?"
+
+## Why
+
+*Why is* $q(\mathbf{Z}) = P(\mathbf{Z}|\mathbf{X},\boldsymbol{\theta}^{(t)})$ the optimal choice for our variational distribution?
+
+[**Step 2: Solving the Constraint**]{.underline}
+
+**From our constraint:** If the ratio equals a constant $C$, then: $$q(\mathbf{Z}) = \frac{1}{C} \mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})P(\mathbf{Z}|\boldsymbol{\theta})$$
+
+**But wait!** *What important property must* $q(\mathbf{Z})$ satisfy?
+
+Since $q(\mathbf{Z})$ is a probability distribution: $\sum_{\mathbf{Z}} q(\mathbf{Z}) = 1$
+
+**This gives us:** $$\sum_{\mathbf{Z}} \frac{1}{C} \mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})P(\mathbf{Z}|\boldsymbol{\theta}) = 1$$
+
+**Solving for C:** $$C = \sum_{\mathbf{Z}} \mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})P(\mathbf{Z}|\boldsymbol{\theta})$$
+
+**Quick check:** *Do you recognize this sum? What does it represent in terms of our original problem?*
+
+[**Step 3: The Beautiful Connection**]{.underline}
+
+**Substituting back:** $$q^*(\mathbf{Z}) = \frac{\mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})P(\mathbf{Z}|\boldsymbol{\theta})}{\sum_{\mathbf{Z}'} \mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z}')P(\mathbf{Z}'|\boldsymbol{\theta})}$$
+
+**The key insight:** The denominator is exactly $\mathcal{L}(\boldsymbol{\theta}|\mathbf{X})$, the marginal likelihood!
+
+**Therefore:** $$q^*(\mathbf{Z}) = \frac{\mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})P(\mathbf{Z}|\boldsymbol{\theta})}{\mathcal{L}(\boldsymbol{\theta}|\mathbf{X})}$$
+
+**Now here's the magic:** *What fundamental theorem from probability theory does this expression represent?*
+
+[**Step 4: The Bayes' Rule Revelation**]{.underline}
+
+**Bayes' theorem tells us:** $$P(\mathbf{Z}|\mathbf{X},\boldsymbol{\theta}) = \frac{P(\mathbf{X}|\mathbf{Z},\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})}{P(\mathbf{X}|\boldsymbol{\theta})}$$
+
+**But notice:** - $P(\mathbf{X}|\mathbf{Z},\boldsymbol{\theta}) = \mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})$ (likelihood) - $P(\mathbf{X}|\boldsymbol{\theta}) = \mathcal{L}(\boldsymbol{\theta}|\mathbf{X})$ (marginal likelihood)
+
+**Therefore:** $q^*(\mathbf{Z}) = P(\mathbf{Z}|\mathbf{X},\boldsymbol{\theta})$

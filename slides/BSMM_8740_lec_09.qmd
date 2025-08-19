@@ -2091,7 +2091,7 @@ Thompson Sampling is a Bayesian approach to **sequential decision-making** that 
 
 :::::: columns
 :::: {.column width="50%"}
-::: {style="font-size: x-large"}
+::: {style="font-size: large"}
 Core Idea: At each decision point:
 
 1.  For each option (arm), sample a parameter (e.g., conversion rate) from its posterior distribution.
