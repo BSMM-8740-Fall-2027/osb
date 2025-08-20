@@ -3081,5 +3081,51 @@ D_{i} & =\mu+\pi Z_{i}+\eta_{i}\;\text{the "first stage"}
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\ensuremath{\hat{\tau}_{STRAT}} & =\sum_{x\in\mathcal{X}}\frac{n_{x}}{n}\hat{\tau}(x)\\
+ & =\sum_{x\in\mathcal{X}}\frac{n_{x}}{n}\left(\frac{1}{n_{x1}}\sum_{\{X_{i}=x,D_{i}=1\}}Y_{i}-\frac{1}{n_{x0}}\sum_{\{X_{i}=x,D_{i}=0\}}Y_{i}\right)\\
+ & =\frac{1}{n}\sum_{x\in\mathcal{X}}\left(\frac{n_{x}}{n_{x1}}\sum_{\{X_{i}=x,D_{i}=1\}}Y_{i}-\frac{n_{x}}{n_{x0}}\sum_{\{X_{i}=x,D_{i}=0\}}Y_{i}\right)\\
+ & =\frac{1}{n}\sum_{x\in\mathcal{X}}\left(\frac{1}{\pi_{x}}\sum_{\{X_{i}=x,D_{i}=1\}}Y_{i}-\frac{1}{1-\pi_{x}}\sum_{\{X_{i}=x,D_{i}=0\}}Y_{i}\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\text{Binomial}(y & \pi,N)\times\text{Beta}(\alpha,\beta)=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\pi^{\alpha-1}(1-\pi)^{\beta-1}\times\\
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\text{Binomial}(y\vert\pi,N)\times\text{Beta}(\alpha,\beta) & =\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\pi^{\alpha-1}(1-\pi)^{\beta-1}\times\\
+ & \quad\binom{N}{y}\pi^{y}(1-\pi)^{N-y}\\
+ & =\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\binom{N}{y}\pi^{y+\alpha-1}(1-\pi)^{N-y+\beta-1}\\
+ & \propto\text{Beta}(y+\alpha,N-y+\beta)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\varpropto\wasypropto\propto$
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document

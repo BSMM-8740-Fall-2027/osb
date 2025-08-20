@@ -8,12 +8,10 @@ title: "EM algorithm"
 
 **The Likelihood Function Challenge**
 
-Now, if we could observe everything, how would we write our likelihood?
-
-Complete Data Likelihood:
+Now, if we could observe everything, we would we write the likelihood as:
 
 $$
-\mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z}) = \prod_{i=1}^n P(x_i|z_i,\boldsymbol{\theta})P(z_i|\boldsymbol{\theta})
+\mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z}) =P(\mathbf{X},\mathbf{Z}\vert\boldsymbol{\theta})= \prod_{i=1}^n P(x_i|z_i,\boldsymbol{\theta})P(z_i|\boldsymbol{\theta})
 $$
 
 Discovery Questions:
@@ -24,22 +22,56 @@ Discovery Questions:
 
 **The Real Problem - Marginal Likelihood:**
 
-Since we don't observe $\mathbf{Z}$, we need: $\mathcal{L}(\boldsymbol{\theta}|\mathbf{X}) = \sum_{\mathbf{Z}} \mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})P(\mathbf{Z}|\boldsymbol{\theta})$
+Since we don't observe $\mathbf{Z}$, we we can marginalize it out as follows:
 
-What makes this summation computationally challenging? How many terms are we summing over?
-
-**The EM Strategy: Lower Bound Maximization**
-
-Since direct optimization is intractable, what mathematical trick can we use?
-
-Log-likelihood:
-
-$$\ell(\boldsymbol{\theta}) = \log \mathcal{L}(\boldsymbol{\theta}|\mathbf{X}) = \log \sum_{\mathbf{Z}} \mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})P(\mathbf{Z}|\boldsymbol{\theta})
+$$
+\begin{align*}
+\mathcal{L}(\boldsymbol{\theta}|\mathbf{X}) & =P(\mathbf{X}\vert\boldsymbol{\theta})=\sum_{\mathbf{Z}}\mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})P(\mathbf{Z}|\boldsymbol{\theta})\\
+ & =\sum_{\mathbf{Z}}P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})
+\end{align*}
 $$
 
-**The Key Insight - Jensen's Inequality:**
+This summation is computationally challenging, and we'd like to maximize it, so we proceed as follows:
 
-How might we move the logarithm inside the sum to make this more tractable?
+First we'll use the log-likelihood which is easier to deal with:
+
+$$
+\ell(\boldsymbol{\theta}) = \log \mathcal{L}(\boldsymbol{\theta}|\mathbf{X}) =\log P(\mathbf{X}\vert\boldsymbol{\theta})= \log \sum_{\mathbf{Z}} \mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})P(\mathbf{Z}|\boldsymbol{\theta})
+$$
+
+### The E-step
+
+But now we have a log of a sum, which we address as follows:
+
+1.  we turn it into a expected value, with respect to some distribution $q(\mathbf{Z})$ over the hidden variables: $$
+    \ell(\boldsymbol{\theta}) = \log \sum_{\mathbf{Z}} q(\mathbf{Z}) \frac{P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})}{q(\mathbf{Z})}
+    $$
+2.  we use [Jensen's inequality](https://en.wikipedia.org/wiki/Jensen%27s_inequality) to move the $\log$ inside the summation. Since log is concave: $$
+    \ell(\boldsymbol{\theta}) = \log P(\mathbf{X}\vert\boldsymbol{\theta})\geq \sum_{\mathbf{Z}} q(\mathbf{Z}) \log \frac{P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})}{q(\mathbf{Z})} 
+    $$
+3.  we choose $q(\mathbf{Z})$ to make the inequality into an equality, noting that equality holds when the term inside the $\log$ on the right is constant, so $$\begin{align*}
+    \frac{P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})}{q(\mathbf{Z})} & =C\\
+    \sum_{Z}q(\mathbf{Z}) & =\sum_{Z}\frac{1}{C}P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})=1\quad\text{(total probability)}\\
+    C & =\sum_{Z}P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})\\
+    q(\mathbf{Z}) & =\frac{P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})}{\sum_{Z'}P(\boldsymbol{X},\boldsymbol{Z}'\vert\boldsymbol{\theta})P(\mathbf{Z}'|\boldsymbol{\theta})}=\frac{P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})}{P(\boldsymbol{X}\vert\boldsymbol{\theta})}\\
+     & =P\left(\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}\right)\quad\text{(bayes theroem)}
+    \end{align*}$$
+4.  substitute this result back into the original equation, with $\theta=\theta^{(t)}$ in $P\left(\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}\right)$ to give: $$\begin{align*}
+    \log P(\mathbf{X}\vert\boldsymbol{\theta}) & \geq\sum_{\mathbf{Z}}q(\mathbf{Z})\log\frac{P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})}{q(\mathbf{Z})}\\
+     & =\sum_{\mathbf{Z}}P\left(\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}^{(t)}\right)\log\frac{P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})}{P\left(\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}^{(t)}\right)}
+    \end{align*}$$
+5.  find a $\theta$ to maximize $\log P(\mathbf{X}\vert\boldsymbol{\theta})$ noting that $\theta^{(t)}$ is fixed, so we what we need to maximize is: $$\begin{align*}
+    \arg\max_{\theta}\log P(\mathbf{X}\vert\boldsymbol{\theta}) & =\arg\max_{\theta}\sum_{\mathbf{Z}}P\left(\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}^{(t)}\right)\log\frac{P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})}{P\left(\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}^{(t)}\right)}\\
+     & =\arg\max_{\theta}\sum_{\mathbf{Z}}P\left(\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}^{(t)}\right)\left(\log P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})-\log P\left(\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}^{(t)}\right)\right)\\
+     & =\arg\max_{\theta}\sum_{\mathbf{Z}}P\left(\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}^{(t)}\right)\left(\log P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})\right)\\
+     & =\arg\max_{\theta}\mathbb{E}_{\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}^{(t)}}\left[\log P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})\right]
+    \end{align*}$$
+
+The M-step
+
+6.  find the $\theta$ that maximizes the expectation
+
+------------------------------------------------------------------------
 
 For any distribution $q(\mathbf{Z})$ over the hidden variables:
 
@@ -51,7 +83,9 @@ By Jensen's inequality (since log is concave):
 
 $$
 \ell(\boldsymbol{\theta}) \geq \sum_{\mathbf{Z}} q(\mathbf{Z}) \log \frac{\mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})P(\mathbf{Z}|\boldsymbol{\theta})}{q(\mathbf{Z})} = \mathcal{F}(q,\boldsymbol{\theta})
-$$ What choice of $q(\mathbf{Z})$ would make this bound tight? When does equality hold in Jensen's inequality?
+$$
+
+What choice of $q(\mathbf{Z})$ would make this bound tight? When does equality hold in Jensen's inequality?
 
 The Q-Function
 
