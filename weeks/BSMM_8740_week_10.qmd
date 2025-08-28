@@ -1,11 +1,11 @@
 ---
 title: "Week 10"
-subtitle: "MonteCarlo methods"
+subtitle: "Bayesian Methods"
 editor: visual
 ---
 
 ::: callout-important
-Due date: Project proposal due Fri, Mar 18 at 5:00 pm.
+Due date: Lab 10 - Sunday, Nov 23, 5pm ET
 :::
 
 ## Prepare

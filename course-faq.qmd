@@ -14,9 +14,13 @@ The short answer is, I'd rather you didn't, to save yourself some headache. But,
 
 If you want to take this path, here is what you need to do:
 
--   Download and install R 4.3: <https://cran.r-project.org/>
+-   Download and install R 4.5: <https://cran.r-project.org/>
 -   Download and install a daily build of RStudio: <https://dailies.rstudio.com/>
 -   Install Git: <https://happygitwithr.com/install-git.html>
 -   Install any necessary packages with `install.packages("___")`
 
-And I'd like to reiterate again that successful installation of these software is **not** a learning goal of this course. So if any of this seems tedious or intimidating in any way, just use the computing environment set up for you in the lab.
+And I'd like to reiterate again that successful installation of these software is **not** a learning goal of this course.
+
+## Can I use a local install of R and RStudio for exams and quizzes?
+
+The short answer is [**no**]{.underline}, to save both of us a headache. The machines in the Lab have the vast majority of the packages required, and given the time pressures of lab assessments, neither of us has the time to debug problems on your machine.

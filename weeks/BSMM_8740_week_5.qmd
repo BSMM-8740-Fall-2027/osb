@@ -5,8 +5,8 @@ editor: visual
 ---
 
 ::: callout-important
--   Due date: Lab 5 - Sunday, Oct 13, 5pm ET
--   Quiz 1 will be in class on October 09 (est. 30 minutes)
+-   Due date: Lab 5 - Sunday, Oct 12, 5pm ET
+-   Quiz 1 will be in class on October 08 (est. 30 minutes)
 :::
 
 ## Prepare

@@ -1,11 +1,11 @@
 ---
 title: "Week 9"
-subtitle: "Causality: effects"
+subtitle: "Monte Carlo Methods"
 editor: visual
 ---
 
 ::: callout-important
-Due date: Exam 1 released on Fri, Feb 35, due Mon, Feb 28 at 11:59pm
+Due date: Lab 9 - Sunday, Nov 16, 5pm ET
 :::
 
 ## Prepare
