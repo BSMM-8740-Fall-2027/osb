@@ -7,3 +7,417 @@ ALL WEEKS - (i) fix due dates [OK] (ii) fix week 9,10: both need to be fleshed o
 ALL LABS - only lab 1 so far
 
 COURSE INFO -
+
+
+# ============== LAST BUILD
+
+(base) louiss:osb_2025_site louisodette$ git status
+On branch mods
+Your branch is up to date with 'origin/mods'.
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   _freeze/ae/ae-0-movies/execute-results/html.json
+        modified:   _freeze/ae/ae-0-movies/figure-html/plot-rating-1.png
+        modified:   _freeze/ae/ae-0-movies/figure-html/plot-revenue-1.png
+        modified:   _freeze/ae/ae-1-dcbikeshare/execute-results/html.json
+        modified:   _freeze/ae/ae-2-dcbikeshare/execute-results/html.json
+        modified:   _freeze/index/execute-results/html.json
+        modified:   _freeze/site_libs/clipboard/clipboard.min.js
+        modified:   _freeze/site_libs/datatables-css-0.0.0/datatables-crosstalk.css
+        modified:   _freeze/site_libs/revealjs/dist/reveal.css
+        modified:   _freeze/site_libs/revealjs/dist/reveal.esm.js
+        modified:   _freeze/site_libs/revealjs/dist/reveal.esm.js.map
+        modified:   _freeze/site_libs/revealjs/dist/reveal.js
+        modified:   _freeze/site_libs/revealjs/dist/reveal.js.map
+        modified:   _freeze/site_libs/revealjs/plugin/highlight/highlight.esm.js
+        modified:   _freeze/site_libs/revealjs/plugin/highlight/highlight.js
+        modified:   _freeze/site_libs/revealjs/plugin/highlight/plugin.js
+        modified:   _freeze/site_libs/revealjs/plugin/markdown/markdown.esm.js
+        modified:   _freeze/site_libs/revealjs/plugin/markdown/markdown.js
+        modified:   _freeze/site_libs/revealjs/plugin/markdown/plugin.js
+        modified:   _freeze/site_libs/revealjs/plugin/math/math.esm.js
+        modified:   _freeze/site_libs/revealjs/plugin/math/math.js
+        modified:   _freeze/site_libs/revealjs/plugin/math/mathjax3.js
+        modified:   _freeze/site_libs/revealjs/plugin/notes/notes.esm.js
+        modified:   _freeze/site_libs/revealjs/plugin/notes/notes.js
+        modified:   _freeze/site_libs/revealjs/plugin/notes/plugin.js
+        modified:   _freeze/site_libs/revealjs/plugin/notes/speaker-view.html
+        modified:   _freeze/site_libs/revealjs/plugin/pdf-export/pdfexport.js
+        modified:   _freeze/site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js
+        modified:   _freeze/site_libs/revealjs/plugin/quarto-support/footer.css
+        modified:   _freeze/site_libs/revealjs/plugin/quarto-support/support.js
+        modified:   _freeze/site_libs/revealjs/plugin/reveal-chalkboard/README.md
+        modified:   _freeze/site_libs/revealjs/plugin/reveal-chalkboard/plugin.js
+        modified:   _freeze/site_libs/revealjs/plugin/reveal-chalkboard/style.css
+        modified:   _freeze/site_libs/revealjs/plugin/reveal-menu/quarto-menu.js
+        modified:   _freeze/site_libs/revealjs/plugin/search/plugin.js
+        modified:   _freeze/site_libs/revealjs/plugin/search/search.esm.js
+        modified:   _freeze/site_libs/revealjs/plugin/search/search.js
+        modified:   _freeze/site_libs/revealjs/plugin/zoom/plugin.js
+        modified:   _freeze/site_libs/revealjs/plugin/zoom/zoom.esm.js
+        modified:   _freeze/site_libs/revealjs/plugin/zoom/zoom.js
+        modified:   _freeze/supplemental/log-transformations/execute-results/html.json
+        deleted:    labs/BSMM_8740_git.pdf
+        deleted:    misc/#2025_derivations.lyx#
+        deleted:    supplemental/covariance_decomposition_hd.pdf
+        deleted:    supplemental/decompositions-hd.pdf
+
+no changes added to commit (use "git add" and/or "git commit -a")
+(base) louiss:osb_2025_site louisodette$ git checkout main
+M       _freeze/ae/ae-0-movies/execute-results/html.json
+M       _freeze/ae/ae-0-movies/figure-html/plot-rating-1.png
+M       _freeze/ae/ae-0-movies/figure-html/plot-revenue-1.png
+M       _freeze/ae/ae-1-dcbikeshare/execute-results/html.json
+M       _freeze/ae/ae-2-dcbikeshare/execute-results/html.json
+M       _freeze/index/execute-results/html.json
+M       _freeze/site_libs/clipboard/clipboard.min.js
+M       _freeze/site_libs/datatables-css-0.0.0/datatables-crosstalk.css
+M       _freeze/site_libs/revealjs/dist/reveal.css
+M       _freeze/site_libs/revealjs/dist/reveal.esm.js
+M       _freeze/site_libs/revealjs/dist/reveal.esm.js.map
+M       _freeze/site_libs/revealjs/dist/reveal.js
+M       _freeze/site_libs/revealjs/dist/reveal.js.map
+M       _freeze/site_libs/revealjs/plugin/highlight/highlight.esm.js
+M       _freeze/site_libs/revealjs/plugin/highlight/highlight.js
+M       _freeze/site_libs/revealjs/plugin/highlight/plugin.js
+M       _freeze/site_libs/revealjs/plugin/markdown/markdown.esm.js
+M       _freeze/site_libs/revealjs/plugin/markdown/markdown.js
+M       _freeze/site_libs/revealjs/plugin/markdown/plugin.js
+M       _freeze/site_libs/revealjs/plugin/math/math.esm.js
+M       _freeze/site_libs/revealjs/plugin/math/math.js
+M       _freeze/site_libs/revealjs/plugin/math/mathjax3.js
+M       _freeze/site_libs/revealjs/plugin/notes/notes.esm.js
+M       _freeze/site_libs/revealjs/plugin/notes/notes.js
+M       _freeze/site_libs/revealjs/plugin/notes/plugin.js
+M       _freeze/site_libs/revealjs/plugin/notes/speaker-view.html
+M       _freeze/site_libs/revealjs/plugin/pdf-export/pdfexport.js
+M       _freeze/site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js
+M       _freeze/site_libs/revealjs/plugin/quarto-support/footer.css
+M       _freeze/site_libs/revealjs/plugin/quarto-support/support.js
+M       _freeze/site_libs/revealjs/plugin/reveal-chalkboard/README.md
+M       _freeze/site_libs/revealjs/plugin/reveal-chalkboard/plugin.js
+M       _freeze/site_libs/revealjs/plugin/reveal-chalkboard/style.css
+M       _freeze/site_libs/revealjs/plugin/reveal-menu/quarto-menu.js
+M       _freeze/site_libs/revealjs/plugin/search/plugin.js
+M       _freeze/site_libs/revealjs/plugin/search/search.esm.js
+M       _freeze/site_libs/revealjs/plugin/search/search.js
+M       _freeze/site_libs/revealjs/plugin/zoom/plugin.js
+M       _freeze/site_libs/revealjs/plugin/zoom/zoom.esm.js
+M       _freeze/site_libs/revealjs/plugin/zoom/zoom.js
+M       _freeze/supplemental/log-transformations/execute-results/html.json
+D       labs/BSMM_8740_git.pdf
+D       supplemental/covariance_decomposition_hd.pdf
+D       supplemental/decompositions-hd.pdf
+Switched to branch 'main'
+Your branch is up to date with 'origin/main'.
+(base) louiss:osb_2025_site louisodette$ git merge mods
+Updating 2d6d121..35e99cc
+Fast-forward
+ GitHub.qmd                        |   2 +-
+ course-faq.qmd                    |   8 ++++--
+ documents/BSMM-8740-Fall 2025.pdf | Bin 0 -> 941748 bytes
+ misc/#2025_derivations.lyx#       |  51 ++++++++++++++++++++++++++++++++++--
+ misc/2025_derivations.lyx         |  49 ++++++++++++++++++++++++++++++++++-
+ misc/2025_derivations.lyx~        |  46 +++++++++++++++++++++++++++++++++
+ misc/em_algo.qmd                  | 150 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ misc/link_check.txt               |   9 +++++++
+ slides/BSMM_8740_lec_09.qmd       |   2 +-
+ weeks/BSMM_8740_week_10.qmd       |   4 +--
+ weeks/BSMM_8740_week_2.qmd        |   2 +-
+ weeks/BSMM_8740_week_3.qmd        |   2 +-
+ weeks/BSMM_8740_week_4.qmd        |   2 +-
+ weeks/BSMM_8740_week_5.qmd        |   4 +--
+ weeks/BSMM_8740_week_6.qmd        |   2 +-
+ weeks/BSMM_8740_week_7.qmd        |   2 +-
+ weeks/BSMM_8740_week_8.qmd        |   2 +-
+ weeks/BSMM_8740_week_9.qmd        |   4 +--
+ 18 files changed, 322 insertions(+), 19 deletions(-)
+ create mode 100644 documents/BSMM-8740-Fall 2025.pdf
+ create mode 100644 misc/em_algo.qmd
+ create mode 100644 misc/link_check.txt
+(base) louiss:osb_2025_site louisodette$ quarto publish gh-pages
+? Update site at https://bsmm-8740-fall-2025.github.io/osb/? (Y/n) › Yes
+From github.com:BSMM-8740-Fall-2025/osb
+ * branch            gh-pages   -> FETCH_HEAD
+Rendering for publish:
+
+[  1/125] misc/rcts_to_regression.qmd
+[  2/125] misc/subclassification.qmd
+[  3/125] misc/unconfoundedness.qmd
+[  4/125] misc/2_stage_DiD.qmd
+[  5/125] misc/in_process/Causal_via_Prediction_R.qmd
+[  6/125] misc/in_process/Kalman.qmd
+[  7/125] misc/rct_rev.qmd
+[  8/125] misc/TwoStageDiD_draft.qmd
+[WARNING] Could not convert TeX math
+  \hat{\mu}_g + \hat{\eta}_t \not\xrightarrow{p} \mu_g + \eta_t
+  , rendering as TeX:
+
+                     ^
+  unexpected "{"
+  expecting "%", "\\label", "\\tag", "\\nonumber", whitespace or "\\allowbreak"
+[  9/125] misc/10-continuous-g-computation-exercises.qmd
+[ 10/125] misc/unconfoundedness_rev.qmd
+[ 11/125] misc/em_algo.qmd
+[ 12/125] misc/rct.qmd
+[ 13/125] misc/causal_scratch.qmd
+[ 14/125] labs/BSMM_8740_lab_8.qmd
+[ 15/125] labs/BSMM_8740_lab_9.qmd
+[ 16/125] labs/BSMM_8740_lab_10.qmd
+[ 17/125] labs/solutions/BSMM_8740_lab_3_solutions.qmd
+[ 18/125] labs/solutions/BSMM_8740_lab_7_solutions.qmd
+[ 19/125] labs/solutions/BSMM_8740_lab_4_solutions.qmd
+[ 20/125] labs/solutions/2024-lab-5.qmd
+[ 21/125] labs/solutions/BSMM_8740_lab_9_solutions.qmd
+[ 22/125] labs/solutions/BSMM_8740_lab_10_solutions.qmd
+[ 23/125] labs/solutions/BSMM_8740_lab_8_solutions.qmd
+[ 24/125] labs/solutions/BSMM_8740_lab_5_solutions.qmd
+[ 25/125] labs/solutions/BSMM_8740_lab_1_solutions.qmd
+[ 26/125] labs/solutions/BSMM_8740_lab_6_solutions.qmd
+[ 27/125] labs/solutions/BSMM_8740_lab_2_solutions.qmd
+[ 28/125] labs/BSMM_8740_git.qmd
+
+Rendering PDF
+running xelatex - 1
+  This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex)
+   restricted \write18 enabled.
+  entering extended mode
+
+running xelatex - 2
+  This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex)
+   restricted \write18 enabled.
+  entering extended mode
+
+
+[ 29/125] labs/BSMM_8740_lab_4.qmd
+[ 30/125] labs/BSMM_8740_lab_5.qmd
+[ 31/125] labs/BSMM_8740_lab_7.qmd
+[ 32/125] labs/BSMM_8740_lab_6.qmd
+[ 33/125] labs/BSMM_8740_lab_2.qmd
+[ 34/125] labs/BSMM_8740_lab_git.qmd
+[ 35/125] labs/BSMM_8740_lab_3.qmd
+[ 36/125] labs/BSMM_8740_lab_1.qmd
+[ 37/125] GitHub.qmd
+[ 38/125] course-links.qmd
+[ 39/125] LICENSE.md
+[ 40/125] weeks/BSMM_8740_week_8.qmd
+[ 41/125] weeks/BSMM_8740_week_9.qmd
+[ 42/125] weeks/BSMM_8740_week_10.qmd
+[ 43/125] weeks/BSMM_8740_week_11.qmd
+[ 44/125] weeks/BSMM_8740_week_4.qmd
+[ 45/125] weeks/BSMM_8740_week_5.qmd
+[ 46/125] weeks/BSMM_8740_week_7.qmd
+[ 47/125] weeks/BSMM_8740_week_6.qmd
+[ 48/125] weeks/BSMM_8740_week_2.qmd
+[ 49/125] weeks/BSMM_8740_week_3.qmd
+
+
+processing file: BSMM_8740_week_3.qmd
+
+output file: BSMM_8740_week_3.knit.md
+
+[ 50/125] weeks/BSMM_8740_week_1.qmd
+[ 51/125] hw/hw-5.qmd
+[ 52/125] hw/hw-4.qmd
+[ 53/125] hw/hw-3.qmd
+[ 54/125] hw/hw-2.qmd
+[ 55/125] hw/hw-1.qmd
+[ 56/125] ae/ae-5-the-office.qmd
+[ 57/125] ae/ae-11-volcanoes.qmd
+[ 58/125] ae/ae-4-exam-1-review.qmd
+[ 59/125] ae/ae-6-the-office-cv.qmd
+[ 60/125] ae/ae-8-rail-trail.qmd
+[ 61/125] ae/ae-1-dcbikeshare.qmd
+[ 62/125] ae/ae-12-exam-3-review.qmd
+[ 63/125] ae/ae-9-odds.qmd
+[ 64/125] ae/ae-7-exam-2-review.qmd
+[ 65/125] ae/ae-0-movies.qmd
+[ 66/125] ae/ae-3-duke-forest.qmd
+[ 67/125] ae/ae-2-dcbikeshare.qmd
+[ 68/125] ae/ae-10-flight-delays.qmd
+[ 69/125] 404.qmd
+[ 70/125] project-tips-resources.qmd
+[ 71/125] old_index.qmd
+[ 72/125] computing-access.qmd
+[ 73/125] course-overview.qmd
+[ 74/125] index.qmd
+[ 75/125] course-team.qmd
+[ 76/125] slides/BSMM_8740_lec_04.qmd
+[ 77/125] slides/BSMM_8740_lec_10.qmd
+[ 78/125] slides/BSMM_8740_lec_05.qmd
+[WARNING] Ignoring duplicate attribute style="width:60%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[ 79/125] slides/BSMM_8740_lec_07.qmd
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[WARNING] Ignoring duplicate attribute style="width:20%;".
+[WARNING] Ignoring duplicate attribute style="width:80%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[WARNING] Ignoring duplicate attribute style="width:30%;".
+[WARNING] Ignoring duplicate attribute style="width:70%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[WARNING] Ignoring duplicate attribute style="width:40%;".
+[WARNING] Ignoring duplicate attribute style="width:60%;".
+[WARNING] Ignoring duplicate attribute style="width:40%;".
+[WARNING] Ignoring duplicate attribute style="width:60%;".
+[WARNING] Ignoring duplicate attribute style="width:40%;".
+[WARNING] Ignoring duplicate attribute style="width:60%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[ 80/125] slides/BSMM_8740_lec_06.qmd
+[ 81/125] slides/BSMM_8740_lec_12.qmd
+[ 82/125] slides/recipes.qmd
+[ 83/125] slides/BSMM_8740_lec_02.qmd
+[ 84/125] slides/BSMM_8740_lec_03.qmd
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[ 85/125] slides/BSMM_8740_lec_01.qmd
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[WARNING] Ignoring duplicate attribute style="width:50%;".
+[ 86/125] slides/bayes.qmd
+[WARNING] Could not convert TeX math
+  s = \frac{\mu^2}{\sigma^2} \;\;\; \text{and} \;\;\; r = \frac{\mu}{\sigma^2} \;\;\; \text{for mean} \;\;\; \mu > 0 \\
+  s = 1 + \omega r \;\;\; \text{where} \;\;\; r = \frac{\omega + \sqrt{\omega^2 + 4\sigma^2}}{2\sigma^2} \;\;\; \text{for mode} \;\;\; \omega > 0.
+  , rendering as TeX:
+  s = \frac{\mu^2}{\sigma^2} \;\;\; \text{
+  ^
+  unexpected control sequence \\
+  expecting "%", "\\label", "\\tag", "\\nonumber", whitespace or "\\allowbreak"
+[ 87/125] slides/BSMM_8740_lec_02_alt.qmd
+[ 88/125] slides/temp.qmd
+[ 89/125] slides/BSMM_8740_lec_09b.qmd
+[ 90/125] slides/BSMM_8740_lec_08inf.qmd
+[ 91/125] slides/misc_causality.qmd
+[ 92/125] slides/00-setup.qmd
+[ 93/125] slides/BSMM_8740_lec_08.qmd
+[ 94/125] slides/BSMM_8740_lec_09.qmd
+[ 95/125] supplemental/dimension_reduction_by_propensity_score.qmd
+
+Rendering PDF
+running xelatex - 1
+  This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex)
+   restricted \write18 enabled.
+  entering extended mode
+
+running xelatex - 2
+  This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex)
+   restricted \write18 enabled.
+  entering extended mode
+
+
+[ 96/125] supplemental/did.qmd
+[ 97/125] supplemental/omitted_variables.qmd
+[ 98/125] supplemental/collinearity.qmd
+[ 99/125] supplemental/mlr-matrix.qmd
+[100/125] supplemental/smd.qmd
+[101/125] supplemental/covariance_decomposition.qmd
+[102/125] supplemental/test_align.qmd
+
+Rendering PDF
+running xelatex - 1
+  This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex)
+   restricted \write18 enabled.
+  entering extended mode
+
+running xelatex - 2
+  This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex)
+   restricted \write18 enabled.
+  entering extended mode
+
+
+[103/125] supplemental/model-diagnostics-matrix.qmd
+[104/125] supplemental/Bias_Variance_Trade_offs.qmd
+[105/125] supplemental/slr-derivations.qmd
+[106/125] supplemental/log-transformations.qmd
+[107/125] supplemental/exam_questions.qmd
+[108/125] supplemental/garbage.qmd
+
+Rendering PDF
+running xelatex - 1
+  This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex)
+   restricted \write18 enabled.
+  entering extended mode
+
+running xelatex - 2
+  This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex)
+   restricted \write18 enabled.
+  entering extended mode
+
+
+[109/125] supplemental/decompositions.qmd
+[110/125] supplemental/PCA_and_component_selection.qmd
+[111/125] supplemental/model-selection-criteria.qmd
+[112/125] supplemental/regularization-derivations.qmd
+[113/125] supplemental/covariance_decomposition_hd.qmd
+
+Rendering PDF
+running xelatex - 1
+  This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex)
+   restricted \write18 enabled.
+  entering extended mode
+
+running xelatex - 2
+  This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex)
+   restricted \write18 enabled.
+  entering extended mode
+
+
+[114/125] supplemental/decompositions-hd.qmd
+
+Rendering PDF
+running xelatex - 1
+  This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex)
+   restricted \write18 enabled.
+  entering extended mode
+
+running xelatex - 2
+  This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex)
+   restricted \write18 enabled.
+  entering extended mode
+
+
+[115/125] computing-pipelines.qmd
+[116/125] course-faq.qmd
+[117/125] scratch/elasticity.qmd
+[WARNING] Could not fetch resource images/elasticity_samples.png
+[118/125] course-support.qmd
+[119/125] exams/BSMM_8740_quiz_1_solutions.qmd
+[120/125] exams/BSMM_8740_midterm_solutions.qmd
+[121/125] exams/BSMM_8740_quiz_2_solutions.qmd
+[122/125] project-description.qmd
+[123/125] course-syllabus.qmd
+[124/125] computing-troubleshooting.qmd
+[125/125] scrolly/tidymodels.qmd
+
+Preparing worktree (resetting branch 'gh-pages'; was at cff3a62)
+branch 'gh-pages' set up to track 'origin/gh-pages'.
+Updating files: 100% (736/736), done.
+HEAD is now at cff3a62 Built site for gh-pages
+[gh-pages 353e631] Built site for gh-pages
+ 27 files changed, 1502 insertions(+), 359 deletions(-)
+ create mode 100644 documents/BSMM-8740-Fall 2025.pdf
+ create mode 100644 misc/em_algo.html
+origin  git@github.com:BSMM-8740-Fall-2025/osb.git (fetch)
+origin  git@github.com:BSMM-8740-Fall-2025/osb.git (push)
+To github.com:BSMM-8740-Fall-2025/osb.git
+   cff3a62..353e631  HEAD -> gh-pages
+
+NOTE: GitHub Pages sites use caching so you might need to click the refresh
+button within your web browser to see changes after deployment.
+
+[✓] Deploying gh-pages branch to website (this may take a few minutes)
+[✓] Published to https://bsmm-8740-fall-2025.github.io/osb/
+
+(base) louiss:osb_2025_site louisodette$
