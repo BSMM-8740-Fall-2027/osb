@@ -673,4 +673,4 @@ Total points available: 30 points.
 
 | Component | Points |
 |-----------|--------|
-| Ex 1 - 5  | 30     |
+| Ex 1 - 7  | 30     |

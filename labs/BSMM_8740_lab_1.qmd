@@ -172,6 +172,8 @@ my_mets <- mets %>%
 my_mets %>% 
   dplyr::select(_,_,_,_)
 ```
+
+The overall won/loss record during 2004-2012 is: \_\_\_\_
 :::
 
 ### Exercise 3
@@ -252,6 +254,10 @@ In how many seasons were the Mets better than expected? How many were they worse
 # repeat the better_than/ worse_than calculation for all the years in the dataset: show your work.
 
 ```
+
+The Mets were better than expected in \_\_\_ seasons.
+
+The Mets were worse than expected in \_\_\_ seasons
 :::
 
 ::: render-commit-push
@@ -269,6 +275,8 @@ Naturally, the Mets experienced ups and downs during Ben's time with the team. W
 #| eval: false
 dplyr::arrange(mets_ben, _)
 ```
+
+The Mets seasons that were better than expected were: \_\_\_\_
 :::
 
 ### Exercise 7
@@ -300,7 +308,7 @@ mets_ben |>
   )
 ```
 
-In these nine years, the Mets had a combined record of *? wins and* ? losses, for an overall winning percentage of \_?.
+In these nine years, the Mets had a combined record of \_\_*? wins and* \_\_? losses, for an overall winning percentage of \_\_?.
 :::
 
 ::: render-commit-push
@@ -373,7 +381,7 @@ You'll notice that the data is not in tidy form: one type of measurement in each
 ::: {.callout-note appearance="simple" icon="false"}
 ## YOUR ANSWER:
 
-What is the mean of the sales_per_visit columns/measurement? Are there any grouped observations?
+Show how you transformed the data:
 
 ```{r}
 # show your steps and the resulting tibble here:
@@ -439,6 +447,8 @@ What is the mean of the sales_per_visit columns/measurement? Are there any group
 # run a data exploration here using the skimr package.
 data |> skimr::skim()
 ```
+
+The mean sales_per_visit is \_\_\_\_. Are there any grouped observations? \_\_\_
 :::
 
 ##### Exploratory Data Analysis
@@ -454,11 +464,15 @@ They started by looking at the share of customers which received a discount:
 # calculate the % share of customers receiving a discount vs the % not receiving a discount
 ```
 
+The share of customers receiving a discount is \_\_\_\_
+
 Similarly for the share of customers which are loyal:
 
 ```{r}
 # calculate the % share of customers that are 'loyal' vs not 'loyal'
 ```
+
+The share of customers that are 'loyal' is \_\_\_\_
 
 To understand these features better, they also looked at a cross-tab table:
 
@@ -528,7 +542,5 @@ Total points available: 30 points.
 
 -   [Chapter 2: Get Started](https://socviz.co/gettingstarted.html#work-in-plain-text-using-rmarkdown) *Data Visualization by Kieran Healy*
 -   [Chapter 3: Data visualization](https://r4ds.had.co.nz/data-visualisation.html) in *R for Data Science* by Hadley Wickham
--   RStudio Cloud Primers
-    -   Visualization Basics: <https://rstudio.cloud/learn/primers/1.1>
-    -   Work with Data: <https://rstudio.cloud/learn/primers/2>
-    -   Visualize Data: <https://rstudio.cloud/learn/primers/3>
+-   RStudio Cloud Primers (a collection of R code snippets and instructions featuring up-to-date best practices for coding in R.)
+    -   Posit recipes: <https://posit.cloud/learn/recipes>

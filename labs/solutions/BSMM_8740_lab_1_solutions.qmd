@@ -462,7 +462,6 @@ Total points available: 30 points.
 
 -   [Chapter 2: Get Started](https://socviz.co/gettingstarted.html#work-in-plain-text-using-rmarkdown) *Data Visualization by Kieran Healy*
 -   [Chapter 3: Data visualization](https://r4ds.had.co.nz/data-visualisation.html) in *R for Data Science* by Hadley Wickham
--   RStudio Cloud Primers
-    -   Visualization Basics: <https://rstudio.cloud/learn/primers/1.1>
-    -   Work with Data: <https://rstudio.cloud/learn/primers/2>
-    -   Visualize Data: <https://rstudio.cloud/learn/primers/3>
+-   RStudio Cloud Primers (a collection of R code snippets and instructions featuring up-to-date best practices for coding in R.)
+    -   Posit recipes: <https://posit.cloud/learn/recipes>
+

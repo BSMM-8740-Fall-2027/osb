@@ -73,7 +73,7 @@ The general objectives of this course are to:
 ## Master of Management Competencies
 
 | **Program Competencies** | **Course Competencies** | Tested by |
-|----------------------------|----------------------------|----------------|
+|---------------------------|---------------------------|------------------|
 | Apply an evidence-based decision model to evaluate and recommend the best available alternative to resolve an international business problem. | Apply an evidence-based decision model to evaluate and recommend the best available alternative to resolve an international business problem. | Lab Assessments |
 | Analyze both qualitative and quantitative data and findings, distinguishing and evaluating their relevance to the resolution of international business issues. | Analyze both qualitative and quantitative data and findings, distinguishing and evaluating their relevance to the resolution of international business issues. | Quizzes, Midterm Examination, and Final Examination |
 
@@ -165,6 +165,16 @@ The midterm exam can consist of true/false, multiple choice, short answer, and e
 **Final Examination**
 
 The final exam can consist of true/false, multiple choice, short answer, and essay questions covering all course material, including material discussed during lab sessions. When writing this exam, you must abide by University of Windsor policies governing plagiarism and academic integrity. Exam submissions may be subjected to review by automated tools to verify their originality.
+
+## Office Hours
+
+Please watch this video:
+
+{{< video https://vimeo.com/270014784?fl=pl&fe=sh >}}
+
+Office hours are set times dedicated to all of you. This means that I will be waiting for you to talk to me (in person) with whatever questions you have. This is the best and easiest way to find me and the best chance for discussing class material and concerns.
+
+While I have official permanently-set student hours every week (the hour after class). The best way to meet with me is to make an appointment with me. You can choose an online or in-person slot—if you choose an online slot, the confirmation e-mail will contain a link for a Teams meeting.
 
 ## Odette School Of Business Course Policies
 
@@ -263,17 +273,17 @@ In the event of inclement weather or other connectivity-related events that proh
 
 | FALL 2025                |                                      |
 |--------------------------|--------------------------------------|
-| September 2              | Labour Day (University closed)       |
-| September 5              | all 2025 classes begin               |
-| September 18             | Add/Drop Date                        |
-| October 3                | Financial Drop Date                  |
-| October 14               | Thanksgiving Day (University closed) |
-| October 12 - 20          | Reading Week (no classes)            |
-| November 13              | Voluntary Withdrawal Date            |
-| December 4               | Classes end                          |
-| December 7               | Final Exams Begin                    |
-| December 18              | Final Exams End                      |
-| December 19              | Alternate Final Exam Day             |
-| December 23 -- January 1 | University closed -- Winter holiday  |
+| September 1              | Labour Day (University closed)       |
+| September 4              | all 2025 classes begin               |
+| September 17             | Add/Drop Date                        |
+| October 2                | Financial Drop Date                  |
+| October 13               | Thanksgiving Day (University closed) |
+| October 11 - 19          | Reading Week (no classes)            |
+| November 12              | Voluntary Withdrawal Date            |
+| December 3               | Classes end                          |
+| December 6               | Final Exams Begin                    |
+| December 17              | Final Exams End                      |
+| December 18              | Alternate Final Exam Day             |
+| December 24 -- January 2 | University closed -- Winter holiday  |
 
 ## 

@@ -14,11 +14,9 @@ editor: visual
 
 📖 Read the [support](/course-support.html) resources
 
-📖 Get familiar with Git by reading [Excuse me, do you have a moment to talk about version control?](https://peerj.com/preprints/3159v2/)
-
 📖 Get familiar with Git by reading [Excuse me, do you have a moment to talk about version control?](/documents/3159v2.pdf "Git and version control")
 
-📖 Read the article [What is Tidy Data?](https://towardsdatascience.com/what-is-tidy-data-d58bb9ad2458)
+📖 Read the article [What is Tidy Data?](https://medium.com/data-science/what-is-tidy-data-d58bb9ad2458)
 
 📖 Read the chapters 2-5 in [R for Data Science](https://r4ds.hadley.nz/)
 

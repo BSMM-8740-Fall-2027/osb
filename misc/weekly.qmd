@@ -1,0 +1,12 @@
+---
+title: "weekly checklist"
+---
+
+## Week 1
+
+-   [x] weekly slides
+-   [x] weekly reading
+-   [x] weekly lab
+-   [x] weekly lab solutions
+-   [x] weekly lab repo
+-   [ ] weekly lab invite
