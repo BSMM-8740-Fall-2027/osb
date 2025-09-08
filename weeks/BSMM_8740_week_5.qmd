@@ -27,7 +27,7 @@ editor: visual
 
 ## Perform
 
-⌨️ [Lab 5 - Classification & Clustering Methods](labs/BSMM_8740_lab_5.html)
+⌨️ [Lab 5 - Classification & Clustering Methods](/labs/BSMM_8740_lab_5.html)
 
 ## Podcast
 

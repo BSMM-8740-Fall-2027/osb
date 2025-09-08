@@ -14,7 +14,7 @@ No readings this week.
 
 ## Participate
 
-🖥️ [Lecture 09 - Causality: effects](/slides/BSMM_8740_lec_09.html)
+🖥️ [Lecture 09 - Monte Carlo Methods](/slides/BSMM_8740_lec_09.html)
 
 ## Practice
 
@@ -22,9 +22,67 @@ No readings this week.
 
 ## Perform
 
-⌨️ [Lab 9 - Causality: effects](labs/BSMM_8740_lab_9.html)
+⌨️ [Lab 9 - Monte Carlo Methods](/labs/BSMM_8740_lab_9.html)
 
-✅ [Exam 2](/exams/exam-2.html)
+## Study
+
+### Short Answer Questions
+
+**Instructions**: Answer the following questions in 2-3 sentences each.
+
+1\. Describe the process of inverse transform sampling for generating random numbers.
+
+2\. What is a pseudorandom number generator, and what is considered a defining feature of a good one?
+
+3\. How can Monte Carlo methods be used to estimate the probability of a specific event occurring?
+
+4\. Explain the relationship between a Moment Generating Function (MGF) and the raw moments of a random variable.
+
+5\. What is the core principle behind importance sampling, particularly when direct sampling from a target distribution is not possible?
+
+6\. Outline the basic steps involved in the rejection sampling algorithm.
+
+7\. What is the Markov property and what does it imply about the future state of a process?
+
+8\. Define a stationary distribution in the context of a Markov chain.
+
+9\. What is the "burn-in" period in a Markov Chain Monte Carlo (MCMC) simulation, and why is it necessary?
+
+10\. How does the Metropolis-Hastings algorithm generalize the standard Metropolis algorithm?
+
+### Short Answer Key
+
+1\. Inverse transform sampling generates a random number by first drawing a value, *U*, from a uniform \[0, 1\] distribution. This value is then plugged into the inverse of the cumulative distribution function (CDF) of the target distribution. The resulting output, *X = F⁻¹(U)*, is a random sample that follows the target distribution.
+
+2\. A pseudorandom number generator is a deterministic algorithm used by computers to produce a sequence of numbers that appear random. A key characteristic of a good generator is a long period, which is the length of the sequence before it repeats itself; a period of at least 2⁴⁰ is needed.
+
+3\. To estimate the probability of an event *E*, one can generate a large number of samples (*M*) of the relevant random variable *Z*. The Monte Carlo estimate is the proportion of these samples that fall within the event's defined subset, calculated as the sum of indicator functions (1 if *zᵢ* is in the subset, 0 otherwise) divided by *M*.
+
+4\. The Moment Generating Function (MGF) of a random variable *X* can be used to find its raw moments. The *n*-th raw moment, E\[*Xⁿ*\], is equal to the *n*-th derivative of the MGF evaluated at t=0.
+
+5\. Importance sampling allows for the estimation of an expectation under a target distribution *f(x)* by sampling from a different, easier-to-sample proposal distribution *g₁(x)*. The estimate is then calculated as a weighted average of the function values, where each sample is adjusted by an "importance weight," *w(xᵢ) = f(xᵢ)/g₁(xᵢ)*, to correct for the difference between the distributions.
+
+6\. Rejection sampling begins by sampling a value *X* from an easily sampled density *f* and a value *U* from a uniform \[0, 1\] distribution. The sample *X* is "accepted" as a draw from the target (un-normalized) distribution *g(x)* if *U ≤ g(x) / (K f(x))*, where *K* is a constant ensuring *K f(x) ≥ g(x)*. If the condition is not met, the sample is rejected, and the process is repeated.
+
+7\. The Markov property, also known as the memoryless property, states that the future state of a process is conditionally independent of its past, given its present state. For a Markov chain, this means that to determine the probability of transitioning to the next state, one only needs to know the current state, not the sequence of states that led to it.
+
+8\. A stationary distribution, *π*, is a probability distribution on the state space of a Markov chain that remains unchanged after one step of the chain. If the chain's state is distributed according to *π*, then after the next transition, the state will still be distributed according to *π*, which can be expressed mathematically as *π = πP*, where *P* is the transition matrix.
+
+9\. The burn-in period in an MCMC simulation is an initial number of iterations that are discarded from the analysis. This is necessary because the Markov chain is designed to converge to the target stationary distribution, and the early samples generated before this convergence has occurred do not accurately represent the target distribution.
+
+10\. The Metropolis-Hastings algorithm generalizes the standard Metropolis algorithm by allowing for the use of asymmetric proposal distributions. While the Metropolis algorithm requires a symmetric proposal distribution (*q(x, y) = q(y, x)*), Metropolis-Hastings corrects for asymmetry by modifying the acceptance ratio to include the ratio of proposal densities, *q(Yₙ, Xₙ₋₁)/q(Xₙ₋₁, Yₙ)*.
+
+### Essay Questions
+
+1\. Compare and contrast three methods for sampling from a probability distribution discussed in the text: inverse transform sampling, rejection sampling, and importance sampling. Discuss the underlying principles, necessary conditions (e.g., knowledge of the CDF or a bounding function), and potential challenges of each.
+
+2\. Explain the Central Limit Theorem (CLT) as presented in the source. Describe how the Moment Generating Function (MGF) is used in its derivation and discuss the theorem's significance for the accuracy of Monte Carlo estimates.
+
+3\. Describe the structure and properties of a time-homogeneous, discrete-time Markov Chain. Explain the roles of the state space, initial distribution, and transition matrix in defining the chain's behavior. How are multi-step transition probabilities calculated, and what is the significance of the Chapman–Kolmogorov equations?
+
+4\. Detail the random-walk Metropolis algorithm for MCMC. Explain each step of the process, the role of the multivariate normal proposal distribution, the acceptance/rejection criterion, and the practical considerations for tuning its parameters (e.g., proposal variance σ) to achieve a desirable acceptance rate.
+
+5\. Discuss the application of MCMC methods in Bayesian analysis, using the provided linear regression example. Explain how the algorithm samples from the posterior distribution, which is proportional to the likelihood times the prior, and how this process helps in estimating model parameters.
 
 <br><br>
 

@@ -26,7 +26,7 @@ Due date: Lab 8 - Sunday, Nov 9, 5pm ET
 
 ## Perform
 
-⌨️ [Lab 8 - Causality: Methods](labs/BSMM_8740_lab_8.html)
+⌨️ [Lab 8 - Causality: Methods](/labs/BSMM_8740_lab_8.html)
 
 ## Study
 

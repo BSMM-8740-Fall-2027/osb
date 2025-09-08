@@ -18,9 +18,7 @@ Due date: Lab 10 - Sunday, Nov 23, 5pm ET
 
 ## Perform
 
-⌨️ [Lab 10 - Bayesian methods](labs/BSMM_8740_lab_10.html)
-
-✍️ [HW 3 - Logistic regression and log transformation](/hw/hw-3.html)
+⌨️ [Lab 10 - Bayesian methods](/labs/BSMM_8740_lab_10.html)
 
 ## Study
 

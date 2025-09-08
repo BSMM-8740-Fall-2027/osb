@@ -464,4 +464,3 @@ Total points available: 30 points.
 -   [Chapter 3: Data visualization](https://r4ds.had.co.nz/data-visualisation.html) in *R for Data Science* by Hadley Wickham
 -   RStudio Cloud Primers (a collection of R code snippets and instructions featuring up-to-date best practices for coding in R.)
     -   Posit recipes: <https://posit.cloud/learn/recipes>
-

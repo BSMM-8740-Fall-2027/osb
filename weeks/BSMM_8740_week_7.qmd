@@ -28,7 +28,7 @@ Due date: Lab 7 - Sunday, Nov 02, 5pm ET
 
 ## Perform
 
-⌨️ [Lab 7 -Causality: DAGs](labs/BSSM_8740_lab_7.html)
+⌨️ [Lab 7 -Causality: DAGs](/labs/BSSM_8740_lab_7.html)
 
 ## Study
 

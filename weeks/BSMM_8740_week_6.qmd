@@ -26,7 +26,7 @@ Due date: Lab 6 - Sunday, Oct 26, 5pm ET
 
 ## Perform
 
-⌨️ [Lab 6 - Time Series Methods](labs/BSMM_8740_lab_6.html)
+⌨️ [Lab 6 - Time Series Methods](/labs/BSMM_8740_lab_6.html)
 
 ## Study
 
