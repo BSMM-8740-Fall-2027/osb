@@ -6,7 +6,7 @@
   </url>
   <url>
     <loc>https://bsmm-8740-fall-2025.github.io/osb/course-syllabus.html</loc>
-    <lastmod>2025-08-18T23:34:49.035Z</lastmod>
+    <lastmod>2025-09-08T20:20:55.799Z</lastmod>
   </url>
   <url>
     <loc>https://bsmm-8740-fall-2025.github.io/osb/exams/BSMM_8740_quiz_2_solutions.html</loc>
@@ -190,7 +190,7 @@
   </url>
   <url>
     <loc>https://bsmm-8740-fall-2025.github.io/osb/labs/solutions/BSMM_8740_lab_1_solutions.html</loc>
-    <lastmod>2025-07-08T20:59:47.446Z</lastmod>
+    <lastmod>2025-09-08T20:20:55.800Z</lastmod>
   </url>
   <url>
     <loc>https://bsmm-8740-fall-2025.github.io/osb/labs/solutions/BSMM_8740_lab_8_solutions.html</loc>
@@ -233,20 +233,24 @@
     <lastmod>2025-04-17T15:53:05.505Z</lastmod>
   </url>
   <url>
-    <loc>https://bsmm-8740-fall-2025.github.io/osb/misc/unconfoundedness.html</loc>
-    <lastmod>2025-08-18T23:34:49.050Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsmm-8740-fall-2025.github.io/osb/misc/rcts_to_regression.html</loc>
-    <lastmod>2025-04-17T15:53:05.506Z</lastmod>
+    <loc>https://bsmm-8740-fall-2025.github.io/osb/misc/2_stage_DiD.html</loc>
+    <lastmod>2025-08-08T15:31:24.636Z</lastmod>
   </url>
   <url>
     <loc>https://bsmm-8740-fall-2025.github.io/osb/misc/subclassification.html</loc>
     <lastmod>2025-08-08T15:31:24.639Z</lastmod>
   </url>
   <url>
-    <loc>https://bsmm-8740-fall-2025.github.io/osb/misc/2_stage_DiD.html</loc>
-    <lastmod>2025-08-08T15:31:24.636Z</lastmod>
+    <loc>https://bsmm-8740-fall-2025.github.io/osb/misc/rcts_to_regression.html</loc>
+    <lastmod>2025-04-17T15:53:05.506Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsmm-8740-fall-2025.github.io/osb/misc/unconfoundedness.html</loc>
+    <lastmod>2025-08-18T23:34:49.050Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsmm-8740-fall-2025.github.io/osb/misc/weekly.html</loc>
+    <lastmod>2025-09-08T20:20:55.802Z</lastmod>
   </url>
   <url>
     <loc>https://bsmm-8740-fall-2025.github.io/osb/misc/in_process/Kalman.html</loc>
@@ -266,7 +270,7 @@
   </url>
   <url>
     <loc>https://bsmm-8740-fall-2025.github.io/osb/labs/BSMM_8740_lab_8.html</loc>
-    <lastmod>2025-08-08T15:44:15.743Z</lastmod>
+    <lastmod>2025-09-08T20:20:55.800Z</lastmod>
   </url>
   <url>
     <loc>https://bsmm-8740-fall-2025.github.io/osb/labs/BSMM_8740_lab_10.html</loc>
@@ -306,7 +310,7 @@
   </url>
   <url>
     <loc>https://bsmm-8740-fall-2025.github.io/osb/labs/BSMM_8740_lab_1.html</loc>
-    <lastmod>2025-08-08T15:31:24.626Z</lastmod>
+    <lastmod>2025-09-08T20:20:55.799Z</lastmod>
   </url>
   <url>
     <loc>https://bsmm-8740-fall-2025.github.io/osb/course-links.html</loc>
@@ -334,7 +338,7 @@
   </url>
   <url>
     <loc>https://bsmm-8740-fall-2025.github.io/osb/weeks/BSMM_8740_week_1.html</loc>
-    <lastmod>2025-07-01T23:27:52.002Z</lastmod>
+    <lastmod>2025-09-08T20:20:55.802Z</lastmod>
   </url>
   <url>
     <loc>https://bsmm-8740-fall-2025.github.io/osb/hw/hw-4.html</loc>
