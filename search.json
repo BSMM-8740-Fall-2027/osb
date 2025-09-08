@@ -5434,7 +5434,7 @@
     "href": "weeks/BSMM_8740_week_9.html#participate",
     "title": "Week 9",
     "section": "Participate",
-    "text": "Participate\n🖥️ Lecture 09 - Causality: effects",
+    "text": "Participate\n🖥️ Lecture 09 - Monte Carlo Methods",
     "crumbs": [
       "Weekly materials",
       "Week 9"
@@ -5456,7 +5456,18 @@
     "href": "weeks/BSMM_8740_week_9.html#perform",
     "title": "Week 9",
     "section": "Perform",
-    "text": "Perform\n⌨️ Lab 9 - Causality: effects\n✅ Exam 2\n\n\nBack to course schedule ⏎",
+    "text": "Perform\n⌨️ Lab 9 - Monte Carlo Methods",
+    "crumbs": [
+      "Weekly materials",
+      "Week 9"
+    ]
+  },
+  {
+    "objectID": "weeks/BSMM_8740_week_9.html#study",
+    "href": "weeks/BSMM_8740_week_9.html#study",
+    "title": "Week 9",
+    "section": "Study",
+    "text": "Study\n\nShort Answer Questions\nInstructions: Answer the following questions in 2-3 sentences each.\n1. Describe the process of inverse transform sampling for generating random numbers.\n2. What is a pseudorandom number generator, and what is considered a defining feature of a good one?\n3. How can Monte Carlo methods be used to estimate the probability of a specific event occurring?\n4. Explain the relationship between a Moment Generating Function (MGF) and the raw moments of a random variable.\n5. What is the core principle behind importance sampling, particularly when direct sampling from a target distribution is not possible?\n6. Outline the basic steps involved in the rejection sampling algorithm.\n7. What is the Markov property and what does it imply about the future state of a process?\n8. Define a stationary distribution in the context of a Markov chain.\n9. What is the “burn-in” period in a Markov Chain Monte Carlo (MCMC) simulation, and why is it necessary?\n10. How does the Metropolis-Hastings algorithm generalize the standard Metropolis algorithm?\n\n\nShort Answer Key\n1. Inverse transform sampling generates a random number by first drawing a value, U, from a uniform [0, 1] distribution. This value is then plugged into the inverse of the cumulative distribution function (CDF) of the target distribution. The resulting output, X = F⁻¹(U), is a random sample that follows the target distribution.\n2. A pseudorandom number generator is a deterministic algorithm used by computers to produce a sequence of numbers that appear random. A key characteristic of a good generator is a long period, which is the length of the sequence before it repeats itself; a period of at least 2⁴⁰ is needed.\n3. To estimate the probability of an event E, one can generate a large number of samples (M) of the relevant random variable Z. The Monte Carlo estimate is the proportion of these samples that fall within the event’s defined subset, calculated as the sum of indicator functions (1 if zᵢ is in the subset, 0 otherwise) divided by M.\n4. The Moment Generating Function (MGF) of a random variable X can be used to find its raw moments. The n-th raw moment, E[Xⁿ], is equal to the n-th derivative of the MGF evaluated at t=0.\n5. Importance sampling allows for the estimation of an expectation under a target distribution f(x) by sampling from a different, easier-to-sample proposal distribution g₁(x). The estimate is then calculated as a weighted average of the function values, where each sample is adjusted by an “importance weight,” w(xᵢ) = f(xᵢ)/g₁(xᵢ), to correct for the difference between the distributions.\n6. Rejection sampling begins by sampling a value X from an easily sampled density f and a value U from a uniform [0, 1] distribution. The sample X is “accepted” as a draw from the target (un-normalized) distribution g(x) if U ≤ g(x) / (K f(x)), where K is a constant ensuring K f(x) ≥ g(x). If the condition is not met, the sample is rejected, and the process is repeated.\n7. The Markov property, also known as the memoryless property, states that the future state of a process is conditionally independent of its past, given its present state. For a Markov chain, this means that to determine the probability of transitioning to the next state, one only needs to know the current state, not the sequence of states that led to it.\n8. A stationary distribution, π, is a probability distribution on the state space of a Markov chain that remains unchanged after one step of the chain. If the chain’s state is distributed according to π, then after the next transition, the state will still be distributed according to π, which can be expressed mathematically as π = πP, where P is the transition matrix.\n9. The burn-in period in an MCMC simulation is an initial number of iterations that are discarded from the analysis. This is necessary because the Markov chain is designed to converge to the target stationary distribution, and the early samples generated before this convergence has occurred do not accurately represent the target distribution.\n10. The Metropolis-Hastings algorithm generalizes the standard Metropolis algorithm by allowing for the use of asymmetric proposal distributions. While the Metropolis algorithm requires a symmetric proposal distribution (q(x, y) = q(y, x)), Metropolis-Hastings corrects for asymmetry by modifying the acceptance ratio to include the ratio of proposal densities, q(Yₙ, Xₙ₋₁)/q(Xₙ₋₁, Yₙ).\n\n\nEssay Questions\n1. Compare and contrast three methods for sampling from a probability distribution discussed in the text: inverse transform sampling, rejection sampling, and importance sampling. Discuss the underlying principles, necessary conditions (e.g., knowledge of the CDF or a bounding function), and potential challenges of each.\n2. Explain the Central Limit Theorem (CLT) as presented in the source. Describe how the Moment Generating Function (MGF) is used in its derivation and discuss the theorem’s significance for the accuracy of Monte Carlo estimates.\n3. Describe the structure and properties of a time-homogeneous, discrete-time Markov Chain. Explain the roles of the state space, initial distribution, and transition matrix in defining the chain’s behavior. How are multi-step transition probabilities calculated, and what is the significance of the Chapman–Kolmogorov equations?\n4. Detail the random-walk Metropolis algorithm for MCMC. Explain each step of the process, the role of the multivariate normal proposal distribution, the acceptance/rejection criterion, and the practical considerations for tuning its parameters (e.g., proposal variance σ) to achieve a desirable acceptance rate.\n5. Discuss the application of MCMC methods in Bayesian analysis, using the provided linear regression example. Explain how the algorithm samples from the posterior distribution, which is proportional to the likelihood times the prior, and how this process helps in estimating model parameters.\n\n\nBack to course schedule ⏎",
     "crumbs": [
       "Weekly materials",
       "Week 9"
@@ -7946,7 +7957,7 @@
     "href": "weeks/BSMM_8740_week_10.html#perform",
     "title": "Week 10",
     "section": "Perform",
-    "text": "Perform\n⌨️ Lab 10 - Bayesian methods\n✍️ HW 3 - Logistic regression and log transformation",
+    "text": "Perform\n⌨️ Lab 10 - Bayesian methods",
     "crumbs": [
       "Weekly materials",
       "Week 10"
