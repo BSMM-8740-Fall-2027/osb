@@ -239,22 +239,22 @@ canadian_prime_ministers <- tibble::tribble(
   "Mackenzie Bowell", "1894-12-21", "1896-04-27", "Conservative", 6,
   "Charles Tupper", "1896-05-01", "1896-07-08", "Conservative", 7,
   "Wilfrid Laurier", "1896-07-11", "1911-10-06", "Liberal", 8,
-  "Robert Borden", "1911-10-10", "1920-07-10", "Conservative/Unionist", 9,
+  "Robert Borden", "1911-10-10", "1920-07-10", "Conservative", 9,
   "Arthur Meighen", "1920-07-10", "1921-12-29", "Conservative", 10,
-  "William Lyon Mackenzie King", "1921-12-29", "1926-06-28", "Liberal", 11,
+  "Mackenzie King", "1921-12-29", "1926-06-28", "Liberal", 11,
   "Arthur Meighen", "1926-06-29", "1926-09-25", "Conservative", 12,
-  "William Lyon Mackenzie King", "1926-09-25", "1930-08-07", "Liberal", 13,
+  "Mackenzie King", "1926-09-25", "1930-08-07", "Liberal", 13,
   "R. B. Bennett", "1930-08-07", "1935-10-23", "Conservative", 14,
-  "William Lyon Mackenzie King", "1935-10-23", "1948-11-15", "Liberal", 15,
+  "Mackenzie King", "1935-10-23", "1948-11-15", "Liberal", 15,
   "Louis St. Laurent", "1948-11-15", "1957-06-21", "Liberal", 16,
-  "John Diefenbaker", "1957-06-21", "1963-04-22", "Progressive Conservative", 17,
+  "John Diefenbaker", "1957-06-21", "1963-04-22", "PC", 17,
   "Lester B. Pearson", "1963-04-22", "1968-04-20", "Liberal", 18,
   "Pierre Trudeau", "1968-04-20", "1979-06-04", "Liberal", 19,
-  "Joe Clark", "1979-06-04", "1980-03-03", "Progressive Conservative", 20,
+  "Joe Clark", "1979-06-04", "1980-03-03", "PC", 20,
   "Pierre Trudeau", "1980-03-03", "1984-06-30", "Liberal", 21,
   "John Turner", "1984-06-30", "1984-09-17", "Liberal", 22,
-  "Brian Mulroney", "1984-09-17", "1993-06-25", "Progressive Conservative", 23,
-  "Kim Campbell", "1993-06-25", "1993-11-04", "Progressive Conservative", 24,
+  "Brian Mulroney", "1984-09-17", "1993-06-25", "PC", 23,
+  "Kim Campbell", "1993-06-25", "1993-11-04", "PC", 24,
   "Jean Chrétien", "1993-11-04", "2003-12-12", "Liberal", 25,
   "Paul Martin", "2003-12-12", "2006-02-06", "Liberal", 26,
   "Stephen Harper", "2006-02-06", "2015-11-04", "Conservative", 27,
@@ -588,6 +588,8 @@ When used without grouping, `summarize()` collapses a data frame into a single r
 #| echo: true
 #| message: false
 #| code-line-numbers: "2|3|4|5|6|7|8"
+#| code-fold: true
+#| code-summary: summarize without groups
 my_prime_ministers %>% 
   dplyr::summarize(
     N = n(), 
@@ -645,6 +647,8 @@ To make comparisons, we can first group then summarize, giving us one summary ro
 ```{r}
 #| echo: true
 #| message: false
+#| code-fold: true
+#| code-summary: groups then summarize
 #| code-line-numbers: "2|3|4|5|6|7|8|9"
 my_prime_ministers %>% 
   dplyr::group_by(party) %>% 
