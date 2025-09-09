@@ -2512,7 +2512,7 @@
     "href": "slides/BSMM_8740_lec_01.html#announcements",
     "title": "Tidyverse, EDA & git",
     "section": "Announcements",
-    "text": "Announcements\n\n\nPlease go to the course website to review the weekly slides, access the labs, read the syllabus, etc.\nMy intent is to have assigned lab exercises each week, which will be started during class.\n\nLab assignments will be due at 5:00pm sharp on the Sunday following the lecture.\n\nLab 1 is due Sunday September 14 at 5pm.\nMy regular office hour will be on Wednesday from 2:30pm - 3:30pm or via MS Teams as requested. Please email ahead of time."
+    "text": "Announcements\n\n\nPlease go to the course website to review the weekly slides, access the labs, read the syllabus, etc.\nMy intent is to have assigned lab exercises each week, which will be started during class.\n\nLab assignments will be due at 5:00pm sharp on the Sunday following the lecture.\n\nLab 1 is due Sunday September 14 at 5pm.\nMy regular office hour will be on Wednesdays from 2:30pm - 3:30pm or via MS Teams as requested. Please email ahead of time."
   },
   {
     "objectID": "slides/BSMM_8740_lec_01.html#expected-course-topics",
@@ -2526,7 +2526,7 @@
     "href": "slides/BSMM_8740_lec_01.html#expected-course-topics-1",
     "title": "Tidyverse, EDA & git",
     "section": "Expected Course Topics",
-    "text": "Expected Course Topics\n\n\n\n  \n  \n\n\n\nanalytics\nshort description\nlong description\n\n\n\n\ndescriptive\nwhat has happened\nCalculates trends, averages, medians, standard deviations, etc. Often found in dashboards. Value in providing key statistics.\n\n\npredictive\nwhat will happen\nFinds relationships inside of the data, leading to underlying, generalizable patterns. From patterns, make predictions on unseen data. Value in providing insight on unseen data.\n\n\nprescriptive\nchanging what will happen\nUses models created via predictive analytics to recommend optimal actions. Value in finding strategy with the most desirable outcome."
+    "text": "Expected Course Topics\n\n\n\n  \n  \n\n\n\nanalytics\nshort description\nlong description\n\n\n\n\ndescriptive\nwhat has happened\nCalculates trends, averages, medians, standard deviations, etc. Often found in dashboards. Value in providing key statistics.\n\n\npredictive\nwhat will happen\nFinds relationships inside of the data, leading to underlying, generalizable patterns. From patterns, make predictions on unseen data. Value in providing insight on unseen data.\n\n\nprescriptive\nchanging what will happen\nUses models created via predictive analytics to recommend optimal actions. Value in finding strategy with the most desirable outcome. Understanding causes of outcomes"
   },
   {
     "objectID": "slides/BSMM_8740_lec_01.html#todays-outline",
@@ -2547,7 +2547,7 @@
     "href": "slides/BSMM_8740_lec_01.html#tidy-data-1",
     "title": "Tidyverse, EDA & git",
     "section": "Tidy Data",
-    "text": "Tidy Data\nTidy data in practice:\n\nEvery column is a variable.\nEvery row is an observation.\nEvery cell is a single value."
+    "text": "Tidy Data\nTidy data in practice:\n\nEvery column is a variable (aka measurement).\nEvery row is an observation.\nEvery cell is a single value."
   },
   {
     "objectID": "slides/BSMM_8740_lec_01.html#tidy-data-examples",
@@ -2606,39 +2606,39 @@
     "text": "select()\n\nThe select() function. At left, a data frame, from which we retrieve only a few of the columns. At right, the resulting data frame after selecting those columns."
   },
   {
-    "objectID": "slides/BSMM_8740_lec_01.html#example-data",
-    "href": "slides/BSMM_8740_lec_01.html#example-data",
+    "objectID": "slides/BSMM_8740_lec_01.html#example-data-1",
+    "href": "slides/BSMM_8740_lec_01.html#example-data-1",
     "title": "Tidyverse, EDA & git",
     "section": "Example: data",
-    "text": "Example: data\n\nggplot2::presidential\n\n# A tibble: 12 × 4\n   name       start      end        party     \n   &lt;chr&gt;      &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;     \n 1 Eisenhower 1953-01-20 1961-01-20 Republican\n 2 Kennedy    1961-01-20 1963-11-22 Democratic\n 3 Johnson    1963-11-22 1969-01-20 Democratic\n 4 Nixon      1969-01-20 1974-08-09 Republican\n 5 Ford       1974-08-09 1977-01-20 Republican\n 6 Carter     1977-01-20 1981-01-20 Democratic\n 7 Reagan     1981-01-20 1989-01-20 Republican\n 8 Bush       1989-01-20 1993-01-20 Republican\n 9 Clinton    1993-01-20 2001-01-20 Democratic\n10 Bush       2001-01-20 2009-01-20 Republican\n11 Obama      2009-01-20 2017-01-20 Democratic\n12 Trump      2017-01-20 2021-01-20 Republican"
+    "text": "Example: data\n\n\n# A tibble: 28 × 4\n   name                start      end        party                \n   &lt;chr&gt;               &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;                \n 1 John A. Macdonald   1867-07-01 1873-11-05 Conservative         \n 2 Alexander Mackenzie 1873-11-07 1878-10-08 Liberal              \n 3 John A. Macdonald   1878-10-17 1891-06-06 Conservative         \n 4 John Abbott         1891-06-16 1892-11-24 Conservative         \n 5 John Thompson       1892-12-05 1894-12-12 Conservative         \n 6 Mackenzie Bowell    1894-12-21 1896-04-27 Conservative         \n 7 Charles Tupper      1896-05-01 1896-07-08 Conservative         \n 8 Wilfrid Laurier     1896-07-11 1911-10-06 Liberal              \n 9 Robert Borden       1911-10-10 1920-07-10 Conservative/Unionist\n10 Arthur Meighen      1920-07-10 1921-12-29 Conservative         \n# ℹ 18 more rows"
   },
   {
-    "objectID": "slides/BSMM_8740_lec_01.html#example-select",
-    "href": "slides/BSMM_8740_lec_01.html#example-select",
+    "objectID": "slides/BSMM_8740_lec_01.html#example-select-1",
+    "href": "slides/BSMM_8740_lec_01.html#example-select-1",
     "title": "Tidyverse, EDA & git",
     "section": "Example: select",
-    "text": "Example: select\nTo get just the names and parties of these presidents, use select(). The first argument is the data frame, followed by the column names.\n\ndplyr::select(presidential, name, party)\n\n# A tibble: 12 × 2\n   name       party     \n   &lt;chr&gt;      &lt;chr&gt;     \n 1 Eisenhower Republican\n 2 Kennedy    Democratic\n 3 Johnson    Democratic\n 4 Nixon      Republican\n 5 Ford       Republican\n 6 Carter     Democratic\n 7 Reagan     Republican\n 8 Bush       Republican\n 9 Clinton    Democratic\n10 Bush       Republican\n11 Obama      Democratic\n12 Trump      Republican"
+    "text": "Example: select\nTo get just the names and parties of these prime ministers, use select(). The first argument is the data frame, followed by the column names.\n\ndplyr::select(canadian_prime_ministers, name, party)\n\n# A tibble: 28 × 2\n   name                party                \n   &lt;chr&gt;               &lt;chr&gt;                \n 1 John A. Macdonald   Conservative         \n 2 Alexander Mackenzie Liberal              \n 3 John A. Macdonald   Conservative         \n 4 John Abbott         Conservative         \n 5 John Thompson       Conservative         \n 6 Mackenzie Bowell    Conservative         \n 7 Charles Tupper      Conservative         \n 8 Wilfrid Laurier     Liberal              \n 9 Robert Borden       Conservative/Unionist\n10 Arthur Meighen      Conservative         \n# ℹ 18 more rows"
   },
   {
     "objectID": "slides/BSMM_8740_lec_01.html#example-filter",
     "href": "slides/BSMM_8740_lec_01.html#example-filter",
     "title": "Tidyverse, EDA & git",
     "section": "Example: filter",
-    "text": "Example: filter\nSimilarly, the first argument to filter() is a data frame, and subsequent arguments are logical conditions that are evaluated on any involved columns. \n\ndplyr::filter(presidential, party == \"Republican\")\n\n# A tibble: 7 × 4\n  name       start      end        party     \n  &lt;chr&gt;      &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;     \n1 Eisenhower 1953-01-20 1961-01-20 Republican\n2 Nixon      1969-01-20 1974-08-09 Republican\n3 Ford       1974-08-09 1977-01-20 Republican\n4 Reagan     1981-01-20 1989-01-20 Republican\n5 Bush       1989-01-20 1993-01-20 Republican\n6 Bush       2001-01-20 2009-01-20 Republican\n7 Trump      2017-01-20 2021-01-20 Republican"
+    "text": "Example: filter\nSimilarly, the first argument to filter() is a data frame, and subsequent arguments are logical conditions that are evaluated on any involved columns. \n\ndplyr::filter(canadian_prime_ministers, party == \"Conservative\")\n\n# A tibble: 10 × 4\n   name              start      end        party       \n   &lt;chr&gt;             &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;       \n 1 John A. Macdonald 1867-07-01 1873-11-05 Conservative\n 2 John A. Macdonald 1878-10-17 1891-06-06 Conservative\n 3 John Abbott       1891-06-16 1892-11-24 Conservative\n 4 John Thompson     1892-12-05 1894-12-12 Conservative\n 5 Mackenzie Bowell  1894-12-21 1896-04-27 Conservative\n 6 Charles Tupper    1896-05-01 1896-07-08 Conservative\n 7 Arthur Meighen    1920-07-10 1921-12-29 Conservative\n 8 Arthur Meighen    1926-06-29 1926-09-25 Conservative\n 9 R. B. Bennett     1930-08-07 1935-10-23 Conservative\n10 Stephen Harper    2006-02-06 2015-11-04 Conservative"
   },
   {
-    "objectID": "slides/BSMM_8740_lec_01.html#example-combined-operations",
-    "href": "slides/BSMM_8740_lec_01.html#example-combined-operations",
+    "objectID": "slides/BSMM_8740_lec_01.html#example-combined-operations-1",
+    "href": "slides/BSMM_8740_lec_01.html#example-combined-operations-1",
     "title": "Tidyverse, EDA & git",
     "section": "Example: combined operations",
-    "text": "Example: combined operations\nCombining the filter() and select() commands enables one to drill down to very specific pieces of information.\n\ndplyr::select(\n  dplyr::filter(\n    presidential\n    , lubridate::year(start) &gt; 1973 & party == \"Democratic\"\n  )\n  , name\n)\n\n# A tibble: 3 × 1\n  name   \n  &lt;chr&gt;  \n1 Carter \n2 Clinton\n3 Obama"
+    "text": "Example: combined operations\nCombining the filter() and select() commands enables one to drill down to very specific pieces of information.\n\ndplyr::select(\n  dplyr::filter(\n    canadian_prime_ministers\n    , lubridate::year(start) &gt; 1973 & party == \"Liberal\"\n  )\n  , name\n)\n\n# A tibble: 5 × 1\n  name          \n  &lt;chr&gt;         \n1 Pierre Trudeau\n2 John Turner   \n3 Jean Chrétien \n4 Paul Martin   \n5 Justin Trudeau"
   },
   {
-    "objectID": "slides/BSMM_8740_lec_01.html#example-pipe",
-    "href": "slides/BSMM_8740_lec_01.html#example-pipe",
+    "objectID": "slides/BSMM_8740_lec_01.html#example-pipe-1",
+    "href": "slides/BSMM_8740_lec_01.html#example-pipe-1",
     "title": "Tidyverse, EDA & git",
     "section": "Example: pipe",
-    "text": "Example: pipe\nAs written, the filter() operation is nested inside the select() operation.\nWith the pipe (%&gt;%), we can write the same expression in a more readable syntax.\n\npresidential %&gt;% \n  dplyr::filter(lubridate::year(start) &gt; 1973 & party == \"Democratic\") %&gt;%\n  dplyr::select(name)\n\n# A tibble: 3 × 1\n  name   \n  &lt;chr&gt;  \n1 Carter \n2 Clinton\n3 Obama"
+    "text": "Example: pipe\nAs written, the filter() operation is nested inside the select() operation.\nWith the pipe (%&gt;%), we can write the same expression in a more readable syntax.\n\ncanadian_prime_ministers %&gt;% \n  dplyr::filter(lubridate::year(start) &gt; 1973 & party == \"Liberal\") %&gt;%\n  dplyr::select(name)\n\n# A tibble: 5 × 1\n  name          \n  &lt;chr&gt;         \n1 Pierre Trudeau\n2 John Turner   \n3 Jean Chrétien \n4 Paul Martin   \n5 Justin Trudeau"
   },
   {
     "objectID": "slides/BSMM_8740_lec_01.html#mutate",
@@ -2648,32 +2648,25 @@
     "text": "mutate()\nWe might want to create, re-define, or rename some of our variables. A graphical illustration of the mutate() operation is shown below\n\nThe mutate() function creating a column. At right, the resulting data frame after adding a new column."
   },
   {
-    "objectID": "slides/BSMM_8740_lec_01.html#example-mutate-new-column",
-    "href": "slides/BSMM_8740_lec_01.html#example-mutate-new-column",
+    "objectID": "slides/BSMM_8740_lec_01.html#example-mutate-new-column-1",
+    "href": "slides/BSMM_8740_lec_01.html#example-mutate-new-column-1",
     "title": "Tidyverse, EDA & git",
     "section": "Example: mutate, new column",
-    "text": "Example: mutate, new column\n\nmy_presidents &lt;- presidential %&gt;% \n  dplyr::mutate( \n    term.length = lubridate::interval(start, end) / lubridate::dyears(1) \n  )\nmy_presidents\n\n# A tibble: 12 × 5\n   name       start      end        party      term.length\n   &lt;chr&gt;      &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;            &lt;dbl&gt;\n 1 Eisenhower 1953-01-20 1961-01-20 Republican        8   \n 2 Kennedy    1961-01-20 1963-11-22 Democratic        2.84\n 3 Johnson    1963-11-22 1969-01-20 Democratic        5.16\n 4 Nixon      1969-01-20 1974-08-09 Republican        5.55\n 5 Ford       1974-08-09 1977-01-20 Republican        2.45\n 6 Carter     1977-01-20 1981-01-20 Democratic        4   \n 7 Reagan     1981-01-20 1989-01-20 Republican        8   \n 8 Bush       1989-01-20 1993-01-20 Republican        4   \n 9 Clinton    1993-01-20 2001-01-20 Democratic        8   \n10 Bush       2001-01-20 2009-01-20 Republican        8   \n11 Obama      2009-01-20 2017-01-20 Democratic        8   \n12 Trump      2017-01-20 2021-01-20 Republican        4"
+    "text": "Example: mutate, new column\n\nmy_prime_ministers &lt;- canadian_prime_ministers %&gt;% \n  dplyr::mutate( \n    term.length = lubridate::interval(start, end) / lubridate::dyears(1) \n  )\nmy_prime_ministers\n\n# A tibble: 28 × 5\n   name                start      end        party                 term.length\n   &lt;chr&gt;               &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;                       &lt;dbl&gt;\n 1 John A. Macdonald   1867-07-01 1873-11-05 Conservative                6.35 \n 2 Alexander Mackenzie 1873-11-07 1878-10-08 Liberal                     4.92 \n 3 John A. Macdonald   1878-10-17 1891-06-06 Conservative               12.6  \n 4 John Abbott         1891-06-16 1892-11-24 Conservative                1.44 \n 5 John Thompson       1892-12-05 1894-12-12 Conservative                2.02 \n 6 Mackenzie Bowell    1894-12-21 1896-04-27 Conservative                1.35 \n 7 Charles Tupper      1896-05-01 1896-07-08 Conservative                0.186\n 8 Wilfrid Laurier     1896-07-11 1911-10-06 Liberal                    15.2  \n 9 Robert Borden       1911-10-10 1920-07-10 Conservative/Unionist       8.75 \n10 Arthur Meighen      1920-07-10 1921-12-29 Conservative                1.47 \n# ℹ 18 more rows"
   },
   {
-    "objectID": "slides/BSMM_8740_lec_01.html#example-mutate-existing-column",
-    "href": "slides/BSMM_8740_lec_01.html#example-mutate-existing-column",
+    "objectID": "slides/BSMM_8740_lec_01.html#example-mutate-existing-column-1",
+    "href": "slides/BSMM_8740_lec_01.html#example-mutate-existing-column-1",
     "title": "Tidyverse, EDA & git",
     "section": "Example: mutate, existing column",
-    "text": "Example: mutate, existing column\nThe mutate() function can be used to modify existing columns. Below we add a variable containing the year in which each president was elected assuming that every president was elected in the year before he took office.\n\n\nCode\nmy_presidents %&lt;&gt;% \n  dplyr::mutate(elected = year(start) - 1)\n\n\n\n\n# A tibble: 4 × 6\n  name       start      end        party      term.length elected\n  &lt;chr&gt;      &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;            &lt;dbl&gt;   &lt;dbl&gt;\n1 Eisenhower 1953-01-20 1961-01-20 Republican        8       1952\n2 Kennedy    1961-01-20 1963-11-22 Democratic        2.84    1960\n3 Johnson    1963-11-22 1969-01-20 Democratic        5.16    1962\n4 Nixon      1969-01-20 1974-08-09 Republican        5.55    1968"
+    "text": "Example: mutate, existing column\nThe mutate() function can be used to modify existing columns. Below we add a variable containing the year in which each prime minister was elected assuming that every prime minister was elected in the year he took office.\n\n\nCode\nmy_prime_ministers %&lt;&gt;% \n  dplyr::mutate(elected = year(start))\n\n\n\n\n# A tibble: 4 × 6\n  name                start      end        party        term.length elected\n  &lt;chr&gt;               &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;              &lt;dbl&gt;   &lt;dbl&gt;\n1 John A. Macdonald   1867-07-01 1873-11-05 Conservative        6.35    1867\n2 Alexander Mackenzie 1873-11-07 1878-10-08 Liberal             4.92    1873\n3 John A. Macdonald   1878-10-17 1891-06-06 Conservative       12.6     1878\n4 John Abbott         1891-06-16 1892-11-24 Conservative        1.44    1891"
   },
   {
-    "objectID": "slides/BSMM_8740_lec_01.html#example-new-column",
-    "href": "slides/BSMM_8740_lec_01.html#example-new-column",
-    "title": "Tidyverse, EDA & git",
-    "section": "Example: new column",
-    "text": "Example: new column\nSome entries in this data set are wrong, because presidential elections are only held every four years, and some presidents are not elected (e.g. Johnson and Ford).\n\n\nCode\nmy_presidents  %&lt;&gt;% \n  dplyr::mutate(elected = ifelse(elected %in% c(1962, 1973), NA, elected))\n\n\n\n\n# A tibble: 6 × 6\n  name       start      end        party      term.length elected\n  &lt;chr&gt;      &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;            &lt;dbl&gt;   &lt;dbl&gt;\n1 Eisenhower 1953-01-20 1961-01-20 Republican        8       1952\n2 Kennedy    1961-01-20 1963-11-22 Democratic        2.84    1960\n3 Johnson    1963-11-22 1969-01-20 Democratic        5.16      NA\n4 Nixon      1969-01-20 1974-08-09 Republican        5.55    1968\n5 Ford       1974-08-09 1977-01-20 Republican        2.45      NA\n6 Carter     1977-01-20 1981-01-20 Democratic        4       1976"
-  },
-  {
-    "objectID": "slides/BSMM_8740_lec_01.html#rename",
-    "href": "slides/BSMM_8740_lec_01.html#rename",
+    "objectID": "slides/BSMM_8740_lec_01.html#rename-1",
+    "href": "slides/BSMM_8740_lec_01.html#rename-1",
     "title": "Tidyverse, EDA & git",
     "section": "rename()",
-    "text": "rename()\nIt is considered bad practice to use a period in names (functions, variables, columns) - we should change the name of the term.length column that we created earlier. \n\nmy_presidents %&lt;&gt;% \n  dplyr::rename(term_length = term.length)\n\n\n\n# A tibble: 9 × 6\n  name       start      end        party      term_length elected\n  &lt;chr&gt;      &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;            &lt;dbl&gt;   &lt;dbl&gt;\n1 Eisenhower 1953-01-20 1961-01-20 Republican        8       1952\n2 Kennedy    1961-01-20 1963-11-22 Democratic        2.84    1960\n3 Johnson    1963-11-22 1969-01-20 Democratic        5.16      NA\n4 Nixon      1969-01-20 1974-08-09 Republican        5.55    1968\n5 Ford       1974-08-09 1977-01-20 Republican        2.45      NA\n6 Carter     1977-01-20 1981-01-20 Democratic        4       1976\n7 Reagan     1981-01-20 1989-01-20 Republican        8       1980\n8 Bush       1989-01-20 1993-01-20 Republican        4       1988\n9 Clinton    1993-01-20 2001-01-20 Democratic        8       1992"
+    "text": "rename()\nIt is considered bad practice to use a period in names (functions, variables, columns) - we should change the name of the term.length column that we created earlier. \n\nmy_prime_ministers %&lt;&gt;% \n  dplyr::rename(term_length = term.length)\n\n\n\n# A tibble: 9 × 6\n  name                start      end        party            term_length elected\n  &lt;chr&gt;               &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;                  &lt;dbl&gt;   &lt;dbl&gt;\n1 John A. Macdonald   1867-07-01 1873-11-05 Conservative           6.35     1867\n2 Alexander Mackenzie 1873-11-07 1878-10-08 Liberal                4.92     1873\n3 John A. Macdonald   1878-10-17 1891-06-06 Conservative          12.6      1878\n4 John Abbott         1891-06-16 1892-11-24 Conservative           1.44     1891\n5 John Thompson       1892-12-05 1894-12-12 Conservative           2.02     1892\n6 Mackenzie Bowell    1894-12-21 1896-04-27 Conservative           1.35     1894\n7 Charles Tupper      1896-05-01 1896-07-08 Conservative           0.186    1896\n8 Wilfrid Laurier     1896-07-11 1911-10-06 Liberal               15.2      1896\n9 Robert Borden       1911-10-10 1920-07-10 Conservative/Un…       8.75     1911"
   },
   {
     "objectID": "slides/BSMM_8740_lec_01.html#arrange",
@@ -2683,18 +2676,18 @@
     "text": "arrange()\nThe function sort() will sort a vector but not a data frame. The arrange()function sorts a data frame: \n\nThe arrange() function. At left, a data frame with an ordinal variable. At right, the resulting data frame after sorting the rows in descending order of that variable."
   },
   {
-    "objectID": "slides/BSMM_8740_lec_01.html#example-arrange---sort-column",
-    "href": "slides/BSMM_8740_lec_01.html#example-arrange---sort-column",
+    "objectID": "slides/BSMM_8740_lec_01.html#example-arrange---sort-column-1",
+    "href": "slides/BSMM_8740_lec_01.html#example-arrange---sort-column-1",
     "title": "Tidyverse, EDA & git",
     "section": "Example: arrange - sort column",
-    "text": "Example: arrange - sort column\nTo use arrange you have to specify the data frame, and the column by which you want it to be sorted. You also have to specify the direction in which you want it to be sorted.\n\nmy_presidents %&gt;% \n  dplyr::arrange(desc(term_length))\n\n\n\n# A tibble: 9 × 6\n  name       start      end        party      term_length elected\n  &lt;chr&gt;      &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;            &lt;dbl&gt;   &lt;dbl&gt;\n1 Eisenhower 1953-01-20 1961-01-20 Republican        8       1952\n2 Reagan     1981-01-20 1989-01-20 Republican        8       1980\n3 Clinton    1993-01-20 2001-01-20 Democratic        8       1992\n4 Bush       2001-01-20 2009-01-20 Republican        8       2000\n5 Obama      2009-01-20 2017-01-20 Democratic        8       2008\n6 Nixon      1969-01-20 1974-08-09 Republican        5.55    1968\n7 Johnson    1963-11-22 1969-01-20 Democratic        5.16      NA\n8 Carter     1977-01-20 1981-01-20 Democratic        4       1976\n9 Bush       1989-01-20 1993-01-20 Republican        4       1988"
+    "text": "Example: arrange - sort column\nTo use arrange you have to specify the data frame, and the column by which you want it to be sorted. You also have to specify the direction in which you want it to be sorted.\n\nmy_prime_ministers %&gt;% \n  dplyr::arrange(desc(term_length))\n\n\n\n# A tibble: 9 × 6\n  name                        start      end        party    term_length elected\n  &lt;chr&gt;                       &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;          &lt;dbl&gt;   &lt;dbl&gt;\n1 Wilfrid Laurier             1896-07-11 1911-10-06 Liberal        15.2     1896\n2 William Lyon Mackenzie King 1935-10-23 1948-11-15 Liberal        13.1     1935\n3 John A. Macdonald           1878-10-17 1891-06-06 Conserv…       12.6     1878\n4 Pierre Trudeau              1968-04-20 1979-06-04 Liberal        11.1     1968\n5 Jean Chrétien               1993-11-04 2003-12-12 Liberal        10.1     1993\n6 Stephen Harper              2006-02-06 2015-11-04 Conserv…        9.74    2006\n7 Justin Trudeau              2015-11-04 2025-03-14 Liberal         9.36    2015\n8 Brian Mulroney              1984-09-17 1993-06-25 Progres…        8.77    1984\n9 Robert Borden               1911-10-10 1920-07-10 Conserv…        8.75    1911"
   },
   {
-    "objectID": "slides/BSMM_8740_lec_01.html#example-arrange---multiple-columns",
-    "href": "slides/BSMM_8740_lec_01.html#example-arrange---multiple-columns",
+    "objectID": "slides/BSMM_8740_lec_01.html#example-arrange---multiple-columns-1",
+    "href": "slides/BSMM_8740_lec_01.html#example-arrange---multiple-columns-1",
     "title": "Tidyverse, EDA & git",
     "section": "Example, arrange - multiple columns",
-    "text": "Example, arrange - multiple columns\nTo break ties, we can further sort by other variables\n\nmy_presidents %&gt;% \n  dplyr::arrange(desc(term_length), party, elected)\n\n# A tibble: 12 × 6\n   name       start      end        party      term_length elected\n   &lt;chr&gt;      &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;            &lt;dbl&gt;   &lt;dbl&gt;\n 1 Clinton    1993-01-20 2001-01-20 Democratic        8       1992\n 2 Obama      2009-01-20 2017-01-20 Democratic        8       2008\n 3 Eisenhower 1953-01-20 1961-01-20 Republican        8       1952\n 4 Reagan     1981-01-20 1989-01-20 Republican        8       1980\n 5 Bush       2001-01-20 2009-01-20 Republican        8       2000\n 6 Nixon      1969-01-20 1974-08-09 Republican        5.55    1968\n 7 Johnson    1963-11-22 1969-01-20 Democratic        5.16      NA\n 8 Carter     1977-01-20 1981-01-20 Democratic        4       1976\n 9 Bush       1989-01-20 1993-01-20 Republican        4       1988\n10 Trump      2017-01-20 2021-01-20 Republican        4       2016\n11 Kennedy    1961-01-20 1963-11-22 Democratic        2.84    1960\n12 Ford       1974-08-09 1977-01-20 Republican        2.45      NA"
+    "text": "Example, arrange - multiple columns\nTo break ties, we can further sort by other variables\n\nmy_prime_ministers %&gt;% \n  dplyr::arrange(desc(term_length), party, elected)\n\n# A tibble: 28 × 6\n   name                        start      end        party   term_length elected\n   &lt;chr&gt;                       &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;         &lt;dbl&gt;   &lt;dbl&gt;\n 1 Wilfrid Laurier             1896-07-11 1911-10-06 Liberal       15.2     1896\n 2 William Lyon Mackenzie King 1935-10-23 1948-11-15 Liberal       13.1     1935\n 3 John A. Macdonald           1878-10-17 1891-06-06 Conser…       12.6     1878\n 4 Pierre Trudeau              1968-04-20 1979-06-04 Liberal       11.1     1968\n 5 Jean Chrétien               1993-11-04 2003-12-12 Liberal       10.1     1993\n 6 Stephen Harper              2006-02-06 2015-11-04 Conser…        9.74    2006\n 7 Justin Trudeau              2015-11-04 2025-03-14 Liberal        9.36    2015\n 8 Brian Mulroney              1984-09-17 1993-06-25 Progre…        8.77    1984\n 9 Robert Borden               1911-10-10 1920-07-10 Conser…        8.75    1911\n10 Louis St. Laurent           1948-11-15 1957-06-21 Liberal        8.60    1948\n# ℹ 18 more rows"
   },
   {
     "objectID": "slides/BSMM_8740_lec_01.html#summarize-with-group_by",
@@ -2708,14 +2701,14 @@
     "href": "slides/BSMM_8740_lec_01.html#example-summarize---no-groups",
     "title": "Tidyverse, EDA & git",
     "section": "Example: summarize - no groups",
-    "text": "Example: summarize - no groups\nWhen used without grouping, summarize() collapses a data frame into a single row.\n\nmy_presidents %&gt;% \n  dplyr::summarize(\n    N = n(), \n    first_year = min(year(start)), \n    last_year = max(year(end)), \n    num_dems = sum(party == \"Democratic\"), \n    years = sum(term_length), \n    avg_term_length = mean(term_length)\n  )\n\n# A tibble: 1 × 6\n      N first_year last_year num_dems years avg_term_length\n  &lt;int&gt;      &lt;dbl&gt;     &lt;dbl&gt;    &lt;int&gt; &lt;dbl&gt;           &lt;dbl&gt;\n1    12       1953      2021        5    68            5.67"
+    "text": "Example: summarize - no groups\nWhen used without grouping, summarize() collapses a data frame into a single row.\n\nmy_prime_ministers %&gt;% \n  dplyr::summarize(\n    N = n(), \n    first_year = min(year(start)), \n    last_year = max(year(end)), \n    num_libs = sum(party == \"Liberal\"), \n    years = sum(term_length), \n    avg_term_length = mean(term_length)\n  )\n\n# A tibble: 1 × 6\n      N first_year last_year num_libs years avg_term_length\n  &lt;int&gt;      &lt;dbl&gt;     &lt;dbl&gt;    &lt;int&gt; &lt;dbl&gt;           &lt;dbl&gt;\n1    28       1867      2025       13  158.            5.63"
   },
   {
-    "objectID": "slides/BSMM_8740_lec_01.html#example-pipe---groups",
-    "href": "slides/BSMM_8740_lec_01.html#example-pipe---groups",
+    "objectID": "slides/BSMM_8740_lec_01.html#example-pipe---groups-1",
+    "href": "slides/BSMM_8740_lec_01.html#example-pipe---groups-1",
     "title": "Tidyverse, EDA & git",
     "section": "Example: pipe - groups",
-    "text": "Example: pipe - groups\nTo make comparisons, we can first group then summarize, giving us one summary row for each group.\n\nmy_presidents %&gt;% \n  dplyr::group_by(party) %&gt;% \n  dplyr::summarize(\n    N = n(), \n    first_year = min(year(start)), \n    last_year = max(year(end)), \n    num_dems = sum(party == \"Democratic\"), \n    years = sum(term_length), \n    avg_term_length = mean(term_length)\n  )\n\n# A tibble: 2 × 7\n  party          N first_year last_year num_dems years avg_term_length\n  &lt;chr&gt;      &lt;int&gt;      &lt;dbl&gt;     &lt;dbl&gt;    &lt;int&gt; &lt;dbl&gt;           &lt;dbl&gt;\n1 Democratic     5       1961      2017        5    28            5.6 \n2 Republican     7       1953      2021        0    40            5.71"
+    "text": "Example: pipe - groups\nTo make comparisons, we can first group then summarize, giving us one summary row for each group.\n\nmy_prime_ministers %&gt;% \n  dplyr::group_by(party) %&gt;% \n  dplyr::summarize(\n    N = n(), \n    first_year = min(year(start)), \n    last_year = max(year(end)), \n    num = dplyr::n(), \n    years = sum(term_length), \n    avg_term_length = mean(term_length)\n  )\n\n# A tibble: 4 × 7\n  party                       N first_year last_year   num years avg_term_length\n  &lt;chr&gt;                   &lt;int&gt;      &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;           &lt;dbl&gt;\n1 Conservative               10       1867      2015    10 40.6             4.06\n2 Conservative/Unionist       1       1911      1920     1  8.75            8.75\n3 Liberal                    13       1873      2025    13 92.4             7.11\n4 Progressive Conservati…     4       1957      1993     4 15.7             3.93"
   },
   {
     "objectID": "slides/BSMM_8740_lec_01.html#example-read_csv-dplyr",
@@ -2876,7 +2869,7 @@
     "href": "slides/BSMM_8740_lec_01.html#eda-view-some-rows",
     "title": "Tidyverse, EDA & git",
     "section": "EDA: view some rows",
-    "text": "EDA: view some rows\nUse dplyr::slice_sample() to see a random selection of rows in a data.frame\n\n\ndat %&gt;% dplyr::slice_sample(n=10)\n\n# A tibble: 10 × 9\n    year marital         age race  rincome        partyid    relig denom tvhours\n   &lt;int&gt; &lt;fct&gt;         &lt;int&gt; &lt;fct&gt; &lt;fct&gt;          &lt;fct&gt;      &lt;fct&gt; &lt;fct&gt;   &lt;int&gt;\n 1  2012 Widowed          72 Black Not applicable Strong de… Chri… Not …       6\n 2  2006 Widowed          84 White Not applicable Strong re… Chri… No d…      NA\n 3  2010 Married          34 White $25000 or more Independe… Prot… No d…      NA\n 4  2012 Widowed          88 White Not applicable Not str r… Cath… Not …       3\n 5  2010 Divorced         66 White Not applicable Strong de… Prot… Bapt…       8\n 6  2002 Divorced         58 White $25000 or more Not str r… Prot… Nat …      NA\n 7  2004 Never married    28 Other $25000 or more Ind,near … Prot… Other      NA\n 8  2012 Married          52 Black $10000 - 14999 Strong de… Prot… Sout…      NA\n 9  2006 Never married    25 White $3000 to 3999  Independe… Cath… Not …       4\n10  2010 Divorced         52 White Not applicable Strong de… Chri… No d…       6\n\n\nThere are many dplyr::slice_{X} variants, along with dplyr::filter"
+    "text": "EDA: view some rows\nUse dplyr::slice_sample() to see a random selection of rows in a data.frame\n\n\ndat %&gt;% dplyr::slice_sample(n=10)\n\n# A tibble: 10 × 9\n    year marital         age race  rincome        partyid    relig denom tvhours\n   &lt;int&gt; &lt;fct&gt;         &lt;int&gt; &lt;fct&gt; &lt;fct&gt;          &lt;fct&gt;      &lt;fct&gt; &lt;fct&gt;   &lt;int&gt;\n 1  2000 Divorced         52 White $25000 or more Ind,near … None  Not …      NA\n 2  2006 Divorced         48 White $25000 or more Not str r… Prot… Other      NA\n 3  2000 Divorced         63 White $25000 or more Not str r… Prot… Unit…       5\n 4  2006 Divorced         75 White Not applicable Not str d… None  Not …      NA\n 5  2014 Never married    21 Black Not applicable Independe… Prot… Am b…       2\n 6  2012 Married          47 White $15000 - 19999 Not str d… Cath… Not …       1\n 7  2012 Married          43 White Lt $1000       Independe… None  Not …       3\n 8  2000 Married          43 White $8000 to 9999  Strong re… Prot… No d…       1\n 9  2008 Married          63 White Refused        Not str d… Cath… Not …       3\n10  2006 Divorced         37 White $10000 - 14999 Ind,near … Prot… No d…       1\n\n\nThere are many dplyr::slice_{X} variants, along with dplyr::filter"
   },
   {
     "objectID": "slides/BSMM_8740_lec_01.html#bad-data-rightarrow-bad-results",
