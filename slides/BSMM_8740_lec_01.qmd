@@ -64,7 +64,7 @@ knitr::opts_chunk$set(
 -   My intent is to have assigned lab exercises each week, which will be started during class.
     -   Lab assignments will be due at 5:00pm sharp on the Sunday following the lecture.
 -   Lab 1 is due Sunday September 14 at 5pm.
--   My regular office hour will be on Wednesday from 2:30pm - 3:30pm or via MS Teams as requested. Please email ahead of time.
+-   My regular office hour will be on Wednesdays from 2:30pm - 3:30pm or via MS Teams as requested. Please email ahead of time.
 :::
 
 ## Expected Course Topics
@@ -100,7 +100,7 @@ tibble::tibble(
   , 'long description' = c(
     'Calculates trends, averages, medians, standard deviations, etc. Often found in dashboards. Value in providing key statistics.'
     , 'Finds relationships inside of the data, leading to underlying, generalizable patterns. From patterns, make predictions on unseen data. Value in providing insight on unseen data.'
-    , 'Uses models created via predictive analytics to recommend optimal actions. Value in finding strategy with the most desirable outcome.')
+    , 'Uses models created via predictive analytics to recommend optimal actions. Value in finding strategy with the most desirable outcome. Understanding causes of outcomes')
 ) |> gt::gt() |> 
   gtExtras::gt_theme_espn() |> 
   gt::tab_options( table.font.size = gt::px(28) ) |> 
@@ -141,7 +141,7 @@ A **variable** contains all values that measure the same underlying attribute (l
 
 **Tidy data** in practice:
 
--   Every column is a variable.
+-   Every column is a variable (aka measurement).
 -   Every row is an observation.
 -   Every cell is a single value.
 
@@ -216,7 +216,7 @@ The two simplest of the five verbs are `filter()` and `select()`, which return 
 
 ![The select() function. At left, a data frame, from which we retrieve only a few of the columns. At right, the resulting data frame after selecting those columns.](/images/select-1.png)
 
-## Example: data
+## Example: data {visibility="hidden"}
 
 ```{r}
 #| echo: true
@@ -224,7 +224,47 @@ The two simplest of the five verbs are `filter()` and `select()`, which return 
 ggplot2::presidential
 ```
 
-## Example: select
+## Example: data
+
+```{r}
+#| echo: false
+#| message: false
+canadian_prime_ministers <- tibble::tribble(
+  ~name, ~start, ~end, ~party, ~id,
+  "John A. Macdonald", "1867-07-01", "1873-11-05", "Conservative", 1,
+  "Alexander Mackenzie", "1873-11-07", "1878-10-08", "Liberal", 2,
+  "John A. Macdonald", "1878-10-17", "1891-06-06", "Conservative", 3,
+  "John Abbott", "1891-06-16", "1892-11-24", "Conservative", 4,
+  "John Thompson", "1892-12-05", "1894-12-12", "Conservative", 5,
+  "Mackenzie Bowell", "1894-12-21", "1896-04-27", "Conservative", 6,
+  "Charles Tupper", "1896-05-01", "1896-07-08", "Conservative", 7,
+  "Wilfrid Laurier", "1896-07-11", "1911-10-06", "Liberal", 8,
+  "Robert Borden", "1911-10-10", "1920-07-10", "Conservative/Unionist", 9,
+  "Arthur Meighen", "1920-07-10", "1921-12-29", "Conservative", 10,
+  "William Lyon Mackenzie King", "1921-12-29", "1926-06-28", "Liberal", 11,
+  "Arthur Meighen", "1926-06-29", "1926-09-25", "Conservative", 12,
+  "William Lyon Mackenzie King", "1926-09-25", "1930-08-07", "Liberal", 13,
+  "R. B. Bennett", "1930-08-07", "1935-10-23", "Conservative", 14,
+  "William Lyon Mackenzie King", "1935-10-23", "1948-11-15", "Liberal", 15,
+  "Louis St. Laurent", "1948-11-15", "1957-06-21", "Liberal", 16,
+  "John Diefenbaker", "1957-06-21", "1963-04-22", "Progressive Conservative", 17,
+  "Lester B. Pearson", "1963-04-22", "1968-04-20", "Liberal", 18,
+  "Pierre Trudeau", "1968-04-20", "1979-06-04", "Liberal", 19,
+  "Joe Clark", "1979-06-04", "1980-03-03", "Progressive Conservative", 20,
+  "Pierre Trudeau", "1980-03-03", "1984-06-30", "Liberal", 21,
+  "John Turner", "1984-06-30", "1984-09-17", "Liberal", 22,
+  "Brian Mulroney", "1984-09-17", "1993-06-25", "Progressive Conservative", 23,
+  "Kim Campbell", "1993-06-25", "1993-11-04", "Progressive Conservative", 24,
+  "Jean Chrétien", "1993-11-04", "2003-12-12", "Liberal", 25,
+  "Paul Martin", "2003-12-12", "2006-02-06", "Liberal", 26,
+  "Stephen Harper", "2006-02-06", "2015-11-04", "Conservative", 27,
+  "Justin Trudeau", "2015-11-04", "2025-03-14", "Liberal", 28
+) |> dplyr::mutate(across(start:end,~lubridate::as_date(.x))) |> dplyr::select(-id)
+
+canadian_prime_ministers
+```
+
+## Example: select {visibility="hidden"}
 
 To get just the names and parties of these presidents, use `select()`. The first [*argument*](#0) is the data frame, followed by the column names.
 
@@ -234,7 +274,27 @@ To get just the names and parties of these presidents, use `select()`. The first
 dplyr::select(presidential, name, party)
 ```
 
+## Example: select
+
+To get just the names and parties of these prime ministers, use `select()`. The first [*argument*](#0) is the data frame, followed by the column names.
+
+```{r}
+#| echo: true
+#| message: false
+dplyr::select(canadian_prime_ministers, name, party)
+```
+
 ## Example: filter
+
+Similarly, the first argument to `filter()` is a data frame, and subsequent arguments are logical conditions that are evaluated on any involved columns. 
+
+```{r}
+#| echo: true
+#| message: false
+dplyr::filter(canadian_prime_ministers, party == "Conservative")
+```
+
+## Example: filter {visibility="hidden"}
 
 Similarly, the first argument to `filter()` is a data frame, and subsequent arguments are logical conditions that are evaluated on any involved columns. 
 
@@ -244,7 +304,7 @@ Similarly, the first argument to `filter()` is a data frame, and subsequent ar
 dplyr::filter(presidential, party == "Republican")
 ```
 
-## Example: combined operations
+## Example: combined operations {visibility="hidden"}
 
 Combining the `filter()` and `select()` commands enables one to drill down to very specific pieces of information.
 
@@ -261,7 +321,24 @@ dplyr::select(
 )
 ```
 
-## Example: pipe
+## Example: combined operations
+
+Combining the `filter()` and `select()` commands enables one to drill down to very specific pieces of information.
+
+```{r}
+#| echo: true
+#| message: false
+#| code-line-numbers: "2|3|4"
+dplyr::select(
+  dplyr::filter(
+    canadian_prime_ministers
+    , lubridate::year(start) > 1973 & party == "Liberal"
+  )
+  , name
+)
+```
+
+## Example: pipe {visibility="hidden"}
 
 As written, the `filter()` operation is nested inside the `select()` operation.
 
@@ -276,13 +353,28 @@ presidential %>%
   dplyr::select(name)
 ```
 
+## Example: pipe
+
+As written, the `filter()` operation is nested inside the `select()` operation.
+
+With the pipe (`%>%`), we can write the same expression in a more readable syntax.
+
+```{r}
+#| echo: true
+#| message: false
+#| code-line-numbers: "2|3"
+canadian_prime_ministers %>% 
+  dplyr::filter(lubridate::year(start) > 1973 & party == "Liberal") %>%
+  dplyr::select(name)
+```
+
 ## `mutate()`
 
 We might want to create, re-define, or rename some of our variables. A graphical illustration of the `mutate()` operation is shown below
 
 ![The mutate() function creating a column. At right, the resulting data frame after adding a new column.](/images/mutate-1.png)
 
-## Example: mutate, new column
+## Example: mutate, new column {visibility="hidden"}
 
 ```{r}
 #| echo: true
@@ -295,7 +387,20 @@ my_presidents <- presidential %>%
 my_presidents
 ```
 
-## Example: mutate, existing column
+## Example: mutate, new column
+
+```{r}
+#| echo: true
+#| message: false
+#| code-line-numbers: "1|2|3"
+my_prime_ministers <- canadian_prime_ministers %>% 
+  dplyr::mutate( 
+    term.length = lubridate::interval(start, end) / lubridate::dyears(1) 
+  )
+my_prime_ministers
+```
+
+## Example: mutate, existing column {visibility="hidden"}
 
 The `mutate()` function can be used to modify existing columns. Below we add a variable containing the year in which each president was elected assuming that every president was elected in the year before he took office.
 
@@ -313,7 +418,25 @@ my_presidents %<>%
 my_presidents %>% dplyr::slice_head(n=4)
 ```
 
-## Example: new column
+## Example: mutate, existing column
+
+The `mutate()` function can be used to modify existing columns. Below we add a variable containing the year in which each prime minister was elected assuming that every prime minister was elected in the year he took office.
+
+```{r}
+#| echo: true
+#| message: false
+#| code-fold: true
+#| code-line-numbers: "1|2"
+my_prime_ministers %<>% 
+  dplyr::mutate(elected = year(start))
+```
+
+```{r}
+#| echo: false
+my_prime_ministers %>% dplyr::slice_head(n=4)
+```
+
+## Example: new column {visibility="hidden"}
 
 Some entries in this data set are wrong, because presidential elections are only held every four years, and some presidents are not elected (e.g. Johnson and Ford).
 
@@ -331,7 +454,25 @@ my_presidents  %<>%
 my_presidents %>% dplyr::slice_head(n=6)
 ```
 
-## `rename()`
+## Example: new column {visibility="hidden"}
+
+Some entries in this data set are wrong, because presidential elections are only held every four years, and some presidents are not elected (e.g. Johnson and Ford).
+
+```{r}
+#| echo: true
+#| message: false
+#| code-fold: true
+#| code-line-numbers: "1|2"
+my_prime_ministers  %<>% 
+  dplyr::mutate(elected = ifelse(elected %in% c(1962, 1973), NA, elected))
+```
+
+```{r}
+#| echo: false
+my_prime_ministers %>% dplyr::slice_head(n=6)
+```
+
+## `rename()` {visibility="hidden"}
 
 It is considered bad practice to use a period in names (functions, variables, columns) - we should change the name of the `term.length` column that we created earlier. 
 
@@ -348,13 +489,30 @@ my_presidents %<>%
 my_presidents %>% dplyr::slice_head(n=9)
 ```
 
+## `rename()`
+
+It is considered bad practice to use a period in names (functions, variables, columns) - we should change the name of the `term.length` column that we created earlier. 
+
+```{r}
+#| echo: true
+#| message: false
+#| code-line-numbers: "1|2"
+my_prime_ministers %<>% 
+  dplyr::rename(term_length = term.length)
+```
+
+```{r}
+#| echo: false
+my_prime_ministers %>% dplyr::slice_head(n=9)
+```
+
 ## `arrange()`
 
 The function `sort()` will sort a vector but not a data frame. The `arrange()`function sorts a data frame: 
 
 ![The arrange() function. At left, a data frame with an ordinal variable. At right, the resulting data frame after sorting the rows in descending order of that variable.](/images/arrange-1.png)
 
-## Example: arrange - sort column
+## Example: arrange - sort column {visibility="hidden"}
 
 To use `arrange` you have to specify the data frame, and the column by which you want it to be sorted. You also have to specify the direction in which you want it to be sorted.
 
@@ -373,7 +531,26 @@ my_presidents %>%
   dplyr::slice_head(n=9)
 ```
 
-## Example, arrange - multiple columns
+## Example: arrange - sort column
+
+To use `arrange` you have to specify the data frame, and the column by which you want it to be sorted. You also have to specify the direction in which you want it to be sorted.
+
+```{r}
+#| echo: true
+#| eval: false
+#| message: false
+#| code-line-numbers: "1|2"
+my_prime_ministers %>% 
+  dplyr::arrange(desc(term_length))
+```
+
+```{r}
+my_prime_ministers %>% 
+  dplyr::arrange(desc(term_length)) %>% 
+  dplyr::slice_head(n=9)
+```
+
+## Example, arrange - multiple columns {visibility="hidden"}
 
 To break ties, we can further sort by other variables
 
@@ -385,6 +562,18 @@ my_presidents %>%
   dplyr::arrange(desc(term_length), party, elected)
 ```
 
+## Example, arrange - multiple columns
+
+To break ties, we can further sort by other variables
+
+```{r}
+#| echo: true
+#| message: false
+#| code-line-numbers: "2"
+my_prime_ministers %>% 
+  dplyr::arrange(desc(term_length), party, elected)
+```
+
 ## **`summarize()` with `group_by()`**
 
 The `summarize` verb is often used with `group_by`
@@ -392,6 +581,25 @@ The `summarize` verb is often used with `group_by`
 ![The summarize() function. At left, a data frame. At right, the resulting data frame after aggregating four of the columns.](/images/summarize-1.png)
 
 ## Example: summarize - no groups
+
+When used without grouping, `summarize()` collapses a data frame into a single row.
+
+```{r}
+#| echo: true
+#| message: false
+#| code-line-numbers: "2|3|4|5|6|7|8"
+my_prime_ministers %>% 
+  dplyr::summarize(
+    N = n(), 
+    first_year = min(year(start)), 
+    last_year = max(year(end)), 
+    num_libs = sum(party == "Liberal"), 
+    years = sum(term_length), 
+    avg_term_length = mean(term_length)
+  )
+```
+
+## Example: summarize - no groups {visibility="hidden"}
 
 When used without grouping, `summarize()` collapses a data frame into a single row.
 
@@ -410,7 +618,7 @@ my_presidents %>%
   )
 ```
 
-## Example: pipe - groups
+## Example: pipe - groups {visibility="hidden"}
 
 To make comparisons, we can first group then summarize, giving us one summary row for each group.
 
@@ -425,6 +633,26 @@ my_presidents %>%
     first_year = min(year(start)), 
     last_year = max(year(end)), 
     num_dems = sum(party == "Democratic"), 
+    years = sum(term_length), 
+    avg_term_length = mean(term_length)
+  )
+```
+
+## Example: pipe - groups
+
+To make comparisons, we can first group then summarize, giving us one summary row for each group.
+
+```{r}
+#| echo: true
+#| message: false
+#| code-line-numbers: "2|3|4|5|6|7|8|9"
+my_prime_ministers %>% 
+  dplyr::group_by(party) %>% 
+  dplyr::summarize(
+    N = n(), 
+    first_year = min(year(start)), 
+    last_year = max(year(end)), 
+    num = dplyr::n(), 
     years = sum(term_length), 
     avg_term_length = mean(term_length)
   )

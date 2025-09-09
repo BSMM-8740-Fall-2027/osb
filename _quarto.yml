@@ -86,35 +86,36 @@ website:
             text: "Week 11"
       - section: "Supplemental notes"
         contents:
-          - href: supplemental/smd.qmd
-            text: Standardized Mean Differences (SMD)
-          - href: supplemental/omitted_variables.qmd
-            text: Omitted Variable Bias
-          - href: supplemental/collinearity.qmd
-            text: Collinearity
-          - href: supplemental/slr-derivations.qmd
-            text: SLR derivations
-          - href: supplemental/model-diagnostics-matrix.qmd
-            text: Model diagnostics
-          - href: supplemental/mlr-matrix.qmd
-            text: MLR matrix notation
-          - href: supplemental/log-transformations.qmd
-            text: Log transformations
-          - href: supplemental/model-selection-criteria.qmd
-            text: Model selection criteria
-          - href: https://www.cs.cmu.edu/~10715-f18/lectures/pca-2018.pdf
-            text: PCA, KPCA, and ICA
-          - href: https://towardsdatascience.com/qr-matrix-factorization-15bae43a6b2
-            text: QR decomposition
-          - href: supplemental/Bias_Variance_Trade_offs.qmd
-            text: Bias-Variance Trade offs
-          - href: supplemental/PCA_and_component_selection.qmd
-            text: PCA and component selection
           - href: https://journals.sagepub.com/doi/epub/10.1177/00491241221099552
             text: A Crash Course in Good and Bad Controls
+          - href: supplemental/Bias_Variance_Trade_offs.qmd
+            text: Bias-Variance Trade offs
+          - href: supplemental/collinearity.qmd
+            text: Collinearity
+          - href: supplemental/log-transformations.qmd
+            text: Log transformations
+          - href: supplemental/mlr-matrix.qmd
+            text: MLR matrix notation
+          - href: supplemental/model-diagnostics-matrix.qmd
+            text: Model diagnostics
+          - href: supplemental/model-selection-criteria.qmd
+            text: Model selection criteria
+          - href: supplemental/omitted_variables.qmd
+            text: Omitted Variable Bias
+          - href: https://www.cs.cmu.edu/~10715-f18/lectures/pca-2018.pdf
+            text: PCA KPCA and ICA
+          - href: supplemental/PCA_and_component_selection.qmd
+            text: PCA and component selection
+          - href: https://www.datacamp.com/tutorial/qr-decomposition
+            text: QR decomposition
+          - href: supplemental/slr-derivations.qmd
+            text: SLR derivations
           - href: supplemental/exam_questions.qmd
             text: Sample exam questions
-
+          - href: https://blog.djnavarro.net/posts/2025-09-06_p-splines/
+            text: Splines
+          - href: supplemental/smd.qmd
+            text: Standardized Mean Differences (SMD)
 
 format:
   html:

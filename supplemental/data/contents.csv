@@ -1,0 +1,15 @@
+link,title
+supplemental/smd.qmd,Standardized Mean Differences (SMD)
+supplemental/omitted_variables.qmd,Omitted Variable Bias
+supplemental/collinearity.qmd,Collinearity
+supplemental/slr-derivations.qmd,SLR derivations
+supplemental/model-diagnostics-matrix.qmd,Model diagnostics
+supplemental/mlr-matrix.qmd,MLR matrix notation
+supplemental/log-transformations.qmd,Log transformations
+supplemental/model-selection-criteria.qmd,Model selection criteria
+https://www.cs.cmu.edu/~10715-f18/lectures/pca-2018.pdf,PCA KPCA and ICA
+https://www.datacamp.com/tutorial/qr-decomposition,QR decomposition
+supplemental/Bias_Variance_Trade_offs.qmd,Bias-Variance Trade offs
+supplemental/PCA_and_component_selection.qmd,PCA and component selection
+https://journals.sagepub.com/doi/epub/10.1177/00491241221099552,A Crash Course in Good and Bad Controls
+supplemental/exam_questions.qmd,Sample exam questions
