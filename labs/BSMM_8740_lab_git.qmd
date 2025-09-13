@@ -159,19 +159,17 @@ You are now ready interact with GitHub via RStudio!
 
 1.  First make sure you are logged into your own Github account on a web browser.
 
-2.  Next, in a new browser tab, go to the course organization site at [BSMM-8740-Fall-2025](https://github.com/BSMM-8740-Fall-2025/ "Course GitHub organization") on GitHub. Click on the repo **BSMM-lab-1**. It contains the starter documents you need to complete the lab.
+2.  Next, in a new browser tab, go to the course organization site at [BSMM-8740-Fall-2025](https://github.com/BSMM-8740-Fall-2025/ "Course GitHub organization") on GitHub. On the right hand side of the page you will find a list of repositories. Click on the repo **2025-lab-1\_*your.github.username***. It contains the starter documents you need to complete the lab.
 
-3.  Click on the green **Use this template** button and select *Create a new repository*. This will make a copy of **BSMM-lab-1** in your own github account.
+3.  Next, click on the green **CODE** button, select **SSH** (this might already be selected by default, and if it is, you'll see the text **in the text box**). Click on the clipboard icon to copy the text.
 
-4.  Next, go back to your Github acount and select your copy of **BSMM-lab-1**. Click on the green **CODE** button, select **Use HTTPS** (this might already be selected by default, and if it is, you'll see the text **Clone with HTTPS**). Click on the clipboard icon to copy the repo URL.
+4.  In RStudio, go to *File* ➛ *New Project* ➛*Version Control* ➛ *Git*.
 
-5.  In RStudio, go to *File* ➛ *New Project* ➛*Version Control* ➛ *Git*.
+5.  Paste the text you copied from your assignment repo (the clipboard copy you made in step 3) into the dialog box *Repository URL*. The project directory name should be automatically populated, but [**make sure you select a directory**]{.underline} in the text box labelled *Create project as a subdirectory of:*.
 
-6.  Copy and paste the URL of your assignment repo (the clipboard copy you made in step 4) into the dialog box *Repository URL*. The project directory name should be automatically populated, but **make sure you select a directory** in *Create project as a subdirectory of*.
+6.  Finally, click *Create Project*, and the files from your GitHub repo will be displayed in the *Files* pane in RStudio.
 
-7.  Finally, click *Create Project*, and the files from your GitHub repo will be displayed in the *Files* pane in RStudio.
-
-8.  Click *bsmm-lab-1.qmd* to open the template R Markdown file. This is where you will write up your code and narrative for the lab.
+7.  Click *2025-lab-1.qmd* to open the template R Markdown file. This is where you will write up your code and narrative for the lab.
 
 ### R and R Studio
 

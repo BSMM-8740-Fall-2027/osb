@@ -14,9 +14,9 @@ editor: visual
 
 📖 Read Preprocess your data with recipes - Chapter 2: [Preprocessing with Recipes](https://www.tidymodels.org/start/recipes/)
 
-📖 Familiarize yourself with the recipes package: [Package 'recipes'](https://cran.r-project.org/web/packages/recipes/recipes.pdf)
+📖 Check out this overview of the Recipes package: [The Swiss Army Knife of Data Preprocessing: Unfolding the Layers of recipes package](https://medium.com/number-around-us/the-swiss-army-knife-of-data-preprocessing-unfolding-the-layers-of-recipes-package-d482421eba10)
 
-📖 Watch this video from Max Kuhn: [Cooking Your Data with Recipes in R with Max Kuhn](https://www.youtube.com/watch?v=GdR_S8bYaag)
+📖 Look at this handy cookbook: [30 day tidymodels recipes challenge](https://www.collinberke.com/blog/posts/2024-01-01-30-days-challenge-tidymodels-recipes/)
 
 📖 Step through Max Kuhn's slides: [Cooking your data with recipes!!!](https://topepo.github.io/2021_11_HDSI_RUG/#1)
 

@@ -213,7 +213,7 @@ What is the characteristic alcoholic beverage[^1] of each of the first 4 princip
 ```
 :::
 
-Think about characterizing the drinks as sweet (sugar or syrup) or sour (fruit juice) and whether negative sugar or syrup that same as sour; think about how to describe negative fruit juice values.
+Think about characterizing the drinks as sweet (sugar or syrup) or sour (fruit juice) and whether negative sugar or syrup values can be described as sour (i.e. "not sweet"); think about how to describe negative fruit juice values.
 
 ### Exercise 7
 
