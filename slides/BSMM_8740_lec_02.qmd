@@ -11,6 +11,7 @@ logo: "images/logo.png"
 format: 
   revealjs: 
     chalkboard: true
+    scrollable: true
     theme: slides.scss
     multiplex: true
     transition: fade
@@ -58,13 +59,14 @@ theme_set(theme_bw() + theme(legend.position = "top"))
 
 ## R Model Formulas
 
-Here's a simple formula used in a linear model to predict house prices (using the dataset Sacremento from the package `modeldata`):
+Here's a simple formula used in a linear model to predict house prices (using the dataset Sacramento from the package `modeldata`):
 
 ```{r sac}
 #| echo: true
 #| message: false
 #| results: false
 #| code-fold: true
+#| code-summary: linear model to predict house prices
 #| code-line-numbers: "1|2|3|4"
 Sacramento <- modeldata::Sacramento
 mod1 <- stats::lm(
@@ -79,7 +81,7 @@ The purpose of this code chunk:
 
 1.  subset some of the observations (using the `subset` argument)
 2.  create a design matrix for 2 predictor variables (but 3 model terms)
-3.  log transform the outcome variables
+3.  log transform the outcome variable
 4.  fit a linear regression model
 
 The first two steps create the *design-matrix* aka *model- matrix*.
@@ -87,7 +89,7 @@ The first two steps create the *design-matrix* aka *model- matrix*.
 
 ## Example
 
-The dataset Sacramento has three categorical variables:
+The Sacramento dataset has three categorical variables:
 
 ```{r}
 #| echo: true
