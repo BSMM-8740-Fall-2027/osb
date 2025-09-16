@@ -21,4 +21,4 @@ title: "weekly checklist"
 -   [x] weekly lab
 -   [x] weekly lab solutions
 -   [x] weekly lab repo
--   [ ] weekly lab invite
+-   [x] weekly lab invite
