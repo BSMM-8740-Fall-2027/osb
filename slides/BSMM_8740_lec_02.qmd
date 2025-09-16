@@ -36,6 +36,7 @@ opts_chunk$set(comment="",
 require(magrittr)
 require(ggplot2)
 require(mlbench)
+require(patchwork)
 data("PimaIndiansDiabetes")
 # data(Sacramento)
 library(caret)
@@ -708,6 +709,212 @@ pca %>% ggplot(aes(x = PC1, y = PC2, color = Class)) +
   geom_point(alpha = .4) +
   theme_bw(base_size = 25)
 ```
+
+## Business Problem with PCA
+
+:::::: columns
+:::: {.column width="35%"}
+::: {style="font-size: xx-large"}
+-   Firms collect large customer by product purchase data
+-   Data is high dimensional and noisy
+-   We want simpler views to see patterns and predict behavior
+:::
+::::
+
+::: {.column width="65%"}
+```{r}
+#| echo: false
+#| label: business PCA data
+
+set.seed(123)
+
+# Example customer-product purchase matrix
+customers <- paste0("C", 1:20)
+products  <- paste0("P", 1:15)
+M <- matrix(rpois(300, lambda = 2), nrow = 20, dimnames = list(customers, products))
+
+hm <- function(M, title_txt) {
+  tibble::as_tibble(M) |>
+    dplyr::mutate(customer = row_number()) |>
+    tidyr::pivot_longer(-customer, names_to = "product", values_to = "val") |>
+    dplyr::mutate(product = as.integer(factor(product))) |>
+    ggplot(aes(product, customer, fill = val)) +
+    geom_tile() +
+    scale_fill_gradient(low = "white", high = "darkblue") +
+    scale_y_reverse() +
+    coord_fixed() +
+    labs(title = title_txt, x = "Product", y = "Customer", fill = "Purchases") +
+    theme_bw(base_size = 16)
+}
+```
+
+```{r}
+#| eval: true
+#| label: business PCA data plot
+#| fig-width: 6     
+#| fig-align: center
+hm(M, "Customer Product Purchases 20x15")
+```
+:::
+::::::
+
+## SVD as Compression
+
+-   SVD factors the matrix $M = U\Sigma V^\top$
+-   $U,V$ have orthogonal columns, and $\Sigma$ is a diagonal matrix of singular values
+    -   Keep the top k singular values for a rank $k$ summary
+-   Interpretation:
+    -   $U\Sigma$ gives customer preferences in reduced dimensions
+    -   $V$ gives product features in reduced dimensions
+
+## Low Rank Approximation
+
+```{r}
+#| echo: true
+#| label: SVD low rank
+#| code-fold: true
+#| code-summary: approximations at rank 2 and 5
+#| fig-width: 10     
+#| fig-align: center
+sv <- svd(M)
+Mk <- function(k) sv$u[,1:k, drop = FALSE] %*% diag(sv$d[1:k], k) %*% t(sv$v[,1:k, drop = FALSE])
+
+p1 <- hm(Mk(2), "Rank 2 Approximation")
+p2 <- hm(Mk(5), "Rank 5 Approximation")
+p1 + p2
+```
+
+## Low Rank Approximations
+
+:::::: columns
+::: {.column width="60%"}
+```{r}
+#| eval: false
+#| message: false
+#| echo: false
+# optional animation with gganimate
+library(gganimate)
+frames <- purrr::map_dfr(1:10, \(k) {
+  tibble::as_tibble(Mk(k)) |>
+    dplyr::mutate(r = row_number(), k = k) |>
+    tidyr::pivot_longer(-c(r,k), names_to = "c", values_to = "val") |>
+    dplyr::mutate(c = as.integer(gsub("V","", c)))
+})
+g <- ggplot(frames, aes(c, r, fill = val)) +
+  geom_tile() +
+  scale_y_reverse() +
+  scale_fill_gradient2() +
+  coord_fixed() +
+  labs(title = "Rank {closest_state}", x = "col", y = "row", fill = "value") +
+  transition_states(k, transition_length = 1, state_length = 1) + theme_bw(base_size = 16)
+anim_save("images/small_bizsvd-rank-growth.gif", animate(g, nframes = 100, fps = 10, width = 640, height = 480))
+```
+
+```{r}
+#| label: SVD low rank animation
+#| echo: false
+#| out-width: "100%"
+#| fig-width: 12 
+#| fig-height: 12    
+#| fig-align: center
+
+knitr::include_graphics("images/small_bizsvd-rank-growth.gif", dpi=300)
+```
+:::
+
+:::: {.column width="40%"}
+::: {style="font-size: x-large"}
+```{r}
+#| echo: true
+#| code-fold: true
+#| code-summary: plot of cumulative variance explained
+#| label: plot of cumulative variance explained
+#| fig-width: 5  
+#| fig-height: 5  
+#| fig-align: center
+var_expl <- sv$d^2 / sum(sv$d^2)
+tibble::tibble(k = 1:length(var_expl), share = cumsum(var_expl)) |>
+  ggplot(aes(k, share)) +
+  geom_line() + geom_point() +
+  scale_y_continuous(labels = scales::percent) +
+  labs(title = "Cumulative Variance Explained", x = "Rank k", y = "Variance") +
+  theme_bw(base_size = 16)
+```
+:::
+::::
+::::::
+
+## PCA in Practice
+
+::: {style="font-size: x-large"}
+This example has 1000 customers and 100 products.
+:::
+
+::::: columns
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| message: false
+library(tidyverse)
+library(ggplot2)
+set.seed(42)
+
+# Simulate a 1000 x 100 customer by product matrix with latent structure
+n_cust <- 1000
+n_prod <- 100
+
+k_true <- 5
+U_true <- matrix(rnorm(n_cust * k_true), n_cust, k_true)
+V_true <- matrix(rnorm(n_prod * k_true),  n_prod,  k_true)
+svals  <- seq(5, 1, length.out = k_true)  # strengths of latent factors
+
+Signal <- U_true %*% diag(svals, k_true) %*% t(V_true)
+Noise  <- matrix(rnorm(n_cust * n_prod, sd = 0.8), n_cust, n_prod)
+M      <- Signal + Noise
+
+# Center columns to focus on structure across products
+X <- scale(M, center = TRUE, scale = FALSE)
+
+# SVD
+sv <- svd(X)
+var_expl <- sv$d^2
+cum_share <- cumsum(var_expl) / sum(var_expl)
+
+# Prepare data for plot
+df <- tibble::tibble(rank_k = seq_along(cum_share), cum_variance = cum_share)
+```
+
+```{r}
+#| echo: false
+#| fig-width: 10  
+#| fig-height: 8    
+#| fig-align: center
+#| label: Cumulative variance by rank 1000 customers
+ggplot(df, aes(rank_k, cum_variance)) +
+  geom_line() +
+  geom_point() +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  labs(title = "Cumulative variance explained", x = "Rank k", y = "Share") +
+  theme_bw(base_size = 22)
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| fig-width: 10
+#| fig-height: 8     
+#| fig-align: center
+#| label: Top Singular Values
+# Show the first 15 singular values for a quick check
+tibble(k = 1:15, d = sv$d[1:15]) |>
+  ggplot(aes(k, d)) +
+  geom_col() +
+  labs(title = "Top singular values", x = "Rank k", y = "Singular value") +
+  theme_bw(base_size = 22)
+```
+:::
+:::::
 
 ## Recap
 

@@ -222,7 +222,7 @@ We can confirm this as follows:
 ```{r}
 mets_ben %>% 
   # first check that the assertion above is correct
-  dplyr::summarize('better then expected' = sum(W >= W_hat), 'worse than expected' = sum(W < W_hat))
+  dplyr::summarize('better than expected' = sum(W >= W_hat), 'worse than expected' = sum(W < W_hat))
 ```
 
 To see how the Mets did over all seasons we can repeat our calculation
@@ -237,7 +237,7 @@ Teams |>
     , W_hat = WPct * (W+L)
   )  |> 
 dplyr::summarize( 
-  "better then expected" = sum(W >= W_hat)
+  "better than expected" = sum(W >= W_hat)
   , 'worse than expected' = sum(W < W_hat) 
 )
 ```

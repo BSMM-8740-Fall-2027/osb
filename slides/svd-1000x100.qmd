@@ -1,0 +1,69 @@
+---
+title: "SVD Dimension Reduction Example 1000×100"
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    transition: fade
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r}
+#| include: false
+library(tidyverse)
+library(ggplot2)
+set.seed(42)
+
+# Simulate a 1000 x 100 customer by product matrix with latent structure
+n_cust <- 1000
+n_prod <- 100
+
+k_true <- 5
+U_true <- matrix(rnorm(n_cust * k_true), n_cust, k_true)
+V_true <- matrix(rnorm(n_prod * k_true),  n_prod,  k_true)
+svals  <- seq(5, 1, length.out = k_true)  # strengths of latent factors
+
+Signal <- U_true %*% diag(svals, k_true) %*% t(V_true)
+Noise  <- matrix(rnorm(n_cust * n_prod, sd = 0.8), n_cust, n_prod)
+M      <- Signal + Noise
+
+# Center columns to focus on structure across products
+X <- scale(M, center = TRUE, scale = FALSE)
+
+# SVD
+sv <- svd(X)
+var_expl <- sv$d^2
+cum_share <- cumsum(var_expl) / sum(var_expl)
+
+# Prepare data for plot
+df <- tibble::tibble(rank_k = seq_along(cum_share), cum_variance = cum_share)
+```
+
+## Cumulative variance by rank
+
+```{r}
+ggplot(df, aes(rank_k, cum_variance)) +
+  geom_line() +
+  geom_point() +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  labs(title = "Cumulative variance explained", x = "Rank k", y = "Share")
+```
+
+------------------------------------------------------------------------
+
+## Optional checks
+
+-   The matrix has 1000 customers and 100 products\
+-   The true latent dimensionality is 5\
+-   The curve should rise fast then level off
+
+```{r}
+# Show the first 15 singular values for a quick check
+tibble(k = 1:15, d = sv$d[1:15]) |>
+  ggplot(aes(k, d)) +
+  geom_col() +
+  labs(title = "Top singular values", x = "Rank k", y = "Singular value")
+```
