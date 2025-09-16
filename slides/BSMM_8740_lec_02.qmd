@@ -710,6 +710,7 @@ pca %>% ggplot(aes(x = PC1, y = PC2, color = Class)) +
   theme_bw(base_size = 25)
 ```
 
+
 ## Business Problem with PCA
 
 :::::: columns
@@ -813,12 +814,10 @@ anim_save("images/small_bizsvd-rank-growth.gif", animate(g, nframes = 100, fps =
 ```{r}
 #| label: SVD low rank animation
 #| echo: false
-#| out-width: "100%"
-#| fig-width: 12 
-#| fig-height: 12    
+#| fig-width: 10     
 #| fig-align: center
 
-knitr::include_graphics("images/small_bizsvd-rank-growth.gif", dpi=300)
+knitr::include_graphics("images/small_bizsvd-rank-growth.gif")
 ```
 :::
 
@@ -828,27 +827,23 @@ knitr::include_graphics("images/small_bizsvd-rank-growth.gif", dpi=300)
 #| echo: true
 #| code-fold: true
 #| code-summary: plot of cumulative variance explained
-#| label: plot of cumulative variance explained
-#| fig-width: 5  
-#| fig-height: 5  
+#| label: plot of cumulative variance 
+#| fig-height: 10
+#| fig-width: 8
 #| fig-align: center
 var_expl <- sv$d^2 / sum(sv$d^2)
 tibble::tibble(k = 1:length(var_expl), share = cumsum(var_expl)) |>
   ggplot(aes(k, share)) +
   geom_line() + geom_point() +
   scale_y_continuous(labels = scales::percent) +
-  labs(title = "Cumulative Variance Explained", x = "Rank k", y = "Variance") +
-  theme_bw(base_size = 16)
+  labs(title = "Cumulative Variance Explained", x = "Rank k", y = "Variance") +   
+  theme_bw(base_size = 24)
 ```
 :::
 ::::
 ::::::
 
 ## PCA in Practice
-
-::: {style="font-size: x-large"}
-This example has 1000 customers and 100 products.
-:::
 
 ::::: columns
 ::: {.column width="50%"}
@@ -886,35 +881,36 @@ df <- tibble::tibble(rank_k = seq_along(cum_share), cum_variance = cum_share)
 
 ```{r}
 #| echo: false
-#| fig-width: 10  
-#| fig-height: 8    
+#| fig-width: 8
+#| fig-height: 9    
 #| fig-align: center
 #| label: Cumulative variance by rank 1000 customers
 ggplot(df, aes(rank_k, cum_variance)) +
   geom_line() +
   geom_point() +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
-  labs(title = "Cumulative variance explained", x = "Rank k", y = "Share") +
-  theme_bw(base_size = 22)
+  labs(title = "Cumulative variance explained", x = "Rank k", y = "Share") +   
+  theme_bw(base_size = 24)
 ```
 :::
 
 ::: {.column width="50%"}
 ```{r}
 #| echo: false
-#| fig-width: 10
-#| fig-height: 8     
+#| fig-width: 8
+#| fig-height: 9      
 #| fig-align: center
 #| label: Top Singular Values
 # Show the first 15 singular values for a quick check
 tibble(k = 1:15, d = sv$d[1:15]) |>
   ggplot(aes(k, d)) +
   geom_col() +
-  labs(title = "Top singular values", x = "Rank k", y = "Singular value") +
-  theme_bw(base_size = 22)
+  labs(title = "Top singular values", x = "Rank k", y = "Singular value") +   
+  theme_bw(base_size = 24)
 ```
 :::
 :::::
+
 
 ## Recap
 
