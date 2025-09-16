@@ -9,4 +9,16 @@ title: "weekly checklist"
 -   [x] weekly lab
 -   [x] weekly lab solutions
 -   [x] weekly lab repo
+-   [x] weekly lab invite
+
+## Week 2
+
+-   [x] weekly slides
+-   [x] weekly reading
+    -   [x] links
+    -   [x] readings
+    -   [x] study guide
+-   [x] weekly lab
+-   [x] weekly lab solutions
+-   [x] weekly lab repo
 -   [ ] weekly lab invite
