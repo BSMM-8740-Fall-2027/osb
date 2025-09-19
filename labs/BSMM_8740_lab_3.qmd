@@ -75,7 +75,7 @@ The Boston House Values dataset (usually referred to as the Boston dataset) appe
 This dataset contains the following information for each cocktail:
 
 | variable | description |
-|------------------------------------|------------------------------------|
+|----|----|
 | crim | per capita crime rate by town. |
 | zn | proportion of residential land zoned for lots over 25,000 sq.ft. |
 | indus | proportion of non-retail business acres per town. |
@@ -105,8 +105,8 @@ Plot the median value of owner-occupied homes (`medv`) vs the percentage of hous
 
 Next prepare a summary of the model. What is the intercept and the coefficient of `lstat` in this model?
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q1 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q1:
 
 ```{r}
 # PLEASE SHOW YOUR WORK
@@ -124,7 +124,7 @@ Using the result from Exercise 1, and the data below, use the predict function (
 
 You can use `stats::predict.lm` directly with the data below.
 
-Or consider creating a nested column using `dplyr::mutate` along with `purrr::map` with first argument *lstat* and second argument a function you create. The last operation is to unnest the nested column with `tidyr::unnest(__)`.
+[**Or**]{.underline} consider creating a nested column using `dplyr::mutate` along with `purrr::map` with first argument *lstat* and second argument a function you create. The last operation is to unnest the nested column with `tidyr::unnest(__)`.
 
 Or
 
@@ -287,7 +287,7 @@ Prepare a recipe to pre-process `cars_23` ahead of modelling, using `comb_fe_gui
 -   Scaling for: recipes::all_numeric()
 -   Dummy variables from: recipes::all_factor()
 
-How many predictor variables are there in `cars_23` ?
+After preprocessing, how many predictor variables are there in `cars_23` ?
 
 ::: {.callout-note appearance="simple" icon="false"}
 ## YOUR ANSWER:
@@ -354,7 +354,7 @@ This is a good place to render, commit, and push changes to your remote lab repo
 
 In this exercise we will run xgboost::xgboost to evaluate the regression.
 
-First run fit the model with default meta-parameters for `max_depth` and `eta`, using the training data per the code below:
+First fit the model with default meta-parameters for `max_depth` and `eta`, using the training data per the code below:
 
 ```{r}
 #| echo: true

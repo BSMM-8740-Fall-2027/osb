@@ -10,7 +10,11 @@ editor: visual
 
 ## Prepare
 
-📖 Read Chapter 2 - General Aspects of Fitting Regression Models in: [Regression Modeling Strategies](https://warin.ca/ressources/books/2015_Book_RegressionModelingStrategies.pdf)
+https://rpubs.com/TimothyOyebamiji/housepriceml
+
+📖 Get a quick overview here: [Regression Analysis in R Programming](https://www.geeksforgeeks.org/r-language/regression-analysis-in-r-programming/)
+
+📖 Read Chapter 2 - General Aspects of Fitting Regression Models in: [Regression Modeling Strategies](supplemental/2015_Book_RegressionModelingStrategies.pdf)
 
 📖 Read Chapter (8.1-8.5) - Regression Models in: [Modern Statistics in R](https://modernstatisticswithr.com/regression.html)
 
@@ -23,6 +27,10 @@ editor: visual
 📖 Read *Different ways of calculating OLS regression coefficients (in R)*: [Different ways of calculating OLS regression coefficients (in R)](https://thomvolker.github.io/blog/2506_regression/)
 
 📖 Read *How does glmnet perform ridge regression?*: [How does glmnet perform ridge regression?](https://thomvolker.github.io/blog/2505_glmnet_ridge/)
+
+📖 Read a case study on house prices: [Predicting House Prices Using Machine Learning Models](https://rpubs.com/TimothyOyebamiji/housepriceml)
+
+📖 Read *Understanding Lasso and Ridge Regression*: [Understanding Lasso and Ridge Regression](https://www.r-bloggers.com/2024/01/understanding-lasso-and-ridge-regression-3/)
 
 ## Participate
 
