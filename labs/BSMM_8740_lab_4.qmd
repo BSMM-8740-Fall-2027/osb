@@ -171,10 +171,6 @@ lm_mod_rforest <-
 ```
 :::
 
-```{r}
-
-```
-
 ## Exercise 5
 
 Use parsnip::translate() on each model to see the code object that is specific to a particular engine
@@ -220,8 +216,8 @@ Create workflows with `workflowsets::workflow_set` using your recipe and models.
 
 all_workflows <- 
   workflowsets::workflow_set(
-    preproc = list(base = norm_recipe),
-    models = list(base = lm_mod_base, glmnet = lm_mod_glmnet, forest = lm_mod_rforest)
+    preproc = list(base = ____),
+    models = list(base = ____, glmnet = ____, forest = ____)
   )
 ```
 :::
