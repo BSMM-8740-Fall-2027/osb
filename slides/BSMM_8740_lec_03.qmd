@@ -11,6 +11,7 @@ logo: "images/logo.png"
 format: 
   revealjs: 
     chalkboard: true
+    scrollable: true
     theme: slides.scss
     multiplex: true
     transition: fade
@@ -42,6 +43,19 @@ theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 -   Last time we worked with the `recipes` package to develop workflows for pre-processing our data.
 
 -   Today we look at regression methods we might apply to understand relationships between measurements in our data.
+
+## Week 3 Roadmap
+
+::: {.incremental}
+- Linear regression
+    - derivation of OLS estimate 
+    - bias-variance tradeoff and penalized models
+- Generalized linear models  
+- Non-parametric regression  
+    - Tree models: bagging and boosting; XGBoost
+    - Kernel regression  
+    - Neural nets  
+:::
 
 # Linear regression
 
@@ -224,7 +238,7 @@ When $D>1$ it is common to append the unit vector to the covariate matrix $X=(1,
 Recall that the one dimensional Normal/Gaussian probability density (aka likelihood) for outcome $y_n$ and mean $\beta x_n$ is:
 
 $$
-\pi\left(y_n;\mu=\beta x_n,\sigma^2\right)=\mathscr{N}\left(y_n;\mu=\beta x_n,\sigma^2\right)=\frac{1}{\sqrt{2\pi\sigma^2}}e^{\frac{1}{2}\frac{y_n-\beta x_n}{\sigma^2}}
+\pi\left(y_n;\mu=\beta x_n,\sigma^2\right)=\mathscr{N}\left(y_n;\mu=\beta x_n,\sigma^2\right)=\frac{1}{\sqrt{2\pi\sigma^2}}e^{\frac{1}{2}\frac{(y_n-\beta x_n)^2}{\sigma^2}}
 $$
 
 And the likelihood of multiple observations is the product of the likelihoods for each observation.
@@ -261,7 +275,7 @@ $$
 
 This is known as the empirical risk minimization (ERM) - the expected loss taken with respect to the empirical distribution. We'll see other loss functions later when discussing [**ridge**]{.underline}, [**lasso**]{.underline}, and [**elastic net**]{.underline} regression.
 
-## Linear regression models [DELETE]{.underline}?
+## Linear regression models?
 
 Focusing on just the coefficients $\beta$, the minimum NLL is (up to a constant) the minimum of the residual sum of squares (RSS)[^3] with coefficient estimates $\hat\beta$ :
 

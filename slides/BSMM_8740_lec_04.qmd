@@ -11,6 +11,7 @@ logo: "images/logo.png"
 format: 
   revealjs: 
     chalkboard: true
+    scrollable: true
     theme: slides.scss
     multiplex: true
     transition: fade
@@ -340,7 +341,7 @@ When `add_formula` is executed, since preprocessing is model dependent, `workflo
 
 ## Workflows use of formulas
 
-If a random forest model is fit using the `ranger` or `randomForest` packages, the workflow knows predictor columns that are factors should be left as is (not converted to dummy vaiables).
+If a random forest model is fit using the `ranger` or `randomForest` packages, the workflow knows predictor columns that are factors should be left as is (not converted to dummy variables).
 
 By contrast, a boosted tree created with the `xgboost` package requires the user to create dummy variables from factor predictors (since `xgboost::xgb.train()` will not). A workflow using xgboost will create the indicator columns for this engine. Also note that a different engine for boosted trees, C5.0, does not require dummy variables so none are made by the workflow.
 
@@ -482,15 +483,15 @@ workflowsets::collect_predictions(final_lm_res) %>% dplyr::slice(1:3)
 
 ### Performance metrics and inference
 
-An inferential model is used primarily to understand relationships, and typically emphasizes the choice (and validity) of probabilistic distributions and other generative qualities that define the model.
+Once we have a model, we need to know how well it works. A quantitative approach for estimating effectiveness allows us to understand the model, to compare different models, or to tweak the model to improve performance.
 
-For a model used primarily for prediction, by contrast, predictive strength is of primary importance and other concerns about underlying statistical qualities may be less important.
+Our focus is on empirical validation; this usually means using data that were not used to create the model as the substrate to measure effectiveness.
 
 ## Tidymodels: yardstick
 
-The point of this analysis is to demonstrate the idea that optimization of statistical characteristics of the model does not imply that the model fits the data well.
+When judging model effectiveness, the decision about which metrics to examine can be critical. Choosing the wrong metric can easily result in unintended consequences.
 
-Even for purely inferential models, some measure of fidelity to the data should accompany the inferential results. With empirical validation, the users of the analyses can calibrate their expectations of the results.
+For example, two common metrics for regression models are the root mean squared error (RMSE) and the coefficient of determination (a.k.a. $R^2$). The former measures *accuracy* while the latter measures *correlation*. These are not necessarily the same thing.
 
 ## Tidymodels: yardstick
 
@@ -499,6 +500,7 @@ Even for purely inferential models, some measure of fidelity to the data should 
 #| message: false
 #| eval: false
 #| code-fold: true
+#| code-summary: workflow using ames dataset
 #| code-line-numbers: "1-6|8-17|19-26"
 ames <- dplyr::mutate(modeldata::ames, Sale_Price = log10(Sale_Price))
 
@@ -532,12 +534,15 @@ lm_fit <- parsnip::fit(lm_wflow, ames_train)
 
 ### Regression metrics
 
+:::: {style="font-size: xx-large"}
+::: panel-tabset
+## prediction
+
 ```{r}
 #| echo: true
 #| message: false
 #| code-fold: true
-#| code-line-numbers: "1-7|8-12|13-14"
-#| layout-ncol: 3
+#| label: prediction alone
 # fit with new data
 ames_test_res <- 
   stats::predict(
@@ -545,14 +550,34 @@ ames_test_res <-
     , new_data = ames_test %>% dplyr::select(-Sale_Price)
   )
 ames_test_res
+```
+
+## prediction & obs
+
+```{r}
+#| echo: true
+#| message: false
+#| code-fold: true
+#| label: prediction and observations
 # compare predictions with corresponding data
 ames_test_res <- 
   dplyr::bind_cols(
     ames_test_res, ames_test %>% dplyr::select(Sale_Price))
 ames_test_res
+```
+
+## with yardstick
+
+```{r}
+#| echo: true
+#| message: false
+#| code-fold: true
+#| label: using yardstick
 # there is a standard output format for yardstick functions
 yardstick::rmse(ames_test_res, truth = Sale_Price, estimate = .pred)
 ```
+:::
+::::
 
 ## Tidymodels: yardstick
 
@@ -1004,11 +1029,27 @@ rsample::bootstraps(ames_train, times = 5)
 
 ## Resampling: Bootstrapping
 
+::::::: columns
+:::: {.column width="50%"}
+::: {style="font-size: xx-large"}
 Each data point has a 63.2% chance of inclusion in the training set at least once.
 
 The assessment set contains all of the training set samples that were not selected for the analysis set (on average, with 36.8% of the training set), and so they can vary in size.
 
 Bootstrap samples produce performance estimates that have very low variance (unlike cross-validation) but have significant pessimistic bias. This means that, if the true accuracy of a model is 90%, the bootstrap would tend to estimate the value to be less than 90%.
+:::
+::::
+
+:::: {.column width="50%"}
+::: {style="font-size: x-large"}
+[bootstrap: draw $n$ samples with replacement from a dataset of size $n$]{style="background-color: yellow;"}
+
+-   chance a given row is not selected in one draw: [$\left(1-\frac{1}{n}\right)$]{style="background-color: yellow;"}
+-   for $n$ draws, chance the row is not selected: [$\left(1-\frac{1}{n}\right)^n$]{style="background-color: yellow;"}
+-   chance row is included at least once: [$1-\left(1-\frac{1}{n}\right)^n$]{style="background-color: yellow;"}
+:::
+::::
+:::::::
 
 ## Resampling: time variables
 
@@ -1097,7 +1138,7 @@ This sequence repeats for every resample.
 **Performance evaluation**:
 
 ::: {style="font-size: xx-large"}
-Any of the resampling methods discussed here can be used to evaluate the modeling process (including preprocessing, model fitting, etc). These methods are effective because different groups of data are used to train the model and assess the model. To reiterate, the process to use resampling is:
+To reiterate, the process to use resampling is:
 
 1.  During resampling, the analysis set is used to preprocess the data, apply the preprocessing to itself, and use these processed data to fit the model.
 
@@ -1153,7 +1194,6 @@ Save the predictions in order to visualize the model fit and residuals:
 #| echo: true
 #| message: false
 #| code-fold: true
-#| layout-ncol: 2
 #| code-line-numbers: "1-2|4-7"
 keep_pred <- 
   tune::control_resamples(save_pred = TRUE, save_workflow = TRUE)
