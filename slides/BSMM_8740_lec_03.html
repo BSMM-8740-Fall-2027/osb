@@ -113,6 +113,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -222,12 +223,32 @@ L.L. Odette
 <li><p>Today we look at regression methods we might apply to understand relationships between measurements in our data.</p></li>
 </ul>
 </section>
+<section id="week-3-roadmap" class="slide level2">
+<h2>Week 3 Roadmap</h2>
+<ul>
+<li class="fragment">Linear regression
+<ul>
+<li class="fragment">derivation of OLS estimate</li>
+<li class="fragment">bias-variance tradeoff and penalized models</li>
+</ul></li>
+<li class="fragment">Generalized linear models<br>
+</li>
+<li class="fragment">Non-parametric regression
+<ul>
+<li class="fragment">Tree models: bagging and boosting; XGBoost</li>
+<li class="fragment">Kernel regression<br>
+</li>
+<li class="fragment">Neural nets<br>
+</li>
+</ul></li>
+</ul>
+</section>
 <section>
 <section id="linear-regression" class="title-slide slide level1 center">
 <h1>Linear regression</h1>
 
 </section>
-<section id="linear-regression-models" class="slide level2">
+<section id="linear-regression-models" class="slide level2 scrollable">
 <h2>Linear regression models</h2>
 <p>In the simple linear regression (SLR) model, we have <span class="math inline">\(N\)</span> observations of a single outcome variable <span class="math inline">\(Y\)</span> along with <span class="math inline">\(D\)</span> predictor (aka co-variate) variables <span class="math inline">\(\mathbf{x}\)</span> where the likelihood<sup>1</sup> of observing <span class="math inline">\(Y=y\)</span> is conditional on the predictor values <span class="math inline">\(x\)</span> and parameters <span class="math inline">\(\theta=\{\beta,\sigma^2\}\)</span>:</p>
 <p><span class="math display">\[
@@ -249,7 +270,7 @@ f(x;x_0)=\sum_{n=0}\beta_n(x-x_0)^n=\beta_0+\beta_1(x-x_0)+\beta_2(x-x_0)^2+\bet
 </div>
 <p>where <span class="math inline">\(\frac{d^nf(x)}{dx^n}|_{x=x_0} \equiv f^{(n)}(x_0) = n!\beta_n\;\rightarrow \beta_n=\frac{1}{n!}f^{(n)}(x_0)\)</span></p>
 </section>
-<section id="taylor-series-1" class="slide level2">
+<section id="taylor-series-1" class="slide level2 scrollable">
 <h2>Taylor Series</h2>
 <div style="font-size: x-large">
 <p><span class="math display">\[
@@ -309,7 +330,7 @@ f(x,y;x_0,y_0) &amp; =f(x_{0},y_{0})+f_{x}(x_{0},y_{0})(x-x_{0})+f_{y}(x_{0},y_{
 <h2>Linear regression models</h2>
 <p>For multiple co-variates, If the mean function is smooth (i.e.&nbsp;not changing rapidly with the co-variates) then under similar (reasonable) assumptions on the differentials, it is common to see SLR models using only the first order coefficients, i.e.&nbsp;a constant and one coefficient for each co-variate.</p>
 </section>
-<section id="linear-regression-models-5" class="slide level2">
+<section id="linear-regression-models-5" class="slide level2 scrollable">
 <h2>Linear regression models</h2>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -329,7 +350,7 @@ f(x,y;x_0,y_0) &amp; =f(x_{0},y_{0})+f_{x}(x_{0},y_{0})(x-x_{0})+f_{y}(x_{0},y_{
 <h2>Linear regression models</h2>
 <p>Recall that the one dimensional Normal/Gaussian probability density (aka likelihood) for outcome <span class="math inline">\(y_n\)</span> and mean <span class="math inline">\(\beta x_n\)</span> is:</p>
 <p><span class="math display">\[
-\pi\left(y_n;\mu=\beta x_n,\sigma^2\right)=\mathscr{N}\left(y_n;\mu=\beta x_n,\sigma^2\right)=\frac{1}{\sqrt{2\pi\sigma^2}}e^{\frac{1}{2}\frac{y_n-\beta x_n}{\sigma^2}}
+\pi\left(y_n;\mu=\beta x_n,\sigma^2\right)=\mathscr{N}\left(y_n;\mu=\beta x_n,\sigma^2\right)=\frac{1}{\sqrt{2\pi\sigma^2}}e^{\frac{1}{2}\frac{(y_n-\beta x_n)^2}{\sigma^2}}
 \]</span></p>
 <p>And the likelihood of multiple observations is the product of the likelihoods for each observation.</p>
 </section>
@@ -362,8 +383,8 @@ f(x,y;x_0,y_0) &amp; =f(x_{0},y_{0})+f_{x}(x_{0},y_{0})(x-x_{0})+f_{y}(x_{0},y_{
 \]</span></p>
 <p>This is known as the empirical risk minimization (ERM) - the expected loss taken with respect to the empirical distribution. We’ll see other loss functions later when discussing <u><strong>ridge</strong></u>, <u><strong>lasso</strong></u>, and <u><strong>elastic net</strong></u> regression.</p>
 </section>
-<section id="linear-regression-models-delete" class="slide level2">
-<h2>Linear regression models <u>DELETE</u>?</h2>
+<section id="linear-regression-models-9" class="slide level2 scrollable">
+<h2>Linear regression models?</h2>
 <p>Focusing on just the coefficients <span class="math inline">\(\beta\)</span>, the minimum NLL is (up to a constant) the minimum of the residual sum of squares (RSS)<sup>1</sup> with coefficient estimates <span class="math inline">\(\hat\beta\)</span> :</p>
 <p><span class="math display">\[
 \begin{align*}\text{RSS}\left(\beta\right) &amp; =\frac{1}{2}\sum_{n=1}^{N}\left(y_{n}-\beta'x_{n}\right)^{2}=\frac{1}{2}\left\Vert y_{n}-\beta'x_{n}\right\Vert ^{2}\\
@@ -372,7 +393,7 @@ f(x,y;x_0,y_0) &amp; =f(x_{0},y_{0})+f_{x}(x_{0},y_{0})(x-x_{0})+f_{y}(x_{0},y_{
 \end{align*}
 \]</span></p>
 <aside><ol class="aside-footnotes"><li id="fn3"><p>i.e.&nbsp;minimizing the squared prediction error, aka ordinary least squares.</p></li></ol></aside></section>
-<section id="linear-regression-models-9" class="slide level2">
+<section id="linear-regression-models-10" class="slide level2">
 <h2>Linear regression models</h2>
 <h4 id="ordinary-least-squares-ols">Ordinary least squares (OLS)</h4>
 <p>Note that, given the assumption that the data generation process is Normal/Gaussian, we can write our regression equation in terms of individual observations as</p>
@@ -382,7 +403,7 @@ y_i=\beta_0+\beta_1 x_i + u_i
 <p>where the error term <span class="math inline">\(u_i\)</span> is a sample from <span class="math inline">\(\mathscr{N}\left(0,\sigma^{2}\right)\)</span> which in turn implies <span class="math inline">\(\mathbb{E}\left[u\right]=0;\;\mathbb{E}\left[\left.u\right|x\right]=0\)</span></p>
 <p>The independence of the covariates and the errors/residuals is a <u><strong>testable assumption</strong></u>.</p>
 </section>
-<section id="linear-regression-models-10" class="slide level2">
+<section id="linear-regression-models-11" class="slide level2">
 <h2>Linear regression models</h2>
 <h4 id="ordinary-least-squares-ols-1">Ordinary least squares (OLS)</h4>
 <p>It follows from the zero mean of the errors (<span class="math inline">\(\mathbb{E}\left[u\right]=0\)</span>) independence of the covariates and the errors (<span class="math inline">\(\mathbb{E}\left[\left.u\right|x\right]=0\)</span>) that</p>
@@ -393,7 +414,7 @@ y_i=\beta_0+\beta_1 x_i + u_i
 \end{align*}
 \]</span></p>
 </section>
-<section id="linear-regression-models-11" class="slide level2">
+<section id="linear-regression-models-12" class="slide level2">
 <h2>Linear regression models</h2>
 <h4 id="ordinary-least-squares-ols-2">Ordinary least squares (OLS)</h4>
 <p>Writing these equations in terms of our samples (where <span class="math inline">\(\hat{\beta}_{0}, \hat{\beta}_{1}\)</span> are our coefficient estimates)</p>
@@ -404,7 +425,7 @@ y_i=\beta_0+\beta_1 x_i + u_i
 \end{align*}
 \]</span></p>
 </section>
-<section id="linear-regression-models-12" class="slide level2">
+<section id="linear-regression-models-13" class="slide level2">
 <h2>Linear regression models</h2>
 <h4 id="ordinary-least-squares-ols-3">Ordinary least squares (OLS)</h4>
 <p>From the first equation we get a new equation that relates the means of outcome and predictors:</p>
@@ -415,7 +436,7 @@ y_i=\beta_0+\beta_1 x_i + u_i
 \end{align*}
 \]</span></p>
 </section>
-<section id="linear-regression-models-13" class="slide level2">
+<section id="linear-regression-models-14" class="slide level2 scrollable">
 <h2>Linear regression models</h2>
 <h4 id="ordinary-least-squares-ols-4">Ordinary least squares (OLS)</h4>
 <p>Substituting for <span class="math inline">\(\hat{\beta}_{0}\)</span> in the independence equation<sup>1</sup></p>
@@ -432,7 +453,7 @@ y_i=\beta_0+\beta_1 x_i + u_i
 <p>The last equation comes from subtracting zero to both sides of the second equation, e.g.&nbsp;<span class="math inline">\(\frac{1}{N}\sum_{i-1}^{N}\bar{x}\left(y_{i}-\bar{y}\right)=0=\frac{1}{N}\sum_{i-1}^{N}\bar{x}\left(x_{i}-\bar{x}\right)\)</span></p>
 </div>
 </li></ol></aside></section>
-<section id="linear-regression-models-14" class="slide level2">
+<section id="linear-regression-models-15" class="slide level2 scrollable">
 <h2>Linear regression models</h2>
 <h4 id="ordinary-least-squares-ols5">Ordinary least squares (OLS)<sup>1</sup></h4>
 <p>So as long as <span class="math inline">\(\sum_{i-1}^{N}\left(\bar{x}-x_{i}\right)^2\ne 0\)</span></p>
@@ -443,7 +464,7 @@ y_i=\beta_0+\beta_1 x_i + u_i
 \end{align*}
 \]</span></p>
 <aside><ol class="aside-footnotes"><li id="fn5"><p>extremely useful equation, since it relates the statistics of our variables to the coefficient estimate.</p></li></ol></aside></section>
-<section id="linear-regression-models-15" class="slide level2">
+<section id="linear-regression-models-16" class="slide level2">
 <h2>Linear regression models</h2>
 <p>Similarly, in the matrix (multivariate regression) equation, the minimum of the RSS is solved by (assuming <span class="math inline">\(N&gt;D\)</span>):</p>
 <p><span class="math display">\[
@@ -451,7 +472,7 @@ y_i=\beta_0+\beta_1 x_i + u_i
 \]</span></p>
 <p>There are algorithmic issues with computing <span class="math inline">\(\left(X'X\right)^{-1}\)</span> though, so we could instead write <span class="math inline">\(X\beta=y\)</span> and try to solve <span class="math inline">\(\hat{\mathbf{\beta}}_{OLS}=X^{-1}y\)</span> .</p>
 </section>
-<section id="linear-regression-models-16" class="slide level2">
+<section id="linear-regression-models-17" class="slide level2">
 <h2>Linear regression models</h2>
 <p>Now we compute the variance of our estimate as follows:</p>
 <p><span class="math display">\[
@@ -464,7 +485,7 @@ y_i=\beta_0+\beta_1 x_i + u_i
 \]</span></p>
 <p>where <span class="math inline">\(\mathbb{E}\left[\hat{\mathbf{\beta}}_{OLS}\right]=\mathbb{E}\left[\beta\right]\)</span> and <span class="math inline">\(\hat{\mathbf{\beta}}_{OLS}-\beta=\left(X'X\right)^{-1}X'\epsilon\)</span></p>
 </section>
-<section id="linear-regression-models-17" class="slide level2">
+<section id="linear-regression-models-18" class="slide level2">
 <h2>Linear regression models</h2>
 <p>So we can re-write the variance is as:</p>
 <p><span class="math display">\[
@@ -1059,7 +1080,7 @@ qsec        -18.944318</code></pre>
 <p>A <strong>generalized linear model</strong> (<strong>GLM</strong>) is a flexible generalization of ordinary linear regression.</p>
 <p>Ordinary linear regression predicts the expected value (mean) of the outcome random variable as a linear combination of a set of observed values (<em>predictors</em>).</p>
 </section>
-<section id="generalized-linear-models-1" class="slide level2">
+<section id="generalized-linear-models-1" class="slide level2 scrollable">
 <h2>Generalized Linear Models</h2>
 <p>In a generalized linear model (GLM), each outcome <span class="math inline">\(Y\)</span> is assumed to be generated according to a probability distribution in an exponential family<sup>1</sup>, The mean, <span class="math inline">\(\mu\)</span>, of the distribution depends on the independent variables, <span class="math inline">\(X\)</span>, through:</p>
 <p><span class="math display">\[
@@ -1297,7 +1318,7 @@ qsec        -18.944318</code></pre>
 <p>Bagging trees introduces a random component into the tree building process that reduces the variance of a single tree’s prediction and improves predictive performance. However, the trees in bagging are not completely independent of each other since all the original predictors are considered at every split of every tree.</p>
 <p>So trees from different bootstrap samples typically have similar structure to each other (especially at the top of the tree) due to underlying relationships. They are correlated.</p>
 </section>
-<section id="regression-with-a-random-forest-1" class="slide level2">
+<section id="regression-with-a-random-forest-1" class="slide level2 scrollable">
 <h2>Regression with a random forest</h2>
 <p>Tree correlation prevents bagging from optimally reducing the variance of the predictive values. Reducing variance further can be achieved by injecting more randomness into the tree-growing process. Random forests achieve this in two ways:</p>
 <div style="font-size: smaller">
@@ -1365,7 +1386,7 @@ qsec        -18.944318</code></pre>
 </ul>
 </div>
 </section>
-<section id="regression-with-gradient-boosting-6" class="slide level2">
+<section id="regression-with-gradient-boosting-6" class="slide level2 scrollable">
 <h2>Regression with gradient boosting</h2>
 <p>Here is the algorithm for boosted regression trees with features <span class="math inline">\(x\)</span> and response <span class="math inline">\(y\)</span>:</p>
 <div style="font-size: smaller">
@@ -1390,7 +1411,7 @@ qsec        -18.944318</code></pre>
 <p>Kernel Regression is a non-parametric technique in machine learning used to estimate the relationship between a dependent variable and one or more independent variables.</p>
 <p>Unlike linear regression, Kernel Regression does not assume a specific form for the relationship between the variables. Instead, it uses a weighted average of nearby observed data points to make predictions.</p>
 </section>
-<section id="kernel-regression-1" class="slide level2">
+<section id="kernel-regression-1" class="slide level2 scrollable">
 <h2>Kernel Regression</h2>
 <div style="font-size: large">
 <ol type="1">
@@ -1508,7 +1529,7 @@ qsec        -18.944318</code></pre>
 <h2>Regression with neural nets</h2>
 <p>Regression with neural nets involves using artificial neural networks (ANNs) to predict a continuous output variable based on one or more input variables. Neural nets are powerful, flexible models that can capture complex relationships and patterns in the data.</p>
 </section>
-<section id="regression-with-anns-components" class="slide level2">
+<section id="regression-with-anns-components" class="slide level2 scrollable">
 <h2>Regression with ANNs: Components</h2>
 <div style="font-size: x-large">
 <ol type="1">
@@ -1530,7 +1551,7 @@ qsec        -18.944318</code></pre>
 </ol>
 </div>
 </section>
-<section id="regression-with-anns-components-1" class="slide level2">
+<section id="regression-with-anns-components-1" class="slide level2 scrollable">
 <h2>Regression with ANNs: Components</h2>
 <div style="font-size: x-large">
 <ol start="4" type="1">
@@ -1549,7 +1570,7 @@ qsec        -18.944318</code></pre>
 </ol>
 </div>
 </section>
-<section id="regression-with-anns-algorithm" class="slide level2">
+<section id="regression-with-anns-algorithm" class="slide level2 scrollable">
 <h2>Regression with ANNs: Algorithm</h2>
 <div style="font-size: x-large">
 <ol type="1">
@@ -1564,7 +1585,7 @@ qsec        -18.944318</code></pre>
 </ol>
 </div>
 </section>
-<section id="regression-with-anns-algorithm-1" class="slide level2">
+<section id="regression-with-anns-algorithm-1" class="slide level2 scrollable">
 <h2>Regression with ANNs: Algorithm</h2>
 <div style="font-size: x-large">
 <ol start="3" type="1">
