@@ -95,6 +95,8 @@ Write and execute the code to perform summary EDA on the Ames Housing data using
 # PLEASE SHOW YOUR WORK
 
 ```
+
+Is there any missing data? Yes / No
 :::
 
 ## Exercise 2: Train / Test Splits
@@ -220,11 +222,21 @@ all_workflows <-
     models = list(base = ____, glmnet = ____, forest = ____)
   )
 ```
+
+```{r}
+#| label: unnest the info column of all_workflows to show the workflow structure 
+# PLEASE SHOW YOUR WORK
+
+
+
+```
 :::
 
 ## Exercise 8
 
-Map the default function (`tune::tune_grid()`) across the workflows in the workflowset you just created and update the variable `all_workflows` with the result
+Map the default function (`tune::tune_grid()`) across the workflows in the workflowset you just created and update the variable `all_workflows` with the result.
+
+This will take some time to complete.
 
 ```{r}
 #| eval: false
@@ -261,6 +273,8 @@ all_workflows %>%
   dplyr::arrange(desc(__) ) %>% 
   dplyr::slice(1)
 ```
+
+Look at the columns to the right of the .config column (columns 7,8,9,10) to see the tuned parameters for each model.
 :::
 
 ## Exercise 9
@@ -330,7 +344,7 @@ testing_fit <- best_model_workflow %>%
   fit(data = ames_test)
 
 
-# What is the ratio of the OOB prediction errors (MSE): test/train?
+# What is the ratio of the OOB prediction errors (MSE): test/train? _____
 
 ```
 :::

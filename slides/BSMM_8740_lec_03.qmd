@@ -44,6 +44,19 @@ theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 
 -   Today we look at regression methods we might apply to understand relationships between measurements in our data.
 
+## Week 3 Roadmap
+
+::: {.incremental}
+- Linear regression
+    - derivation of OLS estimate 
+    - bias-variance tradeoff and penalized models
+- Generalized linear models  
+- Non-parametric regression  
+    - Tree models: bagging and boosting; XGBoost
+    - Kernel regression  
+    - Neural nets  
+:::
+
 # Linear regression
 
 ## Linear regression models

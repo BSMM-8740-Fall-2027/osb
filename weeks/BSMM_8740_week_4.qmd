@@ -20,6 +20,14 @@ editor: visual
 
 📖 Check out *Tidymodels Cheatsheet*: [Tidymodels Functions](https://bcheggeseth.github.io/253_spring_2024/tidymodels-cheatsheet.html#tidymodels-functions)
 
+📖 Get familiar with this *Tidymodels Tutorial*: [Machine learning in R with tidymodels](https://www.stepbystepdatascience.com/ml-with-tidymodels)
+
+📖 Go further with *Hyperparameter Tuning*: [Hyperparameter tuning and model stacking using tidymodels in R](https://www.stepbystepdatascience.com/tuning-hyperparameters-tidymodels)
+
+📖 Here's a tutorial on *XGBoost Tuning*: [XGBOOST Tuning – Tutorial in {xgboost} and {tidymodels}](https://optimumsportsperformance.com/blog/xgboost-tuning-tutorial-in-xgboost-and-tidymodels/)
+
+📖 Read about The yardstick package: [The yardstick package](https://www.robertlankford.com/blog-posts/data-science/series-tidymodels/04-yardstick/)
+
 ## Participate
 
 🖥️ [Lecture 4 -The TidyModels Package](/slides/BSMM_8740_lec_04.html)
