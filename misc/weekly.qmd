@@ -33,11 +33,11 @@ title: "weekly checklist"
 -   [x] weekly lab
 -   [x] weekly lab solutions
 -   [x] weekly lab repo
--   [ ] weekly lab invite
+-   [x] weekly lab invite
 
 ## Week 4
 
--   [ ] weekly slides
+-   [x] weekly slides
 -   [x] weekly reading
     -   [x] links
     -   [x] readings

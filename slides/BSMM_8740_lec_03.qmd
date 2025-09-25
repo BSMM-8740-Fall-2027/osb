@@ -235,13 +235,18 @@ When $D>1$ it is common to append the unit vector to the covariate matrix $X=(1,
 
 ## Linear regression models
 
+::: {style="font-size: xx-large"}
 Recall that the one dimensional Normal/Gaussian probability density (aka likelihood) for outcome $y_n$ and mean $\beta x_n$ is:
 
 $$
-\pi\left(y_n;\mu=\beta x_n,\sigma^2\right)=\mathscr{N}\left(y_n;\mu=\beta x_n,\sigma^2\right)=\frac{1}{\sqrt{2\pi\sigma^2}}e^{\frac{1}{2}\frac{(y_n-\beta x_n)^2}{\sigma^2}}
+\begin{align*}
+\pi\left(y_{n};\mu=\beta x_{n},\sigma^{2}\right) & =\mathscr{N}\left(y_{n};\mu=\beta x_{n},\sigma^{2}\right)\\
+ & =\frac{1}{\sqrt{2\pi\sigma^{2}}}e^{-\frac{1}{2}\frac{(y_{n}-\beta x_{n})^{2}}{\sigma^{2}}}
+\end{align*}
 $$
 
 And the likelihood of multiple observations is the product of the likelihoods for each observation.
+:::
 
 ## Linear regression models
 
