@@ -9512,7 +9512,7 @@
     "href": "slides/BSMM_8740_lec_03.html#linear-regression-models-6",
     "title": "Regression methods",
     "section": "Linear regression models",
-    "text": "Linear regression models\nRecall that the one dimensional Normal/Gaussian probability density (aka likelihood) for outcome \\(y_n\\) and mean \\(\\beta x_n\\) is:\n\\[\n\\pi\\left(y_n;\\mu=\\beta x_n,\\sigma^2\\right)=\\mathscr{N}\\left(y_n;\\mu=\\beta x_n,\\sigma^2\\right)=\\frac{1}{\\sqrt{2\\pi\\sigma^2}}e^{\\frac{1}{2}\\frac{(y_n-\\beta x_n)^2}{\\sigma^2}}\n\\]\nAnd the likelihood of multiple observations is the product of the likelihoods for each observation."
+    "text": "Linear regression models\n\nRecall that the one dimensional Normal/Gaussian probability density (aka likelihood) for outcome \\(y_n\\) and mean \\(\\beta x_n\\) is:\n\\[\n\\begin{align*}\n\\pi\\left(y_{n};\\mu=\\beta x_{n},\\sigma^{2}\\right) & =\\mathscr{N}\\left(y_{n};\\mu=\\beta x_{n},\\sigma^{2}\\right)\\\\\n& =\\frac{1}{\\sqrt{2\\pi\\sigma^{2}}}e^{-\\frac{1}{2}\\frac{(y_{n}-\\beta x_{n})^{2}}{\\sigma^{2}}}\n\\end{align*}\n\\]\nAnd the likelihood of multiple observations is the product of the likelihoods for each observation."
   },
   {
     "objectID": "slides/BSMM_8740_lec_03.html#linear-regression-models-7",

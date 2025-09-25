@@ -348,11 +348,16 @@ f(x,y;x_0,y_0) &amp; =f(x_{0},y_{0})+f_{x}(x_{0},y_{0})(x-x_{0})+f_{y}(x_{0},y_{
 <aside><ol class="aside-footnotes"><li id="fn2"><p>In the 1D case, the constant is often explicit and the RHS of the regression equation is written as <span class="math inline">\(1+\beta\mathbf{x}\)</span>, which estimates two coefficients <span class="math inline">\(\beta_0, \beta_1\)</span>.</p></li></ol></aside></section>
 <section id="linear-regression-models-6" class="slide level2">
 <h2>Linear regression models</h2>
+<div style="font-size: xx-large">
 <p>Recall that the one dimensional Normal/Gaussian probability density (aka likelihood) for outcome <span class="math inline">\(y_n\)</span> and mean <span class="math inline">\(\beta x_n\)</span> is:</p>
 <p><span class="math display">\[
-\pi\left(y_n;\mu=\beta x_n,\sigma^2\right)=\mathscr{N}\left(y_n;\mu=\beta x_n,\sigma^2\right)=\frac{1}{\sqrt{2\pi\sigma^2}}e^{\frac{1}{2}\frac{(y_n-\beta x_n)^2}{\sigma^2}}
+\begin{align*}
+\pi\left(y_{n};\mu=\beta x_{n},\sigma^{2}\right) &amp; =\mathscr{N}\left(y_{n};\mu=\beta x_{n},\sigma^{2}\right)\\
+&amp; =\frac{1}{\sqrt{2\pi\sigma^{2}}}e^{-\frac{1}{2}\frac{(y_{n}-\beta x_{n})^{2}}{\sigma^{2}}}
+\end{align*}
 \]</span></p>
 <p>And the likelihood of multiple observations is the product of the likelihoods for each observation.</p>
+</div>
 </section>
 <section id="linear-regression-models-7" class="slide level2">
 <h2>Linear regression models</h2>
@@ -576,7 +581,7 @@ Q'QR\beta &amp; = Q'y\\
 <span id="cb10-6"><a></a><span class="sc">&gt;</span> <span class="fu">cat</span>(<span class="st">"vector y</span><span class="sc">\n</span><span class="st">"</span>)</span>
 <span id="cb10-7"><a></a><span class="sc">&gt;</span> y <span class="ot">&lt;-</span> A <span class="sc">%*%</span> x ; y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell quarto-layout-panel" data-layout-align="center" data-layout-nrow="3">
+<div class="cell quarto-layout-panel" data-layout-nrow="3" data-layout-align="center">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-stdout quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <pre><code>matrix A</code></pre>
