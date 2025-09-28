@@ -54,7 +54,7 @@ title: "weekly checklist"
     -   [ ] links
     -   [ ] readings
     -   [ ] study guide
--   [ ] weekly lab
+-   [x] weekly lab
 -   [ ] weekly lab solutions
--   [ ] weekly lab repo
+-   [x] weekly lab repo
 -   [ ] weekly lab invite
