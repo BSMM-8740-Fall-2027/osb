@@ -50,11 +50,11 @@ title: "weekly checklist"
 ## Week 5
 
 -   [ ] weekly slides
--   [ ] weekly reading
+-   [x] weekly reading
     -   [ ] links
-    -   [ ] readings
-    -   [ ] study guide
+    -   [x] readings
+    -   [x] study guide
 -   [x] weekly lab
--   [ ] weekly lab solutions
+-   [x] weekly lab solutions
 -   [x] weekly lab repo
 -   [ ] weekly lab invite
