@@ -3121,7 +3121,54 @@ D_{i} & =\mu+\pi Z_{i}+\eta_{i}\;\text{the "first stage"}
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula $\varpropto\wasypropto\propto$
+\begin_inset Formula 
+\begin{align*}
+\mathcal{L}(\boldsymbol{\theta}|\mathbf{X}) & =P(X\vert\theta)=\sum_{\mathbf{Z}}\mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})P(\mathbf{Z}|\boldsymbol{\theta})\\
+ & =\sum_{\mathbf{Z}}P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})\\
+ & =\sum_{\mathbf{Z}}\mathcal{L}(\boldsymbol{\theta}|\mathbf{X},\mathbf{Z})P(\mathbf{Z}|\boldsymbol{\theta})
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\frac{P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})}{q(\mathbf{Z})} & =C\\
+\sum_{Z}q(\mathbf{Z}) & =\sum_{Z}\frac{1}{C}P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})=1\quad\text{(total probability)}\\
+C & =\sum_{Z}P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})\\
+q(\mathbf{Z}) & =\frac{P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})}{\sum_{Z'}P(\boldsymbol{X},\boldsymbol{Z}'\vert\boldsymbol{\theta})P(\mathbf{Z}'|\boldsymbol{\theta})}=\frac{P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})}{P(\boldsymbol{X}\vert\boldsymbol{\theta})}\\
+ & =P\left(\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}\right)\quad\text{(bayes theroem)}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\log P(\mathbf{X}\vert\boldsymbol{\theta}) & \geq\sum_{\mathbf{Z}}q(\mathbf{Z})\log\frac{P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})}{q(\mathbf{Z})}\\
+ & =\sum_{\mathbf{Z}}P\left(\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}^{(t)}\right)\log\frac{P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})}{P\left(\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}^{(t)}\right)}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\arg\max_{\theta}\log P(\mathbf{X}\vert\boldsymbol{\theta}) & =\arg\max_{\theta}\sum_{\mathbf{Z}}P\left(\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}^{(t)}\right)\log\frac{P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})}{P\left(\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}^{(t)}\right)}\\
+ & =\arg\max_{\theta}\sum_{\mathbf{Z}}P\left(\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}^{(t)}\right)\left(\log P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})P(\mathbf{Z}|\boldsymbol{\theta})-\log P\left(\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}^{(t)}\right)\right)\\
+ & =\arg\max_{\theta}\sum_{\mathbf{Z}}P\left(\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}^{(t)}\right)\left(\log P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})\right)\\
+ & =\arg\max_{\theta}\mathbb{E}_{\mathbf{Z}\vert\mathbf{X},\boldsymbol{\theta}^{(t)}}\left[\log P(\boldsymbol{X},\boldsymbol{Z}\vert\boldsymbol{\theta})\right]
+\end{align*}
+
 \end_inset
 
 
