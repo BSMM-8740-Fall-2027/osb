@@ -6,7 +6,6 @@ editor: visual
 
 ::: callout-important
 -   Due date: Lab 5 - Sunday, Oct 12, 5pm ET
--   Quiz 1 will be in class on October 08 (est. 30 minutes)
 :::
 
 ## Prepare
@@ -20,6 +19,10 @@ editor: visual
 📖 Check out [Tidymodels Tutorial - Classification](https://www.kaggle.com/code/burakdilber/tidymodels-tutorial-classification)
 
 📖 Look at [Classification: ROC and AUC](https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc)
+
+📖 Check out [A Tutorial on Supervised Machine Learning in Classification](https://jbds.isdsa.org/public/journals/1/html/v5n1/bain/)
+
+
 
 ## Participate
 

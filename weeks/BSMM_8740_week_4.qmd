@@ -6,6 +6,8 @@ editor: visual
 
 ::: callout-important
 -   Due date: Lab 4 - Sunday, Oct 05, 5pm ET
+-   Quiz 1 will be in class on October 08 (est. 30 minutes)
+    -   [**NOTE**]{.underline}: quiz will be on lab computers, **not** your own machines
 :::
 
 ## Prepare
