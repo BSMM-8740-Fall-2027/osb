@@ -22,6 +22,7 @@ editor: visual
 
 📖 Check out [A Tutorial on Supervised Machine Learning in Classification](https://jbds.isdsa.org/public/journals/1/html/v5n1/bain/)
 
+📖 Review a classification workflow using tidyverse [A Tidymodels Tutorial: A Structural Approach](https://lsinks.github.io/posts/2023-04-10-tidymodels/tidymodels_tutorial.html)
 
 
 ## Participate
@@ -32,9 +33,6 @@ editor: visual
 
 ⌨️ [Lab 5 - Classification & Clustering Methods](/labs/BSMM_8740_lab_5.html)
 
-## Podcast
-
-[Listen here](https://notebooklm.google.com/notebook/b5ecc0dc-375c-4b0a-99e5-64c2d413f84d/audio)
 
 ## Study
 

@@ -1,0 +1,29 @@
+---
+title: "North American Industry Jobs Requiring Causal Analysis"
+format: html
+---
+
+This table lists 10 current industry roles in North America that explicitly require causal inference or experimentation skills. Links go **directly** to the job postings. Ordered from most recent to least recent where posting dates were visible; otherwise ordered by last-known update.
+
+| Job Title | Company / Industry | Posting URL | Brief requirements (causal focus) | Posted/Updated |
+|----|----|----|----|----|
+| Subscriptions & Commerce Data Scientist | Apple · Consumer Tech | [jobs.apple.com](https://jobs.apple.com/en-us/details/200623528-0836/subscriptions-commerce-data-scientist?team=SFTWR) | Evaluate incremental impact of subscription initiatives using **causal inference** and testing methodologies. Partner on LTV/propensity models. | 4 days ago |
+| Data Scientist & Insights Lead | Apple · Software/AI | [jobs.apple.com](https://jobs.apple.com/en-us/details/200619677-0836/data-scientist-and-insights-lead?team=SLDEV) | Build ML models including attribution and **causal inference**; support **A/B testing** and insights platforms. | 3 days ago |
+| Senior Data Scientist, Experimentation | Apple · Ads/Platform | [jobs.apple.com](https://jobs.apple.com/en-us/details/200618200-2621/senior-data-scientist-experimentation?team=SFTWR) | Design controlled experiments and **counterfactual causal inference** studies; automate experiment reporting at scale. | Aug 27, 2025 |
+| Sr. Data Scientist, Experimentation | Apple · Software | [jobs.apple.com](https://jobs.apple.com/en-us/details/200617039-0670/sr-data-scientist-experimentation?team=SFTWR) | Causal inference modeling, anomaly detection, experiment design and analysis. | Aug 19, 2025 |
+| Senior Data Scientist, Product (Workspace Monetization) | Google · SaaS | [careers.google.com](https://careers.google.com/jobs/results/77551237133673158-senior-data-scientist/) | Lead product experiments; apply observational analysis or **causal inference** to key product questions. | Recently updated |
+| Business Data Scientist, YouTube Music Partners | Google · Media/Platform | [careers.google.com](https://careers.google.com/jobs/results/83449842138784454-business-data-scientist/) | Broad knowledge of **causal inference**, Bayesian stats; use experimental and observational techniques. | Current |
+| Senior ML Engineer, Ads R&D | Spotify · Advertising | [lifeatspotify.com](https://www.lifeatspotify.com/jobs/senior-machine-learning-engineer-ads-rd) | Use **causal inference** and large-scale online **experimentation** to improve ad loads and outcomes. | Current |
+| Principal Data Scientist | Walmart · Retail | [careers.walmart.com](https://careers.walmart.com/us/jobs/wd2290812-usa-principal-data-scientist) | Mastery of RCTs and quasi-experimental methods (**DiD, synthetic controls, ITS, PSM**). Power/MDE and variance reduction. | Current |
+| Senior Economist, Devices Economic Value | Amazon · Consumer Devices | [amazon.jobs](https://amazon.jobs/jobs/2975555) | Apply **causal inference**, structural modeling, and ML to devices economics and measurement. | Current |
+| Senior Data Scientist, Experimentation (entry‑level examples below) | Robinhood · Fintech | [boards.greenhouse.io](https://boards.greenhouse.io/robinhood/jobs/7272710) | Design and analyze **A/B tests**; conduct **causal inference** to evaluate product changes; build metrics and dashboards. | Current |
+
+### Entry‑level examples
+
+These are suitable for early‑career candidates or interns and explicitly mention causal/experimentation:
+
+-   **Intern — Experimentation & Causal Inference, Data Science & Engineering**, Netflix. [entertainmentcareers.net](https://www.entertainmentcareers.net/netflix/intern-experimentation-and-causal-inference-data-science-and-engineering/job/450849/) — Internship focused on experimentation and **observational causal inference**.
+-   **Data Scientist (L5) — Ads / Experimentation**, Netflix. [tealhq.com](https://www.tealhq.com/job/data-scientist-l5-ads-experimentation_880c22f9-1ddd-4ebf-992e-c9288b79d742) — Mid‑level, included here as a near‑entry benchmark for experimentation/causal roles.
+-   **Senior Research Analyst**, Aledade. [jobs.lever.co](https://jobs.lever.co/aledade/541d8298-5769-4197-983e-b8d0a70ada9d) — Quasi‑experimental designs (**RD, DiD, IV, matched designs**) in healthcare research (early analyst path).
+
+> Tip: Many companies rotate undergraduate/graduate **Data Science Intern** or **Associate Data Scientist** roles that include A/B testing and causal methods. Set alerts for “causal inference”, “experiment\*”, “incrementality”, “uplift”, “difference‑in‑differences”, and “synthetic control” on company career pages.

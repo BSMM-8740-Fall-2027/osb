@@ -119,6 +119,15 @@ broom::tidy(model, conf.int = TRUE)
 # Or use summary for traditional R output
 summary(model)
 
+stage1 <- fixest::feols(sales ~ treat | post+store , data = df |> dplyr::mutate(group = ifelse(group == treat, 1, 0)))
+stage1 <- fixest::feols(sales ~ treat , data = df |> dplyr::mutate(group = ifelse(group == treat, 1, 0)))
+
+
+model <- fixest::feols(sales ~ treat * post
+                       , data = df |> dplyr::mutate(group = ifelse(group == treat, 1, 0))
+                       , cluster = ~store)
+summary(model)
+
 # =========
 
 # Aggregate sales by week
