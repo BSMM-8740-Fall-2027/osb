@@ -1,0 +1,11 @@
+
+
+## Even more entry-level roles using the word "causal"
+
+| Job Title | Company / Location | Posting URL | Why it fits |
+|---|---|---|---|
+| Data Scientist Intern, Product Data Science, Summer 2026 (PhD) | TikTok · San Jose, USA | https://lifeattiktok.com/search/7533020328604649746 | Mentions quantifying impact through **causal inference** in the responsibilities. |
+| Data Scientist Intern, TikTok Search, Summer 2026 (BS/MS) | TikTok · San Jose, USA | https://lifeattiktok.com/search/7533404377287280903 | Mentions **causal inference** and experimentation in responsibilities. |
+| Data Scientist Intern, TikTok Search, Summer 2026 (BS/MS) | TikTok · Singapore | https://lifeattiktok.com/search/7534375783986481416 | Mentions **causal inference** in responsibilities. |
+| Experimentation and Causal Inference Intern | Netflix · Worldwide | https://prosple.com/graduate-employers/netflix/jobs-internships/experimentation-and-causal-inference-intern | Title and description include **causal inference** and experimentation. |
+| Backend Software Engineer Graduate, Libra A/B Testing Platform, 2026 Start | ByteDance · Singapore | https://jobs.bytedance.com/en/position/7530937883080263943/detail | Role builds the A/B testing platform that covers **causal inference** scenarios. |

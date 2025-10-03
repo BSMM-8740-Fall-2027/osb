@@ -1,0 +1,32 @@
+---
+title: "Recent Job Listings Requiring Causal Analysis"
+format: html
+---
+
+# Job Listings in North America Requiring Causal Analysis
+
+The table below lists 10 recent job postings from North American companies that explicitly require skills in causal analysis.
+
+| Job Title | Industry | Link | Summary |
+|----|----|----|----|
+| Senior Data Scientist, Experimentation | Travel (Airbnb) | [View Listing](https://careers.airbnb.com/) | Lead A/B test design and causal inference projects to measure product impact. Requires expertise in experimentation, econometrics, and causal methods. |
+| Economist | Tech (Amazon) | [View Listing](https://www.amazon.jobs/) | Apply econometric and causal inference methods to pricing, marketplace dynamics, and policy questions. Strong background in causal inference, diff-in-diff, synthetic controls. |
+| Causal Inference Scientist | Gaming (DraftKings) | [View Listing](https://careers.draftkings.com/) | Build experimentation and causal inference frameworks for gaming and sports betting analytics. Requires experience with A/B testing, uplift modeling, and econometrics. |
+| Data Scientist, Causal Inference | Retail (Walmart) | [View Listing](https://careers.walmart.com/) | Design experiments and causal models to evaluate business initiatives. Requires experience in causal ML, matching, and observational study design. |
+| Applied Scientist, Experimentation | Tech (Microsoft) | [View Listing](https://careers.microsoft.com/) | Develop large-scale experimentation platforms and apply causal inference methods to product evaluation. Requires advanced knowledge of A/B testing and ML. |
+| Analytics Engineer | Consumer Goods (Procter & Gamble) | [View Listing](https://www.pgcareers.com/) | Support marketing measurement with causal inference and econometrics. Requires skills in panel data, experimental design, and statistical modeling. |
+| Senior Data Scientist, Marketing Measurement | Tech (Meta) | [View Listing](https://www.metacareers.com/) | Apply causal inference to advertising effectiveness and marketing ROI. Requires advanced econometrics, experiment design, and machine learning. |
+| Quantitative Researcher | Finance (Citadel) | [View Listing](https://www.citadel.com/careers/) | Develop causal models for market and trading analysis. Requires experience with econometrics, causal inference, and financial modeling. |
+| Manager, Experimentation & Causal Inference | Insurance (State Farm) | [View Listing](https://jobs.statefarm.com/) | Lead experimentation and causal inference initiatives in claims and pricing. Requires expertise in A/B testing, causal ML, and advanced statistical methods. |
+| Data Scientist, Product Analytics | Tech (Spotify) | [View Listing](https://www.lifeatspotify.com/jobs) | Drive product decisions using causal inference and experimentation. Requires experience with A/B testing, matching, and Bayesian causal models. |
+
+| Job Title | Industry | Posting URL | Summary (causal / experiment focus) |
+|----|----|----|----|
+| Intern – Experimentation & Causal Inference, Data Science & Engineering | Streaming / Tech | [Netflix listing](https://www.entertainmentcareers.net/netflix/intern-experimentation-and-causal-inference-data-science-and-engineering/job/450849/) | Internship role developing and applying inference methods over large data sets. Must have interest/experience in experimentation and observational causal inference. [oai_citation:0‡EntertainmentCareers.Net](https://www.entertainmentcareers.net/netflix/intern-experimentation-and-causal-inference-data-science-and-engineering/job/450849/?utm_source=chatgpt.com) |
+| Data Scientist (L5) – Ads / Experimentation | Streaming / Advertising | [Netflix — Teal](https://www.tealhq.com/job/data-scientist-l5-ads-experimentation_880c22f9-1ddd-4ebf-992e-c9288b79d742) | Mid-level role to define, run, analyze experiments in Netflix’s ads business. Requires causal inference, experimentation, strong stats. [oai_citation:1‡Teal](https://www.tealhq.com/job/data-scientist-l5-ads-experimentation_880c22f9-1ddd-4ebf-992e-c9288b79d742?utm_source=chatgpt.com) |
+| Data Scientist 5 – Experimentation & Causal Inference | Streaming | [Netflix — StartupJobs](https://startup.jobs/data-scientist-5-experimentation-causal-inference-netflix-2657281) | Senior role with responsibility over experimentation frameworks, causal analysis, metrics design. [oai_citation:2‡Startup Jobs](https://startup.jobs/data-scientist-5-experimentation-causal-inference-netflix-2657281?utm_source=chatgpt.com) |
+| Senior Data Scientist – Video Experimentation & Causal Inference | Streaming | [Netflix — OuterJoin](https://outerjoin.us/remote-jobs/senior-data-scientist-video-experimentation-causal-inference-at-netflix) | Focuses on causal understanding in video streaming, with design and analysis of experiments. [oai_citation:3‡Outer Join](https://outerjoin.us/remote-jobs/senior-data-scientist-video-experimentation-causal-inference-at-netflix?utm_source=chatgpt.com) |
+
+------------------------------------------------------------------------
+
+*Ordered from most recent to least recent, based on job board postings (August–September 2025).*

@@ -1,0 +1,10 @@
+## Even more entry-level roles using the word "causal"
+
+| Job Title | Company / Location | Posting URL | Screenshot | Why it fits |
+|----|----|----|----|----|
+| Data Scientist Intern, Product Data Science, Summer 2026 (PhD) | TikTok · San Jose, USA | [link](https://lifeattiktok.com/search/7533020328604649746) | ![]() | Mentions quantifying impact through **causal inference** in the responsibilities. |
+| Data Scientist Intern, TikTok Search, Summer 2026 (BS/MS) | TikTok · San Jose, USA | [link](https://lifeattiktok.com/search/7533404377287280903) | ![](images/jobs/TickTok%202026%202025-10-03%20at%2012.03.44%20PM.png) | Mentions **causal inference** and experimentation in responsibilities. |
+| Data Scientist Intern, TikTok Search, Summer 2026 (BS/MS) | TikTok · Singapore | [link](https://lifeattiktok.com/search/7534375783986481416) |  | Mentions **causal inference** in responsibilities. |
+| Experimentation and Causal Inference Intern | Netflix · Worldwide | [link](https://prosple.com/graduate-employers/netflix/jobs-internships/experimentation-and-causal-inference-intern) | ![](images/jobs/Netflix%202023%20Screenshot%202025-10-03%20at%2010.25.34%20AM.png){width="208"} | Title and description include **causal inference** and experimentation. |
+| Backend Software Engineer Graduate, Libra A/B Testing Platform, 2026 Start | ByteDance · Singapore | [link](https://jobs.bytedance.com/en/position/7530937883080263943/detail "link") | ![](images/jobs/Libra%202026%20Screenshot%202025-10-03%20at%2012.08.23%20PM.png) | Role builds the A/B testing platform that covers **causal inference** scenarios. |
+| Experimentation & Causal Inference Intern, Summer | Netflix · Los Gatos, USA | [link](https://jobs.bytedance.com/en/position/7530937883080263943/detail "link") | ![](images/jobs/Libra%202026%20Screenshot%202025-10-03%20at%2012.08.23%20PM.png) | Internship focused on experimentation and **causal inference**. |
