@@ -128,7 +128,7 @@ model <- fixest::feols(sales ~ treat * post
                        , cluster = ~store)
 summary(model)
 
-# =========
+# ====================================================================================
 
 # Aggregate sales by week
 

@@ -92,6 +92,8 @@ website:
             text: Bias-Variance Trade offs
           - href: supplemental/collinearity.qmd
             text: Collinearity
+          - href: supplemental/lab_machine_inst.qmd
+            text: Lab machine setup instructions
           - href: supplemental/log-transformations.qmd
             text: Log transformations
           - href: supplemental/mlr-matrix.qmd
