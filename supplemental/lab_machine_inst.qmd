@@ -1,0 +1,20 @@
+---
+title: "Lab Machine Setup Instructions"
+---
+
+::: callout-important
+To access Github from the lab, you will need to make sure you are logged in as follows:
+
+-   username: **.\\daladmin**
+-   password: **Business507!**
+
+Remember to (create a PAT and set your git credentials)
+
+-   [**create your PAT**]{.underline} using `usethis::create_github_token()` ,
+
+-   [**store your PAT**]{.underline} with `gitcreds::gitcreds_set()` ,
+
+-   [**set your username and email**]{.underline} with
+
+    -   `usethis::use_git_config( user.name = ___, user.email = ___)`
+:::
