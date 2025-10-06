@@ -11,6 +11,7 @@ logo: "images/logo.png"
 format: 
   revealjs: 
     chalkboard: true
+    scrollable: true
     theme: slides.scss
     multiplex: true
     transition: fade
@@ -45,9 +46,19 @@ theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 
 -   Today we look at the using the Tidymodels package to build classification and clustering models.
 
+## Week 5 Roadmap
+
+::: incremental
+-   Classification
+    -   eager learners: Logistic, Naive Bayes, SVM
+    -   lazy learners: KNN, polynomial KNN, RBF KNN
+-   Clustering
+    -   k-means
+:::
+
 # Classification Methods
 
-## Classification
+##  Classification
 
 -   Classification is a supervised machine learning method where the model tries to predict a categorical outcome for given input data.
 -   These models are essential in various business applications, such as credit scoring, customer segmentation, fraud detection, and more. Classification methods can broadly be categorized into two types: eager learners and lazy (instance-based) learners.
@@ -178,7 +189,7 @@ Example lazy learners are:
 
 ## Types of classification
 
--   Binary classification
+-   Binary classification ( \[0,1\], \[yes,no\], \[in,out\], \[friend,foe\] )
 -   Multi-Class Classification (mutually exclusive)
     -   [multiclass](https://juliasilge.com/blog/datasaurus-multiclass/)
 -   Multi-Label Classification (not mutually exclusive)
@@ -206,8 +217,9 @@ It follows that $\pi = \frac{e^\eta}{1+e^\eta} = \frac{1}{1+e^{-\eta}}$, which i
 
 ## Binary Logistic Regression
 
+
 ::::: columns
-::: {.column width="40%"}
+::: {.column width="40%" .fragment}
 ```{r}
 #| fig-height: 10
 tibble::tibble(eta = seq(-5,5,0.2)) %>% dplyr::mutate(pi = 1/(1+exp(-eta))) %>% 
@@ -215,14 +227,16 @@ ggplot(aes(x=eta, y=pi)) + geom_point() + theme_bw(base_size = 38)
 ```
 :::
 
-::: {.column width="60%" style="font-size: smaller"}
+::: {.column width="60%" style="font-size: smaller" .fragment}
 $$\begin{align*}
 \pi & =\frac{1}{1+e^{-\eta}}\;\text{(logistic function)}\\
 \log\left(\frac{\pi}{1-\pi}\right) & =\log\left(\frac{\frac{1}{1+e^{-\eta}}}{1-\frac{1}{1+e^{-\eta}}}\right)\\
- & =\log\left(\frac{\frac{1}{1+e^{-\eta}}}{\frac{e^{-\eta}}{1+e^{-\eta}}}\right)=\log\left(e^{\eta}\right)=\eta
+ & =\log\left(\frac{\frac{1}{1+e^{-\eta}}}{\frac{e^{-\eta}}{1+e^{-\eta}}}\right)\\
+ &=\log\left(e^{\eta}\right)=\eta
 \end{align*}$$
 :::
 :::::
+
 
 ## Binary Logistic Regression
 
@@ -545,7 +559,7 @@ $$
 
 This method starts with Bayes rule:
 
-for $K$ classes and an observation $x$ consisting of $N$ features $\{x_1,\ldots,x_N\}$, since $\mathbb{P}\left[\left.C_{k}\right|x_{1},\ldots,x_{N}\right]\times\mathbb{P}\left[x_{1},\ldots,x_{N}\right]$ is equal to $\mathbb{P}\left[\left.x_{1},\ldots,x_{N}\right|C_{k}\right]\times\mathbb{P}\left[C_{k}\right]$, we can write
+for $K$ classes ($C_1,\ldots C_k$) and an observation $x$ consisting of $N$ features $\{x_1,\ldots,x_N\}$, since $\mathbb{P}\left[\left.C_{k}\right|x_{1},\ldots,x_{N}\right]\times\mathbb{P}\left[x_{1},\ldots,x_{N}\right]$ is equal to $\mathbb{P}\left[\left.x_{1},\ldots,x_{N}\right|C_{k}\right]\times\mathbb{P}\left[C_{k}\right]$, we can write
 
 $$
 \mathbb{P}\left[\left.C_{k}\right|x_{1},\ldots,x_{N}\right]=\frac{\mathbb{P}\left[\left.x_{1},\ldots,x_{N}\right|C_{k}\right]\times\mathbb{P}\left[C_{k}\right]}{\mathbb{P}\left[x_{1},\ldots,x_{N}\right]}
@@ -573,7 +587,7 @@ The different naive Bayes classifiers differ mainly by the assumptions they make
 
 ## Naive Bayes Classification
 
-If our features are all ordinal, then
+If our features are all ordinal (i.e. categorical), then
 
 -   The class probabilities[^3] are simply the frequency of observations that belong to each class divided by the total number of observations.
 
@@ -856,9 +870,9 @@ w^T x + b = 0
 \end{equation}
 $$
 
-where $w$ is the weight vector (normal to the hyperplane) and $b$ is the bias term[^6].
+where $w$ is the weight vector (normal to the hyperplane) and $b$ is the bias term[^5].
 
-[^6]: if $w^T x + b = 0$ separates classes, so does $2w^T x + 2b = 0$ so we fix the scale by normalizing all vectors by $\frac{1}{||w||}$.
+[^5]: if $w^T x + b = 0$ separates classes, so does $2w^T x + 2b = 0$ so we fix the scale by normalizing all vectors by $\frac{1}{||w||}$.
 
 ## SVM math
 
@@ -1000,7 +1014,6 @@ p1 <- ggplot() +
   )
 p1
 ```
-
 
 ## SVM math
 
@@ -1246,6 +1259,7 @@ Running the clustering twice on the same data may not result in the same cluster
 #| echo: true
 #| code-fold: true
 #| eval: false
+#| code-summary: create basic workflow for clustering by k means
 #| code-line-numbers: "1-3|5-10|11-12|14-22"
 # create recipe for 2-D clustering
 cluster_recipe <- data |> 
@@ -1277,6 +1291,7 @@ tuned_results <-
 #| echo: true
 #| code-fold: true
 #| eval: true
+#| code-summary: create data set for 4 clusters
 set.seed(8740)
 
 centers <- tibble::tibble(
@@ -1306,6 +1321,7 @@ p
 ```{r}
 #| echo: true
 #| code-fold: true
+#| code-summary: fit clusters and plot cluster centers along with input data
 #| code-line-numbers: "1-3|4-5|6-9|10-13|14-15"
 # create recipe
 labelled_points_recipe <- labelled_points |> 
@@ -1327,6 +1343,7 @@ p + geom_point(data = cluster_centers, size = 10, shape = "x")
 ```{r}
 #| echo: false
 #| code-fold: true
+#| code-summary: create workflow and fit clusters by k means
 #| eval: false
 # penguins <- modeldata::penguins
 # 
