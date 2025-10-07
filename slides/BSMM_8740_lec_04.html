@@ -224,8 +224,8 @@ L.L. Odette
 <li><p>Today we look at the <code>tidymodels</code> package which will give us a workflow to describe, fit and compare models, using the same approach across methods.</p></li>
 </ul>
 </section>
-<section id="week-3-roadmap" class="slide level2">
-<h2>Week 3 Roadmap</h2>
+<section id="week-4-roadmap" class="slide level2">
+<h2>Week 4 Roadmap</h2>
 <ul>
 <li class="fragment">Tidymodels
 <ul>
@@ -442,14 +442,14 @@ stats::lm(formula = Sale_Price ~ Longitude + Latitude, data = data)
 
 Coefficients:
 (Intercept)    Longitude     Latitude  
- -127907923      -791453      1284066  </code></pre>
+ -127338384      -800948      1249366  </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb12" data-code-line-numbers="2|4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a><span class="sc">&gt;</span> lm_form_fit <span class="sc">%&gt;%</span> parsnip<span class="sc">::</span><span class="fu">extract_fit_engine</span>() <span class="sc">%&gt;%</span> stats<span class="sc">::</span><span class="fu">vcov</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              (Intercept)    Longitude      Latitude
-(Intercept)  4.698202e+13 359677420295 -316428408683
-Longitude    3.596774e+11   3787443171    -119223081
-Latitude    -3.164284e+11   -119223081    7262231753</code></pre>
+(Intercept)  4.771484e+13 364111131502 -323984674156
+Longitude    3.641111e+11   3818253249    -156058898
+Latitude    -3.239847e+11   -156058898    7359938765</code></pre>
 </div>
 </div>
 </section>

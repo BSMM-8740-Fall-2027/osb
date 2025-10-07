@@ -113,6 +113,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -221,6 +222,20 @@ L.L. Odette
 <li><p>Last time we introduced the Tidymodels framework in R</p></li>
 <li><p>We showed how we can use the Tidymodels framework to create a workflow for data prep, feature engineering, model fitting and model evaluation.</p></li>
 <li><p>Today we look at the using the Tidymodels package to build classification and clustering models.</p></li>
+</ul>
+</section>
+<section id="week-5-roadmap" class="slide level2">
+<h2>Week 5 Roadmap</h2>
+<ul>
+<li class="fragment">Classification
+<ul>
+<li class="fragment">eager learners: Logistic, Naive Bayes, SVM</li>
+<li class="fragment">lazy learners: KNN, polynomial KNN, RBF KNN</li>
+</ul></li>
+<li class="fragment">Clustering
+<ul>
+<li class="fragment">k-means</li>
+</ul></li>
 </ul>
 </section>
 <section>
@@ -379,7 +394,7 @@ L.L. Odette
 <section id="types-of-classification" class="slide level2">
 <h2>Types of classification</h2>
 <ul>
-<li>Binary classification</li>
+<li>Binary classification ( [0,1], [yes,no], [in,out], [friend,foe] )</li>
 <li>Multi-Class Classification (mutually exclusive)
 <ul>
 <li><a href="https://juliasilge.com/blog/datasaurus-multiclass/">multiclass</a></li>
@@ -413,7 +428,7 @@ L.L. Odette
 <section id="binary-logistic-regression-2" class="slide level2">
 <h2>Binary Logistic Regression</h2>
 <div class="columns">
-<div class="column" style="width:40%;">
+<div class="column fragment" style="width:40%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -423,11 +438,12 @@ L.L. Odette
 </div>
 </div>
 </div>
-</div><div class="column" style="font-size: smaller">
+</div><div class="column fragment" style="font-size: smaller">
 <p><span class="math display">\[\begin{align*}
 \pi &amp; =\frac{1}{1+e^{-\eta}}\;\text{(logistic function)}\\
 \log\left(\frac{\pi}{1-\pi}\right) &amp; =\log\left(\frac{\frac{1}{1+e^{-\eta}}}{1-\frac{1}{1+e^{-\eta}}}\right)\\
-&amp; =\log\left(\frac{\frac{1}{1+e^{-\eta}}}{\frac{e^{-\eta}}{1+e^{-\eta}}}\right)=\log\left(e^{\eta}\right)=\eta
+&amp; =\log\left(\frac{\frac{1}{1+e^{-\eta}}}{\frac{e^{-\eta}}{1+e^{-\eta}}}\right)\\
+&amp;=\log\left(e^{\eta}\right)=\eta
 \end{align*}\]</span></p>
 </div></div>
 </section>
@@ -439,7 +455,7 @@ L.L. Odette
 \]</span></p>
 <p>So if <span class="math inline">\(x_1\)</span> changes by one unit (<span class="math inline">\(x_1\rightarrow x_1+1\)</span>), then the odds ratio changes by <span class="math inline">\(e^{\beta_1}\)</span>.</p>
 </section>
-<section id="binary-classifier-metrics" class="slide level2">
+<section id="binary-classifier-metrics" class="slide level2 scrollable">
 <h2>Binary Classifier metrics</h2>
 <h3 id="confusion-matrix">Confusion matrix</h3>
 <p>The confusion matrix is a 2x2 table summarizing the number of correct predictions of the model (a function of the decision boundary): <em>It is the foundation for understanding other evaluation metrics.</em></p>
@@ -475,7 +491,7 @@ L.L. Odette
 \end{align*}
 \]</span></p>
 </section>
-<section id="binary-classifier-metrics-2" class="slide level2">
+<section id="binary-classifier-metrics-2" class="slide level2 scrollable">
 <h2>Binary Classifier metrics</h2>
 <h3 id="accuracy">Accuracy:</h3>
 <div class="panel-tabset">
@@ -710,7 +726,7 @@ L.L. Odette
 </ul>
 </div>
 </section>
-<section id="binary-classifier-2" class="slide level2">
+<section id="binary-classifier-2" class="slide level2 scrollable">
 <h2>Binary Classifier</h2>
 <h3 id="roc-curve-and-auc">ROC Curve and AUC</h3>
 <div style="font-size: x-large">
@@ -728,7 +744,7 @@ L.L. Odette
 </ol>
 </div>
 </section>
-<section id="binary-classifier-optimal-threshold" class="slide level2">
+<section id="binary-classifier-optimal-threshold" class="slide level2 scrollable">
 <h2>Binary Classifier: optimal threshold</h2>
 <div style="font-size: large">
 <ol type="1">
@@ -780,7 +796,7 @@ L.L. Odette
 <section id="naive-bayes-classification-1" class="slide level2">
 <h2>Naive Bayes Classification</h2>
 <p>This method starts with Bayes rule:</p>
-<p>for <span class="math inline">\(K\)</span> classes and an observation <span class="math inline">\(x\)</span> consisting of <span class="math inline">\(N\)</span> features <span class="math inline">\(\{x_1,\ldots,x_N\}\)</span>, since <span class="math inline">\(\mathbb{P}\left[\left.C_{k}\right|x_{1},\ldots,x_{N}\right]\times\mathbb{P}\left[x_{1},\ldots,x_{N}\right]\)</span> is equal to <span class="math inline">\(\mathbb{P}\left[\left.x_{1},\ldots,x_{N}\right|C_{k}\right]\times\mathbb{P}\left[C_{k}\right]\)</span>, we can write</p>
+<p>for <span class="math inline">\(K\)</span> classes (<span class="math inline">\(C_1,\ldots C_k\)</span>) and an observation <span class="math inline">\(x\)</span> consisting of <span class="math inline">\(N\)</span> features <span class="math inline">\(\{x_1,\ldots,x_N\}\)</span>, since <span class="math inline">\(\mathbb{P}\left[\left.C_{k}\right|x_{1},\ldots,x_{N}\right]\times\mathbb{P}\left[x_{1},\ldots,x_{N}\right]\)</span> is equal to <span class="math inline">\(\mathbb{P}\left[\left.x_{1},\ldots,x_{N}\right|C_{k}\right]\times\mathbb{P}\left[C_{k}\right]\)</span>, we can write</p>
 <p><span class="math display">\[
 \mathbb{P}\left[\left.C_{k}\right|x_{1},\ldots,x_{N}\right]=\frac{\mathbb{P}\left[\left.x_{1},\ldots,x_{N}\right|C_{k}\right]\times\mathbb{P}\left[C_{k}\right]}{\mathbb{P}\left[x_{1},\ldots,x_{N}\right]}
 \]</span></p>
@@ -801,9 +817,9 @@ C_{k}=\arg\max_{C_{k}}\mathbb{P}\left[C_{k}\right]\prod_{n=1}^{N}\mathbb{P}\left
 <p>So it remains to calculate the class probability <span class="math inline">\(\mathbb{P}\left[C_{k}\right]\)</span> and the conditional probabilities <span class="math inline">\(\mathbb{P}\left[\left.x_{n}\right|C_{k}\right]\)</span></p>
 <p>The different naive Bayes classifiers differ mainly by the assumptions they make regarding the conditional probabilities.</p>
 </section>
-<section id="naive-bayes-classification-4" class="slide level2">
+<section id="naive-bayes-classification-4" class="slide level2 scrollable">
 <h2>Naive Bayes Classification</h2>
-<p>If our features are all ordinal, then</p>
+<p>If our features are all ordinal (i.e.&nbsp;categorical), then</p>
 <ul>
 <li><p>The class probabilities<sup>1</sup> are simply the frequency of observations that belong to each class divided by the total number of observations.</p></li>
 <li><p>The conditional probabilities are the frequency of each feature value for a given class value divided by the frequency of measurements with that class value.</p></li>
@@ -875,7 +891,7 @@ C_{k}=\arg\max_{C_{k}}\mathbb{P}\left[C_{k}\right]\prod_{n=1}^{N}\mathbb{P}\left
 </div>
 </div>
 </section>
-<section id="naive-bayes-classification-uses" class="slide level2">
+<section id="naive-bayes-classification-uses" class="slide level2 scrollable">
 <h2>Naive Bayes Classification: uses</h2>
 <div style="font-size: large">
 <ol type="1">
@@ -902,7 +918,7 @@ C_{k}=\arg\max_{C_{k}}\mathbb{P}\left[C_{k}\right]\prod_{n=1}^{N}\mathbb{P}\left
 </ol>
 </div>
 </section>
-<section id="naive-bayes-classification-abuses" class="slide level2">
+<section id="naive-bayes-classification-abuses" class="slide level2 scrollable">
 <h2>Naive Bayes Classification: abuses</h2>
 <div style="font-size: large">
 <ol type="1">
@@ -934,7 +950,7 @@ C_{k}=\arg\max_{C_{k}}\mathbb{P}\left[C_{k}\right]\prod_{n=1}^{N}\mathbb{P}\left
 </ol>
 </div>
 </section>
-<section id="naive-bayes-best-practices" class="slide level2">
+<section id="naive-bayes-best-practices" class="slide level2 scrollable">
 <h2>Naive Bayes Best Practices</h2>
 <div style="font-size: large">
 <ol type="1">
@@ -984,7 +1000,7 @@ C_{k}=\arg\max_{C_{k}}\mathbb{P}\left[C_{k}\right]\prod_{n=1}^{N}\mathbb{P}\left
 <li>Minkowski: <span class="math inline">\(\text{d}(x,y;p)=\left(\sum_{i}\left|y_{i}-x_{i}\right|\right)^{1/p}\)</span></li>
 </ul>
 </section>
-<section id="knn-classification-algorithm" class="slide level2">
+<section id="knn-classification-algorithm" class="slide level2 scrollable">
 <h2>KNN Classification: algorithm</h2>
 <ol type="1">
 <li>Choose the value of K, which is the number of nearest neighbors that will be used to make the prediction.</li>
@@ -1016,11 +1032,11 @@ C_{k}=\arg\max_{C_{k}}\mathbb{P}\left[C_{k}\right]\prod_{n=1}^{N}\mathbb{P}\left
 </div>
 </div>
 </section>
-<section id="knn-classification-metrics" class="slide level2">
+<section id="knn-classification-metrics" class="slide level2 scrollable">
 <h2>KNN Classification: metrics</h2>
 <p>In the context of k-Nearest Neighbors (kNN) classification, while the general evaluation metrics like accuracy, precision, recall, F1<sup>1</sup> score, and others are commonly used, there are no unique metrics that are exclusively specific to kNN. However, there are certain considerations and additional analyses that are particularly relevant when evaluating a kNN model.</p>
 <aside><ol class="aside-footnotes"><li id="fn4"><p><span class="math inline">\(\text{F}_1\,\text{score}=2\times\frac{\text{precision }\times\text{recall}}{\text{precision}+\text{recall}}\)</span> — precision &amp; recall must be large for <span class="math inline">\(\text{F}_1\,\text{score}\)</span> to be large.</p></li></ol></aside></section>
-<section id="knn-classification-metrics-1" class="slide level2">
+<section id="knn-classification-metrics-1" class="slide level2 scrollable">
 <h2>KNN Classification: metrics</h2>
 <div style="font-size: smaller">
 <ol type="1">
@@ -1030,7 +1046,7 @@ C_{k}=\arg\max_{C_{k}}\mathbb{P}\left[C_{k}\right]\prod_{n=1}^{N}\mathbb{P}\left
 </ol>
 </div>
 </section>
-<section id="knn-classification-uses" class="slide level2">
+<section id="knn-classification-uses" class="slide level2 scrollable">
 <h2>KNN Classification: uses</h2>
 <div style="font-size: large">
 <ol type="1">
@@ -1110,7 +1126,7 @@ C_{k}=\arg\max_{C_{k}}\mathbb{P}\left[C_{k}\right]\prod_{n=1}^{N}\mathbb{P}\left
 </ul>
 </div>
 </section>
-<section id="knn-classification-best-practices" class="slide level2">
+<section id="knn-classification-best-practices" class="slide level2 scrollable">
 <h2>KNN Classification Best Practices</h2>
 <div style="font-size: large">
 <ol type="1">
@@ -1142,7 +1158,7 @@ C_{k}=\arg\max_{C_{k}}\mathbb{P}\left[C_{k}\right]\prod_{n=1}^{N}\mathbb{P}\left
 <p>The SVM assumes a training set of the form <span class="math inline">\((x_1,y_1),\ldots,(x_n,y_n)\)</span> where the <span class="math inline">\(y_i\)</span> are either <span class="math inline">\(-1\)</span> or <span class="math inline">\(1\)</span>, indicating the class to which each <span class="math inline">\(x_i\)</span> belongs.</p>
 <p>The SVM algorithm looks to find the <strong>maximum-margin hyperplane</strong> that divides the group of points <span class="math inline">\(x_i\)</span> for which <span class="math inline">\(Y=-1\)</span> from the group for which <span class="math inline">\(Y=1\)</span>, such that the distance between the hyperplane and the nearest point <span class="math inline">\(x_i\)</span> from either group is maximized.</p>
 </section>
-<section id="svm-classification" class="slide level2">
+<section id="svm-classification" class="slide level2 scrollable">
 <h2>SVM Classification</h2>
 <h3 id="basic-concepts">Basic Concepts</h3>
 <div style="font-size: smaller">
@@ -1162,7 +1178,7 @@ C_{k}=\arg\max_{C_{k}}\mathbb{P}\left[C_{k}\right]\prod_{n=1}^{N}\mathbb{P}\left
 </figure>
 </div>
 </section>
-<section id="svm-math" class="slide level2">
+<section id="svm-math" class="slide level2 scrollable">
 <h2>SVM math</h2>
 <p>Support Vector Machines solve a constrained optimization problem to find the optimal separating hyperplane. For a binary classification problem with training data <span class="math inline">\((x_i, y_i)\)</span> where <span class="math inline">\(y_i \in \{-1, +1\}\)</span>, the hyperplane is defined by:</p>
 <p><span class="math display">\[
@@ -1172,7 +1188,7 @@ w^T x + b = 0
 \]</span></p>
 <p>where <span class="math inline">\(w\)</span> is the weight vector (normal to the hyperplane) and <span class="math inline">\(b\)</span> is the bias term<sup>1</sup>.</p>
 <aside><ol class="aside-footnotes"><li id="fn5"><p>if <span class="math inline">\(w^T x + b = 0\)</span> separates classes, so does <span class="math inline">\(2w^T x + 2b = 0\)</span> so we fix the scale by normalizing all vectors by <span class="math inline">\(\frac{1}{||w||}\)</span>.</p></li></ol></aside></section>
-<section id="svm-math-1" class="slide level2">
+<section id="svm-math-1" class="slide level2 scrollable">
 <h2>SVM math</h2>
 <p>To show that <span class="math inline">\(w\)</span> is normal to the hyperplane:</p>
 <ol type="1">
@@ -1432,7 +1448,7 @@ w^T x + b = 0
 <p><strong><em>Cluster analysis</em></strong> refers to algorithms that group similar objects into groups called <em>clusters</em>. The endpoint of cluster analysis is a set of clusters<em>,</em> where each cluster is distinct from each other cluster, and the objects within each cluster are broadly similar to each other.</p>
 <p>The purpose of cluster analysis is to help reveal patterns and structures within a dataset that may provide insights into underlying relationships and associations.</p>
 </section>
-<section id="clustering-applications" class="slide level2">
+<section id="clustering-applications" class="slide level2 scrollable">
 <h2>Clustering Applications</h2>
 <div style="font-size: 70%">
 <ol type="1">
@@ -1449,7 +1465,7 @@ w^T x + b = 0
 <p><em>k-means</em> is a method of <em>unsupervised</em> learning that produces a partitioning of observations into <em>k</em> unique clusters.</p>
 <p>The goal of <em>k-means</em> is to minimize the sum of squared Euclidian distances between observations in a cluster and the <strong>centroid</strong>, or geometric mean, of that cluster.</p>
 </section>
-<section id="k-means-clustering-1" class="slide level2">
+<section id="k-means-clustering-1" class="slide level2 scrollable">
 <h2>K-means Clustering</h2>
 <p>In <em>k-means</em> clustering, observed variables (columns) are considered to be locations on axes in multidimensional space.</p>
 <div style="font-size: x-large">
@@ -1463,7 +1479,7 @@ w^T x + b = 0
 </ol>
 </div>
 </section>
-<section id="k-means-clustering-2" class="slide level2">
+<section id="k-means-clustering-2" class="slide level2 scrollable">
 <h2>K-means Clustering</h2>
 <p>There are three common methods for selecting initial centers:</p>
 <ol type="1">
@@ -1481,7 +1497,7 @@ w^T x + b = 0
 <h2>K-means Example</h2>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>create basic workflow for clustering by k means</summary>
 <div class="sourceCode cell-code" id="cb12" data-code-line-numbers="1-3|5-10|11-12|14-22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a><span class="sc">&gt;</span> <span class="co"># create recipe for 2-D clustering</span></span>
 <span id="cb12-2"><a></a><span class="er">&gt;</span> cluster_recipe <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span> </span>
 <span id="cb12-3"><a></a><span class="sc">+</span>   recipes<span class="sc">::</span><span class="fu">recipe</span>(<span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data =</span> _)</span>
@@ -1511,7 +1527,7 @@ w^T x + b = 0
 <h2>K-means Example</h2>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>create data set for 4 clusters</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a><span class="sc">&gt;</span> <span class="fu">set.seed</span>(<span class="dv">8740</span>)</span>
 <span id="cb13-2"><a></a><span class="sc">&gt;</span> </span>
 <span id="cb13-3"><a></a><span class="er">&gt;</span> centers <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
@@ -1542,7 +1558,7 @@ w^T x + b = 0
 <h2>K-means Example</h2>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>fit clusters and plot cluster centers along with input data</summary>
 <div class="sourceCode cell-code" id="cb14" data-code-line-numbers="1-3|4-5|6-9|10-13|14-15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a><span class="sc">&gt;</span> <span class="co"># create recipe</span></span>
 <span id="cb14-2"><a></a><span class="er">&gt;</span> labelled_points_recipe <span class="ot">&lt;-</span> labelled_points <span class="sc">|&gt;</span> </span>
 <span id="cb14-3"><a></a><span class="sc">+</span>   recipes<span class="sc">::</span><span class="fu">recipe</span>(<span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data =</span> _)</span>

@@ -463,6 +463,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../supplemental/lab_machine_inst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab machine setup instructions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../supplemental/log-transformations.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Log transformations</span></a>
   </div>
@@ -585,51 +591,16 @@ ul.task-list li input[type="checkbox"] {
 <section id="conceptual-questions" class="level2">
 <h2 class="anchored" data-anchor-id="conceptual-questions">Conceptual Questions</h2>
 <p>Here are examples of the conceptual questions that might be asked:</p>
-<p>What is the primary difference between inner_join() and left_join()?</p>
-<ul>
-<li>a) inner_join() keeps all rows from both tables, left_join() keeps all rows from the left table</li>
-<li>b) inner_join() keeps only matching rows, left_join() keeps all rows from the left table</li>
-<li>c) inner_join() is faster, left_join() is more accurate</li>
-<li>d) There is no difference</li>
-</ul>
-<p>In the context of tidy data, which of the following is NOT a principle?</p>
-<ul>
-<li>a) Every column is a measurement</li>
-<li>b) Every row is an observation</li>
-<li>c) Every cell is a single value</li>
-<li>d) Every dataset has multiple tables</li>
-</ul>
-<p>What does the <code>step_dummy()</code> function in recipes do?</p>
-<ul>
-<li>a) Remove duplicate rows</li>
-<li>b) Create dummy variables for categorical predictors</li>
-<li>c) Impute missing values</li>
-<li>d) Scale numeric variables</li>
-</ul>
-<p>Which of the following is NOT a step in the typical Tidymodels workflow?</p>
-<ul>
-<li>a) Data splitting</li>
-<li>b) Model specification</li>
-<li>c) Model training</li>
-<li>d) Database querying</li>
-</ul>
+<p>What is the primary difference between inner_join() and left_join()? a) inner_join() keeps all rows from both tables, left_join() keeps all rows from the left table b) inner_join() keeps only matching rows, left_join() keeps all rows from the left table c) inner_join() is faster, left_join() is more accurate d) There is no difference</p>
+<p>In the context of tidy data, which of the following is NOT a principle? a) Every column is a measurement b) Every row is an observation c) Every cell is a single value d) Every dataset has multiple tables</p>
+<p>What does the <code>step_dummy()</code> function in recipes do? a) Remove duplicate rows b) Create dummy variables for categorical predictors c) Impute missing values d) Scale numeric variables</p>
+<p>Which of the following is NOT a step in the typical Tidymodels workflow? a) Data splitting b) Model specification c) Model training d) Database querying</p>
 </section>
 <section id="applied-questions" class="level2">
 <h2 class="anchored" data-anchor-id="applied-questions">Applied Questions</h2>
-<p>Here are examples of the applied questions that might be asked (<strong>Note</strong>: <u>will require code</u>):</p>
-<p>Given the <code>ggplot2::diamonds</code> dataset, using tidyverse functions:</p>
-<ul>
-<li>a) Create a new variable called ‘size’ that is the product of x, y, and z.</li>
-<li>b) Filter out any diamonds with a price greater than $10,000 or less than $500.</li>
-<li>c) Fit a multiple regression model predicting price based on carat, cut, and size.</li>
-<li>d) Use broom::augment() to add residuals and fitted values to your dataset.</li>
-</ul>
-<p>Using the <code>datasets::mtcars</code> dataset, create a linear regression model to predict mpg based on wt and hp. Use the tidyverse and broom packages to:</p>
-<ul>
-<li>a) Create a tibble with only the mpg, wt, and hp columns.</li>
-<li>b) Fit the linear model.</li>
-<li>c) Extract the model coefficients and their p-values into a tidy tibble.</li>
-</ul>
+<p>Here are examples of the applied questions that might be asked:</p>
+<p>Using the <code>ggplot2::diamonds</code> dataset. Using tidyverse functions: a) Create a new variable called ‘size’ that is the product of x, y, and z. b) Filter out any diamonds with a price greater than $10,000 or less than $500. c) Fit a multiple regression model predicting price based on carat, cut, and size. d) Use broom::augment() to add residuals and fitted values to your dataset.</p>
+<p>Using the <code>datasets::mtcars</code> dataset, create a linear regression model to predict mpg based on wt and hp. Use the tidyverse and broom packages to: a) Create a tibble with only the mpg, wt, and hp columns. b) Fit the linear model. c) Extract the model coefficients and their p-values into a tidy tibble.</p>
 
 
 </section>

@@ -499,6 +499,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../../supplemental/lab_machine_inst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lab machine setup instructions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../../supplemental/log-transformations.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Log transformations</span></a>
   </div>
@@ -645,7 +651,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages if not already loaded</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>librarian<span class="sc">::</span><span class="fu">shelf</span>(tidyverse, magrittr, gt, gtExtras, tidymodels, ggplot2)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>librarian<span class="sc">::</span><span class="fu">shelf</span>(tidyverse, magrittr, tidymodels, modeldata, ranger, rsample, broom, recipes, parsnip)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># set the default theme for plotting</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">18</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1554,6 +1560,7 @@ SOLUTION:
 </div>
 </div>
 </div>
+<p>There is no missing data.</p>
 </div>
 </div>
 </section>
@@ -1859,7 +1866,7 @@ SOLUTION:
 <pre><code>i 1 of 3 resampling: base_base</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>✔ 1 of 3 resampling: base_base (842ms)</code></pre>
+<pre><code>✔ 1 of 3 resampling: base_base (806ms)</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>i 2 of 3 tuning:     base_glmnet</code></pre>
@@ -1884,7 +1891,7 @@ SOLUTION:
 <pre><code>i 3 of 3 tuning:     base_forest</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>✔ 3 of 3 tuning:     base_forest (1m 11.4s)</code></pre>
+<pre><code>✔ 3 of 3 tuning:     base_forest (1m 11s)</code></pre>
 </div>
 </div>
 <p>The updated variable <code>all_workflows</code> contains a nested column named <strong>result</strong>, and each cell of the column <strong>result</strong> is a tibble containing a nested column named <strong>.metrics</strong>. Write code to</p>
@@ -1910,8 +1917,8 @@ SOLUTION:
 <span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">unnest</span>(result) <span class="sc">|&gt;</span> </span>
 <span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># unnest the .metrics column</span></span>
 <span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">unnest</span>(.metrics) <span class="sc">|&gt;</span> </span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># filter out the metric rsq</span></span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">'rsq'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># filter out the metric rmse</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">'rmse'</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># group by wflow_id</span></span>
 <span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(wflow_id) <span class="sc">|&gt;</span> </span>
 <span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># order by .estimate, starting with the largest value</span></span>
@@ -1923,12 +1930,13 @@ SOLUTION:
 # Groups:   wflow_id [3]
   wflow_id splits             id    .metric .estimator .estimate .config penalty
   &lt;chr&gt;    &lt;list&gt;             &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;
-1 base_ba… &lt;split [2197/798]&gt; Boot… rsq     standard       0.448 Prepro…   NA   
-2 base_fo… &lt;split [2197/797]&gt; Boot… rsq     standard       0.712 Prepro…   NA   
-3 base_gl… &lt;split [2197/798]&gt; Boot… rsq     standard       0.448 Prepro…    1e-5
+1 base_ba… &lt;split [2197/813]&gt; Boot… rmse    standard       0.378 Prepro…      NA
+2 base_fo… &lt;split [2197/802]&gt; Boot… rmse    standard       0.340 Prepro…      NA
+3 base_gl… &lt;split [2197/805]&gt; Boot… rmse    standard       0.431 Prepro…       1
 # ℹ 4 more variables: mixture &lt;dbl&gt;, trees &lt;int&gt;, min_n &lt;int&gt;, .notes &lt;list&gt;</code></pre>
 </div>
 </div>
+<p>Look at the columns to the right of the .config column (columns 7,8,9,10) to see the tuned parameters for each model.</p>
 </div>
 </div>
 </section>
@@ -1948,7 +1956,7 @@ SOLUTION:
 <div class="cell">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>workflowsets<span class="sc">::</span><span class="fu">rank_results</span>(</span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  all_workflows</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  , <span class="at">rank_metric =</span> <span class="st">'rsq'</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  , <span class="at">rank_metric =</span> <span class="st">'rmse'</span></span>
 <span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  , <span class="at">select_best =</span> <span class="cn">TRUE</span></span>
 <span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1957,10 +1965,10 @@ SOLUTION:
   &lt;chr&gt;       &lt;chr&gt;         &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;        &lt;chr&gt; &lt;int&gt;
 1 base_forest Preprocessor… rmse    0.240 0.00257    25 recipe       rand…     1
 2 base_forest Preprocessor… rsq     0.657 0.00484    25 recipe       rand…     1
-3 base_base   Preprocessor… rmse    0.321 0.00366    25 recipe       line…     2
-4 base_base   Preprocessor… rsq     0.376 0.00836    25 recipe       line…     2
-5 base_glmnet Preprocessor… rmse    0.321 0.00364    25 recipe       line…     3
-6 base_glmnet Preprocessor… rsq     0.375 0.00836    25 recipe       line…     3</code></pre>
+3 base_glmnet Preprocessor… rmse    0.321 0.00364    25 recipe       line…     2
+4 base_glmnet Preprocessor… rsq     0.375 0.00836    25 recipe       line…     2
+5 base_base   Preprocessor… rmse    0.321 0.00366    25 recipe       line…     3
+6 base_base   Preprocessor… rsq     0.376 0.00836    25 recipe       line…     3</code></pre>
 </div>
 </div>
 </div>
@@ -1968,7 +1976,7 @@ SOLUTION:
 </section>
 <section id="exercise-10" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-10">Exercise 10</h2>
-<p>Select the best model per the <strong>rsq</strong> metric using its id.</p>
+<p>Select the best model per the <strong>rmse</strong> metric using its id.</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1980,7 +1988,7 @@ SOLUTION:
 </div>
 <div class="callout-body-container callout-body">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the best model (per rsq)</span></span>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract the best model (per rsq from Q8)</span></span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>best_model_workflow <span class="ot">&lt;-</span> </span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  all_workflows <span class="sc">|&gt;</span> </span>
 <span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  workflowsets<span class="sc">::</span><span class="fu">extract_workflow</span>(<span class="st">"base_forest"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1990,7 +1998,7 @@ SOLUTION:
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>best_model_workflow <span class="ot">&lt;-</span> </span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  best_model_workflow <span class="sc">|&gt;</span> </span>
 <span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  tune<span class="sc">::</span><span class="fu">finalize_workflow</span>(</span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">trees =</span> <span class="dv">1971</span>, <span class="at">min_n =</span> <span class="dv">2</span>) <span class="co"># enter the name and value of the best-fit parameters</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">trees =</span> <span class="dv">1</span>, <span class="at">min_n =</span> <span class="dv">11</span>) <span class="co"># enter the name and value of the best-fit parameters from exercise 8</span></span>
 <span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># having trained the model, compare test and training performance</span></span>
@@ -2020,18 +2028,18 @@ Model: rand_forest()
 Ranger result
 
 Call:
- ranger::ranger(x = maybe_data_frame(x), y = y, num.trees = ~1971,      min.node.size = min_rows(~2, x), num.threads = 1, verbose = FALSE,      seed = sample.int(10^5, 1)) 
+ ranger::ranger(x = maybe_data_frame(x), y = y, num.trees = ~1,      min.node.size = min_rows(~11, x), num.threads = 1, verbose = FALSE,      seed = sample.int(10^5, 1)) 
 
 Type:                             Regression 
-Number of trees:                  1971 
+Number of trees:                  1 
 Sample size:                      2197 
 Number of independent variables:  12 
 Mtry:                             3 
-Target node size:                 2 
+Target node size:                 11 
 Variable importance mode:         none 
 Splitrule:                        variance 
-OOB prediction error (MSE):       0.05695965 
-R squared (OOB):                  0.655318 </code></pre>
+OOB prediction error (MSE):       0.08474425 
+R squared (OOB):                  0.4871841 </code></pre>
 </div>
 </div>
 <div class="quarto-layout-row">
@@ -2053,18 +2061,18 @@ Model: rand_forest()
 Ranger result
 
 Call:
- ranger::ranger(x = maybe_data_frame(x), y = y, num.trees = ~1971,      min.node.size = min_rows(~2, x), num.threads = 1, verbose = FALSE,      seed = sample.int(10^5, 1)) 
+ ranger::ranger(x = maybe_data_frame(x), y = y, num.trees = ~1,      min.node.size = min_rows(~11, x), num.threads = 1, verbose = FALSE,      seed = sample.int(10^5, 1)) 
 
 Type:                             Regression 
-Number of trees:                  1971 
+Number of trees:                  1 
 Sample size:                      733 
 Number of independent variables:  12 
 Mtry:                             3 
-Target node size:                 2 
+Target node size:                 11 
 Variable importance mode:         none 
 Splitrule:                        variance 
-OOB prediction error (MSE):       0.06761988 
-R squared (OOB):                  0.5997899 </code></pre>
+OOB prediction error (MSE):       0.09445689 
+R squared (OOB):                  0.4409543 </code></pre>
 </div>
 </div>
 </div>
@@ -2075,7 +2083,7 @@ R squared (OOB):                  0.5997899 </code></pre>
 </div>
 <div class="callout-body-container">
 <p>What is the ratio of the OOB prediction errors (MSE): test/train?</p>
-<p>The ratio is 0.06821716 / 0.05747611 - 1 = 0.1868785, or about 19% higher in the test dataset than in the training dataset.</p>
+<p>The ratio is 0.09445689 / 0.08474425 - 1 = 0.1146112, or about 12% higher in the test dataset than in the training dataset.</p>
 </div>
 </div>
 </div>
