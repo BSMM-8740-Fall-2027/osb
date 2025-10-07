@@ -46,7 +46,7 @@ theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 
 -   Today we look at the `tidymodels` package which will give us a workflow to describe, fit and compare models, using the same approach across methods.
 
-## Week 3 Roadmap
+## Week 4 Roadmap
 
 ::: incremental
 -   Tidymodels
