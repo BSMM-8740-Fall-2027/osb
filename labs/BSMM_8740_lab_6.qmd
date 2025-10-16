@@ -9,7 +9,7 @@ self-contained: true
 
 ## Introduction
 
-In today's lab, you'll practice building `workflows` with `recipes`, `parsnip` models, `rsample` cross validations, and model comparison in the context of time series data.
+In today's lab, you'll practice building `workflows` with `recipes`, `parsnip` models, `rsample` cross validations, and model comparison in the context of timeseries data.
 
 ## Getting started
 
@@ -49,7 +49,7 @@ if (! "librarian" %in% rownames(installed.packages()) ){
 }
   
 # load packages if not already loaded
-librarian::shelf(tidyverse, Lahman, magrittr, gt, gtExtras, ggplot2, tidymodels, modeltime)
+librarian::shelf(tidyverse, Lahman, magrittr, gt, gtExtras, ggplot2, tidymodels, modeltime, TSrepr)
 
 # set the efault theme for plotting
 theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
@@ -79,6 +79,7 @@ The data can be found in the `timetk` package as `timetk::taylor_30_min`, a tibb
 #| eval: true
 #| message: false
 #| warning: false
+#| label: get electricity demand data
 data <- timetk::taylor_30_min
 ```
 
@@ -86,18 +87,21 @@ data <- timetk::taylor_30_min
 
 Plot the data using the functions `timetk::plot_time_series`, `timetk::plot_acf_diagnostics` (using 100 lags), and `timetk::plot_seasonal_diagnostics`.
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q1 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q1:
 
 ```{r}
+#| label: plot demand time series
 # timetk::plot_time_series
 ```
 
 ```{r}
+#| label: plot demand autocorrelation
 # timetk::plot_acf_diagnostics
 ```
 
 ```{r}
+#| label: plot demand seasonality
 # timetk::plot_seasonal_diagnostics
 ```
 :::
@@ -106,12 +110,13 @@ Plot the data using the functions `timetk::plot_time_series`, `timetk::plot_acf_
 
 The raw data has 30 minute intervals between data points. Downscale the data to 60 minute intervals, using `timetk::summarise_by_time`, revising the electricity demand (value) variable by adding the two 30-minute intervals in each 60-minute interval. Assign the downscaled data to the variable `taylor_60_min`.
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q2 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q2:
 
 ```{r}
 #| eval: false
 #| echo: true
+#| label: set seed and then downscale data from 30 minute intervals to 60 minute intervals
 # downscale the data (down to a lower frequency of measurement)
 set.seed(8740)
 taylor_60_min <- ?
@@ -125,18 +130,21 @@ taylor_60_min <- ?
 2.  Prepare the data resample specification with `timetk::tk_time_series_cv_plan()` and plot it with `timetk::plot_time_series_cv_plan`
 3.  Separate the training and test data sets using `rsample` .
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q3 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q3:
 
 ```{r}
+#| label: compute a split of the demand time series into training and test datasets 
 # split
 ```
 
 ```{r}
+#| label: plot the data showing training and test data on the same plot
 # plot splits
 ```
 
 ```{r}
+#| label: separate the demand data into training and test datasets
 # separate into train and test data sets
 ```
 :::
@@ -153,12 +161,14 @@ taylor_60_min <- ?
     4.  add a step to mutate `date_hour`, changing it to a factor,
     5.  add a step to one-hot encode nominal predictors.
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q4 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q4:
 
 ```{r}
 #| eval: false
 #| echo: true
+#| label: create a base recipe and assign to `base_rec`, then create a recipe for regression models on time series assgend to `lm_rec`
+# 
 base_rec <- ?
   
 lm_rec <- ?
@@ -173,12 +183,14 @@ Now we will create a several models to estimate electricity demand, as follows
 2.  Create a model specification for an arima model using engine 'auto_arima'
 3.  Create a model specification for a linear model using engine 'glmnet' and penalty = 0.02, mixture = 0.5
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q5 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q5:
 
 ```{r}
 #| eval: false
 #| echo: true
+#| label: create model specifications for exp-smoothing, arima, and penalized linear (glmnet) models
+#
 model_ets <- ?
   
 model_arima <- ?
@@ -197,12 +209,14 @@ Create a workflow **for each model** using `workflows::workflow`.
 2.  Add a model to each workflow
 3.  Fit with the training data
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q6 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q6:
 
 ```{r}
 #| eval: false
 #| echo: true
+#| label: create workflows for each of the three models, then fit them with the training data.
+#
 workflow_fit_ets <- ?
   
 workflow_fit_arima <- ?
@@ -223,12 +237,14 @@ In this exercise we'll use the **testing data** with our fitted models.
 2.  Using the table you just created, run a calibration on the **test data** with the function `modeltime::modeltime_calibrate`.
 3.  Compare the accuracy of the models using the `modeltime::modeltime_accuracy()` on the results of the calibration
 
-:::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+:::: {#Q7 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q7:
 
 ```{r}
 #| eval: false
 #| echo: true
+#| label: put the fits into a model table and calibrate them on the tests data, then compare accuracies. Identify the best one.
+#
 model_tbl <- modeltime::modeltime_table( ? )
 
 calibration_tbl <- ?
@@ -237,7 +253,7 @@ calibration_tbl |> ?
 ```
 
 ::: callout-important
-Which is the best model by the **rmse** metric?
+Which is the best model by the (smallest) **rmse** metric? \_\_\_\_\_\_\_\_\_\_\_\_\_\_
 :::
 ::::
 
@@ -245,10 +261,12 @@ Which is the best model by the **rmse** metric?
 
 Use the calibration table with `modeltime::modeltime_forecast` to graphically compare the fits to the training data with the observed values.
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q8 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q8:
 
 ```{r}
+#| label: use the calibration table and compare fitted forecasts to observed values
+#
 
 ```
 :::
@@ -260,12 +278,14 @@ Now refit the models using the **full data set** (using the calibration table an
 1.  Use the refit data in the variable **refit_tbl**, along with `modeltime::modeltime_forecast` and argument `h` = '2 weeks' (remember to also set the `actual_data` argument). This will use the models to forecast electricity demand two weeks into the future.
 2.  Plot the forecast with `modeltime::plot_modeltime_forecast`
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q9 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q9:
 
 ```{r}
 #| eval: false
 #| echo: true
+#| label: refit the model on the full dataset and save in `refit_tbl`. Forecast and then plot two weeks beyond end of full dataset.
+#
 refit_tbl <-  ?
 ```
 :::
@@ -277,35 +297,69 @@ You are working as a Senior Business Analyst for "TechMart," a consumer electron
 You have been provided with 60 months of historical sales data (Jan 2019 - Dec 2023) showing strong monthly seasonality (holiday shopping peaks) and an underlying growth trend due to market expansion.
 
 ```{r}
+#| label: load 60 months of inventory data and summarize it. Sales in Millions.
+#
 # retail data
 retail_dat <- readr::read_csv('data/TechMart_sales.csv',show_col_types = FALSE)
+
 # Display data summary
 cat("TechMart Monthly Sales Data Summary:\n")
 cat("====================================\n")
 cat("Period:", format(min(retail_dat$date), "%b %Y"), "to", 
     format(max(retail_dat$date), "%b %Y"), "\n")
 cat("Observations:", nrow(retail_dat), "\n")
+
 print(summary(retail_dat$monthly_sales))
 ```
 
 Using the `modeltime` and `parsnip` frameworks,
 
-1.  build and evaluate a **Seasonal and Trend decomposition using Loess with ETS** (STLM-ETS) model.
+1.  build and compare ETS(A,A,A) and ETS(M,M,M) models. Use log(sales) as the outcome. Use `workflows` and `modeltime::exp_smoothing`, setting the error, trend and season argument explicitly for each model (see the help for `modeltime::exp_smoothing` ). For ETS(M,M,M), set damping = "damped".
 
-2.  compare your model against the SNAIVE model (baseline) and an ETS(A,A,A) model.
+2.  forecast sales one month ahead, and extract the forecast for January 2024. Plot the forecasts.
 
-3.  pick the best model based on [rmse]{.underline} and show the corresponding [mape]{.underline}. Also express the rmse as a percent improvement over the baseline.
-
-4.  forecast sales one month ahead, and extract the forecast for December.
-
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q10 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q10:
 
 ```{r}
 #| eval: false
 #| echo: true
+#| label: build and evaluate two models - ETS(A,A,A) and ETS(M,M,M). Forecast one month ahead to predict sales for January 2024. Plot the two model estimates, with error bars.
+#
 # SHOW ALL YOUR WORK
+
+# create a recipe ----
+base_rec <- ?
+  
+# specify the models ----
+model_ets_AAA <- ?
+  
+model_ets_MMM <- ?
+  
+# create the workflows and fit the models ----
+workflow_fit_AAA <- ?
+  
+workflow_fit_MMM <- ?  
+  
+# predict one month ahead, to Jan 2024 using modeltime::modeltime_calibrate and modeltime::modeltime_forecast ----
+  
+predictions <- ?  
+  
+# plot the predictions ----
+predictions |> dplyr::slice_tail(n=2)
+predictions |> 
+  dplyr::slice_tail(n=2) |> 
+  ggplot(aes(x = .model_desc, y = .value)) +
+    geom_point(size = 3, color = "blue") +
+    geom_errorbar(aes(ymin = .conf_lo, ymax = .conf_hi), width = 0.2, color = "blue") +
+    labs(
+      title = "Predictions with Error Bars",
+      x = "Model",
+      y = "Sales ($millions)"
+    ) + theme_minimal()
 ```
+
+Which model should you present to management? \_\_\_\_\_\_\_\_
 :::
 
 ::: render-commit-push

@@ -54,8 +54,8 @@ cat(readr::read_file("http://jse.amstat.org/v19n3/decock/DataDocumentation.txt")
 
 Write and execute the code to perform summary EDA on the Ames Housing data using the package `skimr`.
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION:
+::: {#Q1 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q1:
 
 ```{r}
 #| layout-nrow: 3
@@ -69,8 +69,8 @@ There is no missing data.
 
 Write and execute code to create training and test datasets. Have the training dataset represent 75% of the total data.
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION:
+::: {#Q2 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q2:
 
 ```{r}
 set.seed(8740)
@@ -99,8 +99,8 @@ Make sure you consider the order of the operations (hint: `step_dummy` turns fac
 
 You can use broom::tidy() on the recipe to examine whether the prepped data is correct.
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION:
+::: {#Q3 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q3:
 
 ```{r}
 norm_recipe <- 
@@ -124,7 +124,22 @@ norm_recipe <-
 ```{r}
 norm_recipe |> 
   # estimate the means and standard deviations by prepping the data
-  recipes::prep(training = ames_train, retain = TRUE) |> broom::tidy()
+  recipes::prep(training = ames_train, retain = TRUE) |> broom::tidy(1)
+```
+
+```{r}
+norm_recipe |> # estimate the means and standard deviations by prepping the data 
+  recipes::prep(training = ames_train, retain = TRUE) |> broom::tidy(2)
+```
+
+```{r}
+# compare to output of broom::tidy
+ames_train |> 
+  dplyr::select(Longitude, Latitude, Lot_Area, Year_Sold) |> 
+  dplyr::summarise(
+    across(dplyr::everything(), .fns=list(mean=mean, sd=sd))
+  )|> 
+  tidyr::pivot_longer(everything())
 ```
 :::
 
@@ -136,8 +151,8 @@ Create three regression models using the `parsnip::` package and assign each mod
 -   a regression model using `glmnet`; set the model parameters `penalty` and `mixture` for tuning
 -   a tree model using the `ranger` engine; set the model parameters `min_n` and `trees` for tuning
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION:
+::: {#Q4 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q4:
 
 ```{r}
 # linear model: engine lm, mode regression
@@ -175,8 +190,8 @@ lm_mod_rforest
 
 Use `parsnip::translate()` on each model to see the model template for each method of fitting.
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION:
+::: {#Q5 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q5:
 
 ```{r}
 # lm model
@@ -198,8 +213,8 @@ lm_mod_rforest |> parsnip::translate()
 
 Create bootstrap samples for the training dataset. You can leave the parameters set to their defaults
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION:
+::: {#Q6 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q6:
 
 ```{r}
 set.seed(8740)
@@ -211,8 +226,8 @@ train_resamples <- rsample::bootstraps(ames_train)
 
 Create workflows with `workflowsets::workflow_set` using your recipe and models. Show the resulting datastructure, noting the number of columns, and then use `tidyr::` to unnest the *info* column and show its contents.
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION:
+::: {#Q7 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q7:
 
 ```{r}
 #| layout-nrow: 3
@@ -247,8 +262,8 @@ The updated variable `all_workflows` contains a nested column named **result**, 
 2.  filter out the rows for the metric rsq
 3.  group by wflow_id, order the .estimate column from highest to lowest, and pick out the first row of each group.
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION:
+::: {#Q8 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q8:
 
 ```{r}
 all_workflows |> 
@@ -274,8 +289,8 @@ Look at the columns to the right of the .config column (columns 7,8,9,10) to see
 
 Run the code below and compare to your results from exercise 8.
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION:
+::: {#Q9 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q9:
 
 ```{r}
 workflowsets::rank_results(
@@ -290,8 +305,8 @@ workflowsets::rank_results(
 
 Select the best model per the **rmse** metric using its id.
 
-:::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION:
+:::: {#Q10 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q10:
 
 ```{r}
 # extract the best model (per rsq from Q8)

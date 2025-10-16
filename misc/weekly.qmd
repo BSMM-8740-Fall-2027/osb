@@ -57,7 +57,7 @@ title: "weekly checklist"
 -   [x] weekly lab
 -   [x] weekly lab solutions
 -   [x] weekly lab repo
--   [ ] weekly lab invite
+-   [x] weekly lab invite
 -   [x] QUIZ #1
 
 ## Week 6
@@ -67,7 +67,7 @@ title: "weekly checklist"
     -   [ ] links
     -   [ ] readings
     -   [ ] study guide
--   [ ] weekly lab
+-   [x] weekly lab
 -   [ ] weekly lab solutions
 -   [ ] weekly lab repo
 -   [ ] weekly lab invite
