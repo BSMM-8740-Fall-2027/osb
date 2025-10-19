@@ -58,7 +58,7 @@ theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 
 # Classification Methods
 
-##  Classification
+## Classification
 
 -   Classification is a supervised machine learning method where the model tries to predict a categorical outcome for given input data.
 -   These models are essential in various business applications, such as credit scoring, customer segmentation, fraud detection, and more. Classification methods can broadly be categorized into two types: eager learners and lazy (instance-based) learners.
@@ -217,9 +217,8 @@ It follows that $\pi = \frac{e^\eta}{1+e^\eta} = \frac{1}{1+e^{-\eta}}$, which i
 
 ## Binary Logistic Regression
 
-
 ::::: columns
-::: {.column width="40%" .fragment}
+::: {.column .fragment width="40%"}
 ```{r}
 #| fig-height: 10
 tibble::tibble(eta = seq(-5,5,0.2)) %>% dplyr::mutate(pi = 1/(1+exp(-eta))) %>% 
@@ -227,7 +226,7 @@ ggplot(aes(x=eta, y=pi)) + geom_point() + theme_bw(base_size = 38)
 ```
 :::
 
-::: {.column width="60%" style="font-size: smaller" .fragment}
+::: {.column .fragment width="60%" style="font-size: smaller"}
 $$\begin{align*}
 \pi & =\frac{1}{1+e^{-\eta}}\;\text{(logistic function)}\\
 \log\left(\frac{\pi}{1-\pi}\right) & =\log\left(\frac{\frac{1}{1+e^{-\eta}}}{1-\frac{1}{1+e^{-\eta}}}\right)\\
@@ -236,7 +235,6 @@ $$\begin{align*}
 \end{align*}$$
 :::
 :::::
-
 
 ## Binary Logistic Regression
 
@@ -1099,7 +1097,7 @@ The RBF kernel is $K(x, x') = \exp\left(-\gamma \left\Vert x - x'\right\Vert^2\r
 
 ::: {style="font-size: large"}
 | Feature | Linear SVM | Polynomial SVM | RBF SVM |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | **Kernel Function** | Linear | Polynomial | Radial Basis Function |
 | **Equation** | $w \cdot x + b$ | $(w \cdot x + b)^d$ | $\exp\left(-\gamma \left\Vert x - x'\right\Vert^2\right)$ |
 | **Complexity** | Low | Medium to High (depending on $d$) | High |

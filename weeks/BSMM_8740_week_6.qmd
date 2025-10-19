@@ -20,6 +20,10 @@ Due date: Lab 6 - Sunday, Oct 26, 5pm ET
 
 📖 Read Forecasting: Principles and Practice, Chapter 9: [ARIMA Models](https://otexts.com/fpp3/arima.html)
 
+📖 Check out: Tidy Forecasting in R: ARIMA Models: [Tidy ARIMA Models](https://joonim.medium.com/tidy-forecasting-in-r-arima-models-864dc13773c1)
+
+📖 Here's more on lags and autocorrelation: Tidy Time Series Analysis: Lags and Autocorrelation: [Lags and Autocorrelation](https://www.r-bloggers.com/2017/08/tidy-time-series-analysis-part-4-lags-and-autocorrelation/)
+
 ## Participate
 
 🖥️ [Lecture 6 - Time Series Methods](/slides/BSMM_8740_lec_06.html)

@@ -314,7 +314,7 @@ print(summary(retail_dat$monthly_sales))
 
 Using the `modeltime` and `parsnip` frameworks,
 
-1.  build and compare ETS(A,A,A) and ETS(M,M,M) models. Use log(sales) as the outcome. Use `workflows` and `modeltime::exp_smoothing`, setting the error, trend and season argument explicitly for each model (see the help for `modeltime::exp_smoothing` ). For ETS(M,M,M), set damping = "damped".
+1.  build and compare ETS(A,A,A) and ETS(M,MD,M) models. Use log(sales) as the outcome. Use `workflows` and `modeltime::exp_smoothing`, setting the error, trend, season, and damped argument explicitly for each model (see the help for `modeltime::exp_smoothing` ). For ETS(M,M,M), set damping = "damped" (NOTE: the default is 'damped').
 
 2.  forecast sales one month ahead, and extract the forecast for January 2024. Plot the forecasts.
 

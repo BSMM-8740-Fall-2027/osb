@@ -9,12 +9,21 @@ self-contained: true
 
 ## Introduction
 
-In today's lab, you'll practice working with DAGs and building a causal workflow.
+In today's lab, you'll practice working with
+
+-   Potential Outcomes and causal estimands,
+-   Building DAGs and extracting adjustment sets,
+-   How to achieve exchangeability through RCT and IPW,
+-   The FWL theorem to understand the structure of regression,
+-   Causal worklows,
+-   and Instrumental Variables.
+
+### Learning goals
 
 By the end of the lab you will...
 
--   Be able to build DAGs to model causal assumptions and use the causal model to extract implications for answering causal questions.
--   Be able to build a causal workflow to answer causal questions.
+-   Be able to build DAGs to model causal assumptions and use the causal model to answering causal questions.
+-   Be able to build a causal workflow for real world causal problems.
 
 ## Getting started
 
@@ -50,7 +59,7 @@ if (! "librarian" %in% rownames(installed.packages()) ){
 # load packages if not already loaded
 librarian::shelf(
   tidyverse, broom, rsample, ggdag, causaldata, halfmoon, ggokabeito, malcolmbarrett/causalworkshop
-  , magrittr, ggplot2, estimatr, Formula, r-causal/propensity, gt, gtExtras)
+  , magrittr, ggplot2, estimatr, Formula, r-causal/propensity, gt, gtExtras, patchwork)
 
 # set the default theme for plotting
 theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
@@ -70,18 +79,14 @@ Open the spreadsheet at **data/outcomes.xlsx**. This spreadsheet contains potent
 
 Fill out the treatment effect and outcome columns in the spreadsheet, and then compute the ATT, ATT, and ATU
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q1 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q1:
 
 random treatment:
 
 -   ATT is \_\_\_\_
 -   ATU is \_\_\_\_
 -   ATE is \_\_\_\_
-:::
-
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
 
 non-random treatment:
 
@@ -98,6 +103,7 @@ You can examine the DAGS to identify the open paths (this is the recommended fir
 
 ```{r}
 #| echo: false
+#| label: build the DAGs and display them
 # (1)
 dag_1 <- 
 ggdag::dagify(
@@ -200,8 +206,8 @@ dag_flows |>
   ggdag::theme_dag()
 ```
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q2 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q2:
 
 -   DAG_1
     -   open paths from D (treatment) to Y (outcome):
@@ -225,21 +231,22 @@ Your company has panel data (i.e time-stamped) on local economic conditions, its
 
 2.  What data might be missing from dataset provided by the company?
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q3 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q3:
 
 Finish constructing the DAG and use this code to display it
 
 ```{r}
 #| eval: false
+#| label: build a DAG to represent a demand model with price as treatment
 set.seed(8740)
 # fill in the missing node(s)
 ggdag::dagify(
-  demand ~ ?           # demand for the commodity at your business
-  , price ~ ?          # price for the commodity at your business
-  , c_price ~ ?        # competitor price for the commodity 
-  , wholesale ~ ?      # wholesale price for all businesses
-  , economy ~ ?        # a measure of general economic activity
+  demand ~ ❓           # demand for the commodity at your business
+  , price ~ ❓          # price for the commodity at your business
+  , c_price ~❓         # competitor price for the commodity 
+  , wholesale ~ ❓      # wholesale price for all businesses
+  , economy ~ ❓        # a measure of general economic activity
   , exposure = "price"
   , outcome = "demand"
   , labels = c(
@@ -254,7 +261,7 @@ ggdag::dagify(
   ggdag::theme_dag()
 ```
 
-What data might be missing from the company data / this DAG, if any:
+What data might be missing from the company data / this DAG, if any: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
 :::
 
 ## Exercise 4: Inverse Probability Weights (IPWs)
@@ -263,6 +270,7 @@ in class we used the function `propensity::wt_ate` to calculate inverse probabil
 
 ```{r}
 #| eval: true
+#| label: build a model for the probability of treatment (propensity)
 propensity_model <- glm(
   net ~ income + health + temperature,
   data = causalworkshop::net_data,
@@ -272,21 +280,25 @@ propensity_model <- glm(
 
 Repeat the calculation of the IPWs, using the definition of the weight as the inverse probability:
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q4 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q4:
 
 ```{r}
 #| eval: false
+#| label:  calculate inverse probability weights using the propensity model
+#
 # calculate inverse probability weights
 net_data_wts <- propensity_model |>
   broom::augment(newdata = causalworkshop::net_data, type.predict = "response") |>
-  dplyr::mutate(ip_wts = ??)
+  dplyr::mutate(ip_wts = ❓)
 ```
 
 and show that your calculated weights are the same as those computed by `propensity::wt_ate`
 
 ```{r}
+#| label: compare your weights with those of the function wt_ate in the propensity package
 # show that ip_wts = wts
+
 ```
 :::
 
@@ -298,6 +310,8 @@ Show that this is the case for our mosquito net data by simulating random treatm
 
 ```{r}
 #| echo: true
+#| label: simulate random treatment asignment
+#
 # use this data - mosquito net data plus a row id numer
 smpl_dat <- causalworkshop::net_data |>
   tibble::rowid_to_column()
@@ -313,11 +327,13 @@ smpl_dat <- causalworkshop::net_data |>
 
 Did randomization make the treatment groups more alike with respect to income, health and temperature?
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q5 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q5:
 
 ```{r}
+#| label: compare treatment and control group covariates under randomization
 # show the smd table for the original data and for the randomized data
+#
 
 ```
 :::
@@ -327,6 +343,8 @@ Did randomization make the treatment groups more alike with respect to income, h
 Here we'll look at credit and default-risk data. First we'll load the data:
 
 ```{r}
+#| label: load data
+#
 # load data
 risk_data = readr::read_csv("data/risk_data.csv", show_col_types = FALSE)
 ```
@@ -334,7 +352,9 @@ risk_data = readr::read_csv("data/risk_data.csv", show_col_types = FALSE)
 The FWL Theorem states that a multivariate linear regression can be estimated all at once or in three separate steps. For example, you can regress `default` on the financial variables `credit_limit`, `wage`, `credit_score1`, and `credit_score2` as follows:
 
 ```{r}
-# regress default on financila variabbles in the dataset
+#| label: perform regression (outcome on covariates and treatment)
+#
+# regress default on financial variables in the dataset
 model <- lm(default ~ credit_limit + wage +  credit_score1 + credit_score2, data = risk_data)
 
 model |> broom::tidy(conf.int = TRUE)
@@ -350,6 +370,7 @@ Due to confounding, the data looks like this, with default percentage trending d
 
 ```{r}
 #| echo: true
+#| label: show data
 risk_data |> 
   dplyr::group_by(credit_limit) |> 
   # add columns for number of measurements in the group, and the mean of the group
@@ -360,6 +381,7 @@ risk_data |>
   geom_point() +
   labs(title = "Default Rate by Credit Limit", x = "credit_limit", y = "default") +
   theme_minimal()
+
 ```
 
 [**Step 1:**]{.underline}
@@ -369,20 +391,34 @@ risk_data |>
 -   plot the de-biased data
 -   regress the outcome (`default`) on `credit_limit_res`
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+The de-biasing step is crucial for estimating the correct causal effect, while the de-noising step is nice to have, since it reduces the variance of the coefficient estimate and narrows the confidence interval.
+
+[**Step 2:**]{.underline}
+
+-   create the de-noising model,
+-   add the residuals to the de-biased data (risk_data_deb), saving the result in `risk_data_denoise` in a column `default_res`.
+
+[**Step 3:**]{.underline}
+
+-   regress the default residuals (`default_res`) on the credit limit residuals (`credit_limit_res`)
+
+::: {#Q6 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q6:
 
 ```{r}
 #| eval: false
-# create debiasing model
-debiasing_model <- lm(?, data = risk_data)
+#| label: perform the first stage or de-biasing regression (STEP 1)
+# create de-biasing model
+debiasing_model <- lm(❓, data = risk_data)
 
 debiasing_model |> broom::tidy(conf.int = TRUE)
 
-# add a column with the residuals of the debiasing model 
+
+# add a column with the residuals of the de-biasing model 
 # (add the residuals to the mean credit limit to give a nice interpretation to a zero residual)
 risk_data_deb <- risk_data |> 
-  dplyr::mutate(credit_limit_res = mean(credit_limit) + ? )
+  dplyr::mutate(credit_limit_res = mean(credit_limit) + ❓ )
+
 
 risk_data_deb |> 
   # round the residuals prior to grouping
@@ -399,6 +435,7 @@ risk_data_deb |>
   labs(title = "Default Rate by Debiased Credit Limit", x = "credit_limit", y = "default")+
   theme_minimal()
 
+# run regression with residuals
 lm(default ~ credit_limit_res, data = risk_data_deb) |> 
     broom::tidy(conf.int = TRUE)
 ```
@@ -406,41 +443,29 @@ lm(default ~ credit_limit_res, data = risk_data_deb) |>
 In this last regression, the coefficient estimated for `credit_limit_res` should be the same as the coefficient estimated for `credit_limit` in the initial regression.
 
 Note the difference in the confidence intervals though.
-:::
-
-The de-biasing step is crucial for estimating the correct causal effect, while the de-noising step is nice to have, since it reduces the variance of the coefficient estimate and narrows the confidence interval.
-
-[**Step 2:**]{.underline}
-
--   create the de-noising model,
--   add the residuals to the de-biased data (risk_data_deb), saving the result in `risk_data_denoise` in a column `default_res`.
-
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
 
 ```{r}
 #| eval: false
+#| label: perform the second stage or de-noising regression (STEP 2)
 # create the de-noising model
 denoising_model <- 
-    lm(default ~ ?, data = risk_data_deb)
+    lm(default ~ ❓, data = risk_data_deb)
+
 
 risk_data_denoise <-  risk_data_deb |> 
   # add a column with the residuals of the de-noised model 
   # (add the residuals to the mean default to give a nice interpretation to the zero residual)
   dplyr::mutate(default_res = denoising_model$residuals + mean(default))
 ```
-:::
 
-[**Step 3:**]{.underline}
-
--   regress the default residuals (`default_res`) on the credit limit residuals (`credit_limit_res`)
-
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+Now regress the residuals on each other
 
 ```{r}
 #| eval: false
-lm(?, data = risk_data_denoise) |> 
+#| label: regress residuals on residuals (STEP 3)
+#
+
+lm(❓, data = risk_data_denoise) |> 
     broom::tidy(conf.int = TRUE)
 ```
 
@@ -458,6 +483,8 @@ To answer this question, we'll use causal inference methods to examine the relat
 We'll use data from NHEFS to try to estimate the causal effect of quitting smoking on weight game. NHEFS is a longitudinal, observational study that has many of the variables we'll need. Take a look at `causaldata::nhefs_codebook` if you want to know more about the variables in this data set. These data are included in the {causaldata} package. We'll use the `causaldata::nhefs_complete` data set, but we'll remove people who were lost to follow-up.
 
 ```{r}
+#| label: load the smoking data
+#
 nhefs_complete_uc <- causaldata::nhefs_complete |>
   dplyr::filter(censored == 0)
 nhefs_complete_uc
@@ -466,6 +493,8 @@ nhefs_complete_uc
 Let's look at the distribution of weight gain between the two groups.
 
 ```{r}
+#| label: compare the two groups
+#
 nhefs_complete_uc |>
   ggplot(aes(wt82_71, fill = factor(qsmk))) + 
   geom_vline(xintercept = 0, color = "grey60", linewidth = 1) +
@@ -482,6 +511,7 @@ nhefs_complete_uc |>
 There's a difference--former smokers do seemed to have gained a bit more weight--but there's also a lot of variation. Let's look at the numeric summaries.
 
 ```{r}
+#| label: estimate the weight gain difference (the contrast)
 # ~2.5 kg gained for quit vs. not quit
 nhefs_complete_uc |>
   dplyr::group_by(qsmk) |>
@@ -499,6 +529,7 @@ To truly answer this question, we need to specify a causal diagram based on doma
 In R, we can visualize and analyze our DAGs with the `ggdag` package. `ggdag` uses `ggplot2` and `ggraph` to visualize diagrams and `dagitty` to analyze them. Let's set up our assumptions. The `dagify()` function takes formulas, much like `lm()` and friends, to express assumptions. We have two basic causal structures: the causes of quitting smoking and the causes of gaining weight. Here, we're assuming that the set of variables here affect both. Additionally, we're adding `qsmk` as a cause of `wt82_71`, which is our causal question; we also identify these as our outcome and exposure. Finally, we'll add some labels so the diagram is easier to understand. The result is a `dagitty` object, and we can transform it to a `tidy_dagitty` data set with `tidy_dagitty()`.
 
 ```{r}
+#| label: creat a DAG identifying relationships between variables
 # set up DAG
 smk_wt_dag <- ggdag::dagify(
   # specify causes of quitting smoking and weight gain:
@@ -544,6 +575,7 @@ Let's visualize our assumptions with `ggdag()`.
 ```{r}
 #| message: false
 #| warning: false
+#| label: show the DAG
 smk_wt_dag |>
   ggdag::ggdag(text = FALSE, use_labels = "label")
 ```
@@ -551,6 +583,7 @@ smk_wt_dag |>
 What do we need to control for to estimate an unbiased effect of quitting smoking on weight gain? In many DAGs, there will be many sets of variables--called adjustment sets--that will give us the right effect (assuming our DAG is correct--a big, unverifiable assumption!). `ggdag_adjustment_set()` can help you visualize them. Here, there's only one adjustment set: we need to control for everything! While we're add it, since a {ggdag} plot is just a {ggplot2} plot, let's clean it up a bit, too.
 
 ```{r}
+#| label: identify the adjustment set
 smk_wt_dag |>
   ggdag::ggdag_adjustment_set(text = FALSE, use_labels = "label") +
   ggdag::theme_dag() +
@@ -558,9 +591,10 @@ smk_wt_dag |>
   ggokabeito::scale_fill_okabe_ito(order = c(1, 5))
 ```
 
-Let's fit a model with these variables. Note that we'll fit all continuous variables with squared terms, as well, to allow them a bit of flexibility.
+Let's fit a model with these variables. Note that we'll also fit all continuous variables with squared terms, to allow them a bit of flexibility.
 
 ```{r}
+#| label: fit weight gain model using adjustment set
 lm(
   wt82_71~ qsmk + sex + 
     race + age + I(age^2) + education + 
@@ -580,6 +614,7 @@ For a simple IPW model, we have two modeling steps. First, we fit a propensity s
 For the propensity score model, we'll use logistic regression (since quitting smoking is a binary variable). The outcome is quitting smoking, and the variables in the model are all those included in our adjustment set. Then, we'll use `augment()` from {broom} (which calls `predict()` on the inside) to calculate our weights using `propensity::wt_ate()` and save it back into our data set.
 
 ```{r}
+#| label: model the propensity 
 propensity_model <- glm(
   qsmk ~ sex + 
     race + age + I(age^2) + education + 
@@ -590,12 +625,14 @@ propensity_model <- glm(
   data = nhefs_complete_uc
 )
 
+# calculate weights (IPW)
 nhefs_complete_uc <- propensity_model |>
   # predict whether quit smoking
   broom::augment(type.predict = "response", data = nhefs_complete_uc) |>
   # calculate inverse probability
   dplyr::mutate(wts = propensity::wt_ate(.fitted, qsmk))
 
+# select the columns needed
 nhefs_complete_uc |>
   dplyr::select(qsmk, .fitted, wts)
 ```
@@ -603,6 +640,7 @@ nhefs_complete_uc |>
 Let's look at the distribution of the weights.
 
 ```{r}
+#| label: look at the distribution of weights to identify non-positivity 
 ggplot(nhefs_complete_uc, aes(wts)) +
   geom_histogram(color = "white", fill = "#E69F00", bins = 50) + 
   #  use a log scale for the x axis
@@ -620,12 +658,16 @@ Standardized mean differences (SMD) are a simple measurement of differences that
 We'll use the {halfmoon} package to calculate the SMDs, then visualize them.
 
 ```{r}
+#| label: check adjustment by weighting
+#
+# identify the variables
 vars <- c(
   "sex", "race", "age", "education", 
   "smokeintensity", "smokeyrs", 
   "exercise", "active", "wt71"
 )
 
+# form data frame with data from smd
 plot_df <- halfmoon::tidy_smd(
     nhefs_complete_uc,
     all_of(vars),
@@ -633,11 +675,11 @@ plot_df <- halfmoon::tidy_smd(
     wts
 )
 
+#| plot
 ggplot(
     data = plot_df,
     mapping = aes(x = abs(smd), y = variable, group = method, color = method)
-) +
-    halfmoon::geom_love()
+) + halfmoon::geom_love()
 ```
 
 These look pretty good! Some variables are better than others, but weighting appears to have done a much better job eliminating these differences than an unadjusted analysis.
@@ -645,6 +687,7 @@ These look pretty good! Some variables are better than others, but weighting app
 We can also use halfmoon's `geom_mirror_histogram()` to visualize the impact that the weights are having on our population.
 
 ```{r}
+#| label: show half-moon plot
 nhefs_complete_uc |>
   dplyr::mutate(qsmk = factor(qsmk)) |>
   ggplot(aes(.fitted)) +
@@ -667,16 +710,20 @@ Both groups are being *upweighted* so that their distributions of propensity sco
 We could do more here to analyze our assumptions, but let's move on to our second step: fitting the outcome model weighted by our inverse probabilities. Some researchers call these Marginal Structural Models, in part because the model is marginal; we only need to include our outcome (`wt82_71`) and exposure (`qsmk`). The other variables aren't in the model; they are accounted for with the IPWs!
 
 ```{r}
+#| label: run the weighted regression
+#
 ipw_model <- lm(
   wt82_71 ~ qsmk, 
   data = nhefs_complete_uc, 
   weights = wts # inverse probability weights
 ) 
 
+# pull the estimate
 ipw_estimate <- ipw_model |>
   broom::tidy(conf.int = TRUE) |>
   dplyr::filter(term == "qsmk")
 
+# show the estimate
 ipw_estimate
 ```
 
@@ -685,24 +732,28 @@ This estimate is pretty similar to what we saw before, if a little smaller. In f
 But we have other problem that we need to address. While we're just using `lm()` to estimate our IPW model, it doesn't properly account for the weights. That means our standard error is too small, which will artificially narrow confidence intervals and artificially shrink p-values. There are many ways to address this, including robust estimators. We'll focus on using the bootstrap via the {rsamples} package in this workshop, but here's one way to do it with robust standard errors:
 
 ```{r}
+#| label: get robust standard errors using the estimatr package
 # also see robustbase, survey, gee, and others
-library(estimatr)
+library(estimatr, quietly=TRUE)
 ipw_model_robust <- lm_robust( 
   wt82_71 ~ qsmk, 
   data = nhefs_complete_uc, 
   weights = wts 
 ) 
 
+# pull the estimate
 ipw_estimate_robust <- ipw_model_robust |>
   broom::tidy(conf.int = TRUE) |>
   dplyr::filter(term == "qsmk")
 
+# show the estimate
 ipw_estimate_robust
 ```
 
 Now let's try the bootstrap. First, we need to wrap our model in a function so we can call it many times on our bootstrapped data. A function like this might be your instinct; however, it's not quite right.
 
 ```{r}
+#| label: get robust standard errors using bootstrap
 # fit ipw model for a single bootstrap sample
 fit_ipw_not_quite_rightly <- function(split, ...) {
   # get bootstrapped data sample with `rsample::analysis()`
@@ -717,6 +768,8 @@ fit_ipw_not_quite_rightly <- function(split, ...) {
 The problem is that we need to account for the *entire* modeling process, so we need to include the first step of our analysis -- fitting the inverse probability weights.
 
 ```{r}
+#| label: put entire ipw analysis within a function
+#
 fit_ipw <- function(split, ...) {
   .df <- rsample::analysis(split)
   
@@ -749,6 +802,8 @@ fit_ipw <- function(split, ...) {
 `rsample` makes the rest easy for us: `bootstraps()` resamples our data 1000 times, then we can use `purrr::map()` to apply our function to each resampled set (`splits`). `rsample`'s `int_*()` functions help us get confidence intervals for our estimate.
 
 ```{r}
+#| label: put entire analysis within a function
+#
 # fit ipw model to bootstrapped samples | THIS MAY TAKE SOME TIME
 ipw_results <- rsample::bootstraps(causaldata::nhefs_complete, 1000, apparent = TRUE) |>
   dplyr::mutate(results = purrr::map(splits, fit_ipw))
@@ -757,12 +812,15 @@ ipw_results <- rsample::bootstraps(causaldata::nhefs_complete, 1000, apparent = 
 boot_estimate <- rsample::int_t(ipw_results, results) |>
   dplyr::filter(term == "qsmk")
 
+# show estimate
 boot_estimate
 ```
 
 Let's compare to our naive weighted model that just used a single estimate from `lm()`
 
 ```{r}
+#| label: compare weighted model with naive model
+#
 dplyr::bind_rows(
   ipw_estimate |>
     dplyr::select(estimate, conf.low, conf.high) |>
@@ -797,12 +855,12 @@ So, we have a final estimate for our causal effect: on average, a person who qui
 -   Please enumerate the steps in the causal analysis workflow
 -   What do you think? Is this estimate reliable? Did we do a good job addressing the assumptions we need to make for a causal effect, particularly that there is no confounding? How might you criticize this model, and what would you do differently?
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q7 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q7:
 
--   causal workflow steps:
+-   causal workflow steps: \_\_\_\_\_
 
--   your critique of the results of the exercise
+-   your critique of the results of the exercise: \_\_\_\_\_\_
 :::
 
 ## Exercise 8: Causal Modeling
@@ -826,8 +884,8 @@ An e-commerce company is studying the effect of personalized email campaigns (D)
 -   Explain why we cannot directly calculate ATT and ATU from the observed data alone.
 -   Under what assumption would the observed difference in means equal the ATE? Is this assumption likely to hold in this marketing context?
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q8 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q8:
 
 -   Define the following parameters using Rubin's notation:
 
@@ -835,17 +893,17 @@ An e-commerce company is studying the effect of personalized email campaigns (D)
     -   Average Treatment Effect on the Treated (ATT): \_\_\_\_\_
     -   Average Treatment Effect on the Untreated (ATU): \_\_\_\_\_
 
--   What is the observed difference in means? \_\_\_\_\_
+-   What is the observed difference in means❓ \_\_\_\_\_
 
-    -   What does this estimate capture? \_\_\_\_\_
+    -   What does this estimate capture❓ \_\_\_\_\_
 
--   If the true ATE = \$25, what is the selection bias? \_\_\_\_\_
+-   If the true ATE = \$25, what is the selection bias❓ \_\_\_\_\_
 
     -   Show your calculation.
 
 -   Explain why we cannot directly calculate ATT and ATU from the observed data alone.
 
--   Under what assumption would the observed difference in means equal the ATE? Is this assumption likely to hold in this marketing context?
+-   Under what assumption would the observed difference in means equal the ATE❓ Is this assumption likely to hold in this marketing context❓
 :::
 
 ## Exercise 9: Instrumental Variables
@@ -863,8 +921,8 @@ where $\nu_1,\eta_i$ are noise terms and $\kappa,\mu$ are intercepts, and our es
 
 Show that $\beta^{IV}=\frac{\text{cov}\left(Z_i,Y_i\right)}{\text{cov}\left(Z_i,D_i\right)}$
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q9 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q9:
 
 Please show all your work
 
@@ -877,7 +935,7 @@ Please show all your work
 .
 :::
 
-## Exercise 10: Instrumental Variables
+## Exercise 10: Instrumental Variables in Action
 
 An **elasticity** measures the percentage change in one variable (outcome) in response to a percentage change in another variable (treatment), typically written as: $\eta = \frac{\partial{Y}/Y}{\partial{X}/X}=\frac{d\log(Y)/dY}{d\log(X)/dx}$
 
@@ -888,9 +946,12 @@ The following code generates synthetic e-commerce data with an elasticity of dem
 Here you will use shipping costs (`shipping_cost`) as the instrument (IV), noting that it has variation (variation in shipping costs across regions and time) and shipping costs don't directly affect demand (it affects demand only through total price).
 
 ```{r}
-#| echo: false
+#| echo: true
+#| label: generate econ data
+#| code-fold: true
+#| code-summary: generate realistic looking ecommerce data
 # Set seed for reproducibility
-set.seed(123)
+set.seed(8740)
 
 # Generate synthetic e-commerce data
 generate_ecommerce_data <- function(n = 5000) {
@@ -956,51 +1017,108 @@ generate_ecommerce_data <- function(n = 5000) {
 }
 
 # Generate the dataset
-ecom_data <- generate_ecommerce_data(n = 5000)
+econ_data <- generate_ecommerce_data(n = 5000)
 ```
 
-::: {.callout-note appearance="simple" icon="false"}
-\(1\) use ecom_data to estimate the demand elasticity of total price with a naive model, using log(quantity) \~ log(total_price) and covariates region and month (as factors), income (as log) and age.
+Here are some visualizations of our data. Note that the slope of demand vs total price is +ve instead of -ve.
+
+```{r}
+#| label: plots of the data
+#| code-fold: true
+#| code-summary: Plots of demand vs total price and total price vs shipping costs
+#| message: false
+#| warning: false
+
+library(patchwork)
+# Visualize price and quantity relationship
+p1 <- ggplot(econ_data, aes(x = log(total_price), y = log(quantity))) +
+  geom_point(alpha = 0.5, color = "steelblue") +
+  geom_smooth(method = "lm", se = TRUE, color = "red") +
+  labs(title = "Raw Price-Quantity Relationship",
+       subtitle = "This relationship is biased due to endogeneity",
+       x = "Log(Total Price)", y = "Log(Quantity)") +
+  theme_minimal()
+
+# Visualize instrument relevance
+p2 <- ggplot(econ_data, aes(x = shipping_cost, y = total_price)) +
+  geom_point(alpha = 0.5, color = "darkgreen") +
+  geom_smooth(method = "lm", se = TRUE, color = "red") +
+  labs(title = "Instrument Relevance: Shipping Cost vs Total Price",
+       subtitle = "First stage relationship",
+       x = "Shipping Cost", y = "Total Price") +
+  theme_minimal()
+
+p1 + p2
+```
+
+Complete the following steps in the analysis:
+
+1.  Use econ_data to estimate the demand elasticity of total price with a naive model, using log(quantity) \~ log(total_price) and covariates region and month (as factors), income (as log) and age.
+2.  Use econ_data to model the "reduced form" stage by regressing log(quantity) with shipping_cost.
+3.  Use econ_data to model the "first stage" by regressing log(total_price) on shipping_cost
+
+::: {#Q10 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q10:
+
+(STEP 1) Use econ_data to estimate the demand elasticity of total price with a naive model, using log(quantity) \~ log(total_price) and covariates region and month (as factors), income (as log) and age.
 
 Use broom::tidy to report the coefficient of log(price) (i.e. the elasticity)
 
-## YOUR ANSWER:
+```{r}
+#| eval: false
+#| label: Build model and use broom::tidy to report the coefficient of log(total price) (i.e. the elasticity) 
+#
+# regress log demand on log total price
+naive_model <- ❓
+  
 
-naive_model \<- \_\_\_\_
+# pull the coefficient of price as the naive elasticity estimate
+naive_results <- ❓ 
 
-naive elasticity estimate:
-:::
+```
 
-::: {.callout-note appearance="simple" icon="false"}
-\(2\) use ecom_data to model the "reduced form" stage by replacing log(total_price) with shipping_cost.
+(STEP 2) use econ_data to model the "reduced form" stage by regressing log(quantity) on shipping_cost.
 
 Use broom::tidy to report the coefficient of shipping_cost (i.e. effect of shipping cost on demand)
 
-## YOUR ANSWER:
+```{r}
+#| eval: false
+#| label: Model the "reduced form" stage regressing log(demand) on shipping_cost. Use broom::tidy to extract the coefficient on shipping cost.
+#
+# regress log demand on shipping price
+reduced_form_model <- ❓
+  
+# pull the coefficient of shipping cost 
+reduced_form_results <- ❓
 
-reduced_form_model \<- \_\_\_\_
+```
 
-coefficient of shipping cost on demand
-:::
-
-::: {.callout-note appearance="simple" icon="false"}
-\(3\) use ecom_data to model the "first stage" by regressing log(total_price) on shipping_cost
+(STEP 3) use econ_data to model the "first stage" by regressing log(total_price) on shipping_cost
 
 Use broom::tidy to report the coefficient of shipping_cost (i.e. effect of shipping cost on log(total_price))
 
-## YOUR ANSWER:
+```{r}
+#| eval: false
+#| label: use econ_data to model the "first stage" by regressing log(total_price) on shipping_cost
+#
+# regress log(total price)
+first_stage_model <- 
 
-first_stage_model \<- \_\_\_\_
+# pull the coefficient of shipping cost in the first stage model     
+first_stage_results <-   
+```
 
-coefficient of shipping cost on log(price)
-:::
+(STEP 4) Estimate the true total_price elasticity
 
-::: {.callout-note appearance="simple" icon="false"}
-\(4\) estimate elasticity by dividing the "reduced form" by the "first stage" coefficients
+```{r}
+#| eval: false
+#| label: estimate total price elasticity by dividing the "reduced form" by the "first stage" coefficients
+#
 
-## YOUR ANSWER:
+# estimate true elasticity
+IV_elasticity_est <- 
 
-IV elasticity estimate: \_\_\_\_
+```
 :::
 
 ::: render-commit-push
