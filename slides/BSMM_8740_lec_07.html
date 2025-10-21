@@ -113,6 +113,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -219,7 +220,7 @@ L.L. Odette
 <h2>Recap of last week</h2>
 <ul>
 <li><p>Last week we explored time series data, how it differs from typical cross-sectional or panel data, &amp; how the differences matter for data analytics methods.</p></li>
-<li><p>We showed how to break time series into ETS components, and how to model autoregressive processes.</p></li>
+<li><p>We showed how to break time series into ETS components, and how to model AR &amp; MA processes.</p></li>
 <li><p>We introduced the <code>modeltime</code> and <code>timetk</code> R packages for timeseries analytics.</p></li>
 <li><p>We showed how these integrate into the tidymodels workflows for predicting timeseries.</p></li>
 </ul>
@@ -227,10 +228,21 @@ L.L. Odette
 <section id="this-week" class="slide level2">
 <h2>This week</h2>
 <ul>
-<li>We Introduce the fundamental problems of causal inference and discuss the biases of some intuitive estimators.</li>
+<li>We introduce the fundamental problems of causal inference and discuss the biases of some intuitive estimators.</li>
 <li>We develop a basic understanding of the tools used to state and then satisfy causality assumptions, and then</li>
-<li>We understand of how econometric methods recover treatment effects,</li>
+<li>We understand of how econometric methods with weighting can recover treatment effects,</li>
 <li>We learn to use these methods and estimate their precision using R.</li>
+</ul>
+</section>
+<section id="week-7-roadmap" class="slide level2">
+<h2>Week 7 Roadmap</h2>
+<ul>
+<li class="fragment">Rubin Causal Model &amp; Potential Outcomes</li>
+<li class="fragment">Causal estimands: ATE, ATT, ATU</li>
+<li class="fragment">Causal estimators: with vs without</li>
+<li class="fragment">The fundamental problems: causal and statistical inference</li>
+<li class="fragment">DAGs: confounders, mediators, and colliders</li>
+<li class="fragment">IPW</li>
 </ul>
 </section>
 <section>
@@ -243,7 +255,7 @@ L.L. Odette
 <p>When trying to estimate the effect of a treatment / intervention on an outcome, we face two very difficult problems: the <em>Fundamental Problem of Causal Inference</em> (FPCI) and the <em>Fundamental Problem of Statistical Inference</em> (FPSI).</p>
 <p>In this lecture we’ll assume all interventions are binary, e.g.&nbsp;we offer a customer a discount or we don’t; we re-brand a branch office or we don’t.</p>
 </section>
-<section id="rubin-causal-model-rcm1" class="slide level2">
+<section id="rubin-causal-model-rcm1" class="slide level2 scrollable">
 <h2>Rubin Causal Model (RCM<sup>1</sup>)</h2>
 <p>RCM is made of three distinct building blocks:</p>
 <ul>
@@ -254,7 +266,7 @@ L.L. Odette
 <aside><ol class="aside-footnotes"><li id="fn1"><p>The Rubin Causal Model (RCM), also known as the potential outcomes framework, was developed by Donald Rubin in the 1970s and gained prominence in the 1980s.</p></li></ol></aside></section>
 <section id="treatment-allocation" class="slide level2">
 <h2>Treatment allocation</h2>
-<p>For binary treatments, treatment allocation is represented by the variable <span class="math inline">\(D_i\)</span>, where <span class="math inline">\(D_i=1\)</span> if unit <span class="math inline">\(i\)</span> receives the treatment and <span class="math inline">\(D_i=0\)</span> if unit <span class="math inline">\(i\)</span> does not receive the treatment.</p>
+<p>For binary treatments, treatment allocation is represented by the variable <span class="math inline">\(D_i\)</span>, where <span class="math inline">\(D_i=1\)</span> if unit <span class="math inline">\(i\)</span> <span style="color:green;font-weight:bold">receives</span> the treatment and <span class="math inline">\(D_i=0\)</span> if unit <span class="math inline">\(i\)</span> does <span style="color:green;font-weight:bold">not receive</span> the treatment.</p>
 <p>The treatment allocation rule is critical:</p>
 <ul>
 <li>it switches the treatment on or off for each unit, and it is going to be the source of the FPCI.</li>
@@ -302,7 +314,7 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 </div><div class="column" style="width:40%;">
 <div class="cell">
 <div class="cell-output-display">
-<div id="dqkyavdoab" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="vtrrdgnlgj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   
 <table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" data-bgcolor="#FFFFFF">
@@ -362,7 +374,7 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 <p>One calculation we could make when we have unobserved counterfactuals is to contrast the outcomes of the treated with the outcomes of the untreated.</p>
 </div>
 </section>
-<section id="treatment-effects" class="slide level2">
+<section id="treatment-effects" class="slide level2 scrollable">
 <h2>Treatment effects</h2>
 <p>Now we can define the causal effect:</p>
 <p>The unit level treatment effect<sup>1</sup> is defined as</p>
@@ -395,12 +407,12 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 <div class="columns">
 <div class="column" style="width:50%;">
 <div style="font-size: large">
-<p>In practice, we only know the outcomes corresponding to the treatment. In this case an <u><strong>estimator</strong></u> of the <span class="math inline">\(\text{ATE}\)</span> is the with-without estimator (<span class="math inline">\(\Delta_{WW}\)</span>) which computes the difference between the average outcomes of the treated and untreated units.</p>
+<p>In practice, we only know the outcomes corresponding to the treatment value. In this example an <u><strong>estimator</strong></u> of the <span class="math inline">\(\text{ATE}\)</span> is the with-without estimator (<span class="math inline">\(\Delta_{WW}\)</span>) which computes the difference between the average outcomes of the treated and untreated units.</p>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
-<div id="eihwtzhtko" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="svijioldxg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   
 <table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" data-bgcolor="#FFFFFF">
@@ -456,20 +468,20 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 </div></div>
 <div style="font-size: large">
 <p>Given these observations, and comparing the mean of the treated outcomes to the mean of the untreated outcomes: <span class="math inline">\(\text{ATE}\ne\Delta_\text{WW}=\left(500+600\right)/2-\left(600+750\right)/2=-125\)</span>.</p>
-<p>In this example, the <span class="math inline">\(\Delta_\text{WW}\)</span> estimator is a biased estimate of the <span class="math inline">\(\text{ATE}\)</span> estimand; the bias is due to the untreated being bigger spenders than the treated, on average.</p>
+<p>In this example, the <span class="math inline">\(\Delta_\text{WW}\)</span> estimator is a biased estimate of the <span class="math inline">\(\text{ATE}\)</span> estimand; the bias is due to the untreated having larger <span class="math inline">\(Y\)</span> values than the treated, on average.</p>
 </div>
 </section>
 <section id="intuitive-casual-estimators" class="slide level2">
 <h2>Intuitive casual estimators</h2>
-<p>Intuitive comparisons are often made in order to estimate causal effects, e.g.&nbsp;the <strong>with/without</strong> comparison (<strong>WW</strong>).</p>
+<p>Intuitive comparisons like the <strong>with/without</strong> comparison (<strong>WW</strong>) are often made in order to estimate causal effects.</p>
 <p><strong>WW</strong> compares the average outcomes of the treated units with those of the untreated units.</p>
 <p>Intuitive comparisons try to proxy for the expected counterfactual outcome in the treated group by using an observed quantity, i.e.&nbsp;the outcomes of the untreated units.</p>
 </section>
 <section id="intuitive-casual-estimators-1" class="slide level2">
 <h2>Intuitive casual estimators</h2>
-<p>Unfortunately, these proxies are generally poor and provide biased estimates of TT.</p>
+<p>Unfortunately, these proxies are generally poor and provide biased estimates of average treatment effects.</p>
 <p>The reason that these proxies are poor is that the treatment is not the only factor that differentiates the treated group from the groups used to form the proxy. The intuitive comparisons are biased because factors other than the treatment are correlated with treatment allocation.</p>
-<p>We can eliminate the bias when particular assumptions are true.</p>
+<p>We can eliminate this bias when particular assumptions are true.</p>
 </section>
 <section id="withwithout-comparison" class="slide level2">
 <h2>With/Without comparison</h2>
@@ -523,7 +535,7 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 <div style="font-size: x-large">
 <ul>
 <li><u><strong>stable unit treatment values</strong></u> (SUTVA), i.e.&nbsp;no interference between units &amp; a single version of treatment and control, and</li>
-<li><u><strong>common support</strong></u>, meaning both treated and untreated units exist in the population (implicit)</li>
+<li><u><strong>common support</strong></u>, meaning both treated and untreated units exist in the population for each covariate combination (implicit)</li>
 </ul>
 </div>
 <p>Then we can identify the <span class="math inline">\(\text{ATE}\)</span>, where <span class="math inline">\(\text{ATE}=\pi\text{ATT}+(1-\pi)\text{ATU}\)</span>, with <span class="math inline">\(\pi\)</span> is the proportion treated in the population.</p>
@@ -536,7 +548,7 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 </section>
 <section id="identification-assumptions-2" class="slide level2">
 <h2>Identification assumption(s)</h2>
-<p>If the identification assumption holds, and outcomes are (effectively) independent of the treatment assignment, then</p>
+<p>If the identification assumptions hold, and outcomes are (effectively) independent of the treatment assignment, then</p>
 <div style="font-size: large">
 <p><span class="math display">\[
 \begin{align*}
@@ -549,10 +561,10 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 </div>
 <p>where <span class="math inline">\(\Delta_{ATE}^{Y}\)</span> is the average treatment effect in the population.</p>
 </section>
-<section id="identification-assumptions-3" class="slide level2">
+<section id="identification-assumptions-3" class="slide level2 scrollable">
 <h2>Identification assumption(s)</h2>
 <div style="font-size: x-large">
-<p>In our first example we had a balanced data set: the same number of units are treated and untreated. If this is not the case, then</p>
+<p>Our first example used a balanced data set<sup>1</sup>: the same number of units are treated and untreated. If this is not the case, then</p>
 <p><span class="math display">\[
 \Delta_{WW}^{Y} = \frac{1}{n_1}\sum_{D_i=1} Y_i(1) - \frac{1}{n_0}\sum_{D_i=0}Y_i(0)
 \]</span></p>
@@ -561,7 +573,7 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 \Delta_{STRAT}^{Y} = \sum_{x \in \mathcal{X}} \frac{n_x}{n} \hat{\tau}(x);\;\hat{\tau}(x) = \frac{1}{n_{x1}} \sum_{\{X_i=x, D_i=1\}} Y_i - \frac{1}{n_{x0}} \sum_{\{X_i=x, D_i=0\}} Y_i
 \]</span></p>
 </div>
-</section>
+<aside><ol class="aside-footnotes"><li id="fn3"><p>unstated assumption.</p></li></ol></aside></section>
 <section id="identification-assumptions-4" class="slide level2">
 <h2>Identification assumption(s)</h2>
 <div style="font-size: x-large">
@@ -573,7 +585,7 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 &amp; =\frac{1}{n}\sum_{x\in\mathcal{X}}\left(\frac{1}{\pi_{x}}\sum_{\{X_{i}=x,D_{i}=1\}}Y_{i}-\frac{1}{1-\pi_{x}}\sum_{\{X_{i}=x,D_{i}=0\}}Y_{i}\right)
 \end{align*}
 \]</span></p>
-<p>where: (i) <span class="math inline">\(n_x = |\{i : X_i = x\}|\)</span> , (ii) <span class="math inline">\(n_{xw} = |\{i : X_i = x, D_i = w\}|\)</span></p>
+<p>where: (i) <span class="math inline">\(n_x = |\{i : X_i = x\}|\)</span> , (ii) <span class="math inline">\(n_{xd} = |\{i : X_i = x, D_i = d\}|\)</span></p>
 </div>
 </section>
 <section id="fundamental-problems" class="slide level2">
@@ -598,7 +610,7 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 <h1>Causal Inference in R</h1>
 
 </section>
-<section id="causal-inference-workflow" class="slide level2">
+<section id="causal-inference-workflow" class="slide level2 scrollable">
 <h2>Causal Inference Workflow</h2>
 <ol type="1">
 <li>Specify a causal question</li>
@@ -649,7 +661,7 @@ Figure&nbsp;2: Three types of causal relationships: forks, chains, and colliders
 <p>Finally, a collider is a path where two arrowheads meet at a variable. Because causality always goes forward in time, this naturally means that the collider variable is the <u><strong>common effect</strong></u> of two other variables. Here, we’re saying that <code>x</code> and <code>y</code> both cause <code>q</code>.</p>
 </div>
 </section>
-<section id="dags-3" class="slide level2">
+<section id="dags-3" class="slide level2 scrollable">
 <h2>DAGs</h2>
 <div style="font-size: 80%">
 <p>These three types of paths have different implications for the statistical relationship between <code>x</code> and <code>y</code>. If we only look at the correlation between the two variables:</p>
@@ -658,17 +670,17 @@ Figure&nbsp;2: Three types of causal relationships: forks, chains, and colliders
 <li>In the chain, <code>x</code> and <code>y</code> are correlated through <code>q</code>.</li>
 <li>In the collider, <code>x</code> and <code>y</code> will <em>not</em> be correlated.</li>
 </ol>
-<p>Paths that permit correlation between two variables are called <strong><em>open paths</em></strong>. Paths that do not tpermt correlation are called <strong><em>closed paths</em></strong>. Forks and chains are open, while colliders are closed.</p>
+<p>Paths that permit correlation between two variables are called <strong><em>open paths</em></strong>. Paths that do not permit correlation are called <strong><em>closed paths</em></strong>. Forks and chains are open, while colliders are closed.</p>
 </div>
 </section>
-<section id="dags---forks" class="slide level2">
+<section id="dags---forks" class="slide level2 scrollable">
 <h2>DAGs - forks</h2>
 <div style="font-size: 80%">
 <p>So, should we adjust<sup>1</sup> for confounder <code>q</code>, i.e.&nbsp;include <code>q</code> in our model? That depends on the nature of the path.</p>
 <p>Forks are confounding paths. Because <code>q</code> causes both <code>x</code> and <code>y</code>, <code>x</code> and <code>y</code> will have a spurious correlation. They both contain information from <code>q</code>, their mutual cause. That mutual causal relationship makes <code>x</code> and <code>y</code> associated statistically.</p>
 <p>Adjusting for <code>q</code>, i.e.&nbsp;fixing the value of <code>q</code>, will <em>block</em> the bias from confounding and give us the true relationship between <code>x</code> and <code>y</code>.</p>
 </div>
-<aside><ol class="aside-footnotes"><li id="fn3"><p>recall that in regression, controlling for a variable is used to isolate the relationship between your main variables of interest while holding the control variable constant.</p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn4"><p>recall that in regression, controlling for a variable is used to isolate the relationship between your main variables of interest while holding the control variable constant.</p></li></ol></aside></section>
 <section id="dags---mediators" class="slide level2">
 <h2>DAGs - mediators</h2>
 <div style="font-size: 80%">
@@ -682,26 +694,18 @@ Figure&nbsp;2: Three types of causal relationships: forks, chains, and colliders
 <div style="font-size: 80%">
 <p>Colliders are different. In the collider DAG of <a href="#/fig-dag-path-types" class="quarto-xref">Figure&nbsp;2</a>, <code>x</code> and <code>y</code> are <em>not</em> correlated, but both cause <code>q</code>.</p>
 <p>Adjusting for <code>q</code> has the opposite effect than with confounding: it <em>opens</em> a biasing pathway.</p>
-<p>Sometimes, people draw the path opened up by conditioning on a collider connecting <code>x</code> and <code>y</code>.</p>
-</div>
-</section>
-<section id="dags---colliders-1" class="slide level2">
-<h2>DAGs - colliders</h2>
-<div style="font-size: 80%">
-<p>Colliders are different. In the collider DAG of <a href="#/fig-dag-path-types" class="quarto-xref">Figure&nbsp;2</a>, <code>x</code> and <code>y</code> are <em>not</em> correlated, but both cause <code>q</code>.</p>
-<p>Adjusting for <code>q</code> has the opposite effect than with confounding: it <em>opens</em> a biasing pathway.</p>
 <p>How can this be? Since <code>x</code> and <code>y</code> happen before <code>q</code>, <code>q</code> can’t impact them.</p>
 <p>Let’s turn the DAG on its side and consider <a href="#/fig-collider-time" class="quarto-xref">Figure&nbsp;3</a> on the next slide. If we break down the two time points, at time point 1, <code>q</code> hasn’t happened yet, and <code>x</code> and <code>y</code> are unrelated. At time point 2, <code>q</code> happens due to <code>x</code> and <code>y</code>. <em>But causality only goes forward in time</em>.</p>
 <p><code>q</code> happening later can’t change the fact that <code>x</code> and <code>y</code> happened independently in the past.</p>
 </div>
 </section>
-<section id="dags---colliders-2" class="slide level2">
+<section id="dags---colliders-1" class="slide level2">
 <h2>DAGs - colliders</h2>
 
 <img data-src="BSMM_8740_lec_07_files/figure-revealjs/fig-collider-time-1.png" width="960" class="r-stretch quarto-figure-center" id="fig-collider-time"><p class="caption">
 Figure&nbsp;3: A collider relationship over two points in time. At time point one, there is no relationship between <code>x</code> and <code>y</code>. Both cause <code>q</code> by time point two, but this does not change what already happened at time point one.
 </p></section>
-<section id="dags---colliders-3" class="slide level2">
+<section id="dags---colliders-2" class="slide level2">
 <h2>DAGs - colliders</h2>
 <div style="font-size: 80%">
 <p>Causality only goes forward. Correlation, however, is time-agnostic. It’s just an observation about the numerical relationships between variables. When we control for the future, we risk introducing bias. It takes time to develop an intuition for this.</p>
@@ -709,7 +713,7 @@ Figure&nbsp;3: A collider relationship over two points in time. At time point on
 <p>This example is extreme, but it shows how this type of bias, sometimes called collider-stratification bias or selection bias, occurs: conditioning on <code>q</code> provides statistical information about <code>x</code> and <code>y</code> and distorts their relationship.</p>
 </div>
 </section>
-<section id="dags-4" class="slide level2">
+<section id="dags-4" class="slide level2 scrollable">
 <h2>DAGs</h2>
 <div style="font-size: 80%">
 <p>Correctly identifying the causal structure between the exposure and outcome helps us to:</p>
@@ -1664,7 +1668,7 @@ Figure&nbsp;20: A DAG showing the relationship between A/C use and global temper
 </div>
 </div></div>
 </section>
-<section id="dags---construction-6" class="slide level2">
+<section id="dags---construction-6" class="slide level2 scrollable">
 <h2>DAGs - Construction</h2>
 <h4 id="use-robustness-checks">Use robustness checks</h4>
 <div style="font-size: 65%">
@@ -1681,7 +1685,7 @@ Figure&nbsp;20: A DAG showing the relationship between A/C use and global temper
 <h1>Example: mosquito nets and malaria</h1>
 
 </section>
-<section id="example-steps" class="slide level2">
+<section id="example-steps" class="slide level2 scrollable">
 <h2>Example: steps</h2>
 <p>In the remainder of today’s slides, we’ll analyze simulated data using a few key steps</p>
 <ol type="1">
@@ -2330,7 +2334,7 @@ Figure&nbsp;29: A tipping point analysis under several confounding scenarios whe
 <li>Read <a href="https://www.r-causal.org/">Causal inference in R</a></li>
 </ul>
 </section>
-<section id="summary-assumptions" class="slide level2">
+<section id="summary-assumptions" class="slide level2 scrollable">
 <h2>Summary: Assumptions</h2>
 <div style="font-size: large">
 <p>In order to estimate a causal effect when there is a confounder, we need the following assumptions</p>
