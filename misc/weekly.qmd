@@ -49,7 +49,20 @@ title: "weekly checklist"
 
 ## Week 5
 
--   [ ] weekly slides
+-   [x] weekly slides
+-   [x] weekly reading
+    -   [x] links
+    -   [x] readings
+    -   [x] study guide
+-   [x] weekly lab
+-   [x] weekly lab solutions
+-   [x] weekly lab repo
+-   [x] weekly lab invite
+-   [x] QUIZ #1
+
+## Week 6
+
+-   [x] weekly slides
 -   [x] weekly reading
     -   [x] links
     -   [x] readings
@@ -58,16 +71,15 @@ title: "weekly checklist"
 -   [x] weekly lab solutions
 -   [x] weekly lab repo
 -   [ ] weekly lab invite
--   [x] QUIZ #1
 
-## Week 6
+## Week 7
 
 -   [ ] weekly slides
--   [ ] weekly reading
-    -   [ ] links
-    -   [ ] readings
-    -   [ ] study guide
--   [ ] weekly lab
--   [ ] weekly lab solutions
--   [ ] weekly lab repo
+-   [x] weekly reading
+    -   [x] links
+    -   [x] readings
+    -   [x] study guide
+-   [x] weekly lab
+-   [x] weekly lab solutions
+-   [x] weekly lab repo
 -   [ ] weekly lab invite

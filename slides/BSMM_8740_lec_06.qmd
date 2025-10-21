@@ -11,6 +11,7 @@ logo: "images/logo.png"
 format: 
   revealjs: 
     chalkboard: true
+    scrollable: true
     theme: slides.scss
     multiplex: true
     transition: fade
@@ -54,6 +55,19 @@ theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 -   Finally we will use our time series for forecasting, using regression, exponential smoothing and ARIMA[^1] models
 
 [^1]: Auto Regressive Integrated Moving Average
+
+## Week 6 Roadmap
+
+::: incremental
+-   Time series types
+-   Time series characteristics
+-   Time series models
+    -   ARIMA
+    -   ETS
+-   Time series tools: `timetk`, `modeltime`
+-   Geometric series formula:
+    -   $\sum_{n=0}^\infty ar^n=\frac{a}{1-r}$
+:::
 
 # Time Series Methods
 
@@ -594,7 +608,7 @@ tseries::kpss.test(series, null = "Trend") # or null = "Level"
 **Example**
 
 ::::: columns
-::: {.column width="50%"}
+::: {.column width="50%" style="font-size: large"}
 ```{r}
 #| echo: true
 #| code-fold: true
@@ -620,7 +634,7 @@ tibble::tibble(
 ```
 :::
 
-::: {.column width="50%"}
+::: {.column width="50%" style="font-size: large"}
 ```{r}
 #| echo: true
 #| code-fold: true
@@ -740,7 +754,7 @@ $$ Similarly, the cofactor expansion along the $j$-th column is: $\det(A) = \sum
 
 The structure of the VAR(1) vector process makes it easy to compute the polynomial for the determinant in terms of the coefficients of the process.
 
-The roots of the polynomial can be computed using `polyroot`, passing in a vector of polynomial coefficients in increasing order. The magnitudes of the eigenvalues can using the base function `Mod`.
+The roots of the polynomial can be computed using `polyroot`, passing in a vector of polynomial coefficients in increasing order. The magnitudes of the eigenvalues canbe found using the base function `Mod`.
 
 ``` r
 polyroot(c(1,.2,3,.6)) |> Mod()
@@ -761,7 +775,7 @@ The solution is to use statistical criteria that balance **model fit** vs **mode
 
 ### Information Criteria
 
-ICs balance **model fit** vs **model complexity:** in general the IC is $\log\det(\hat{\Sigma})+\text{penalty}\times \text{parameters}/N$, where
+ICs balance **model fit** vs **model complexity:** in general the IC is $\log\det(\hat{\Sigma})+\text{penalty}\times \text{#parameters}/N$, where
 
 -   $\log \det(\hat{\Sigma})$ is the log determinant of the residual covariance matrix (measures fit)
 -   $\text{penalty}$ is a complexity penalty (varies by IC)
@@ -916,7 +930,7 @@ and MA() processes can be expressed as AR processes by a similar argument.
 -   **AR (AutoRegressive)**: captures the relationship between an observation and lagged observations.
 -   **I (Integrated)**: Differencing is used to make the time series stationary.
 -   **MA (Moving Average)**: captures the relationship between an observation and a residual error from a moving average model.
--   An ARIMA model is denoted as ARIMA(p, d, q), where: - p is the number of lag observations in the model (AR part), - d is the number of times that the raw observations are differenced (I part), - q is the size of the moving average window (MA part).
+-   An ARIMA model is denoted as ARIMA(p, d, q), where: p is the number of lag observations in the model (AR part), d is the number of times that the raw observations are differenced (I part), and q is the size of the moving average window (MA part).
 :::
 
 ## Time series - processes

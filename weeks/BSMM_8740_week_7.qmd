@@ -20,7 +20,11 @@ Due date: Lab 7 - Sunday, Nov 02, 5pm ET
 
 📖 Read [Propensity Score Analysis: A Primer and Tutorial](https://iqss.github.io/dss-ps/) Chp 1-4:
 
-📖 Read Margin Effects Zoo, [Inverse Probability Weighting](https://marginaleffects.com/vignettes/ipw.html), for treatment evaluation using the `marginaleffects` package.
+📖 Read Marginal Effects Zoo, [Inverse Probability Weighting](https://marginaleffects.com/bonus/ipw.html), for treatment evaluation using the `marginaleffects` package.
+
+📖 Check out this tutorial on causal inference [Tutorial 4 - R for Causal Inference](https://digitalcausalitylab.github.io/tutorial/intro_to_causal_inf/intro_causal_inference.html).
+
+📖 Review this discussion on the conditions for causal identification [S.P.I.C.E of Causal Inference](https://www.r-bloggers.com/2024/04/s-p-i-c-e-of-causal-inference/).
 
 ## Participate
 

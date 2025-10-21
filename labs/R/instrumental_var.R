@@ -9,7 +9,7 @@ library(knitr)
 
 # R Implementation ----
 # Set seed for reproducibility
-set.seed(123)
+set.seed(8740)
 
 # Generate synthetic e-commerce data
 generate_ecommerce_data <- function(n = 5000) {
@@ -181,10 +181,10 @@ lm(log(quantity) ~ log(total_price) + factor(region) + factor(month) + log(incom
   broom::tidy() %>%
   dplyr::filter(str_detect(term, "total_price"))
 
-lm(log(quantity) ~ shipping_cost + factor(region) + factor(month) +
+lm(log(quantity) ~ log(total_price) + factor(region) + factor(month) +
      log(income) + age, data = ecom_data) |>
   broom::tidy() %>%
-  dplyr::filter(str_detect(term, "shipping_cost"))
+  dplyr::filter(term == "log(total_price)")
 
 lm(log(total_price) ~ shipping_cost, data = ecom_data) |>
   broom::tidy() %>%
