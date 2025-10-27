@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -551,7 +586,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#prepare" id="toc-prepare" class="nav-link active" data-scroll-target="#prepare">Prepare</a></li>
+  <li><a href="#why-are-we-learning-this" id="toc-why-are-we-learning-this" class="nav-link active" data-scroll-target="#why-are-we-learning-this">Why are we learning this?</a></li>
+  <li><a href="#prepare" id="toc-prepare" class="nav-link" data-scroll-target="#prepare">Prepare</a></li>
   <li><a href="#participate" id="toc-participate" class="nav-link" data-scroll-target="#participate">Participate</a></li>
   <li><a href="#perform" id="toc-perform" class="nav-link" data-scroll-target="#perform">Perform</a></li>
   <li><a href="#study" id="toc-study" class="nav-link" data-scroll-target="#study">Study</a>
@@ -597,6 +633,40 @@ Important
 <p>Due date: Lab 7 - Sunday, Nov 02, 5pm ET</p>
 </div>
 </div>
+<section id="why-are-we-learning-this" class="level2">
+<h2 class="anchored" data-anchor-id="why-are-we-learning-this">Why are we learning this?</h2>
+<p>📖 See what Uber’s data science team says about causal inference: <a href="https://www.uber.com/en-AU/blog/causal-inference-at-uber/">Using Causal Inference to Improve the Uber User Experience</a></p>
+<p>📖 Read about computational Causal Inference at Netflix: <a href="https://netflixtechblog.com/computational-causal-inference-at-netflix-293591691c62">Computational Causal Inference at Netflix</a></p>
+<p>📖 Learn about: <a href="https://airbnb.tech/ai-ml/artificial-counterfactual-estimation-ace-machine-learning-based-causal-inference-at-airbnb/">Machine Learning-Based Causal Inference at Airbnb</a></p>
+<p>📖 See one way banks are <a href="https://bankunderground.co.uk/2024/11/19/using-causal-inference-for-explainability-enhancement-in-the-financial-sector/">Using causal inference for explainability</a></p>
+<p>📖 Find out about the <a href="https://quantresearch.org/The%20quants%20who%20kicked%20the%20hornets%E2%80%99%20nest%20%E2%80%93%20to%20champion%20causality%20-%20Risk.net.pdf">growing “causal revolution” movement in finance</a></p>
+<p>📖 Here’s a recent <a href="https://www.showbizjobs.com/jobs/disney-data-analyst-observational-causal-inference-in-santa-monica/jid-021m3m">job posting at Disney</a> and a <a href="https://outscal.com/job/business-data-scientist-economist-at-google-in-mountain-view-california-united-states-1">not so recent job posting at Google</a> and at <a href="https://www.entertainmentcareers.net/netflix/intern-experimentation-and-causal-inference-data-science-and-engineering/job/450849/">Netflix</a></p>
+<p>📖 and more:</p>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>dir <span class="ot">&lt;-</span> <span class="st">"jobs"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>ext <span class="ot">&lt;-</span> <span class="st">"(?i)</span><span class="sc">\\</span><span class="st">.(png|jpe?g|gif|webp)$"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>paths <span class="ot">&lt;-</span> <span class="fu">list.files</span>(dir, <span class="at">pattern =</span> ext, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">length</span>(paths) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glue); <span class="fu">library</span>(purrr)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>md <span class="ot">&lt;-</span> <span class="fu">map_chr</span>(paths, \(p) <span class="fu">glue</span>(<span class="st">"- [{basename(p)}]({p}){{target=</span><span class="sc">\"</span><span class="st">_blank</span><span class="sc">\"</span><span class="st">}}"</span>))</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">paste</span>(md, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><a href="jobs/Advertising.png" target="_blank">Advertising.png</a></li>
+<li><a href="jobs/Business_research.png" target="_blank">Business_research.png</a></li>
+<li><a href="jobs/Koddi.png" target="_blank">Koddi.png</a></li>
+<li><a href="jobs/Libra.png" target="_blank">Libra.png</a></li>
+<li><a href="jobs/Netflix_advertising.png" target="_blank">Netflix_advertising.png</a></li>
+<li><a href="jobs/Netflix_data_science.png" target="_blank">Netflix_data_science.png</a></li>
+<li><a href="jobs/Netflix_intern.png" target="_blank">Netflix_intern.png</a></li>
+<li><a href="jobs/Netflix_Internship.png" target="_blank">Netflix_Internship.png</a></li>
+<li><a href="jobs/Screenshot 2025-10-02 at 6.50.22 PM.png" target="_blank">Screenshot 2025-10-02 at 6.50.22 PM.png</a></li>
+<li><a href="jobs/Screenshot 2025-10-03 at 10.24.14 AM.png" target="_blank">Screenshot 2025-10-03 at 10.24.14 AM.png</a></li>
+<li><a href="jobs/Screenshot 2025-10-03 at 10.24.59 AM.png" target="_blank">Screenshot 2025-10-03 at 10.24.59 AM.png</a></li>
+<li><a href="jobs/TickTok 2026 2025-10-03 at 12.03.44 PM.png" target="_blank">TickTok 2026 2025-10-03 at 12.03.44 PM.png</a></li>
+<li><a href="jobs/YouTube_Music.png" target="_blank">YouTube_Music.png</a></li>
+</ul>
+</section>
 <section id="prepare" class="level2">
 <h2 class="anchored" data-anchor-id="prepare">Prepare</h2>
 <p>📖 Read Chp 1 in: <a href="https://chabefer.github.io/STCI/FPCI.html">Statistical Tools for Causal Inference</a></p>
