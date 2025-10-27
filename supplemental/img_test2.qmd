@@ -1,0 +1,32 @@
+---
+title: "Image list with reveal"
+format: html
+execute:
+  echo: false
+---
+
+```{r}
+#| results: asis
+dir <- "images/jobs"                       # your folder
+ext <- "(?i)\\.(png|jpe?g|gif|webp)$" # match common image types
+paths <- list.files(dir, pattern = ext, full.names = TRUE)
+stopifnot(length(paths) > 0)
+
+suppressPackageStartupMessages({
+  library(glue); library(purrr)
+})
+
+html <- imap_chr(paths, function(p, i) {
+  id  <- paste0("img_", i)
+  fn  <- basename(p)
+  glue('
+<li class="mb-2">
+  <a href="#" data-bs-toggle="collapse" data-bs-target="#{id}" aria-expanded="false">{fn}</a>
+  <div id="{id}" class="collapse mt-2">
+    <img src="{p}" class="img-fluid rounded shadow"/>
+  </div>
+</li>')
+})
+
+cat('<ul class="list-unstyled">', paste(html, collapse = "\n"), '</ul>')
+```
