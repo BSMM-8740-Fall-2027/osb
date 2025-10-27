@@ -24,7 +24,7 @@ Due date: Lab 7 - Sunday, Nov 02, 5pm ET
 
 📖 and more:
 
-::: {style="font-size: x-large"}
+::: {style="font-size: small"}
 
 ```{r}
 #| echo: false
