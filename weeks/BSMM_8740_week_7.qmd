@@ -24,6 +24,8 @@ Due date: Lab 7 - Sunday, Nov 02, 5pm ET
 
 📖 and more:
 
+::: {style="font-size: x-large"}
+
 ```{r}
 #| echo: false
 #| results: asis
@@ -76,6 +78,7 @@ out <- map_chr(paths, \(p) glue('
 knitr::asis_output(paste(out, collapse = "\n"))
 
 ```
+:::
 
 ## Prepare
 
