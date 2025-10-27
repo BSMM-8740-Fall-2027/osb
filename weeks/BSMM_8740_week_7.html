@@ -20,41 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -111,7 +76,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <meta property="og:title" content="Week 7 - Causality: DAGs – BSMM-8740 - Fall 2025">
 <meta property="og:description" content="">
+<meta property="og:image" content="https://bsmm-8740-fall-2025.github.io/osb/weeks/jobs/Advertising.png">
 <meta property="og:site_name" content="BSMM-8740 - Fall 2025">
+<meta property="og:image:height" content="882">
+<meta property="og:image:width" content="1895">
 <meta name="twitter:title" content="Week 7 - Causality: DAGs – BSMM-8740 - Fall 2025">
 <meta name="twitter:description" content="">
 <meta name="twitter:image" content="https://bsmm-8740-fall-2025.github.io/osb/weeks/images/twitter-card.png">
@@ -642,118 +610,58 @@ Important
 <p>📖 Find out about the <a href="https://quantresearch.org/The%20quants%20who%20kicked%20the%20hornets%E2%80%99%20nest%20%E2%80%93%20to%20champion%20causality%20-%20Risk.net.pdf">growing “causal revolution” movement in finance</a></p>
 <p>📖 Here’s a recent <a href="https://www.showbizjobs.com/jobs/disney-data-analyst-observational-causal-inference-in-santa-monica/jid-021m3m">job posting at Disney</a> and a <a href="https://outscal.com/job/business-data-scientist-economist-at-google-in-mountain-view-california-united-states-1">not so recent job posting at Google</a> and at <a href="https://www.entertainmentcareers.net/netflix/intern-experimentation-and-causal-inference-data-science-and-engineering/job/450849/">Netflix</a></p>
 <p>📖 and more:</p>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># dir &lt;- "jobs"</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ext &lt;- "(?i)\\.(png|jpe?g|gif|webp)$"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># paths &lt;- list.files(dir, pattern = ext, full.names = TRUE)</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># stopifnot(length(paths) &gt; 0)</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># library(glue); library(purrr)</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># md &lt;- map_chr(paths, \(p) glue("- [{basename(p)}]({p}){{target=\"_blank\"}}"))</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># cat(paste(md, collapse = "\n"))</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>dir <span class="ot">&lt;-</span> <span class="st">"jobs"</span>                       <span class="co"># your folder</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>ext <span class="ot">&lt;-</span> <span class="st">"(?i)</span><span class="sc">\\</span><span class="st">.(png|jpe?g|gif|webp)$"</span> <span class="co"># match common image types</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>paths <span class="ot">&lt;-</span> <span class="fu">list.files</span>(dir, <span class="at">pattern =</span> ext, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">length</span>(paths) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>({</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(glue); <span class="fu">library</span>(purrr)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>html <span class="ot">&lt;-</span> <span class="fu">imap_chr</span>(paths, <span class="cf">function</span>(p, i) {</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  id  <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"img_"</span>, i)</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  fn  <span class="ot">&lt;-</span> <span class="fu">basename</span>(p)</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glue</span>(<span class="st">'</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;li class="mb-2"&gt;</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="st">  &lt;a href="#" data-bs-toggle="collapse" data-bs-target="#{id}" aria-expanded="false"&gt;{fn}&lt;/a&gt;</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="st">  &lt;div id="{id}" class="collapse mt-2"&gt;</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="st">    &lt;img src="{p}" class="img-fluid rounded shadow"/&gt;</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="st">  &lt;/div&gt;</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="st">&lt;/li&gt;'</span>)</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">'&lt;ul class="list-unstyled"&gt;'</span>, <span class="fu">paste</span>(html, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>), <span class="st">'&lt;/ul&gt;'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul class="list-unstyled">
-<li class="mb-2">
-<a href="#" data-bs-toggle="collapse" data-bs-target="#img_1" aria-expanded="false">Advertising.png</a>
-<div id="img_1" class="collapse mt-2">
-<pre><code>&lt;img src="jobs/Advertising.png" class="img-fluid rounded shadow"/&gt;</code></pre>
-</div>
-</li>
-<li class="mb-2">
-<a href="#" data-bs-toggle="collapse" data-bs-target="#img_2" aria-expanded="false">Business_research.png</a>
-<div id="img_2" class="collapse mt-2">
-<pre><code>&lt;img src="jobs/Business_research.png" class="img-fluid rounded shadow"/&gt;</code></pre>
-</div>
-</li>
-<li class="mb-2">
-<a href="#" data-bs-toggle="collapse" data-bs-target="#img_3" aria-expanded="false">Koddi.png</a>
-<div id="img_3" class="collapse mt-2">
-<pre><code>&lt;img src="jobs/Koddi.png" class="img-fluid rounded shadow"/&gt;</code></pre>
-</div>
-</li>
-<li class="mb-2">
-<a href="#" data-bs-toggle="collapse" data-bs-target="#img_4" aria-expanded="false">Libra.png</a>
-<div id="img_4" class="collapse mt-2">
-<pre><code>&lt;img src="jobs/Libra.png" class="img-fluid rounded shadow"/&gt;</code></pre>
-</div>
-</li>
-<li class="mb-2">
-<a href="#" data-bs-toggle="collapse" data-bs-target="#img_5" aria-expanded="false">Netflix_advertising.png</a>
-<div id="img_5" class="collapse mt-2">
-<pre><code>&lt;img src="jobs/Netflix_advertising.png" class="img-fluid rounded shadow"/&gt;</code></pre>
-</div>
-</li>
-<li class="mb-2">
-<a href="#" data-bs-toggle="collapse" data-bs-target="#img_6" aria-expanded="false">Netflix_data_science.png</a>
-<div id="img_6" class="collapse mt-2">
-<pre><code>&lt;img src="jobs/Netflix_data_science.png" class="img-fluid rounded shadow"/&gt;</code></pre>
-</div>
-</li>
-<li class="mb-2">
-<a href="#" data-bs-toggle="collapse" data-bs-target="#img_7" aria-expanded="false">Netflix_intern.png</a>
-<div id="img_7" class="collapse mt-2">
-<pre><code>&lt;img src="jobs/Netflix_intern.png" class="img-fluid rounded shadow"/&gt;</code></pre>
-</div>
-</li>
-<li class="mb-2">
-<a href="#" data-bs-toggle="collapse" data-bs-target="#img_8" aria-expanded="false">Netflix_Internship.png</a>
-<div id="img_8" class="collapse mt-2">
-<pre><code>&lt;img src="jobs/Netflix_Internship.png" class="img-fluid rounded shadow"/&gt;</code></pre>
-</div>
-</li>
-<li class="mb-2">
-<a href="#" data-bs-toggle="collapse" data-bs-target="#img_9" aria-expanded="false">Screenshot 2025-10-02 at 6.50.22 PM.png</a>
-<div id="img_9" class="collapse mt-2">
-<pre><code>&lt;img src="jobs/Screenshot 2025-10-02 at 6.50.22 PM.png" class="img-fluid rounded shadow"/&gt;</code></pre>
-</div>
-</li>
-<li class="mb-2">
-<a href="#" data-bs-toggle="collapse" data-bs-target="#img_10" aria-expanded="false">Screenshot 2025-10-03 at 10.24.14 AM.png</a>
-<div id="img_10" class="collapse mt-2">
-<pre><code>&lt;img src="jobs/Screenshot 2025-10-03 at 10.24.14 AM.png" class="img-fluid rounded shadow"/&gt;</code></pre>
-</div>
-</li>
-<li class="mb-2">
-<a href="#" data-bs-toggle="collapse" data-bs-target="#img_11" aria-expanded="false">Screenshot 2025-10-03 at 10.24.59 AM.png</a>
-<div id="img_11" class="collapse mt-2">
-<pre><code>&lt;img src="jobs/Screenshot 2025-10-03 at 10.24.59 AM.png" class="img-fluid rounded shadow"/&gt;</code></pre>
-</div>
-</li>
-<li class="mb-2">
-<a href="#" data-bs-toggle="collapse" data-bs-target="#img_12" aria-expanded="false">TickTok 2026 2025-10-03 at 12.03.44 PM.png</a>
-<div id="img_12" class="collapse mt-2">
-<pre><code>&lt;img src="jobs/TickTok 2026 2025-10-03 at 12.03.44 PM.png" class="img-fluid rounded shadow"/&gt;</code></pre>
-</div>
-</li>
-<li class="mb-2">
-<a href="#" data-bs-toggle="collapse" data-bs-target="#img_13" aria-expanded="false">YouTube_Music.png</a>
-<div id="img_13" class="collapse mt-2">
-<pre><code>&lt;img src="jobs/YouTube_Music.png" class="img-fluid rounded shadow"/&gt;</code></pre>
-</div>
-</li>
-</ul>
+<details class="mb-2">
+  <summary>Advertising.png</summary>
+  <img src="jobs/Advertising.png" class="img-fluid rounded" style="margin-top:.5rem;">
+</details>
+<details class="mb-2">
+  <summary>Business_research.png</summary>
+  <img src="jobs/Business_research.png" class="img-fluid rounded" style="margin-top:.5rem;">
+</details>
+<details class="mb-2">
+  <summary>Koddi.png</summary>
+  <img src="jobs/Koddi.png" class="img-fluid rounded" style="margin-top:.5rem;">
+</details>
+<details class="mb-2">
+  <summary>Libra.png</summary>
+  <img src="jobs/Libra.png" class="img-fluid rounded" style="margin-top:.5rem;">
+</details>
+<details class="mb-2">
+  <summary>Netflix_advertising.png</summary>
+  <img src="jobs/Netflix_advertising.png" class="img-fluid rounded" style="margin-top:.5rem;">
+</details>
+<details class="mb-2">
+  <summary>Netflix_data_science.png</summary>
+  <img src="jobs/Netflix_data_science.png" class="img-fluid rounded" style="margin-top:.5rem;">
+</details>
+<details class="mb-2">
+  <summary>Netflix_intern.png</summary>
+  <img src="jobs/Netflix_intern.png" class="img-fluid rounded" style="margin-top:.5rem;">
+</details>
+<details class="mb-2">
+  <summary>Netflix_Internship.png</summary>
+  <img src="jobs/Netflix_Internship.png" class="img-fluid rounded" style="margin-top:.5rem;">
+</details>
+<details class="mb-2">
+  <summary>Screenshot 2025-10-02 at 6.50.22 PM.png</summary>
+  <img src="jobs/Screenshot 2025-10-02 at 6.50.22 PM.png" class="img-fluid rounded" style="margin-top:.5rem;">
+</details>
+<details class="mb-2">
+  <summary>Screenshot 2025-10-03 at 10.24.14 AM.png</summary>
+  <img src="jobs/Screenshot 2025-10-03 at 10.24.14 AM.png" class="img-fluid rounded" style="margin-top:.5rem;">
+</details>
+<details class="mb-2">
+  <summary>Screenshot 2025-10-03 at 10.24.59 AM.png</summary>
+  <img src="jobs/Screenshot 2025-10-03 at 10.24.59 AM.png" class="img-fluid rounded" style="margin-top:.5rem;">
+</details>
+<details class="mb-2">
+  <summary>TickTok 2026 2025-10-03 at 12.03.44 PM.png</summary>
+  <img src="jobs/TickTok 2026 2025-10-03 at 12.03.44 PM.png" class="img-fluid rounded" style="margin-top:.5rem;">
+</details>
+<details class="mb-2">
+  <summary>YouTube_Music.png</summary>
+  <img src="jobs/YouTube_Music.png" class="img-fluid rounded" style="margin-top:.5rem;">
+</details>
 </section>
 <section id="prepare" class="level2">
 <h2 class="anchored" data-anchor-id="prepare">Prepare</h2>
