@@ -26,7 +26,7 @@ Due date: Lab 7 - Sunday, Nov 02, 5pm ET
 
 ```{r}
 #| results: asis
-dir <- "images/jobs"
+dir <- "jobs"
 ext <- "(?i)\\.(png|jpe?g|gif|webp)$"
 paths <- list.files(dir, pattern = ext, full.names = TRUE)
 stopifnot(length(paths) > 0)
