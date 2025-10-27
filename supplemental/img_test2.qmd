@@ -7,6 +7,7 @@ execute:
 
 ```{r}
 #| results: asis
+#| eval: false
 dir <- "../weeks/images/jobs"                       # your folder
 ext <- "(?i)\\.(png|jpe?g|gif|webp)$" # match common image types
 paths <- list.files(dir, pattern = ext, full.names = TRUE)
