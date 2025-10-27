@@ -8,6 +8,35 @@ editor: visual
 Due date: Lab 7 - Sunday, Nov 02, 5pm ET
 :::
 
+## Why are we learning this?
+
+📖 See what Uber’s data science team says about causal inference: [Using Causal Inference to Improve the Uber User Experience](https://www.uber.com/en-AU/blog/causal-inference-at-uber/)
+
+📖 Read about computational Causal Inference at Netflix: [Computational Causal Inference at Netflix](https://netflixtechblog.com/computational-causal-inference-at-netflix-293591691c62)
+
+📖 Learn about: [Machine Learning-Based Causal Inference at Airbnb](https://airbnb.tech/ai-ml/artificial-counterfactual-estimation-ace-machine-learning-based-causal-inference-at-airbnb/)
+
+📖 See one way banks are [Using causal inference for explainability](https://bankunderground.co.uk/2024/11/19/using-causal-inference-for-explainability-enhancement-in-the-financial-sector/)
+
+📖 Find out about the [growing “causal revolution” movement in finance](https://quantresearch.org/The%20quants%20who%20kicked%20the%20hornets%E2%80%99%20nest%20%E2%80%93%20to%20champion%20causality%20-%20Risk.net.pdf)
+
+📖 Here's a recent [job posting at Disney](https://www.showbizjobs.com/jobs/disney-data-analyst-observational-causal-inference-in-santa-monica/jid-021m3m) and a [not so recent job posting at Google](https://outscal.com/job/business-data-scientist-economist-at-google-in-mountain-view-california-united-states-1) and at [Netflix](https://www.entertainmentcareers.net/netflix/intern-experimentation-and-causal-inference-data-science-and-engineering/job/450849/)
+
+📖 and more:
+
+```{r}
+#| results: asis
+dir <- "images/jobs"
+ext <- "(?i)\\.(png|jpe?g|gif|webp)$"
+paths <- list.files(dir, pattern = ext, full.names = TRUE)
+stopifnot(length(paths) > 0)
+
+library(glue); library(purrr)
+
+md <- map_chr(paths, \(p) glue("- [{basename(p)}]({p}){{target=\"_blank\"}}"))
+cat(paste(md, collapse = "\n"))
+```
+
 ## Prepare
 
 📖 Read Chp 1 in: [Statistical Tools for Causal Inference](https://chabefer.github.io/STCI/FPCI.html)

@@ -1,0 +1,38 @@
+---
+title: "Image thumbnails with modal"
+format: html
+execute:
+  echo: false
+---
+
+<style>
+.thumb { max-width: 160px; height: auto; cursor: pointer; margin: .25rem; }
+</style>
+
+```{r}
+#| results: asis
+dir <- "images/jobs"
+ext <- "(?i)\\.(png|jpe?g|gif|webp)$"
+paths <- list.files(dir, pattern = ext, full.names = TRUE)
+stopifnot(length(paths) > 0)
+
+library(glue); library(purrr)
+
+thumbs <- imap_chr(paths, function(p, i) {
+  id <- paste0("modal_", i)
+  glue('
+<img src="{p}" class="thumb rounded shadow" data-bs-toggle="modal" data-bs-target="#{id}" alt="{basename(p)}"/>
+
+<div class="modal fade" id="{id}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <img src="{p}" class="img-fluid" alt="{basename(p)}"/>
+      </div>
+    </div>
+  </div>
+</div>')
+})
+
+cat(paste(thumbs, collapse = "\n"))
+```

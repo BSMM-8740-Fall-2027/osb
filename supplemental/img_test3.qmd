@@ -1,0 +1,19 @@
+---
+title: "Image links"
+format: html
+execute:
+  echo: false
+---
+
+```{r}
+#| results: asis
+dir <- "images/jobs"
+ext <- "(?i)\\.(png|jpe?g|gif|webp)$"
+paths <- list.files(dir, pattern = ext, full.names = TRUE)
+stopifnot(length(paths) > 0)
+
+library(glue); library(purrr)
+
+md <- map_chr(paths, \(p) glue("- [{basename(p)}]({p}){{target=\"_blank\"}}"))
+cat(paste(md, collapse = "\n"))
+```
