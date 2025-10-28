@@ -5,7 +5,7 @@ editor: visual
 ---
 
 ::: callout-important
-Due date: Lab 7 - Sunday, Nov 02, 5pm ET
+Due date: Lab 7 - Tuesday, Nov 11, 5pm ET
 :::
 
 ## Why are we learning this?
@@ -25,7 +25,6 @@ Due date: Lab 7 - Sunday, Nov 02, 5pm ET
 📖 and more:
 
 ::: {style="font-size: small"}
-
 ```{r}
 #| echo: false
 #| results: asis
