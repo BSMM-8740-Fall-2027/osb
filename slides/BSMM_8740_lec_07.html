@@ -314,7 +314,7 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 </div><div class="column" style="width:40%;">
 <div class="cell">
 <div class="cell-output-display">
-<div id="vtrrdgnlgj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="ovpoxgebgl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   
 <table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" data-bgcolor="#FFFFFF">
@@ -412,7 +412,7 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
-<div id="svijioldxg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="jnoptqvghe" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   
 <table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" data-bgcolor="#FFFFFF">
@@ -525,7 +525,7 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 <p><span class="math display">\[
 \mathbb{E}\left[\left.Y_{i}^{1}\right|D_{i}=1\right]-\mathbb{E}\left[\left.Y_{i}^{1}\right|D_{i}=0\right]=0
 \]</span></p>
-<p>we say the treated and untreated populations are <u><strong>exchangeable</strong></u>. This is equivalent to saying that the joint distribution of potential outcomes is independent of treatment assignment: <span class="math inline">\(\left(Y^1,Y^0\right)\perp\!\!\!\!\perp D\)</span>.</p>
+<p>In this case we say the treated and untreated populations are <u><strong>exchangeable</strong></u>. This is equivalent to saying that the joint distribution of potential outcomes is independent of treatment assignment: <span class="math inline">\(\left(Y^1,Y^0\right)\perp\!\!\!\!\perp D\)</span>.</p>
 </div>
 </section>
 <section id="identification-assumptions" class="slide level2">
@@ -568,7 +568,7 @@ Y_{i}^{0} &amp; \text{if}\,D_{i}=0
 <p><span class="math display">\[
 \Delta_{WW}^{Y} = \frac{1}{n_1}\sum_{D_i=1} Y_i(1) - \frac{1}{n_0}\sum_{D_i=0}Y_i(0)
 \]</span></p>
-<p>If in addition we have a covariate <span class="math inline">\(x\)</span> that split our data into groups, we can imagine a causal effect estimate by groups, which is then combined into an overall estimate:</p>
+<p>If in addition we have a covariate <span class="math inline">\(x\)</span> that splits our data into groups, we can imagine a causal effect estimate by groups, which is then combined into an overall estimate:</p>
 <p><span class="math display">\[
 \Delta_{STRAT}^{Y} = \sum_{x \in \mathcal{X}} \frac{n_x}{n} \hat{\tau}(x);\;\hat{\tau}(x) = \frac{1}{n_{x1}} \sum_{\{X_i=x, D_i=1\}} Y_i - \frac{1}{n_{x0}} \sum_{\{X_i=x, D_i=0\}} Y_i
 \]</span></p>
