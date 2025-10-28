@@ -5,7 +5,7 @@ editor: visual
 ---
 
 ::: callout-important
-Due date: Lab 7 - Sunday, Nov 02, 5pm ET
+Due date: Lab 7 - Tuesday, Nov 11, 5pm ET
 :::
 
 ## Why are we learning this?
@@ -25,7 +25,6 @@ Due date: Lab 7 - Sunday, Nov 02, 5pm ET
 📖 and more:
 
 ::: {style="font-size: small"}
-
 ```{r}
 #| echo: false
 #| results: asis
@@ -83,6 +82,8 @@ knitr::asis_output(paste(out, collapse = "\n"))
 ## Prepare
 
 📖 Read Chp 1 in: [Statistical Tools for Causal Inference](https://chabefer.github.io/STCI/FPCI.html)
+
+📖 Read: [Demystifying causal inference estimands: ATE, ATT, and ATU](https://www.andrewheiss.com/blog/2024/03/21/demystifying-ate-att-atu/) or [Eight basic rules for causal inference](https://pedermisager.org/blog/seven_basic_rules_for_causal_inference/) or even [A Crash Course in Good and Bad Controls](https://journals.sagepub.com/doi/10.1177/00491241221099552)
 
 📖 Read [Tutorial on Directed Acyclic Graphs](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8821727/)
 

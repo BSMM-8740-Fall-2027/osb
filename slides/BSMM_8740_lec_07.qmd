@@ -295,7 +295,7 @@ $$
 \mathbb{E}\left[\left.Y_{i}^{1}\right|D_{i}=1\right]-\mathbb{E}\left[\left.Y_{i}^{1}\right|D_{i}=0\right]=0
 $$
 
-we say the treated and untreated populations are [**exchangeable**]{.underline}. This is equivalent to saying that the joint distribution of potential outcomes is independent of treatment assignment: $\left(Y^1,Y^0\right)\perp\!\!\!\!\perp D$.
+In this case we say the treated and untreated populations are [**exchangeable**]{.underline}. This is equivalent to saying that the joint distribution of potential outcomes is independent of treatment assignment: $\left(Y^1,Y^0\right)\perp\!\!\!\!\perp D$.
 :::
 
 ## Identification assumption(s)
@@ -345,7 +345,7 @@ $$
 \Delta_{WW}^{Y} = \frac{1}{n_1}\sum_{D_i=1} Y_i(1) - \frac{1}{n_0}\sum_{D_i=0}Y_i(0)
 $$
 
-If in addition we have a covariate $x$ that split our data into groups, we can imagine a causal effect estimate by groups, which is then combined into an overall estimate:
+If in addition we have a covariate $x$ that splits our data into groups, we can imagine a causal effect estimate by groups, which is then combined into an overall estimate:
 
 $$
 \Delta_{STRAT}^{Y} = \sum_{x \in \mathcal{X}} \frac{n_x}{n} \hat{\tau}(x);\;\hat{\tau}(x) = \frac{1}{n_{x1}} \sum_{\{X_i=x, D_i=1\}} Y_i - \frac{1}{n_{x0}} \sum_{\{X_i=x, D_i=0\}} Y_i

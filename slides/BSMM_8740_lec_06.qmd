@@ -336,7 +336,7 @@ $$
 
 ::: {style="font-size: 80%"}
 -   Conditional distribution is based on past realisations of a random variable
--   For the AR(1) model (where $\epsilon_t$ are iid Gausian and $|\phi|<0$) $$y_t=\phi y_{t-1}+\epsilon_t$$
+-   For the AR(1) model (where $\epsilon_t$ are iid Gausian and $|\phi|<1$) $$y_t=\phi y_{t-1}+\epsilon_t$$
 -   The conditional moments are $$
     \begin{align*}
     \mathbb{E}\left[\left.y_{t}\right|y_{t-1}\right] & =\phi y_{t-1}\\
@@ -367,7 +367,7 @@ $$
 
 ::: {style="font-size: large"}
 -   For the AR(1) model (where $\epsilon_t$ are iid Gausian and $|\phi|<1$) $$y_t=\phi y_{t-1}+\epsilon_t$$
--   The unconditional moments are (assuming stationarity and $\phi<1$) $$
+-   The unconditional moments are (assuming stationarity and $|\phi|<1$) $$
     \begin{align*}
     \mathbb{E}\left[y_{t}\right] & =0\\
     \text{var}\left(y_{t}\right) & =\text{var}\left(\phi y_{t-1}+\epsilon_t\right)\\
