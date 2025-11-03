@@ -5,7 +5,7 @@ editor: visual
 ---
 
 ::: callout-important
-Due date: Lab 8 - Sunday, Nov 9, 5pm ET
+Due date: Lab 8 - Tuesday, Nov 18, 5pm ET
 :::
 
 ## Prepare
@@ -19,6 +19,16 @@ Due date: Lab 8 - Sunday, Nov 9, 5pm ET
 📖 Read *Matching and Subclassification*, Chp 5 in: [Causal Inference the Mixtape](https://mixtape.scunning.com/05-matching_and_subclassification)
 
 📖 Read *Difference-in-Differences*, Chp 9 in: [Causal Inference the Mixtape](https://mixtape.scunning.com/09-difference_in_differences)
+
+📖 Read: [Propensity Score Matching in R](https://rpubs.com/mbounthavong/propensity_score_r)
+
+📖 Have a look at: [Panel Data Regression in R: An Introduction to Longitudinal Data analysis](https://medium.com/@akif.iips/panel-data-regression-in-r-a38ac8559f7f)
+
+📖 Sit down and work through this: [Difference in Differences Workshop](https://wu-rds.github.io/did/)
+
+📖 OR for the package `did2s`, check out this article: [did2s: Two-Stage Difference-in-Differences](https://journal.r-project.org/articles/RJ-2022-048/)
+
+📖 You might enjoy this article on event studies: [Difference-in-Differences Event Study / Dynamic Difference-in-Differences](https://lost-stats.github.io/Model_Estimation/Research_Design/event_study.html)
 
 ## Participate
 

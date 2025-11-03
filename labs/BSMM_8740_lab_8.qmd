@@ -78,6 +78,7 @@ This is partly due to the regression specification we used, which as a second-or
 The g-computation method (*g for general*) is good to know because it works for both binary/discrete treatments and continuous treatments
 
 ```{r}
+#| label: read the data
 dat_ <- causalworkshop::net_data |> dplyr::mutate(net = as.numeric(net))
 ```
 
@@ -96,23 +97,31 @@ In this question we'll use g-computation to estimate the effect of net use on Ma
 Try using (net + income + health + temperature + insecticide_resistance)\^2 in the RHS of your formula. This will add interaction terms to your model (i.e. effects of each variable won't be fixed)
 :::
 
-::: {.callout-note icon="false"}
-## YOUR ANSWER
+::: {#Q1 .callout-note icon="false"}
+## YOUR ANSWER Q1:
+
+Show your work below
 
 ```{r}
-# copy data
+#| label: copy data, mutate treatments, bind, predicts and average.
+# (1) copy data
 
-# mutate data to fix treatment (one of each) & bind data into single dataset
 
-# Model the outcome, and fit it using the original (unmutated) data. Show the coefficient estimates with broom::tidy() 
+# (2, 3) mutate data to fix treatment (one of each) & bind data into single dataset
 
-# Use the model fit to predict the outcomes in the test data, Use broom::augment to predict the response for each row of the data
 
-# average the predicted outcomes and compute the contrast.
+# (4) Model the outcome, and fit it using the original (unmutated) data. Show the coefficient estimates with broom::tidy() 
+
+
+# (5) Use the model fit to predict the outcomes in the test data, Use broom::augment to predict the response for each row of the data
+
+
+# (6) average the predicted outcomes and compute the contrast.
+
 
 ```
 
-The contrast between using a net and not using a net is a increase \| reduction in malaria risk
+The contrast between using a net and not using a net is a increase \| reduction in malaria risk?
 :::
 
 In summary the g-computation is as follows
@@ -125,6 +134,8 @@ In summary the g-computation is as follows
 Suppose you work for a big tech company and you want to estimate the impact of a billboard marketing campaign on in-app purchases. When you look at data from the past, you see that the marketing department tends to spend more to place billboards in cities where the purchase level is lower. This makes sense right? They wouldn’t need to do lots of advertisement if sales were skyrocketing. If you run a regression model on this data, it looks like higher cost in marketing leads to lower in-app purchase amounts, but only because marketing investments are biased towards low spending regions.
 
 ```{r}
+#| label: set up our toy model
+#
 toy_panel <-tibble::tibble(
     "mkt_costs" = c(5,4,3.5,3, 10,9.5,9,8, 4,3,2,1, 8,7,6,4),
     "purchase" = c(12,9,7.5,7, 9,7,6.5,5, 15,14.5,14,13, 11,9.5,8,5),
@@ -147,22 +158,21 @@ toy_panel |>
 
 Knowing a lot about causal inference (and Simpson's Paradox), you decide to run a fixed effect model, adding the city’s indicator as a dummy variable to your model. The fixed effect model controls for city specific characteristics that are constant in time, so if a city is less open to your product, it will capture that.
 
-::: {.callout-note icon="false"}
-## YOUR ANSWER
+::: {#Q2 .callout-note icon="false"}
+## YOUR ANSWER Q2:
 
 ```{r}
-#| eval: false
 #| label: toy-panel fixed effects
 
 # mutate the data to make the column 'city' a factor
 
 
 # fit the data using the new data and augment the data with predictions from the model
-fe <- ...
+fe <- ...❓
 
 
 # augment the fit with predictions
-fe_toy <- ...
+fe_toy <- ...❓
 
 # plot the data points
 p <- fe_toy |> 
@@ -185,7 +195,7 @@ How do you interpret the slopes of the lines?
 
 ## Q3
 
-You are an advanced analytics analyst working at a private equity firm. One of the partners, an MBA by training, has suggested that the firm eliminate portfolio companies that are run by their founders or their families, on the basis of poor management quality.
+You are an advanced analytics analyst working at a private equity firm. One of the partners, an MBA by training, has suggested that the firm eliminate portfolio companies that are run by their founders or their families, on the basis that these firms do not have professional management (i.e. poor management quality).
 
 ```{r}
 #| code-fold: true
@@ -293,8 +303,6 @@ Of these:
 
 You have data for the share of exports in sales, but as it is a collider you decide not to condition on this variable in your analysis.
 
-#### Q3(1)
-
 Here are the variables you have decided to use in your analysis:
 
 ```{r}
@@ -336,22 +344,29 @@ Use linear regression to fit each model, and
 2.  use fit \|\> broom::glance() to extract model performance data
 3.  rank the models by comparing AIC and BIC and select the most suitable.
 
-::: {.callout-note icon="false"}
-## YOUR ANSWER
+::: {#Q3 .callout-note icon="false"}
+## YOUR ANSWER Q3:
 
 ```{r}
-#| eval: false
+#| label: fit each formula
+#
 # fit formula1
-ols1 <- ?
+ols1 <- ❓
+
 
 # fit formula2
-ols2 <- ?
+ols2 <- ❓
+
 
 # fit formula3
-ols3 <- ?
+ols3 <- ❓
+
+
 ```
 
 ```{r}
+#| label: extract the estimated effect per each formula
+#
 # effect and metrics: formula1
 
 # effect and metrics: formula2
@@ -360,29 +375,28 @@ ols3 <- ?
 
 ```
 
-Considering the trade-off between model fit and model complexity, the most suitable model is \_\_\_\_
-:::
-
-#### Q3(2)
+Considering the trade-off between model fit and model complexity, the most suitable model is \_\_\_\_❓
 
 Having settled on a formula/model, use the selected model in the doubly-robust effect estimation function from class to:
 
 1.  estimate the effect.
 2.  calculate the confidence intervals on the effect estimate, using `rsample::bootstraps` with times = 100.
 
-::: {.callout-note icon="false"}
-## YOUR ANSWER
-
 ```{r}
-# double robust estimate using the best model
+#| label: build a double robust estimate using the best model
+# show all your work
+
+
 
 ```
 
 ```{r}
-# bootstrap CI estimates
+#| label: bootstrap CI estimates for the model estimates
+# show all your work
+
+
 
 ```
-:::
 
 #### Omitted variables and bias
 
@@ -396,11 +410,9 @@ If other omitted variables behaved the same way we would see an even smaller eff
 
 Given your estimated effect and considering omitted variable bias, please provide two bullet points about your analysis for the partners:
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+-   [**bullet #1**]{.underline}: (comment on the comparison of the robust causal estimate and the mean differences)
 
--   bullet #1: (comment on the comparison of the robust causal estimate and the mean differences)
--   bullet #2: (comment on omitted variable bias and small sample size bias in context)'
+-   [**bullet #2**]{.underline}: (comment on omitted variable bias and small sample size bias in context)
 :::
 
 ## Q4
@@ -408,6 +420,8 @@ Given your estimated effect and considering omitted variable bias, please provid
 Your firm has a customer intervention that management would like to evaluate. The data from a test of the intervention is as follows (where $D$ is the (binary intervention, $Y$ is the outcome (in units of \$1,000 dollars), and $X_1,\ldots,X_5$ are variables in the adjustment set). Each row in the data represents measurements for a distinct customer:
 
 ```{r}
+#| label: create customer data with/without intervention
+#
 set.seed(8740)
 n <- 2000; p <- 5;
 
@@ -421,22 +435,26 @@ test_dat <- matrix(rnorm(n * p), n, p, dimnames = list(NULL, paste0("X",1:p)) ) 
 
 Estimate the ATE as follows (hint: it is \>0):
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q4 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q4:
 
 ```{r}
-#| eval: false
+#| label: estimate the caual effect two ways
+# SHOW ALL YOUR WORK BELOW
+
 # (1) using regression adjustment, with formula Y ~ D*X1 + X2 + X3 + X4 + X5
-ols <- 
+ols <- ❓
+
 
 # (2) using doubly robust estimation
-dre <- 
+dre <- ❓
+
 
 ```
 
 ```{r}
-#| eval: false
-# summarize results
+#| label: summarize results
+# 
 tibble::tibble(
   dre_ATE = dre
   , ols_ATE = 
@@ -445,11 +463,10 @@ tibble::tibble(
     dplyr::pull(estimate)
 )
 ```
-:::
 
 Given that the ATE is \>0, the firm would like to roll out the intervention with 1,000 new customers, and the project is budgeted as follows
 
--   cost of the intervention is \$100 (cost = 0.1 in the scale of the data).
+-   cost of the intervention is \$100 (i.e. cost = 0.1 in the scale of the data).
 -   the per-customer average incremental revenue on making the intervention is $(\textrm{ATE}-0.1)\times 1000$.
 
 Given the substantial return on the investment, the budget is approved and the firm decides to implement the intervention with the 1,000 new customers.
@@ -459,7 +476,7 @@ However, the firm's good fortune is that you are in the room with management, an
 The new customer data is:
 
 ```{r}
-# new customer data
+#| label: new customer data Q4
 new_dat <- 
   matrix(rnorm(n * p), n, p, dimnames = list(NULL, paste0("X",1:p)) ) |>
   tibble::as_tibble() 
@@ -485,60 +502,65 @@ You analyse your strategy for management as follows:
 
 5.  Find the maximum difference between the lift and baseline strategies, and the percent of budget spent at the maximum.
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
-
 ```{r}
-#| eval: false
-# make two copies of new_dat and,
+#| label: make two copies of new_dat and
 
-# mutate one setting the intervention D=1
-new_dat1 <- 
+# (1) mutate one setting the intervention D=1
+new_dat1 <-❓
+  
 
 # mutate the other setting the intervention D=0  
-new_dat0 <-
-```
-
-```{r}
-#| eval: false
-# use the linear model (ols) to predict the responses under the two treatments
-predicted1 <-
+new_dat0 <-❓
   
-predicted0 <- 
+```
+
+```{r}
+#| label: use the linear model (ols) to predict the responses under the two treatments
+# (2)
+predicted1 <-❓
+
+  
+predicted0 <-❓ 
+
 
 ```
 
 ```{r}
-#| eval: false
-# combine the columns containing the predicted responses to create a two column dataframe, and
+#| label: combine the columns containing the predicted responses to create a two column dataframe, and
+# (3, 4)
+
 # - add columns for the lift net of costs and the baseline net of costs
 # - sort in descending order by lift, then
 # - add an ID column, using tibble::rowid_to_column("ID")
 # - in the last step, add a column for the cumulative % of budget (use the ID column for this)
 #   along with columns for the cumulative sums of lift and baseline 
 
-result <- 
+result <-❓ 
+
+
 ```
 
 ```{r}
-#| eval: false
-# plot the cumulative results to compare strategies 
+#| label: plot the cumulative results to compare strategies 
+# 
 result |>
   tidyr::pivot_longer(c(cumulative_baseline, cumulative_lift)) |>
   ggplot(aes(x=cumulative_pct, y=value, color = name)) + geom_line() +
   theme_minimal(base_size = 18) + 
   theme(legend.title = element_blank(),legend.position = "top") +
-  labs(title = " Stategy Comparison", x = "cumulative budget spend (%)", y = "net revenue (000's)")
+  labs(title = " Strategy Comparison", x = "cumulative budget spend (%)", y = "net revenue (000's)")
 ```
 
 ```{r}
-#| eval: false
-# use the result data to 
+#| label: use the result data to 
+# (5)
+
 # - find the maximum difference predicted between lift and baseline strategies in $'s
 
 # - find the maximum net revenue under either strategy in $'s
 
 # - indicate the percent of original budget necessary for each maximum.
+
 
 ```
 :::
@@ -550,31 +572,33 @@ Estimate the causal effect of smoking cessation on weight, using the dataset `da
 Estimate the causal effect using the matching estimator described in the lecture.
 
 ```{r}
-# load data
+#| label: load weight-smoking data
 nhefs <- 
   readr::read_csv('data/nhefs_data.csv', show_col_types = FALSE) |> 
   dplyr::select(wt82_71, quit_smoking, age, wt71, smokeintensity, exercise, education, sex, race)
 ```
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q5 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q5:
 
 ```{r}
+#| label: create mean difference in effects table
 # (1)
 # create a table to calculate the mean difference in effects for the two treatment groups in the raw data
 
 ```
 
 ```{r}
-#| eval: false
-#(2)
+#| label: create normalization recipe
+# (2)
 # create recipe to normalize the numerical covariates of interest (note - some covariates are factors)
-nhefs_data <-
+nhefs_data <-❓
 
 ```
 
 ```{r}
-#(3)
+#| label: calculate un-corrected matching estimate
+# (3)
 # using nhefs_data calculate the un-corrected effect estimate, per the matching method we used in class
 # NOTE: this takes some time to run
 
@@ -585,6 +609,7 @@ nhefs_data <-
 The un-corrected treatment effect is: \_\_\_\_
 
 ```{r}
+#| label: calculate correction terms and revise estimate
 #(4)
 # use the method from class to calculate the correction terms, can compute the revised estimate 
 # NOTE: this takes some time to run
@@ -594,6 +619,7 @@ The un-corrected treatment effect is: \_\_\_\_
 
 ```{r}
 #(5)
+#| label: estimate the effect of smoking cessation on weight gain
 # calculate the corrected causal estimate for the effect of smoking cessation on weight
 
 
@@ -614,8 +640,10 @@ $$
 \hat{\tau}_{ATE}=\frac{n_1}{N}\hat{\tau}_{ATT}-\frac{n_0}{N}\hat{\tau}_{ATU}
 $$
 
-::: {.callout-note icon="false"}
-## YOUR ANSWER
+::: {#Q6 .callout-note icon="false"}
+## YOUR ANSWER Q6:
+
+*You can write it here, or write it by hand on a separate piece of paper, scan the paper and add the image to your project.*
 :::
 
 ## Q7
@@ -635,22 +663,23 @@ retail_data <-
   readr::read_csv("data/retail_data.csv", show_col_types = FALSE)
 ```
 
-::: {.callout-note icon="false"}
-## YOUR ANSWER
+::: {#Q7 .callout-note icon="false"}
+## YOUR ANSWER Q7:
 
 (1a) Please give the treatment definition
 
 (1b) Please list the key identification assumptions (what needs to be true for our computation to be creditably causal).
 
-\(a\)
+(a)❓
 
-\(b\)
+(b)❓
 
-\(c\)
+(c)❓
 
 estimate the ATT
 
 ```{r}
+#| label: estimate the two stage DiD using the did2s package
 # PLEASE SHOW ALL YOUR WORK
 
 

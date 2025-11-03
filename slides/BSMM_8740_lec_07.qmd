@@ -17,7 +17,9 @@ format:
     transition: fade
     slide-number: true
     margin: 0.05
-    html-math-method: mathjax
+    math:
+      jax: 2
+#    html-math-method: mathjax
 editor: visual
 menu:
   numbers: true
