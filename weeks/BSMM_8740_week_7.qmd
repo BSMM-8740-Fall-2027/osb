@@ -105,7 +105,7 @@ knitr::asis_output(paste(out, collapse = "\n"))
 
 ## Perform
 
-⌨️ [Lab 7 -Causality: DAGs](/labs/BSSM_8740_lab_7.html)
+⌨️ [Lab 7 -Causality: DAGs](/labs/BSMM_8740_lab_7.html)
 
 ## Study
 
