@@ -163,6 +163,7 @@ Knowing a lot about causal inference (and Simpson's Paradox), you decide to run 
 
 ```{r}
 #| label: toy-panel fixed effects
+#| eval: false
 
 # mutate the data to make the column 'city' a factor
 
@@ -349,6 +350,7 @@ Use linear regression to fit each model, and
 
 ```{r}
 #| label: fit each formula
+#| eval: false
 #
 # fit formula1
 ols1 <- ❓
@@ -440,6 +442,7 @@ Estimate the ATE as follows (hint: it is \>0):
 
 ```{r}
 #| label: estimate the caual effect two ways
+#| eval: false
 # SHOW ALL YOUR WORK BELOW
 
 # (1) using regression adjustment, with formula Y ~ D*X1 + X2 + X3 + X4 + X5
@@ -454,6 +457,7 @@ dre <- ❓
 
 ```{r}
 #| label: summarize results
+#| eval: false
 # 
 tibble::tibble(
   dre_ATE = dre
@@ -504,6 +508,7 @@ You analyse your strategy for management as follows:
 
 ```{r}
 #| label: make two copies of new_dat and
+#| eval: false
 
 # (1) mutate one setting the intervention D=1
 new_dat1 <-❓
@@ -516,6 +521,7 @@ new_dat0 <-❓
 
 ```{r}
 #| label: use the linear model (ols) to predict the responses under the two treatments
+#| eval: false
 # (2)
 predicted1 <-❓
 
@@ -527,6 +533,7 @@ predicted0 <-❓
 
 ```{r}
 #| label: combine the columns containing the predicted responses to create a two column dataframe, and
+#| eval: false
 # (3, 4)
 
 # - add columns for the lift net of costs and the baseline net of costs
@@ -542,6 +549,7 @@ result <-❓
 
 ```{r}
 #| label: plot the cumulative results to compare strategies 
+#| eval: false
 # 
 result |>
   tidyr::pivot_longer(c(cumulative_baseline, cumulative_lift)) |>
@@ -590,6 +598,7 @@ nhefs <-
 
 ```{r}
 #| label: create normalization recipe
+#| eval: false
 # (2)
 # create recipe to normalize the numerical covariates of interest (note - some covariates are factors)
 nhefs_data <-❓
