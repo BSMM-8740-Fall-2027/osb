@@ -70,11 +70,11 @@ title: "weekly checklist"
 -   [x] weekly lab
 -   [x] weekly lab solutions
 -   [x] weekly lab repo
--   [ ] weekly lab invite
+-   [x] weekly lab invite
 
 ## Week 7
 
--   [ ] weekly slides
+-   [x] weekly slides
 -   [x] weekly reading
     -   [x] links
     -   [x] readings
@@ -82,4 +82,16 @@ title: "weekly checklist"
 -   [x] weekly lab
 -   [x] weekly lab solutions
 -   [x] weekly lab repo
+-   [x] weekly lab invite
+
+## Week 8
+
+-   [ ] weekly slides
+-   [x] weekly reading
+    -   [ ] links
+    -   [x] readings
+    -   [ ] study guide
+-   [x] weekly lab
+-   [x] weekly lab solutions
+-   [ ] weekly lab repo
 -   [ ] weekly lab invite

@@ -17,7 +17,9 @@ format:
     transition: fade
     slide-number: true
     margin: 0.05
-    html-math-method: mathjax
+    math:
+      jax: 2
+#    html-math-method: mathjax
 editor: visual
 menu:
   numbers: true
@@ -1782,7 +1784,7 @@ head(predict(propensity_model, type = "response"))
 
 We can use propensity scores to control for confounding in various ways. In this example, we'll focus on weighting.
 
-In particular, we'll compute the inverse probability weight for the *average treatment effect* (ATE). The ATE represents a particular causal question: what if *everyone* in the study used bed nets vs. what if *no one* in the study used bed nets?
+In particular, we'll compute the inverse probability weight to estimate the *average treatment effect* (ATE). The ATE represents a particular causal question: what if *everyone* in the study used bed nets vs. what if *no one* in the study used bed nets?
 
 To calculate the ATE, we'll use the `broom` and `propensity` packages. broom's `augment()` function extracts prediction-related information from the model and joins it to the data. propensity's `wt_ate()` function calculates the inverse probability weight given the propensity score and exposure.
 :::
