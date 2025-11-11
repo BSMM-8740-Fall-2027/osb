@@ -1942,8 +1942,7 @@ plot_df %>% ggplot(
 #| fig.width: 5
 #| fig.height: 4
 #| echo: false
-#| fig.cap: >
-#| A love plot representing the standardized mean differences (SMD) between exposure groups of three confounders - temperature, income, and health. Before weighting, there are considerable differences in the groups. After weighting, the confounders are much more balanced between groups.
+#| fig.cap: A love plot representing the standardized mean differences (SMD) between exposure groups of three confounders - temperature, income, and health. Before weighting, there are considerable differences in the groups. After weighting, the confounders are much more balanced between groups.
 #
 plot_df <- tidysmd::tidy_smd(
   net_data_wts,
