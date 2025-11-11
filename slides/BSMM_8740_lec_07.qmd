@@ -1654,9 +1654,9 @@ mosquito_dag |>
   ggplot(
     aes(x, y, xend = xend, yend = yend, color = status)
   ) +
-  geom_dag_edges() +
-  geom_dag_point() +
-  geom_dag_label_repel() +
+  ggdag::geom_dag_edges() +
+  ggdag::geom_dag_point() +
+  ggdag::geom_dag_label_repel() +
   ggokabeito::scale_color_okabe_ito(na.value = "grey90") +
   theme_dag() +
   theme(legend.position = "none") +
@@ -1704,7 +1704,7 @@ mosquito_dag |>
     key_glyph = glyph
   ) +
   facet_wrap(vars(fct_inorder(factor(set)))) +
-  expand_plot(
+  ggdag::expand_plot(
     expand_x = expansion(c(0.25, 0.25)),
     expand_y = expansion(c(0.1, 0.1))
   ) +
@@ -1892,8 +1892,9 @@ ggplot(net_data_wts, aes(.fitted)) +
 #| fig.width: 10
 #| fig.height: 7
 #| label: fig-mirror-histogram-net-data-weighted
-#| fig.cap: >
-#|   A mirrored histogram of the propensity scores of those who used nets (top, blue) versus those who did not use nets (bottom, orange). The dark regions represent the unweighted distributions, and the lighter regions represent the weighted distributions. The ATE weights up-weight the groups to be similar in range and shape of the distribution of propensity scores.
+#| code-fold: true
+#| fig.cap: A mirrored histogram of the propensity scores of those who used nets (top, blue) versus those who did not use nets (bottom, orange). The dark regions represent the unweighted distributions, and the lighter regions represent the weighted distributions. The ATE weights up-weight the groups to be similar in range and shape of the distribution of propensity scores.
+#
 ggplot(net_data_wts, aes(.fitted)) +
   halfmoon::geom_mirror_histogram(
     aes(group = net),
@@ -1940,8 +1941,8 @@ plot_df %>% ggplot(
 #| label: fig-love-plot-net-data
 #| fig.width: 5
 #| fig.height: 4
-#| fig.cap: >
-#|   A love plot representing the standardized mean differences (SMD) between exposure groups of three confounders: temperature, income, and health. Before weighting, there are considerable differences in the groups. After weighting, the confounders are much more balanced between groups.
+#| echo: false
+#| fig.cap: A love plot representing the standardized mean differences (SMD) between exposure groups of three confounders: temperature, income, and health. Before weighting, there are considerable differences in the groups. After weighting, the confounders are much more balanced between groups.
 plot_df <- tidysmd::tidy_smd(
   net_data_wts,
   c(income, health, temperature),
@@ -2207,7 +2208,8 @@ options(tipr.verbose = FALSE)
 #| fig.height: 3.8
 #| fig.cap: >
 #|   A tipping point analysis under several confounding scenarios where the unmeasured confounder is a normally-distributed continuous variable. The line represents the strength of confounding necessary to tip the upper confidence interval of the causal effect estimate to 0. The x-axis represents the coefficient of the confounder-outcome relationship adjusted for the exposure and the set of measured confounders. The y-axis represents the scaled mean difference of the confounder between exposure groups.
-tipping_points <- tipr::tip_coef(boot_estimate$.upper, exposure_confounder_effect = 1:5)
+tipping_points <- 
+  tipr::tip_coef(effect_observed = boot_estimate$.upper, exposure_confounder_effect = 1:5)
 
 tipping_points |>
   ggplot(aes(confounder_outcome_effect, exposure_confounder_effect)) +
@@ -2216,7 +2218,7 @@ tipping_points |>
   labs(
     x = "Confounder-Outcome Effect",
     y = "Scaled mean differences in\n confounder between exposure groups"
-  )
+  ) + theme(axis.title.y = element_text(size = 12))
 ```
 :::
 
