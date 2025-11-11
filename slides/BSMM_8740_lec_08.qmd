@@ -35,17 +35,6 @@ execute:
 -   We briefly discussed regression adjustment and instrumental variables
 -   We worked through a method to estimate causal effects using IPW.
 
-## This week
-
-We will look at other methods used to estimate causal effects, along with methods used for special situations, including:
-
--   regression adjustment
--   doubly robust estimation
--   matching
--   difference in differences
--   fixed effects and methods for panel data
--   g-methods
-
 ## Week 8 Roadmap
 
 ::: incremental
