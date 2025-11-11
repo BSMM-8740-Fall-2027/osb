@@ -57,7 +57,7 @@ if (! "librarian" %in% rownames(installed.packages()) ){
 }
   
 # load packages if not already loaded
-librarian::shelf(tidyverse, broom, rsample, ggdag, causaldata, magrittr, gt, gtExtras, halfmoon, ggokabeito, ggplot2, r-causal/propensity, r-causal/causalworkshop, survey, cardx, ddsjoberg/gtsummary, gapminder)
+librarian::shelf(tidyverse, broom, rsample, ggdag, causaldata, magrittr, gt, gtExtras, halfmoon, ggokabeito, ggplot2, r-causal/propensity, r-causal/causalworkshop, survey, cardx, ddsjoberg/gtsummary, gapminder, fixest, haven)
 
 # set the default theme for plotting
 theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
@@ -476,10 +476,6 @@ First let's examine the code. Note we use a recipe with the regression to add th
 ```{r}
 #| echo: true
 #| label: DR data
-D <- "net"
-Y <- "malaria_risk"
-X <- paste0(c('income', 'health', 'temperature'),c(rep('_poly_1',3),rep('_poly_2',3)))
-
 doubly_robust_rec <- causalworkshop::net_data |> 
   dplyr::mutate(net = as.numeric(net)) |> 
   recipes::recipe(malaria_risk ~ net + income + health + temperature) |> 
@@ -488,6 +484,10 @@ doubly_robust_rec <- causalworkshop::net_data |>
   recipes::prep() 
 
 doubly_robust_dat <- doubly_robust_rec |> recipes::bake(new_data=NULL)
+
+D <- "net"
+Y <- "malaria_risk"
+X <- paste0(c('income', 'health', 'temperature'),c(rep('_poly_1',3),rep('_poly_2',3)))
 ```
 
 ## DR function
@@ -1010,11 +1010,11 @@ ggplot(bias, aes(x = n, y = bias)) +
 ## Finite Sample Bias
 
 ::: {style="font-size: x-large"}
-This is demonstrates finite sample bias. Notice that even when the sample size is quite large (5,000) we still see some bias away from the “true” effect of 0. It isn’t until a sample size larger than 10,000 that we see this bias disappear.
+This is demonstrates finite sample bias. Notice that even when the sample size is quite large (5,000) we still see some bias away from the “true” effect of 0. It isn’t until a sample size larger than 10,000 that we see this bias effectively disappear.
 
 Estimands that utilize weights that are unbounded (i.e. that theoretically can be infinitely large) are more likely to suffer from finite sample bias. The likelihood of falling into finite sample bias depends on:
 
-1.  the estimand you have chosen (i.e. are the weights bounded?)
+1.  the estimator you have chosen (i.e. are the weights bounded?)
 2.  the distribution of the covariates in the exposed and unexposed groups (i.e. is there good overlap? Potential positivity violations, when there is poor overlap, are the regions where weights can become too large)
 3.  the sample size.
 :::
@@ -1437,9 +1437,9 @@ The other variable $mt_1$, will store the treated point and will find matches in
 treated   <- data_med |> dplyr::filter(medication==1)
 untreated <- data_med |> dplyr::filter(medication==0)
 
-mt0 <- # untreated knn model predicting recovery
+mt0 <- # untreated knn model for predicting recovery
   caret::knnreg(x = untreated |> dplyr::select(sex,age,severity), y = untreated$recovery, k=1)
-mt1 <- # treated knn model predicting recovery
+mt1 <- # treated knn model for predicting recovery
   caret::knnreg(x = treated |> dplyr::select(sex,age,severity), y = treated$recovery, k=1)
 
 predicted <-
@@ -1554,7 +1554,7 @@ which leads to a bias in $\hat{\tau}_{ATT}$.
 ::: {style="font-size: x-large"}
 Bias arises from matching discrepancies. Fortunately, we know how to correct it. Each observation contributes $(\mu_0(X_i) - \mu_0(X_j(i))$ to the bias so all we need to do is subtract this quantity from each matching comparison in our estimator.
 
-To do so, we can replace $\mu_0(X_j(i))$ with some sort of estimate of this quantity $\hat{\mu}_0(X_j(i))$, which can be obtained with models like linear regression. This updates the ATET estimator to the following equation:
+To do so, we can replace $\mu_0(X_j(i))$ with some sort of estimate of this quantity $\hat{\mu}_0(X_j(i))$, which can be obtained with models like linear regression. This updates the ATT estimator to the following equation:
 :::
 
 $$
@@ -1721,7 +1721,9 @@ As it turns out, the answer is quite simple and intuitive. It is easy to find pe
 
 ## Fixed Effects
 
--   One problem we might have is that we can't really control for variables if we can't measure them.
+### The Problem
+
+-   A problem we might have is that we can't really control for variables if we can't measure them.
 -   And there could be variables we need to control for but we can't measure or don't have data for! So what can we do?
 -   There is a solution, as long as these variables stay constant within some larger category.
 
@@ -1729,8 +1731,8 @@ As it turns out, the answer is quite simple and intuitive. It is easy to find pe
 
 ### The Solution
 
--   If we observe each category (entity/person/firm/country) *multiple times*, then we can forget about controlling for the related back-door variables we're interested in, and
--   Just control for *entity/person/firm/country identity* instead!
+-   If we observe each category (entity/person/firm/country) *multiple times*, then we can forget about controlling for the related back-door variables we're interested in ...
+-   And just control for *entity/person/firm/country identity* instead!
 -   This will control for EVERYTHING unique to that individual, whether we can measure it or not, as long as they are fixed within the category.
 
 ## Fixed Effects
@@ -2140,10 +2142,10 @@ fixest::coefplot(m, drop = '(Intercept)',
 
 :::::: columns
 :::: {.column width="50%"}
-::: {style="font-style: x-large"}
+::: {style="font-style: large"}
 -   Assume panel data on $Y_{it}$ for $t=1,2$ and $i = 1,...,N$
 -   **Treatment timing:** Some units ($D_i=1$) are treated in period $2$; every other unit is untreated $(D_i=0)$
--   **Potential outcomes (POs):** Observe $Y_{it}(1) \equiv Y_{it}(0,1)$ for treated units; and $Y_{it}(0) \equiv Y_{it}(0,0)$ for comparison.
+-   **Potential outcomes (POs):** Observe $Y_{it}(1)$ for treated units; and $Y_{it}(0)$ for comparison.
 :::
 ::::
 
@@ -2163,20 +2165,21 @@ ggdag(dag,node_size=20) + ggdag::theme_dag()
 
 ## DiD Estimation and Inference
 
--   The most conceptually simple estimator replaces population means with sample analogs: $$\hat{\tau}_{DiD} = (\bar{Y}_{12} - \bar{Y}_{11}) - (\bar{Y}_{02} - \bar{Y}_{01}) $$ where $\bar{Y}_{dt}$ is sample mean for group $d$ in period $t$
+-   The most conceptually simple estimator replaces population means with sample analogs: $$\hat{\tau}_{DiD} = \left(\bar{Y}_2(1) - \bar{Y}_1(1)\right) - \left(\bar{Y}_2(0) - \bar{Y}_1(0)\right)$$ where $\bar{Y}_t(d)$ is sample mean for group $d$ in period $t$
 -   This is also know as "4 averages and three subtractions"
 -   Causally we evaluate before treatment vs after treatment
 
 ## DiD Estimation and Inference
 
--   Conveniently, $\hat\tau_{DiD}$ is algebraically equal to OLS coefficient $\hat\beta$ from $$\begin{align*}
+-   Conveniently, $\hat\tau_{DiD}$ is algebraically equal to OLS coefficient $\hat\beta$ from $$
+    \begin{align*}
     Y_{it} = \alpha_i + \phi_t + D_{it} \beta  + \epsilon_{it}, 
-    \end{align*}$$ where $D_{it} = D_i * 1[t=2]$. It's also equivalent to $\beta$ from $\Delta Y_{i} = \alpha +  \Delta D_i \beta + u_{it}$.
--   **Inference:** clustered standard errors are valid as number of clusters grows large.
+    \end{align*}
+    $$ where $D_{it} = D_i * 1[t=2]$. It's also equivalent to $\beta$ from $\Delta Y_{i} = \alpha +  \Delta D_i \beta + u_{it}$.
 
 ## DiD Estimation and Inference
 
-Aggregating individuals into treated and untreated groups:
+Group individuals into treated/untreated and before/after:
 
 $$\begin{align*}
 Y_{it} = \alpha_i + \beta_1 D_i + \beta_2\text{post}_t + \delta (D_i\times\text{post}_t) + \epsilon_{it}
@@ -2185,9 +2188,31 @@ Y_{it} = \alpha_i + \beta_1 D_i + \beta_2\text{post}_t + \delta (D_i\times\text{
 -   $Y_{i1}(0)=\alpha_i$, $Y_{i2}(0)=\alpha_i+\beta_2$ and
 -   $Y_{i1}(1)=\alpha_i + \beta_1$, $Y_{i2}(1)=\alpha_i+\beta_1+\beta_2+\delta$
 -   with $Y_{i2}(0)-Y_{i1}(0)=\beta_2$ and $Y_{i2}(1)-Y_{i1}(1)=\beta_2+\delta$
--   so $(Y_{i2}(1)-Y_{i1}(1)) - (Y_{i2}(0)-Y_{i1}(0))=\delta\equiv\hat{\tau}_{DiD}$
+-   so $\left(Y_{i2}(1)-Y_{i1}(1)\right) - \left(Y_{i2}(0)-Y_{i1}(0)\right)=\delta\equiv\hat{\tau}_{DiD}$
 
 ## DiD Causal Inference
+
+::: {style="font-size: x-large"}
+Under what conditions does this estimator have a causal interpretation?
+
+Our estimator is
+
+$$
+\hat{\tau}_{DiD}=E[Y_{i2}(1) - Y_{i1}(1)] - E[Y_{i2}(0) - Y_{i1}(0)]
+$$ If we add zero
+
+$$
+\begin{align*}
+\hat{\tau}_{DiD} & =E[Y_{i2}(1)-Y_{i1}(1)]-E[Y_{i2}(0)-Y_{i1}(0)]\\
+ & =E[\color{blue}{Y_{i2}(1)}-\color{green}{Y_{i1}(1)}|D_{i}=1]-E[\color{orange}{Y_{i2}(0)}-\color{magenta}{Y_{i1}(0)}|D_{i}=0]+\\
+ & E\left[\color{cyan}{Y_{i2}(1)}|D_{i}=0\right]-E\left[Y_{i2}(1)|D_{i}=0\right]\\
+ & =E[\color{blue}{Y_{i2}(1)}|D_{i}=1]-E\left[Y_{i2}(1)|D_{i}=0\right]+\\
+ & E[\color{cyan}{Y_{i2}(1)}-\color{green}{Y_{i1}(1)}|D_{i}=0]-E[\color{orange}{Y_{i2}(0)}-\color{magenta}{Y_{i1}(0)}|D_{i}=0]
+\end{align*}
+$$
+:::
+
+## DiD Causal Inference {visibility="hidden"}
 
 ::: {style="font-size: x-large"}
 Under what conditions does DiD have a causal interpretation?
@@ -2213,9 +2238,9 @@ $$
 
 So for our DiD estimator to estimate a causal estimand (ATT) we need these assumptions satisfied:
 
-1.  No anticipation: $$E[Y_{i1}(1)|D_{i}=0] = E[Y_{i1}(0)|D_{i}=0]$$
+1.  No anticipation: $$E[Y_{i1}(1)|D_{i}=1] = E[Y_{i1}(0)|D_{i}=0]$$
 
-2.  Parallel trends: $$0=E[Y_{i2}(1)-Y_{i1}(1)|D_{i}=0]-E[Y_{i2}(0)-Y_{i1}(0)|D_{i}=0]$$
+2.  Parallel trends: $$0=E[Y_{i2}(1)-Y_{i1}(1)|D_{i}=1]-E[Y_{i2}(0)-Y_{i1}(0)|D_{i}=0]$$
 
 ## Causal Inference
 
@@ -2225,6 +2250,8 @@ So for our DiD estimator to estimate a causal estimand (ATT) we need these assum
 
 ## Causal Inference
 
+Our estimator has two sources of bias specific to the estimator, no anticipation and parallel trends:
+
 $$
 \begin{align*}
 \hat{\tau}_{DiD} & =\text{ATT}_{\text{post}} \\
@@ -2233,7 +2260,7 @@ $$
 \end{align*}
 $$
 
-## DiD
+## DiD {visibility="hidden"}
 
 The 2x2 method is interpreted as *before* and *after*, but these periods can be multiple time periods
 
@@ -2352,15 +2379,14 @@ p1 +
   ) + theme(plot.margin=unit(c(1,2,2,1), 'cm'))
 ```
 
-## Simple 2x2 example
+## Multiyear 2x2 example
+
+::: panel-tabset
+## data
 
 ```{r}
-# Load necessary libraries
-# install.packages(c("tidyverse", "fixest", "haven"))
-library(tidyverse)
-library(fixest)
-library(haven)
-
+#| label: load, filter, and create columns for 2x2 example
+#| echo: true
 # Load the data
 data <- haven::read_dta("https://github.com/scunning1975/mixtape/raw/master/castle.dta")
 
@@ -2375,7 +2401,14 @@ data <- data %>%
     post = ifelse(year >= 2006, 1, 0),
     treat = ifelse(!is.na(effyear), 1, 0)
   )
+```
 
+## mean diffs
+
+```{r}
+#| label: Calculate means for different groups, simple 2x2 example
+#| echo: true
+#| code-fold: true
 # Calculate means for different groups
 (mean_values <- data %>%
   group_by(post, treat) %>%
@@ -2386,8 +2419,14 @@ data <- data %>%
   (mean_l_homicide[post == 1 & treat == 1] - mean_l_homicide[post == 0 & treat == 1]) - 
   (mean_l_homicide[post == 1 & treat == 0] - mean_l_homicide[post == 0 & treat == 0])
 }))
+```
 
+## regression
 
+```{r}
+#| label: regression for 2x2 example
+#| echo: true
+#| code-fold: true
 # Run the regression with clustered standard errors
 model <- feols(
   l_homicide ~ i(post) + i(treat) + post:treat, 
@@ -2397,14 +2436,15 @@ model <- feols(
 model
 
 # Run the regression with population weights
-model_weighted <- feols(
-  l_homicide ~ i(post) + i(treat) + post:treat, 
-  data = data, cluster = ~ treat,
-  weights = ~ popwt
-)
-
-model_weighted
+# model_weighted <- feols(
+#   l_homicide ~ i(post) + i(treat) + post:treat, 
+#   data = data, cluster = ~ treat,
+#   weights = ~ popwt
+# )
+# 
+# model_weighted
 ```
+:::
 
 ## Longitudinal Data
 
@@ -2414,7 +2454,7 @@ model_weighted
 
 -   Repeated Cross-Sections: different units sampled at each time (e.g., Census, Current Population Survey)
 
-    -   Violations of parallel trends can arise differently across data types.
+    -   Violations of parallel trends can arise differently across these longitudinal data types.
 
 ## Longitudinal Data
 
@@ -2435,7 +2475,7 @@ In the potential outcomes framework, a treatment effect is defined at the indivi
 
 -   The more heterogeneity in the treatment effects, the more the broken panel will shift away from what you think you’re after.
 
-## Repeated cross-sections
+## Repeated cross-sections {visibility="hidden"}
 
 -   One of the risks of a repeated cross-section is that the composition of the sample may have changed between the pre and post period in ways that are correlated with treatment.
 -   Hong (2013) uses repeated cross-sectional data from the Consumer Expenditure Survey (CEX) containing music expenditure and internet use for a random sample of households.
@@ -2444,12 +2484,14 @@ In the potential outcomes framework, a treatment effect is defined at the indivi
 
 ## Repeated Cross Section Risks
 
+::: {style="font-size: x-large"}
 -   Repeated cross sections have their own challenges that panels don’t in that the group could be shifting compositionally.
 -   Detect using a balance table with covariates highly predictive of the missing E\[Y0\|D= 1\] for this exercise
     -   Percent of cat owners is probably irrelevant to trends in potential outcomes
     -   But age and income is probably relevant for spending habits
     -   We’ll discuss covariates more later, but for now just consider what characteristics are relevant to your outcome
 -   Documenting covariates that cannot be affected by the treatment like this table is a way to check for compositional changes in the sample.
+:::
 
 ## Repeated Cross Section Risks
 
@@ -2485,14 +2527,14 @@ In the potential outcomes framework, a treatment effect is defined at the indivi
 
 ## 2X2 DiD & covariates
 
--   2x2 relies on parallel trends (PT) and no anticipation (NA) to be causal
+-   To be causal, 2x2 relies on parallel trends (PT) and no anticipation (NA)
 -   What if PT is violated and the violation is due to covariates:
     -   imbalance between treated an untreated where covariates are related to outcome dynamics
     -   heterogeneous treatment effects related to covariates
 
 ## 2X2 DiD & covariates
 
-As before, for our DiD estimator to be a causal estimate (ATT) we need (note: conditional on covariates X)
+As before, for our DiD estimator to be a causal estimate (ATT) we need (now conditional on covariates X)
 
 1.  No anticipation: $E[Y_{1}(1)|X,D=1] = E[Y_{1}(0)|X,D=0]$
 
@@ -2502,24 +2544,24 @@ As before, for our DiD estimator to be a causal estimate (ATT) we need (note: co
 
 Under our assumptions, we can model the outcome evolution and estimate the counterfactual untreated outcome in period 2 for the treated group using regression, and our estimator
 
-$$\hat{\tau}_{DiD} = (\bar{Y}_{12} - \bar{Y}_{11}) - (\bar{Y}_{02} - \bar{Y}_{01}) $$
+$$\hat{\tau}_{DiD} = \left(\bar{Y}_2(1) - \bar{Y}_1(1)) - (\bar{Y}_0(2) - \bar{Y}_0(1)\right) $$
 
 becomes
 
-$$\hat{\tau}_{DiD} = (\bar{Y}_{12} - \bar{Y}_{11}) - (\bar{\hat{\mu}}(X)_{02} - \bar{\hat{\mu}}(X)_{01}) $$
+$$\hat{\tau}_{DiD} = \left(\bar{Y}_2(1) - \bar{Y}_1(1)\right) - \left(\hat{\mu}_{X,2}(0) - \hat{\mu}_{X,1}(0)\right) $$
 
 ## 2X2 DiD & covariates (reg)
 
 Using regression the $\hat{\tau}_{DiD}$ estimate uses
 
 $$
-\bar{Y}_{d,t}=\sum_{i\vert D_i=d,T_i=t}Y_{it}/n_{d,t}
+\bar{Y}_t(d)=\sum_{i\vert D_i=d,T_i=t}Y_{it}/n_{d,t}
 $$
 
-and $\hat{\mu}(x)_{dt}$ estimates the true, unknown
+and $\hat{\mu}_{x,t}(d)$ estimates the true, unknown
 
 $$
-m_{d,t}\equiv\mathbb{E}\left[Y_y\vert D=d,X=x\right]
+\mu_{x,t}(d)\equiv\mathbb{E}\left[Y_y\vert D=d,X=x\right]
 $$
 
 ## 2X2 DiD & covariates (reg)
@@ -2542,16 +2584,100 @@ Consider the following expression, with propensity $\pi=\mathbb{P}(D=1\vert X)$ 
 ::: {style="font-size: x-large"}
 $$
 \begin{align*}
-E[\rho(D)\left(Y_{t=2}-Y_{t=1}\right)|X] & =\\
-E[\rho(D)\left(Y_{t=2}-Y_{t=1}\right)|X,D=1]\pi+E[\rho(D)\left(Y_{t=2}-Y_{t=1}\right)|X,D=0]\left(1-\pi\right) & =\\
-E[\frac{1}{\pi}\left(Y_{t=2}-Y_{t=1}\right)|X,D=1]\pi+E[\frac{-1}{\left(1-\pi\right)}\left(Y_{t=2}-Y_{t=1}\right)|X,D=0]\left(1-\pi\right) & =\\
-E[Y_{t=2}-Y_{t=1}|X,D=1]-E[Y_{t=2}-Y_{t=1}|X,D=0] & =\\
-E[Y_{t=2}^{1}-Y_{t=1}^{0}|X,D=1]
+\mathbb{E}_{X,D}[\rho(D)\left(Y_{t=2}-Y_{t=1}\right)|X] & =\\
+\mathbb{E}_{X}[\rho(D)\left(Y_{t=2}-Y_{t=1}\right)|X,D=1]\pi+\mathbb{E}_{X}[\rho(D)\left(Y_{t=2}-Y_{t=1}\right)|X,D=0]\left(1-\pi\right) & =\\
+\mathbb{E}_{X}[\frac{1}{\pi}\left(Y_{t=2}-Y_{t=1}\right)|X,D=1]\pi+\mathbb{E}_{X}[\frac{-1}{\left(1-\pi\right)}\left(Y_{t=2}-Y_{t=1}\right)|X,D=0]\left(1-\pi\right) & =\\
+\mathbb{E}_{X}[Y_{t=2}-Y_{t=1}|X,D=1]-E[Y_{t=2}-Y_{t=1}|X,D=0] & =\\
+\mathbb{E}_{X}[Y_{t=2}^{1}-Y_{t=2}^{0}|X,D=1]
 \end{align*}
 $$
 :::
 
 ## 2X2 DiD & covariates (IPW)
+
+::: panel-tabset
+## data
+
+```{r}
+#| label: load data and add IPWs
+#| code-fold: true
+#| echo: true
+#
+panel <- readr::read_csv("../slides/data/coupon.csv", show_col_types = FALSE)
+
+# Propensity score from baseline only
+base <- panel |> filter(t == 1)
+ps_fit <- glm(treat ~ age + inc + site, data = base, family = binomial())
+ps_by_id <- base |>
+  dplyr::mutate(ps = predict(ps_fit, type = "response")) |>
+  dplyr::select(id, treat, ps)
+
+# Stabilized weights
+pbar <- mean(ps_by_id$treat == 1)
+w_tbl <- ps_by_id |>
+  dplyr::mutate(w = if_else(treat == 1, pbar/ps, (1 - pbar)/(1 - ps))) |>
+  dplyr::select(id, w)
+
+# Attach weights to the panel
+panel_w <- panel |> dplyr::left_join(w_tbl, by = "id")
+
+panel_w
+
+```
+
+## event study
+
+```{r}
+#| label: perfrom event study
+#| code-fold: true
+#| echo: true
+g0 <- 4
+es <- fixest::feols(
+  y ~ i(t, treat, ref = g0 - 1) | id + t,
+  data = panel_w,
+  weights = ~ w,
+  cluster = ~ id
+)
+fixest::iplot(es)
+```
+
+## event study ATT
+
+```{r}
+#| label: estimate ATT from the event study
+#| code-fold: true
+#| message: false
+#| warning: false
+#| echo: true
+es$coeftable |> as.data.frame() |>
+  dplyr::slice_tail(n=3) |>
+  dplyr::summarize(ATT = mean(Estimate)) -
+
+es$coeftable |> as.data.frame() |>
+  dplyr::slice_head(n=2) |>
+  dplyr::summarize(ATT = mean(Estimate))
+```
+
+
+## estimation
+
+```{r}
+#| label: estimate ATT two ways
+#| code-fold: true
+#| message: false
+#| warning: false
+#| echo: true
+# Plain DiD with FE
+did_plain <- fixest::feols(y ~ treat * post | id + t, data = panel, cluster = ~ id)
+
+# IPW DiD with FE
+did_ipw <- fixest::feols(y ~ treat * post | id + t, data = panel_w, weights = ~ w, cluster = ~ id)
+
+fixest::etable(did_plain, did_ipw, se = "cluster", cluster = ~ id)
+```
+:::
+
+## 2X2 DiD & covariates (IPW) {visibility="hidden"}
 
 ::: {style="font-size: x-large"}
 so $E[\rho(D)\left(Y_{t=2}-Y_{t=1}\right)|X]=E[Y_{t=2}^{1}-Y_{t=1}^{0}|X,D=1]$ and then averaging over the covariates:
@@ -2562,13 +2688,13 @@ $$
 \begin{align*}
 E[Y_{t=2}^{1}-Y_{t=1}^{0}|D=1] & =\int E[Y_{t=2}^{1}-Y_{t=1}^{0}|X,D=1]d\mathbb{P}(x\vert D=1)\\
  & =\int E[\rho(D)\left(Y_{t=2}-Y_{t=1}\right)|X]d\mathbb{P}(x\vert D=1)\\
- & =E[\rho(D)\left(Y_{t=2}-Y_{t=1}\right)\frac{\mathbb{P}(D=1\vert X)}{\mathbb{P}(D=1)}]\\
- & =E[\frac{Y_{t=2}-Y_{t=1}}{\mathbb{P}(D=1)}\frac{D-\mathbb{P}(D=1\vert X)}{1-\mathbb{P}(D=1\vert X)}]
+ & =E\left[\rho(D)\left(Y_{t=2}-Y_{t=1}\right)\frac{\mathbb{P}(D=1\vert X)}{\mathbb{P}(D=1)}\right]\\
+ & =E\left[\frac{Y_{t=2}-Y_{t=1}}{\mathbb{P}(D=1)}\frac{D-\mathbb{P}(D=1\vert X)}{1-\mathbb{P}(D=1\vert X)}\right]
 \end{align*}
 $$
 :::
 
-## 2X2 DiD & covariates (DR)
+## 2X2 DiD & covariates (DR) {visibility="hidden"}
 
 We can also use a doubly robust estimator:
 
@@ -2632,7 +2758,7 @@ tibble::tribble(
 
 ## Event Studies & Fixed Effects
 
-It is very common to evaluate the common trend assumption using event studies via a dynamic (TWFE) regression specification including indicators for time relative to treatment. This permits “visual inference” to determine whether the treated group’s trends appear to have deviated from the comparison group’s trends right around the time of treatment.
+It is convenient to evaluate the common trend assumption using event studies via a dynamic (TWFE) regression specification including indicators for time relative to treatment. This permits “visual inference” to determine whether the treated group’s trends appear to have deviated from the comparison group’s trends right around the time of treatment.
 
 ## Event Studies & Fixed Effects
 
@@ -2650,9 +2776,9 @@ $$
 $$
 :::
 
-## Event Studies & Fixed Effects
+## Event Studies & Fixed Effects {visibility="hidden"}
 
-In the case where there are no effects and e.g. $Y^1_{it}=Y^0_{it}=\gamma\cdot t + \epsilon_{it}$ and $\mathbb{E}[\epsilon_{it}]=0$
+In the case where there are no effects and e.g. $Y_{it}(1)=Y_{it}(0)=\gamma\cdot t + \epsilon_{it}$ and $\mathbb{E}[\epsilon_{it}]=0$
 
 $$
 \delta_r=\gamma\cdot(r+1)
@@ -2703,10 +2829,10 @@ ggplot(eventplotdf,
 
 ## Event Studies & Fixed Effects
 
-::::::::: columns
+:::::::::: columns
 :::: {.column width="50%"}
 ::: {style="font-size: x-large"}
-In the case where there are no effects and e.g. $Y^1_{it}=Y^0_{it}=\gamma\cdot t + \epsilon_{it}$ and $\mathbb{E}[\epsilon_{it}]=0$
+In the case where there are no effects and e.g. $Y_{it}(1)=Y_{it}(0)=\gamma\cdot t + \epsilon_{it}$ and $\mathbb{E}[\epsilon_{it}]=0$
 
 $$
 \delta_r=\gamma\cdot(r+1)
@@ -2714,7 +2840,7 @@ $$
 :::
 ::::
 
-:::::: {.column width="50%"}
+::::::: {.column width="50%"}
 ::::: {style="font-size: x-large"}
 :::: columns
 ::: {.column width="50%"}
@@ -2723,6 +2849,7 @@ and the event study looks like:
 ::::
 :::::
 
+::: {style="font-size: medium"}
 ```{r}
 #| echo: true
 #| code-fold: true
@@ -2763,12 +2890,13 @@ ggplot(eventplotdf,
   theme(plot.title= element_text(hjust=0.5)) +
   theme_minimal() + theme_set(theme_bw(base_size = 18))
 ```
-::::::
-:::::::::
+:::
+:::::::
+::::::::::
 
 ## Heterogeneity & Differential Timing
 
-Consider when we have multiple groups of units, some treated, some perhaps not treated, where we could have heterogeneous effects (i.e. different causal effects by group or time) and/or differential timing (treatment starts at different times for different groups.
+When we have multiple groups of units, some treated, some perhaps not treated, where we could have heterogeneous effects (i.e. different causal effects by group or time) and/or differential timing (treatment starts at different times for different groups.
 
 In this case, the TWFE regression is known to not estimate the causal effect.
 
@@ -2788,7 +2916,7 @@ Where units are indexed by $i$ and:
 -   $\mu_g$ = group fixed effect: *effects constant over all time, by group*
 -   $\eta_t$ = time fixed effect: *effects constant over all groups, by time*
 -   $D_{gt}\equiv \textbf{1}_{g\le t}$: *treatment indicator ([**note**]{.underline} - once treated, always treated)*
--   $\tau_{gt}$ = group-time specific treatment effect: *i.e.* $\mathbb{E}[Y^1_{gt}-Y^0_{gt}]$ *in potential outcomes notation*
+-   $\tau_{gt}$ = group-time specific treatment effect: *i.e.* $\mathbb{E}\left[Y_{gt}(1)-Y_{gt}(0)\right]$ *in potential outcomes notation*
 -   $\varepsilon_{igt}$ = idiosyncratic error with $E[\varepsilon_{igt}] = 0$
 :::
 
@@ -2810,9 +2938,9 @@ We have seen this case already.
 ## The simplest case (again):
 
 ::: {style="font-size: x-large"}
-Finally, we can use the Frisch-Waugh-Lovell (FWL) Theorem to estimate the TWFE model.
+We can use the Frisch-Waugh-Lovell (FWL) Theorem to estimate the TWFE model.
 
-Per the FWL Theorem, the TWFE model is equivalent to the residualized regression: $y_{igt} - \hat{\mu}_g - \hat{\eta}_t = \tau \tilde{D}_{gt} + \tilde{\varepsilon}_{gt}$
+Per the FWL Theorem, the TWFE model is equivalent to the residualized regression: $y_{igt} - \hat{\mu}_g - \hat{\eta}_t = \tau_{gt} \tilde{D}_{gt} + \tilde{\varepsilon}_{gt}$:
 
 1.  starting with $y_{igt} = \mu_g + \eta_t + \tau_{gt}D_{gt} + \varepsilon_{igt}$ regress the output $y_{igt}$ on fixed effects (say $[\mu_g, \eta_t]$)
     -   the fitted values are $\hat{y}_{igt} = \hat{\mu}_g + \hat{\eta}_t$ and so the residuals are $\tilde{y}_{igt} = y_{igt} - \hat{\mu}_g -\hat{\eta}_t$
@@ -2827,13 +2955,13 @@ Per the FWL Theorem, the TWFE model is equivalent to the residualized regression
 And we see that the calculation per FWL is the same as computed by the other two estimators. Note that the FWL estimate can be calculated directly using the residuals
 
 $$
-\beta_{FWL}=\frac{\text{cov}(\tilde{D}_{gt},\tilde{y}_{igt})}{\text{var}(\tilde{D}_{gt})}
+\beta_{FWL}=\tau_{gt}=\frac{\text{cov}(\tilde{D}_{gt},\tilde{y}_{igt})}{\text{var}(\tilde{D}_{gt})}
 $$
 
 This is equal to the alternative formulation using the mean of the outcomes and the treatment indicator.
 
 $$
-\beta_{FWL}=\frac{\text{cov}(\tilde{D}_{gt},\hat{y}_{igt})}{\text{cov}(\tilde{D}_{gt},D_{gt})}
+\beta_{FWL}=\tau_{gt}=\frac{\text{cov}(\tilde{D}_{gt},\hat{y}_{igt})}{\text{cov}(\tilde{D}_{gt},D_{gt})}
 $$
 :::
 
@@ -2848,7 +2976,7 @@ We estimate the fixed effects, which encapsulate the parallel trends assumption.
 \tilde{Y}_{igt} = Y_{igt} - \hat{\mu}_g - \hat{\eta}_t
 $$
 
-The estimated fixed effects $\hat{\mu}_g + \hat{\eta}_t$ represent the **counterfactual outcome** that treated units would have had without treatment (their $Y_{igt}^0$).
+The estimated fixed effects $\hat{\mu}_g + \hat{\eta}_t$ represent the **counterfactual outcome** that treated units would have had without treatment (their $Y_{igt}(0)$).
 :::
 
 ## Goodman-Bacon decomposition {.scrollable}
@@ -2942,7 +3070,7 @@ tibble::tibble(
   "True ATT" = true_ATT
   , "Traditional TWFE Estimate" = coef(traditional_twfe4_rev)[1]
   , "FWL Estimated" = lm(outcome_resid ~ treated_resid, data = dat4_rev) |> 
-  broom::tidy() |> dplyr::filter(term == 'treated_resid') |> dplyr::pull(estimate)
+        broom::tidy() |> dplyr::filter(term == 'treated_resid') |> dplyr::pull(estimate)
 ) |> 
   tidyr::pivot_longer(everything()) |> gt::gt('name')
 ```
@@ -3117,9 +3245,7 @@ res <- did2s::did2s(data = dat4_rev
   , second_stage = ~i(treated, ref=FALSE)
   , cluster_var = 'group_id', verbose = FALSE
 )
-# fixest::etable(
-#   res, fitstat=c('n'), markdown = "images/" #tex = FALSE
-# )
+
 as.list(res) |> broom::tidy() |> gt::gt()
 ```
 

@@ -86,7 +86,7 @@ title: "weekly checklist"
 
 ## Week 8
 
--   [ ] weekly slides
+-   [x] weekly slides
 -   [x] weekly reading
     -   [ ] links
     -   [x] readings
