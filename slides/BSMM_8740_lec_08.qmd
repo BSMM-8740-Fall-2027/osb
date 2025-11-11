@@ -46,6 +46,19 @@ We will look at other methods used to estimate causal effects, along with method
 -   fixed effects and methods for panel data
 -   g-methods
 
+## Week 8 Roadmap
+
+::: incremental
+-   Stabilized weighting
+-   Doubly robust estimators
+-   Finite sample bias
+-   Matching estimators
+-   Fixed Effects
+-   Event Studies
+-   Difference in Differences (DiD)
+-   Heterogeneity and differential timing
+:::
+
 ```{r}
 #| message: false
 #| warning: false
