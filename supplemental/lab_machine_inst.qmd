@@ -14,7 +14,23 @@ Remember to (create a PAT and set your git credentials)
 
 -   [**store your PAT**]{.underline} with `gitcreds::gitcreds_set()` ,
 
--   [**set your username and email**]{.underline} with
+-   [**tell Git to use your verified GitHub email and display name**]{.underline} with
 
-    -   `usethis::use_git_config( user.name = ___, user.email = ___)`
+    -   `usethis::use_git_config( user.name = "___", user.email = "___")`
+
+Go to the [**terminal**]{.underline} in RStudio and execute the remaining steps:
+
+-   [**generate key with descriptive label**]{.underline}: `ssh-keygen -t ed25519 -C "8740-exam"`
+
+-   [**tell Git which key to use (execute one at a time, in order)**]{.underline}:
+
+    -   git config gpg.format ssh
+    -   git config user.signingkey \~/.ssh/id_ed25519.pub
+    -   git config commit.gpgsign true
+
+-   [**copy key to clipboard**]{.underline}: cat \~/.ssh/id_ed25519.pub \| clip
+
+-   **after running that, the key is in your Windows clipboard**.
+
+    [**Go to**]{.underline} GitHub → Settings → SSH and GPG Keys → New SSH Signing Key, paste, and save.
 :::
