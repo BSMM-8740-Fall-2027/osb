@@ -238,6 +238,19 @@ L.L. Odette
 <li>g-methods</li>
 </ul>
 </section>
+<section id="week-8-roadmap" class="slide level2">
+<h2>Week 8 Roadmap</h2>
+<ul>
+<li class="fragment">Stabilized weighting</li>
+<li class="fragment">Doubly robust estimators</li>
+<li class="fragment">Finite sample bias</li>
+<li class="fragment">Matching estimators</li>
+<li class="fragment">Fixed Effects</li>
+<li class="fragment">Event Studies</li>
+<li class="fragment">Difference in Differences (DiD)</li>
+<li class="fragment">Heterogeneity and differential timing</li>
+</ul>
+</section>
 <section>
 <section id="causal-effect-estimation" class="title-slide slide level1 center">
 <h1>Causal Effect Estimation</h1>
@@ -275,7 +288,7 @@ L.L. Odette
 <span id="cb1-19"><a></a>  gt<span class="sc">::</span><span class="fu">as_raw_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="imeppbpnog" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="uqhwhttnax" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   
 <table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: Lato, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 3px; border-top-color: #FFFFFF; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" data-bgcolor="#FFFFFF">
@@ -375,23 +388,23 @@ Figure&nbsp;1
 <span id="cb2-7"><a></a>  gtsummary<span class="sc">::</span><span class="fu">add_overall</span>(<span class="at">last =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="lbcfuqdwuc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#lbcfuqdwuc table {
+<div id="ylojfgtcks" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ylojfgtcks table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#lbcfuqdwuc thead, #lbcfuqdwuc tbody, #lbcfuqdwuc tfoot, #lbcfuqdwuc tr, #lbcfuqdwuc td, #lbcfuqdwuc th {
+#ylojfgtcks thead, #ylojfgtcks tbody, #ylojfgtcks tfoot, #ylojfgtcks tr, #ylojfgtcks td, #ylojfgtcks th {
   border-style: none;
 }
 
-#lbcfuqdwuc p {
+#ylojfgtcks p {
   margin: 0;
   padding: 0;
 }
 
-#lbcfuqdwuc .gt_table {
+#ylojfgtcks .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -417,12 +430,12 @@ Figure&nbsp;1
   border-left-color: #D3D3D3;
 }
 
-#lbcfuqdwuc .gt_caption {
+#ylojfgtcks .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#lbcfuqdwuc .gt_title {
+#ylojfgtcks .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -434,7 +447,7 @@ Figure&nbsp;1
   border-bottom-width: 0;
 }
 
-#lbcfuqdwuc .gt_subtitle {
+#ylojfgtcks .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -446,7 +459,7 @@ Figure&nbsp;1
   border-top-width: 0;
 }
 
-#lbcfuqdwuc .gt_heading {
+#ylojfgtcks .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -458,13 +471,13 @@ Figure&nbsp;1
   border-right-color: #D3D3D3;
 }
 
-#lbcfuqdwuc .gt_bottom_border {
+#ylojfgtcks .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lbcfuqdwuc .gt_col_headings {
+#ylojfgtcks .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -479,7 +492,7 @@ Figure&nbsp;1
   border-right-color: #D3D3D3;
 }
 
-#lbcfuqdwuc .gt_col_heading {
+#ylojfgtcks .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -499,7 +512,7 @@ Figure&nbsp;1
   overflow-x: hidden;
 }
 
-#lbcfuqdwuc .gt_column_spanner_outer {
+#ylojfgtcks .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -511,15 +524,15 @@ Figure&nbsp;1
   padding-right: 4px;
 }
 
-#lbcfuqdwuc .gt_column_spanner_outer:first-child {
+#ylojfgtcks .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lbcfuqdwuc .gt_column_spanner_outer:last-child {
+#ylojfgtcks .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lbcfuqdwuc .gt_column_spanner {
+#ylojfgtcks .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -531,11 +544,11 @@ Figure&nbsp;1
   width: 100%;
 }
 
-#lbcfuqdwuc .gt_spanner_row {
+#ylojfgtcks .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#lbcfuqdwuc .gt_group_heading {
+#ylojfgtcks .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -561,7 +574,7 @@ Figure&nbsp;1
   text-align: left;
 }
 
-#lbcfuqdwuc .gt_empty_group_heading {
+#ylojfgtcks .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -576,15 +589,15 @@ Figure&nbsp;1
   vertical-align: middle;
 }
 
-#lbcfuqdwuc .gt_from_md > :first-child {
+#ylojfgtcks .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lbcfuqdwuc .gt_from_md > :last-child {
+#ylojfgtcks .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lbcfuqdwuc .gt_row {
+#ylojfgtcks .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -603,7 +616,7 @@ Figure&nbsp;1
   overflow-x: hidden;
 }
 
-#lbcfuqdwuc .gt_stub {
+#ylojfgtcks .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -616,7 +629,7 @@ Figure&nbsp;1
   padding-right: 5px;
 }
 
-#lbcfuqdwuc .gt_stub_row_group {
+#ylojfgtcks .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -630,15 +643,15 @@ Figure&nbsp;1
   vertical-align: top;
 }
 
-#lbcfuqdwuc .gt_row_group_first td {
+#ylojfgtcks .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#lbcfuqdwuc .gt_row_group_first th {
+#ylojfgtcks .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#lbcfuqdwuc .gt_summary_row {
+#ylojfgtcks .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -648,16 +661,16 @@ Figure&nbsp;1
   padding-right: 5px;
 }
 
-#lbcfuqdwuc .gt_first_summary_row {
+#ylojfgtcks .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#lbcfuqdwuc .gt_first_summary_row.thick {
+#ylojfgtcks .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#lbcfuqdwuc .gt_last_summary_row {
+#ylojfgtcks .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -667,7 +680,7 @@ Figure&nbsp;1
   border-bottom-color: #D3D3D3;
 }
 
-#lbcfuqdwuc .gt_grand_summary_row {
+#ylojfgtcks .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -677,7 +690,7 @@ Figure&nbsp;1
   padding-right: 5px;
 }
 
-#lbcfuqdwuc .gt_first_grand_summary_row {
+#ylojfgtcks .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -687,7 +700,7 @@ Figure&nbsp;1
   border-top-color: #D3D3D3;
 }
 
-#lbcfuqdwuc .gt_last_grand_summary_row_top {
+#ylojfgtcks .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -697,11 +710,11 @@ Figure&nbsp;1
   border-bottom-color: #D3D3D3;
 }
 
-#lbcfuqdwuc .gt_striped {
+#ylojfgtcks .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lbcfuqdwuc .gt_table_body {
+#ylojfgtcks .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -710,7 +723,7 @@ Figure&nbsp;1
   border-bottom-color: #D3D3D3;
 }
 
-#lbcfuqdwuc .gt_footnotes {
+#ylojfgtcks .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -724,7 +737,7 @@ Figure&nbsp;1
   border-right-color: #D3D3D3;
 }
 
-#lbcfuqdwuc .gt_footnote {
+#ylojfgtcks .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -733,7 +746,7 @@ Figure&nbsp;1
   padding-right: 5px;
 }
 
-#lbcfuqdwuc .gt_sourcenotes {
+#ylojfgtcks .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -747,7 +760,7 @@ Figure&nbsp;1
   border-right-color: #D3D3D3;
 }
 
-#lbcfuqdwuc .gt_sourcenote {
+#ylojfgtcks .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -755,72 +768,72 @@ Figure&nbsp;1
   padding-right: 5px;
 }
 
-#lbcfuqdwuc .gt_left {
+#ylojfgtcks .gt_left {
   text-align: left;
 }
 
-#lbcfuqdwuc .gt_center {
+#ylojfgtcks .gt_center {
   text-align: center;
 }
 
-#lbcfuqdwuc .gt_right {
+#ylojfgtcks .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lbcfuqdwuc .gt_font_normal {
+#ylojfgtcks .gt_font_normal {
   font-weight: normal;
 }
 
-#lbcfuqdwuc .gt_font_bold {
+#ylojfgtcks .gt_font_bold {
   font-weight: bold;
 }
 
-#lbcfuqdwuc .gt_font_italic {
+#ylojfgtcks .gt_font_italic {
   font-style: italic;
 }
 
-#lbcfuqdwuc .gt_super {
+#ylojfgtcks .gt_super {
   font-size: 65%;
 }
 
-#lbcfuqdwuc .gt_footnote_marks {
+#ylojfgtcks .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#lbcfuqdwuc .gt_asterisk {
+#ylojfgtcks .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#lbcfuqdwuc .gt_indent_1 {
+#ylojfgtcks .gt_indent_1 {
   text-indent: 5px;
 }
 
-#lbcfuqdwuc .gt_indent_2 {
+#ylojfgtcks .gt_indent_2 {
   text-indent: 10px;
 }
 
-#lbcfuqdwuc .gt_indent_3 {
+#ylojfgtcks .gt_indent_3 {
   text-indent: 15px;
 }
 
-#lbcfuqdwuc .gt_indent_4 {
+#ylojfgtcks .gt_indent_4 {
   text-indent: 20px;
 }
 
-#lbcfuqdwuc .gt_indent_5 {
+#ylojfgtcks .gt_indent_5 {
   text-indent: 25px;
 }
 
-#lbcfuqdwuc .katex-display {
+#ylojfgtcks .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#lbcfuqdwuc div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#ylojfgtcks div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -898,23 +911,23 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
 <span id="cb3-12"><a></a>  gtsummary<span class="sc">::</span><span class="fu">add_overall</span>(<span class="at">last =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="mtdxnficgg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#mtdxnficgg table {
+<div id="jsgcbnhboc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jsgcbnhboc table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#mtdxnficgg thead, #mtdxnficgg tbody, #mtdxnficgg tfoot, #mtdxnficgg tr, #mtdxnficgg td, #mtdxnficgg th {
+#jsgcbnhboc thead, #jsgcbnhboc tbody, #jsgcbnhboc tfoot, #jsgcbnhboc tr, #jsgcbnhboc td, #jsgcbnhboc th {
   border-style: none;
 }
 
-#mtdxnficgg p {
+#jsgcbnhboc p {
   margin: 0;
   padding: 0;
 }
 
-#mtdxnficgg .gt_table {
+#jsgcbnhboc .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -940,12 +953,12 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   border-left-color: #D3D3D3;
 }
 
-#mtdxnficgg .gt_caption {
+#jsgcbnhboc .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#mtdxnficgg .gt_title {
+#jsgcbnhboc .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -957,7 +970,7 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   border-bottom-width: 0;
 }
 
-#mtdxnficgg .gt_subtitle {
+#jsgcbnhboc .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -969,7 +982,7 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   border-top-width: 0;
 }
 
-#mtdxnficgg .gt_heading {
+#jsgcbnhboc .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -981,13 +994,13 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   border-right-color: #D3D3D3;
 }
 
-#mtdxnficgg .gt_bottom_border {
+#jsgcbnhboc .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#mtdxnficgg .gt_col_headings {
+#jsgcbnhboc .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1002,7 +1015,7 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   border-right-color: #D3D3D3;
 }
 
-#mtdxnficgg .gt_col_heading {
+#jsgcbnhboc .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1022,7 +1035,7 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   overflow-x: hidden;
 }
 
-#mtdxnficgg .gt_column_spanner_outer {
+#jsgcbnhboc .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1034,15 +1047,15 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   padding-right: 4px;
 }
 
-#mtdxnficgg .gt_column_spanner_outer:first-child {
+#jsgcbnhboc .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mtdxnficgg .gt_column_spanner_outer:last-child {
+#jsgcbnhboc .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mtdxnficgg .gt_column_spanner {
+#jsgcbnhboc .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1054,11 +1067,11 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   width: 100%;
 }
 
-#mtdxnficgg .gt_spanner_row {
+#jsgcbnhboc .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#mtdxnficgg .gt_group_heading {
+#jsgcbnhboc .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1084,7 +1097,7 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   text-align: left;
 }
 
-#mtdxnficgg .gt_empty_group_heading {
+#jsgcbnhboc .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1099,15 +1112,15 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   vertical-align: middle;
 }
 
-#mtdxnficgg .gt_from_md > :first-child {
+#jsgcbnhboc .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#mtdxnficgg .gt_from_md > :last-child {
+#jsgcbnhboc .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#mtdxnficgg .gt_row {
+#jsgcbnhboc .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1126,7 +1139,7 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   overflow-x: hidden;
 }
 
-#mtdxnficgg .gt_stub {
+#jsgcbnhboc .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1139,7 +1152,7 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   padding-right: 5px;
 }
 
-#mtdxnficgg .gt_stub_row_group {
+#jsgcbnhboc .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1153,15 +1166,15 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   vertical-align: top;
 }
 
-#mtdxnficgg .gt_row_group_first td {
+#jsgcbnhboc .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#mtdxnficgg .gt_row_group_first th {
+#jsgcbnhboc .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#mtdxnficgg .gt_summary_row {
+#jsgcbnhboc .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1171,16 +1184,16 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   padding-right: 5px;
 }
 
-#mtdxnficgg .gt_first_summary_row {
+#jsgcbnhboc .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#mtdxnficgg .gt_first_summary_row.thick {
+#jsgcbnhboc .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#mtdxnficgg .gt_last_summary_row {
+#jsgcbnhboc .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1190,7 +1203,7 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   border-bottom-color: #D3D3D3;
 }
 
-#mtdxnficgg .gt_grand_summary_row {
+#jsgcbnhboc .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1200,7 +1213,7 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   padding-right: 5px;
 }
 
-#mtdxnficgg .gt_first_grand_summary_row {
+#jsgcbnhboc .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1210,7 +1223,7 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   border-top-color: #D3D3D3;
 }
 
-#mtdxnficgg .gt_last_grand_summary_row_top {
+#jsgcbnhboc .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1220,11 +1233,11 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   border-bottom-color: #D3D3D3;
 }
 
-#mtdxnficgg .gt_striped {
+#jsgcbnhboc .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#mtdxnficgg .gt_table_body {
+#jsgcbnhboc .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1233,7 +1246,7 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   border-bottom-color: #D3D3D3;
 }
 
-#mtdxnficgg .gt_footnotes {
+#jsgcbnhboc .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1247,7 +1260,7 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   border-right-color: #D3D3D3;
 }
 
-#mtdxnficgg .gt_footnote {
+#jsgcbnhboc .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1256,7 +1269,7 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   padding-right: 5px;
 }
 
-#mtdxnficgg .gt_sourcenotes {
+#jsgcbnhboc .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1270,7 +1283,7 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   border-right-color: #D3D3D3;
 }
 
-#mtdxnficgg .gt_sourcenote {
+#jsgcbnhboc .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1278,72 +1291,72 @@ N = 1,752<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
   padding-right: 5px;
 }
 
-#mtdxnficgg .gt_left {
+#jsgcbnhboc .gt_left {
   text-align: left;
 }
 
-#mtdxnficgg .gt_center {
+#jsgcbnhboc .gt_center {
   text-align: center;
 }
 
-#mtdxnficgg .gt_right {
+#jsgcbnhboc .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mtdxnficgg .gt_font_normal {
+#jsgcbnhboc .gt_font_normal {
   font-weight: normal;
 }
 
-#mtdxnficgg .gt_font_bold {
+#jsgcbnhboc .gt_font_bold {
   font-weight: bold;
 }
 
-#mtdxnficgg .gt_font_italic {
+#jsgcbnhboc .gt_font_italic {
   font-style: italic;
 }
 
-#mtdxnficgg .gt_super {
+#jsgcbnhboc .gt_super {
   font-size: 65%;
 }
 
-#mtdxnficgg .gt_footnote_marks {
+#jsgcbnhboc .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#mtdxnficgg .gt_asterisk {
+#jsgcbnhboc .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#mtdxnficgg .gt_indent_1 {
+#jsgcbnhboc .gt_indent_1 {
   text-indent: 5px;
 }
 
-#mtdxnficgg .gt_indent_2 {
+#jsgcbnhboc .gt_indent_2 {
   text-indent: 10px;
 }
 
-#mtdxnficgg .gt_indent_3 {
+#jsgcbnhboc .gt_indent_3 {
   text-indent: 15px;
 }
 
-#mtdxnficgg .gt_indent_4 {
+#jsgcbnhboc .gt_indent_4 {
   text-indent: 20px;
 }
 
-#mtdxnficgg .gt_indent_5 {
+#jsgcbnhboc .gt_indent_5 {
   text-indent: 25px;
 }
 
-#mtdxnficgg .katex-display {
+#jsgcbnhboc .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#mtdxnficgg div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#jsgcbnhboc div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1584,7 +1597,7 @@ N = 3,511<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
 <span id="cb11-7"><a></a>) <span class="sc">|&gt;</span> gt<span class="sc">::</span><span class="fu">gt</span>() <span class="sc">|&gt;</span> gtExtras<span class="sc">::</span><span class="fu">gt_theme_espn</span>() <span class="sc">|&gt;</span> gt<span class="sc">::</span><span class="fu">as_raw_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="mibdjwilbj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="ztcbkqptpm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   
 <table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: Lato, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 3px; border-top-color: #FFFFFF; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" data-bgcolor="#FFFFFF">
@@ -1599,15 +1612,15 @@ N = 3,511<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
 <tbody class="gt_table_body" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3;">
 <tr class="odd" style="border-style: none;">
 <td class="gt_row gt_left" headers="method" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden;" data-valign="middle">ipw_estimate</td>
-<td class="gt_row gt_right" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.51</td>
-<td class="gt_row gt_right" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-13.28</td>
-<td class="gt_row gt_right" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-11.69</td>
+<td class="gt_row gt_right" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.53</td>
+<td class="gt_row gt_right" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-13.4</td>
+<td class="gt_row gt_right" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-11.60</td>
 </tr>
 <tr class="even" style="border-style: none;">
 <td class="gt_row gt_left gt_striped" headers="method" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA;" data-valign="middle" data-bgcolor="#FAFAFA">reg_estimate</td>
-<td class="gt_row gt_right gt_striped" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.35</td>
-<td class="gt_row gt_right gt_striped" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.89</td>
-<td class="gt_row gt_right gt_striped" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-11.85</td>
+<td class="gt_row gt_right gt_striped" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.37</td>
+<td class="gt_row gt_right gt_striped" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.9</td>
+<td class="gt_row gt_right gt_striped" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-11.84</td>
 </tr>
 </tbody>
 </table>
@@ -1649,7 +1662,7 @@ N = 3,511<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
 <span id="cb12-22"><a></a>  gt<span class="sc">::</span><span class="fu">gt</span>() <span class="sc">|&gt;</span> gtExtras<span class="sc">::</span><span class="fu">gt_theme_espn</span>() <span class="sc">|&gt;</span> gt<span class="sc">::</span><span class="fu">as_raw_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="macfjerjpc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="svuzycucmv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   
 <table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: Lato, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 3px; border-top-color: #FFFFFF; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" data-bgcolor="#FFFFFF">
@@ -1665,14 +1678,14 @@ N = 3,511<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
 <tr class="odd" style="border-style: none;">
 <td class="gt_row gt_left" headers="CI" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden;" data-valign="middle">lower</td>
 <td class="gt_row gt_right" headers="normal" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.88</td>
-<td class="gt_row gt_right" headers="basic" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.86</td>
-<td class="gt_row gt_right" headers="percent" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.90</td>
+<td class="gt_row gt_right" headers="basic" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.85</td>
+<td class="gt_row gt_right" headers="percent" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.9</td>
 </tr>
 <tr class="even" style="border-style: none;">
 <td class="gt_row gt_left gt_striped" headers="CI" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA;" data-valign="middle" data-bgcolor="#FAFAFA">upper</td>
 <td class="gt_row gt_right gt_striped" headers="normal" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-11.86</td>
 <td class="gt_row gt_right gt_striped" headers="basic" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-11.85</td>
-<td class="gt_row gt_right gt_striped" headers="percent" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-11.89</td>
+<td class="gt_row gt_right gt_striped" headers="percent" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-11.9</td>
 </tr>
 </tbody>
 </table>
@@ -1806,16 +1819,16 @@ N = 3,511<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
 # A tibble: 1,001 × 7
    splits             id            ipw_fits reg_fits
    &lt;list&gt;             &lt;chr&gt;         &lt;list&gt;   &lt;list&gt;  
- 1 &lt;split [1752/625]&gt; Bootstrap0001 &lt;tibble&gt; &lt;tibble&gt;
- 2 &lt;split [1752/673]&gt; Bootstrap0002 &lt;tibble&gt; &lt;tibble&gt;
- 3 &lt;split [1752/614]&gt; Bootstrap0003 &lt;tibble&gt; &lt;tibble&gt;
- 4 &lt;split [1752/644]&gt; Bootstrap0004 &lt;tibble&gt; &lt;tibble&gt;
- 5 &lt;split [1752/636]&gt; Bootstrap0005 &lt;tibble&gt; &lt;tibble&gt;
- 6 &lt;split [1752/643]&gt; Bootstrap0006 &lt;tibble&gt; &lt;tibble&gt;
- 7 &lt;split [1752/666]&gt; Bootstrap0007 &lt;tibble&gt; &lt;tibble&gt;
- 8 &lt;split [1752/640]&gt; Bootstrap0008 &lt;tibble&gt; &lt;tibble&gt;
- 9 &lt;split [1752/625]&gt; Bootstrap0009 &lt;tibble&gt; &lt;tibble&gt;
-10 &lt;split [1752/640]&gt; Bootstrap0010 &lt;tibble&gt; &lt;tibble&gt;
+ 1 &lt;split [1752/643]&gt; Bootstrap0001 &lt;tibble&gt; &lt;tibble&gt;
+ 2 &lt;split [1752/666]&gt; Bootstrap0002 &lt;tibble&gt; &lt;tibble&gt;
+ 3 &lt;split [1752/643]&gt; Bootstrap0003 &lt;tibble&gt; &lt;tibble&gt;
+ 4 &lt;split [1752/631]&gt; Bootstrap0004 &lt;tibble&gt; &lt;tibble&gt;
+ 5 &lt;split [1752/640]&gt; Bootstrap0005 &lt;tibble&gt; &lt;tibble&gt;
+ 6 &lt;split [1752/654]&gt; Bootstrap0006 &lt;tibble&gt; &lt;tibble&gt;
+ 7 &lt;split [1752/626]&gt; Bootstrap0007 &lt;tibble&gt; &lt;tibble&gt;
+ 8 &lt;split [1752/644]&gt; Bootstrap0008 &lt;tibble&gt; &lt;tibble&gt;
+ 9 &lt;split [1752/658]&gt; Bootstrap0009 &lt;tibble&gt; &lt;tibble&gt;
+10 &lt;split [1752/647]&gt; Bootstrap0010 &lt;tibble&gt; &lt;tibble&gt;
 # ℹ 991 more rows
 # ℹ 3 more variables: reg_estimate &lt;dbl&gt;,
 #   ipw_estimate &lt;dbl&gt;, dre_estimate &lt;dbl&gt;</code></pre>
@@ -1865,7 +1878,7 @@ N = 3,511<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
 <span id="cb20-7"><a></a>) <span class="sc">|&gt;</span> gt<span class="sc">::</span><span class="fu">gt</span>() <span class="sc">|&gt;</span> gtExtras<span class="sc">::</span><span class="fu">gt_theme_espn</span>() <span class="sc">|&gt;</span> gt<span class="sc">::</span><span class="fu">as_raw_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="wolylvrlft" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="nxapxbnjzo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   
 <table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: Lato, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 3px; border-top-color: #FFFFFF; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" data-bgcolor="#FFFFFF">
@@ -1880,21 +1893,21 @@ N = 3,511<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
 <tbody class="gt_table_body" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3;">
 <tr class="odd" style="border-style: none;">
 <td class="gt_row gt_left" headers="method" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden;" data-valign="middle">dre_estimate</td>
-<td class="gt_row gt_right" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.87</td>
+<td class="gt_row gt_right" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.89</td>
 <td class="gt_row gt_right" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-13.53</td>
-<td class="gt_row gt_right" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.23</td>
+<td class="gt_row gt_right" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.27</td>
 </tr>
 <tr class="even" style="border-style: none;">
 <td class="gt_row gt_left gt_striped" headers="method" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA;" data-valign="middle" data-bgcolor="#FAFAFA">ipw_estimate</td>
-<td class="gt_row gt_right gt_striped" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.51</td>
-<td class="gt_row gt_right gt_striped" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-13.28</td>
-<td class="gt_row gt_right gt_striped" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-11.69</td>
+<td class="gt_row gt_right gt_striped" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.53</td>
+<td class="gt_row gt_right gt_striped" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-13.40</td>
+<td class="gt_row gt_right gt_striped" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-11.60</td>
 </tr>
 <tr class="odd" style="border-style: none;">
 <td class="gt_row gt_left" headers="method" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden;" data-valign="middle">reg_estimate</td>
-<td class="gt_row gt_right" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.35</td>
-<td class="gt_row gt_right" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.89</td>
-<td class="gt_row gt_right" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-11.85</td>
+<td class="gt_row gt_right" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.37</td>
+<td class="gt_row gt_right" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.90</td>
+<td class="gt_row gt_right" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-11.84</td>
 </tr>
 </tbody>
 </table>
@@ -2014,7 +2027,7 @@ N = 3,511<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
 <span id="cb23-7"><a></a>) <span class="sc">|&gt;</span> gt<span class="sc">::</span><span class="fu">gt</span>() <span class="sc">|&gt;</span> gtExtras<span class="sc">::</span><span class="fu">gt_theme_espn</span>() <span class="sc">|&gt;</span> gt<span class="sc">::</span><span class="fu">as_raw_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="hqxccnwjhl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="rwjlzqitmj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   
 <table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: Lato, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 3px; border-top-color: #FFFFFF; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" data-bgcolor="#FFFFFF">
@@ -2029,27 +2042,27 @@ N = 3,511<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
 <tbody class="gt_table_body" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3;">
 <tr class="odd" style="border-style: none;">
 <td class="gt_row gt_left" headers="method" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden;" data-valign="middle">dre_bad_ipw_estimate</td>
-<td class="gt_row gt_right" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.88</td>
-<td class="gt_row gt_right" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-13.64</td>
-<td class="gt_row gt_right" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.13</td>
+<td class="gt_row gt_right" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.91</td>
+<td class="gt_row gt_right" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-13.67</td>
+<td class="gt_row gt_right" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.16</td>
 </tr>
 <tr class="even" style="border-style: none;">
 <td class="gt_row gt_left gt_striped" headers="method" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA;" data-valign="middle" data-bgcolor="#FAFAFA">dre_estimate</td>
-<td class="gt_row gt_right gt_striped" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.87</td>
+<td class="gt_row gt_right gt_striped" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.89</td>
 <td class="gt_row gt_right gt_striped" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-13.53</td>
-<td class="gt_row gt_right gt_striped" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.23</td>
+<td class="gt_row gt_right gt_striped" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.27</td>
 </tr>
 <tr class="odd" style="border-style: none;">
 <td class="gt_row gt_left" headers="method" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden;" data-valign="middle">ipw_estimate</td>
-<td class="gt_row gt_right" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.51</td>
-<td class="gt_row gt_right" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-13.28</td>
-<td class="gt_row gt_right" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-11.69</td>
+<td class="gt_row gt_right" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.53</td>
+<td class="gt_row gt_right" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-13.40</td>
+<td class="gt_row gt_right" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-11.60</td>
 </tr>
 <tr class="even" style="border-style: none;">
 <td class="gt_row gt_left gt_striped" headers="method" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA;" data-valign="middle" data-bgcolor="#FAFAFA">reg_estimate</td>
-<td class="gt_row gt_right gt_striped" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.35</td>
-<td class="gt_row gt_right gt_striped" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.89</td>
-<td class="gt_row gt_right gt_striped" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-11.85</td>
+<td class="gt_row gt_right gt_striped" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.37</td>
+<td class="gt_row gt_right gt_striped" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.90</td>
+<td class="gt_row gt_right gt_striped" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-11.84</td>
 </tr>
 </tbody>
 </table>
@@ -2161,7 +2174,7 @@ N = 3,511<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
 <span id="cb26-7"><a></a>) <span class="sc">|&gt;</span> gt<span class="sc">::</span><span class="fu">gt</span>() <span class="sc">|&gt;</span> gtExtras<span class="sc">::</span><span class="fu">gt_theme_espn</span>() <span class="sc">|&gt;</span> gt<span class="sc">::</span><span class="fu">as_raw_html</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="sgqtqihlqu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="xfhxgarges" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
   
   
 <table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false" style="-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-family: Lato, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 3px; border-top-color: #FFFFFF; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3;" data-bgcolor="#FFFFFF">
@@ -2176,33 +2189,33 @@ N = 3,511<span class="gt_footnote_marks" style="white-space:nowrap;font-style:it
 <tbody class="gt_table_body" style="border-style: none; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3;">
 <tr class="odd" style="border-style: none;">
 <td class="gt_row gt_left" headers="method" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden;" data-valign="middle">dre_bad_ipw_estimate</td>
-<td class="gt_row gt_right" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.88</td>
-<td class="gt_row gt_right" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-13.64</td>
-<td class="gt_row gt_right" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.13</td>
+<td class="gt_row gt_right" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.91</td>
+<td class="gt_row gt_right" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-13.67</td>
+<td class="gt_row gt_right" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.16</td>
 </tr>
 <tr class="even" style="border-style: none;">
 <td class="gt_row gt_left gt_striped" headers="method" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA;" data-valign="middle" data-bgcolor="#FAFAFA">dre_bad_reg_estimate</td>
-<td class="gt_row gt_right gt_striped" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.70</td>
+<td class="gt_row gt_right gt_striped" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.72</td>
 <td class="gt_row gt_right gt_striped" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-13.47</td>
-<td class="gt_row gt_right gt_striped" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-11.88</td>
+<td class="gt_row gt_right gt_striped" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-11.90</td>
 </tr>
 <tr class="odd" style="border-style: none;">
 <td class="gt_row gt_left" headers="method" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden;" data-valign="middle">dre_estimate</td>
-<td class="gt_row gt_right" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.87</td>
+<td class="gt_row gt_right" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.89</td>
 <td class="gt_row gt_right" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-13.53</td>
-<td class="gt_row gt_right" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.23</td>
+<td class="gt_row gt_right" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.27</td>
 </tr>
 <tr class="even" style="border-style: none;">
 <td class="gt_row gt_left gt_striped" headers="method" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA;" data-valign="middle" data-bgcolor="#FAFAFA">ipw_estimate</td>
-<td class="gt_row gt_right gt_striped" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.51</td>
-<td class="gt_row gt_right gt_striped" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-13.28</td>
-<td class="gt_row gt_right gt_striped" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-11.69</td>
+<td class="gt_row gt_right gt_striped" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-12.53</td>
+<td class="gt_row gt_right gt_striped" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-13.40</td>
+<td class="gt_row gt_right gt_striped" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; background-color: #FAFAFA; font-variant-numeric: tabular-nums;" data-valign="middle" data-bgcolor="#FAFAFA">-11.60</td>
 </tr>
 <tr class="odd" style="border-style: none;">
 <td class="gt_row gt_left" headers="method" style="text-align: left; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden;" data-valign="middle">reg_estimate</td>
-<td class="gt_row gt_right" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.35</td>
-<td class="gt_row gt_right" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.89</td>
-<td class="gt_row gt_right" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-11.85</td>
+<td class="gt_row gt_right" headers="mean" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.37</td>
+<td class="gt_row gt_right" headers="lower_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-12.90</td>
+<td class="gt_row gt_right" headers="upper_ci" style="text-align: right; border-style: none; padding-top: 7px; padding-bottom: 7px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #F6F7F7; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; font-variant-numeric: tabular-nums;" data-valign="middle">-11.84</td>
 </tr>
 </tbody>
 </table>

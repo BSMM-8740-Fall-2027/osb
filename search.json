@@ -715,6 +715,13 @@
     "text": "This week\nWe will look at other methods used to estimate causal effects, along with methods used for special situations, including:\n\nregression adjustment\ndoubly robust estimation\nmatching\ndifference in differences\nfixed effects and methods for panel data\ng-methods"
   },
   {
+    "objectID": "slides/BSMM_8740_lec_08.html#week-8-roadmap",
+    "href": "slides/BSMM_8740_lec_08.html#week-8-roadmap",
+    "title": "Causality Part 2",
+    "section": "Week 8 Roadmap",
+    "text": "Week 8 Roadmap\n\nStabilized weighting\nDoubly robust estimators\nFinite sample bias\nMatching estimators\nFixed Effects\nEvent Studies\nDifference in Differences (DiD)\nHeterogeneity and differential timing"
+  },
+  {
     "objectID": "slides/BSMM_8740_lec_08.html#inverse-probability-weighting",
     "href": "slides/BSMM_8740_lec_08.html#inverse-probability-weighting",
     "title": "Causality Part 2",
@@ -803,14 +810,14 @@
     "href": "slides/BSMM_8740_lec_08.html#ipw-vs-regression-adjustment-2",
     "title": "Causality Part 2",
     "section": "IPW vs Regression Adjustment",
-    "text": "IPW vs Regression Adjustment\n\nWe can compare the means and the confidence intervals of the regression adjustment and IPW effect estimates:\n\n\ncompare IPW and regression effect estimates\ndat |&gt; \n  dplyr::group_by(method) |&gt; \n  dplyr::summarise(\n  mean = mean(`effect estimate`)\n  , lower_ci = quantile(`effect estimate`, 0.025)\n  , upper_ci = quantile(`effect estimate`, 0.975)\n) |&gt; gt::gt() |&gt; gtExtras::gt_theme_espn() |&gt; gt::as_raw_html()\n\n\n\n  \n  \n\n\n\nmethod\nmean\nlower_ci\nupper_ci\n\n\n\n\nipw_estimate\n-12.51\n-13.28\n-11.69\n\n\nreg_estimate\n-12.35\n-12.89\n-11.85\n\n\n\n\n\n\n\nNote that each mean ATE estimate is within the CIs of the other ATE mean estimate."
+    "text": "IPW vs Regression Adjustment\n\nWe can compare the means and the confidence intervals of the regression adjustment and IPW effect estimates:\n\n\ncompare IPW and regression effect estimates\ndat |&gt; \n  dplyr::group_by(method) |&gt; \n  dplyr::summarise(\n  mean = mean(`effect estimate`)\n  , lower_ci = quantile(`effect estimate`, 0.025)\n  , upper_ci = quantile(`effect estimate`, 0.975)\n) |&gt; gt::gt() |&gt; gtExtras::gt_theme_espn() |&gt; gt::as_raw_html()\n\n\n\n  \n  \n\n\n\nmethod\nmean\nlower_ci\nupper_ci\n\n\n\n\nipw_estimate\n-12.53\n-13.4\n-11.60\n\n\nreg_estimate\n-12.37\n-12.9\n-11.84\n\n\n\n\n\n\n\nNote that each mean ATE estimate is within the CIs of the other ATE mean estimate."
   },
   {
     "objectID": "slides/BSMM_8740_lec_08.html#ipw-vs-regression-adjustment-3",
     "href": "slides/BSMM_8740_lec_08.html#ipw-vs-regression-adjustment-3",
     "title": "Causality Part 2",
     "section": "IPW vs Regression Adjustment",
-    "text": "IPW vs Regression Adjustment\n\nThere is a package (boot) that performs cross-validation and CI estimation at the same time:\n\n\nuse the boot package for CI estimation of regression adjustment\n# bootstrap (1000 times) using the fit_reg function\nboot_out_reg &lt;- boot::boot(\n  data = causalworkshop::net_data |&gt; dplyr::mutate(net = as.numeric(net))\n  , R = 1000\n  , sim = \"ordinary\"\n  , statistic =\n    (\\(x,y){ # x is the data, y is a vector of row numbers for the bootstrap sample\n      fit_reg(x[y,]) |&gt;\n        dplyr::filter(term == \"net\") |&gt;\n        dplyr::pull(estimate)\n    })\n)\n# calculate the CIs\nCIs &lt;- boot_out_reg |&gt;\n  boot::boot.ci(L = boot::empinf(boot_out_reg, index=1L, type=\"jack\"))\n\ntibble::tibble(\n  CI = c(\"lower\", \"upper\")\n  , normal = CIs$normal[-1]\n  , basic = CIs$basic[-(1:3)]\n  , percent = CIs$percent[-(1:3)]) |&gt; \n  gt::gt() |&gt; gtExtras::gt_theme_espn() |&gt; gt::as_raw_html()\n\n\n\n  \n  \n\n\n\nCI\nnormal\nbasic\npercent\n\n\n\n\nlower\n-12.88\n-12.86\n-12.90\n\n\nupper\n-11.86\n-11.85\n-11.89"
+    "text": "IPW vs Regression Adjustment\n\nThere is a package (boot) that performs cross-validation and CI estimation at the same time:\n\n\nuse the boot package for CI estimation of regression adjustment\n# bootstrap (1000 times) using the fit_reg function\nboot_out_reg &lt;- boot::boot(\n  data = causalworkshop::net_data |&gt; dplyr::mutate(net = as.numeric(net))\n  , R = 1000\n  , sim = \"ordinary\"\n  , statistic =\n    (\\(x,y){ # x is the data, y is a vector of row numbers for the bootstrap sample\n      fit_reg(x[y,]) |&gt;\n        dplyr::filter(term == \"net\") |&gt;\n        dplyr::pull(estimate)\n    })\n)\n# calculate the CIs\nCIs &lt;- boot_out_reg |&gt;\n  boot::boot.ci(L = boot::empinf(boot_out_reg, index=1L, type=\"jack\"))\n\ntibble::tibble(\n  CI = c(\"lower\", \"upper\")\n  , normal = CIs$normal[-1]\n  , basic = CIs$basic[-(1:3)]\n  , percent = CIs$percent[-(1:3)]) |&gt; \n  gt::gt() |&gt; gtExtras::gt_theme_espn() |&gt; gt::as_raw_html()\n\n\n\n  \n  \n\n\n\nCI\nnormal\nbasic\npercent\n\n\n\n\nlower\n-12.88\n-12.85\n-12.9\n\n\nupper\n-11.86\n-11.85\n-11.9"
   },
   {
     "objectID": "slides/BSMM_8740_lec_08.html#doubly-robust-estimation",
@@ -838,7 +845,7 @@
     "href": "slides/BSMM_8740_lec_08.html#doubly-robust-estimation-4",
     "title": "Causality Part 2",
     "section": "Doubly Robust Estimation",
-    "text": "Doubly Robust Estimation\n\nOnce again, we can use bootstrap to construct confidence intervals.\n\n\n\nuse bootstrap fold to estimate using DRE\nall_results_dat &lt;- both_results_dat |&gt;\n  dplyr::mutate(\n    dre_estimate = \n      purrr::map_dbl(\n        splits\n        , (\\(x){\n            doubly_robust_rec |&gt; \n              recipes::bake(new_data = rsample::analysis(x)) |&gt; \n              doubly_robust(X, D, Y)\n        })\n      )\n  )\n\nall_results_dat\n\n\n# Bootstrap sampling with apparent sample \n# A tibble: 1,001 × 7\n   splits             id            ipw_fits reg_fits\n   &lt;list&gt;             &lt;chr&gt;         &lt;list&gt;   &lt;list&gt;  \n 1 &lt;split [1752/625]&gt; Bootstrap0001 &lt;tibble&gt; &lt;tibble&gt;\n 2 &lt;split [1752/673]&gt; Bootstrap0002 &lt;tibble&gt; &lt;tibble&gt;\n 3 &lt;split [1752/614]&gt; Bootstrap0003 &lt;tibble&gt; &lt;tibble&gt;\n 4 &lt;split [1752/644]&gt; Bootstrap0004 &lt;tibble&gt; &lt;tibble&gt;\n 5 &lt;split [1752/636]&gt; Bootstrap0005 &lt;tibble&gt; &lt;tibble&gt;\n 6 &lt;split [1752/643]&gt; Bootstrap0006 &lt;tibble&gt; &lt;tibble&gt;\n 7 &lt;split [1752/666]&gt; Bootstrap0007 &lt;tibble&gt; &lt;tibble&gt;\n 8 &lt;split [1752/640]&gt; Bootstrap0008 &lt;tibble&gt; &lt;tibble&gt;\n 9 &lt;split [1752/625]&gt; Bootstrap0009 &lt;tibble&gt; &lt;tibble&gt;\n10 &lt;split [1752/640]&gt; Bootstrap0010 &lt;tibble&gt; &lt;tibble&gt;\n# ℹ 991 more rows\n# ℹ 3 more variables: reg_estimate &lt;dbl&gt;,\n#   ipw_estimate &lt;dbl&gt;, dre_estimate &lt;dbl&gt;"
+    "text": "Doubly Robust Estimation\n\nOnce again, we can use bootstrap to construct confidence intervals.\n\n\n\nuse bootstrap fold to estimate using DRE\nall_results_dat &lt;- both_results_dat |&gt;\n  dplyr::mutate(\n    dre_estimate = \n      purrr::map_dbl(\n        splits\n        , (\\(x){\n            doubly_robust_rec |&gt; \n              recipes::bake(new_data = rsample::analysis(x)) |&gt; \n              doubly_robust(X, D, Y)\n        })\n      )\n  )\n\nall_results_dat\n\n\n# Bootstrap sampling with apparent sample \n# A tibble: 1,001 × 7\n   splits             id            ipw_fits reg_fits\n   &lt;list&gt;             &lt;chr&gt;         &lt;list&gt;   &lt;list&gt;  \n 1 &lt;split [1752/643]&gt; Bootstrap0001 &lt;tibble&gt; &lt;tibble&gt;\n 2 &lt;split [1752/666]&gt; Bootstrap0002 &lt;tibble&gt; &lt;tibble&gt;\n 3 &lt;split [1752/643]&gt; Bootstrap0003 &lt;tibble&gt; &lt;tibble&gt;\n 4 &lt;split [1752/631]&gt; Bootstrap0004 &lt;tibble&gt; &lt;tibble&gt;\n 5 &lt;split [1752/640]&gt; Bootstrap0005 &lt;tibble&gt; &lt;tibble&gt;\n 6 &lt;split [1752/654]&gt; Bootstrap0006 &lt;tibble&gt; &lt;tibble&gt;\n 7 &lt;split [1752/626]&gt; Bootstrap0007 &lt;tibble&gt; &lt;tibble&gt;\n 8 &lt;split [1752/644]&gt; Bootstrap0008 &lt;tibble&gt; &lt;tibble&gt;\n 9 &lt;split [1752/658]&gt; Bootstrap0009 &lt;tibble&gt; &lt;tibble&gt;\n10 &lt;split [1752/647]&gt; Bootstrap0010 &lt;tibble&gt; &lt;tibble&gt;\n# ℹ 991 more rows\n# ℹ 3 more variables: reg_estimate &lt;dbl&gt;,\n#   ipw_estimate &lt;dbl&gt;, dre_estimate &lt;dbl&gt;"
   },
   {
     "objectID": "slides/BSMM_8740_lec_08.html#doubly-robust-estimation-5",
@@ -852,7 +859,7 @@
     "href": "slides/BSMM_8740_lec_08.html#doubly-robust-estimation-6",
     "title": "Causality Part 2",
     "section": "Doubly Robust Estimation",
-    "text": "Doubly Robust Estimation\n\nConfidence intervals, including for the dre estimate are:\n\n\n\ncompute CIs for IPW, rgression and DRE\ndat |&gt; \n  dplyr::group_by(method) |&gt; \n  dplyr::summarise(\n  mean = mean(`effect estimate`)\n  , lower_ci = quantile(`effect estimate`, 0.025)\n  , upper_ci = quantile(`effect estimate`, 0.975)\n) |&gt; gt::gt() |&gt; gtExtras::gt_theme_espn() |&gt; gt::as_raw_html()\n\n\n\n  \n  \n\n\n\nmethod\nmean\nlower_ci\nupper_ci\n\n\n\n\ndre_estimate\n-12.87\n-13.53\n-12.23\n\n\nipw_estimate\n-12.51\n-13.28\n-11.69\n\n\nreg_estimate\n-12.35\n-12.89\n-11.85\n\n\n\n\n\n\n\n\nAll methods are consistent."
+    "text": "Doubly Robust Estimation\n\nConfidence intervals, including for the dre estimate are:\n\n\n\ncompute CIs for IPW, rgression and DRE\ndat |&gt; \n  dplyr::group_by(method) |&gt; \n  dplyr::summarise(\n  mean = mean(`effect estimate`)\n  , lower_ci = quantile(`effect estimate`, 0.025)\n  , upper_ci = quantile(`effect estimate`, 0.975)\n) |&gt; gt::gt() |&gt; gtExtras::gt_theme_espn() |&gt; gt::as_raw_html()\n\n\n\n  \n  \n\n\n\nmethod\nmean\nlower_ci\nupper_ci\n\n\n\n\ndre_estimate\n-12.89\n-13.53\n-12.27\n\n\nipw_estimate\n-12.53\n-13.40\n-11.60\n\n\nreg_estimate\n-12.37\n-12.90\n-11.84\n\n\n\n\n\n\n\n\nAll methods are consistent."
   },
   {
     "objectID": "slides/BSMM_8740_lec_08.html#doubly-robust-estimation-7",
@@ -880,7 +887,7 @@
     "href": "slides/BSMM_8740_lec_08.html#doubly-robust-estimation-10",
     "title": "Causality Part 2",
     "section": "Doubly Robust Estimation",
-    "text": "Doubly Robust Estimation\n\n\nsummarize the models so far.\ndat |&gt; \n  dplyr::group_by(method) |&gt; \n  dplyr::summarise(\n  mean = mean(`effect estimate`)\n  , lower_ci = quantile(`effect estimate`, 0.025)\n  , upper_ci = quantile(`effect estimate`, 0.975)\n) |&gt; gt::gt() |&gt; gtExtras::gt_theme_espn() |&gt; gt::as_raw_html()\n\n\n\n  \n  \n\n\n\nmethod\nmean\nlower_ci\nupper_ci\n\n\n\n\ndre_bad_ipw_estimate\n-12.88\n-13.64\n-12.13\n\n\ndre_estimate\n-12.87\n-13.53\n-12.23\n\n\nipw_estimate\n-12.51\n-13.28\n-11.69\n\n\nreg_estimate\n-12.35\n-12.89\n-11.85"
+    "text": "Doubly Robust Estimation\n\n\nsummarize the models so far.\ndat |&gt; \n  dplyr::group_by(method) |&gt; \n  dplyr::summarise(\n  mean = mean(`effect estimate`)\n  , lower_ci = quantile(`effect estimate`, 0.025)\n  , upper_ci = quantile(`effect estimate`, 0.975)\n) |&gt; gt::gt() |&gt; gtExtras::gt_theme_espn() |&gt; gt::as_raw_html()\n\n\n\n  \n  \n\n\n\nmethod\nmean\nlower_ci\nupper_ci\n\n\n\n\ndre_bad_ipw_estimate\n-12.91\n-13.67\n-12.16\n\n\ndre_estimate\n-12.89\n-13.53\n-12.27\n\n\nipw_estimate\n-12.53\n-13.40\n-11.60\n\n\nreg_estimate\n-12.37\n-12.90\n-11.84"
   },
   {
     "objectID": "slides/BSMM_8740_lec_08.html#doubly-robust-estimation-11",
@@ -915,7 +922,7 @@
     "href": "slides/BSMM_8740_lec_08.html#doubly-robust-estimation-15",
     "title": "Causality Part 2",
     "section": "Doubly Robust Estimation",
-    "text": "Doubly Robust Estimation\nOnce again, we can use bootstrap and see that the variance is just slightly higher.\n\n\ncompare the results so far\ndat |&gt; \n  dplyr::group_by(method) |&gt; \n  dplyr::summarise(\n  mean = mean(`effect estimate`)\n  , lower_ci = quantile(`effect estimate`, 0.025)\n  , upper_ci = quantile(`effect estimate`, 0.975)\n) |&gt; gt::gt() |&gt; gtExtras::gt_theme_espn() |&gt; gt::as_raw_html()\n\n\n\n  \n  \n\n\n\nmethod\nmean\nlower_ci\nupper_ci\n\n\n\n\ndre_bad_ipw_estimate\n-12.88\n-13.64\n-12.13\n\n\ndre_bad_reg_estimate\n-12.70\n-13.47\n-11.88\n\n\ndre_estimate\n-12.87\n-13.53\n-12.23\n\n\nipw_estimate\n-12.51\n-13.28\n-11.69\n\n\nreg_estimate\n-12.35\n-12.89\n-11.85"
+    "text": "Doubly Robust Estimation\nOnce again, we can use bootstrap and see that the variance is just slightly higher.\n\n\ncompare the results so far\ndat |&gt; \n  dplyr::group_by(method) |&gt; \n  dplyr::summarise(\n  mean = mean(`effect estimate`)\n  , lower_ci = quantile(`effect estimate`, 0.025)\n  , upper_ci = quantile(`effect estimate`, 0.975)\n) |&gt; gt::gt() |&gt; gtExtras::gt_theme_espn() |&gt; gt::as_raw_html()\n\n\n\n  \n  \n\n\n\nmethod\nmean\nlower_ci\nupper_ci\n\n\n\n\ndre_bad_ipw_estimate\n-12.91\n-13.67\n-12.16\n\n\ndre_bad_reg_estimate\n-12.72\n-13.47\n-11.90\n\n\ndre_estimate\n-12.89\n-13.53\n-12.27\n\n\nipw_estimate\n-12.53\n-13.40\n-11.60\n\n\nreg_estimate\n-12.37\n-12.90\n-11.84"
   },
   {
     "objectID": "slides/BSMM_8740_lec_08.html#doubly-robust-estimation-16",
