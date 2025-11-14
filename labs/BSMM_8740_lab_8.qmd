@@ -69,6 +69,73 @@ Leaving instructions that will install packages may cause your code to fail, but
 
 ## Q1
 
+You are provided with panel data. Take the panel data and create
+
+1.  a variable `post` that is 1 if year \>= 1994
+2.  a treatment variable `treated` that is 1 if the country is "E","F", or "G"
+3.  a variable `did` computed as `post` \* `treated`
+
+Compute the DiD estimate for the outcome variable `y` two ways,
+
+1.  the first regressing `y` on `treated`, `post`, and `did`
+2.  the second regressing `y` on `treated`\*`post`
+
+Compare the DiD estimates and prepare a plot to assess the parallel trends assumption.
+
+::: {#Q1 .callout-note icon="false"}
+## YOUR ANSWER Q1:
+
+Show your work below
+
+```{r}
+#| label:: DiD
+
+# read the data
+mydata <- foreign::read.dta("https://dss.princeton.edu/training/Panel101.dta") |> 
+  tibble::as_tibble()
+
+# feature engineer as described above
+mydata <- mydata |> ❓
+
+# run the regression on treated, post, and did
+didreg0 <- ❓
+
+# run the regression on  treated * post
+didreg1 <- ❓
+
+
+# prepare the data for plotting
+mydata |> 
+  # make year a datetime
+  dplyr::mutate( year = lubridate::as_datetime(stringr::str_glue("{year}-01-01")) ) |> 
+  # select the variables of interest
+  dplyr::select(year,treated,y) |> 
+  # order by year
+  dplyr::arrange(year) |> 
+  # change the treatment variables into strings, and scale y
+  dplyr::mutate(
+    treated = ifelse(treated == 1, "treated", "untreated")
+    ,y = y * 10^(-10)
+  ) |> 
+  # aggregate the treated and untreated by country and treatmnt status
+  dplyr::group_by(year,treated) |> 
+  # aggregate
+  dplyr::mutate(y = sum(y)) |> 
+  # dropthe grouping
+  dplyr::ungroup() |> 
+  # keep only unique rows
+  dplyr::distinct(year, treated, y) |> 
+  # plot the two timeseries
+  ❓
+```
+
+How do the estimates compare?: \_\_\_\_\_\_\_\_\_
+
+Is the parallel trends assumption satisfied? \_\_\_\_\_\_\_\_\_
+:::
+
+## Q1
+
 Recall that in our last lecture we used several methods to understand the effect of nets on Malaria risk. The regression adjustment approach gave results that were lower than those using IPW or Doubly Robust Estimation.
 
 This is partly due to the regression specification we used, which as a second-order, fixed effects model did not fully capture the relationship between the covariates and the outcome. One simple way to enhance the model is to relax the fixed effects assumption, which you will do here, in the context of a completely different approach.
@@ -97,7 +164,7 @@ In this question we'll use g-computation to estimate the effect of net use on Ma
 Try using (net + income + health + temperature + insecticide_resistance)\^2 in the RHS of your formula. This will add interaction terms to your model (i.e. effects of each variable won't be fixed)
 :::
 
-::: {#Q1 .callout-note icon="false"}
+::: {.callout-note icon="false"}
 ## YOUR ANSWER Q1:
 
 Show your work below
@@ -156,7 +223,7 @@ toy_panel |>
 
 ```
 
-Knowing a lot about causal inference (and Simpson's Paradox), you decide to run a fixed effect model, adding the city’s indicator as a dummy variable to your model. The fixed effect model controls for city specific characteristics that are constant in time, so if a city is less open to your product, it will capture that.
+Knowing a lot about causal inference (and [Simpson's Paradox](https://en.wikipedia.org/wiki/Simpson's_paradox)), you decide to run a fixed effect model, adding the city’s indicator as a dummy variable to your model. The fixed effect model controls for city specific characteristics that are constant in time, so if a city is less open to your product, it will capture that.
 
 ::: {#Q2 .callout-note icon="false"}
 ## YOUR ANSWER Q2:
