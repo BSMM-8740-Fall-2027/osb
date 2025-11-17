@@ -580,12 +580,12 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>To access Github from the lab, you will need to make sure you are logged in as follows:</p>
+<p>(1) To access Github from the lab, you will need to make sure you are logged in as follows:</p>
 <ul>
 <li>username: <strong>.\daladmin</strong></li>
 <li>password: <strong>Business507!</strong></li>
 </ul>
-<p>Remember to (create a PAT and set your git credentials)</p>
+<p>(2) Remember to (create a PAT and set your git credentials). Using the <strong>Console</strong> in RStudio:</p>
 <ul>
 <li><p><u><strong>create your PAT</strong></u> using <code>usethis::create_github_token()</code> ,</p></li>
 <li><p><u><strong>store your PAT</strong></u> with <code>gitcreds::gitcreds_set()</code> ,</p></li>
@@ -594,18 +594,39 @@ Important
 <li><code>usethis::use_git_config( user.name = "___", user.email = "___")</code></li>
 </ul></li>
 </ul>
-<p>Go to the <u><strong>terminal</strong></u> in RStudio and execute the remaining steps:</p>
+<hr>
+<p>(3) Now go to the T<u><strong>erminal</strong></u> in RStudio and execute the remaining steps:</p>
 <ul>
-<li><p><u><strong>generate key with descriptive label</strong></u>: <code>ssh-keygen -t ed25519 -C "8740-exam"</code></p></li>
-<li><p><u><strong>tell Git which key to use (execute one at a time, in order)</strong></u>:</p>
+<li><p><u><strong>generate a key with a descriptive label</strong></u>: <code>ssh-keygen -t ed25519 -C "8740-exam"</code></p></li>
+<li><p><u><strong>tell Git which key to use (execute these lines in the terminal, one at a time, and in order)</strong></u>:</p>
 <ul>
 <li>git config gpg.format ssh</li>
 <li>git config user.signingkey ~/.ssh/id_ed25519.pub</li>
 <li>git config commit.gpgsign true</li>
 </ul></li>
-<li><p><u><strong>copy key to clipboard</strong></u>: cat ~/.ssh/id_ed25519.pub | clip</p></li>
-<li><p><strong>after running that, the key is in your Windows clipboard</strong>.</p>
-<p><u><strong>Go to</strong></u> GitHub → Settings → SSH and GPG Keys → New SSH Signing Key, paste, and save.</p></li>
+<li><p><u><strong>copy the key to the clipboard</strong></u>: <code>cat ~/.ssh/id_ed25519.pub | clip</code></p></li>
+<li><p><strong>after running that command, the key is <u>in your Windows clipboard</u></strong>.</p>
+<p><u><strong>Go to your personal Github account and navigate:</strong></u></p>
+<ul>
+<li>there is a small circle on the upper right hand side of you personal github site,</li>
+<li>click on it to bring up a menu, and select <u><strong>settings</strong></u> (with a little gear symbol beside it)</li>
+<li>on the setting page, select SSH and GPG Keys (with a little key symbol beside it)</li>
+<li>the page that appears has a section labelled <u><strong>SSH Keys</strong></u> and a green button labelled <u><strong>New SSH key</strong></u></li>
+<li>click the button and you’ll see a <u><strong>Key type</strong></u> <em>dropdown</em>. Select <u><strong>Signing Key</strong></u>, and finally</li>
+<li>paste the key in your clipboard into the <u><strong>Key</strong></u> <em>textbox,</em> and click the button Add SSH key.</li>
+</ul></li>
+</ul>
+<p>(4) Test your commit in the RStudio Terminal.</p>
+<ul>
+<li>Execute these lines, one at a time:
+<ul>
+<li>git commit –allow-empty -S -m “verify signing”</li>
+<li>git log -1 –show-signature</li>
+</ul></li>
+<li>You should see
+<ul>
+<li>Good “git” signature for your_verified_github_email@example.com with SSH key SHA256:…</li>
+</ul></li>
 </ul>
 </div>
 </div>
