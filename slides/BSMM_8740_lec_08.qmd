@@ -2660,7 +2660,6 @@ es$coeftable |> as.data.frame() |>
   dplyr::summarize(ATT = mean(Estimate))
 ```
 
-
 ## estimation
 
 ```{r}

@@ -69,6 +69,76 @@ Leaving instructions that will install packages may cause your code to fail, but
 
 ## Q1
 
+You are provided with panel data. Take the panel data and add
+
+1.  a variable `post` that is 1 if year \>= 1994
+2.  a treatment variable `treated` that is 1 if the country is "E","F", or "G"
+3.  a variable `did` computed as `post` \* `treated`
+
+Compute the ATT estimate using DiD for the outcome variable `y` in two ways,
+
+1.  the first regressing `y` on `treated`, `post`, and `did`
+2.  the second regressing `y` on `treated`\*`post`
+
+Compare the DiD estimates and prepare a plot to assess the parallel trends assumption.
+
+::: {#Q1 .callout-note icon="false"}
+## YOUR ANSWER Q1:
+
+Show your work below
+
+```{r}
+#| label:: estimate ATT using DiD
+
+# read the data
+mydata <- foreign::read.dta("https://dss.princeton.edu/training/Panel101.dta") |> 
+  tibble::as_tibble()
+
+# feature engineer as described above
+mydata <- mydata |> ❓
+
+# run the regression on treated, post, and did
+didreg0 <- ❓
+
+# run the regression on  treated * post
+didreg1 <- ❓
+
+```
+
+```{r}
+#| label: evaluate the parallel trends assumption
+# prepare the data for plotting
+mydata |> 
+  # make year a datetime
+  dplyr::mutate( year = lubridate::as_datetime(stringr::str_glue("{year}-01-01")) ) |> 
+  # select the variables of interest
+  dplyr::select(year,treated,y) |> 
+  # order by year
+  dplyr::arrange(year) |> 
+  # change the treatment variables into strings, and scale y
+  dplyr::mutate(
+    treated = ifelse(treated == 1, "treated", "untreated")
+    ,y = y * 10^(-10)
+  ) |> 
+  # aggregate the treated and untreated by country and treatmnt status
+  dplyr::group_by(year,treated) |> 
+  # aggregate
+  dplyr::mutate(y = sum(y)) |> 
+  # dropthe grouping
+  dplyr::ungroup() |> 
+  # keep only unique rows
+  dplyr::distinct(year, treated, y) |> 
+  # plot the two timeseries (ADD YOUR CODE HERE)
+  ❓
+```
+
+How do the estimates compare?: \_\_\_\_\_\_\_\_\_
+
+Is the parallel trends assumption satisfied? \_\_\_\_\_\_\_\_\_
+:::
+
+## Q2
+
 Recall that in our last lecture we used several methods to understand the effect of nets on Malaria risk. The regression adjustment approach gave results that were lower than those using IPW or Doubly Robust Estimation.
 
 This is partly due to the regression specification we used, which as a second-order, fixed effects model did not fully capture the relationship between the covariates and the outcome. One simple way to enhance the model is to relax the fixed effects assumption, which you will do here, in the context of a completely different approach.
@@ -97,8 +167,8 @@ In this question we'll use g-computation to estimate the effect of net use on Ma
 Try using (net + income + health + temperature + insecticide_resistance)\^2 in the RHS of your formula. This will add interaction terms to your model (i.e. effects of each variable won't be fixed)
 :::
 
-::: {#Q1 .callout-note icon="false"}
-## YOUR ANSWER Q1:
+::: {#Q2 .callout-note icon="false"}
+## YOUR ANSWER Q2:
 
 Show your work below
 
@@ -129,7 +199,7 @@ In summary the g-computation is as follows
 -   Fit a standardized model with all covariates/confounders. Then, use cloned data sets with values set on each level of the exposure you want to study.
 -   Use the model to predict the values for that level of the exposure and compute the effect estimate of interest.
 
-## Q2
+## Q3
 
 Suppose you work for a big tech company and you want to estimate the impact of a billboard marketing campaign on in-app purchases. When you look at data from the past, you see that the marketing department tends to spend more to place billboards in cities where the purchase level is lower. This makes sense right? They wouldn’t need to do lots of advertisement if sales were skyrocketing. If you run a regression model on this data, it looks like higher cost in marketing leads to lower in-app purchase amounts, but only because marketing investments are biased towards low spending regions.
 
@@ -156,10 +226,10 @@ toy_panel |>
 
 ```
 
-Knowing a lot about causal inference (and Simpson's Paradox), you decide to run a fixed effect model, adding the city’s indicator as a dummy variable to your model. The fixed effect model controls for city specific characteristics that are constant in time, so if a city is less open to your product, it will capture that.
+Knowing a lot about causal inference (and [Simpson's Paradox](https://en.wikipedia.org/wiki/Simpson's_paradox)), you decide to run a fixed effect model, adding the city’s indicator as a dummy variable to your model. The fixed effect model controls for city specific characteristics that are constant in time, so if a city is less open to your product, it will capture that.
 
-::: {#Q2 .callout-note icon="false"}
-## YOUR ANSWER Q2:
+::: {#Q3 .callout-note icon="false"}
+## YOUR ANSWER Q3:
 
 ```{r}
 #| label: toy-panel fixed effects
@@ -194,7 +264,7 @@ What is the image above is telling you about what fixed effect is doing?
 How do you interpret the slopes of the lines?
 :::
 
-## Q3
+## Q4
 
 You are an advanced analytics analyst working at a private equity firm. One of the partners, an MBA by training, has suggested that the firm eliminate portfolio companies that are run by their founders or their families, on the basis that these firms do not have professional management (i.e. poor management quality).
 
@@ -345,8 +415,8 @@ Use linear regression to fit each model, and
 2.  use fit \|\> broom::glance() to extract model performance data
 3.  rank the models by comparing AIC and BIC and select the most suitable.
 
-::: {#Q3 .callout-note icon="false"}
-## YOUR ANSWER Q3:
+::: {#Q4 .callout-note icon="false"}
+## YOUR ANSWER Q4:
 
 ```{r}
 #| label: fit each formula
@@ -417,7 +487,7 @@ Given your estimated effect and considering omitted variable bias, please provid
 -   [**bullet #2**]{.underline}: (comment on omitted variable bias and small sample size bias in context)
 :::
 
-## Q4
+## Q5
 
 Your firm has a customer intervention that management would like to evaluate. The data from a test of the intervention is as follows (where $D$ is the (binary intervention, $Y$ is the outcome (in units of \$1,000 dollars), and $X_1,\ldots,X_5$ are variables in the adjustment set). Each row in the data represents measurements for a distinct customer:
 
@@ -437,8 +507,8 @@ test_dat <- matrix(rnorm(n * p), n, p, dimnames = list(NULL, paste0("X",1:p)) ) 
 
 Estimate the ATE as follows (hint: it is \>0):
 
-::: {#Q4 .callout-note appearance="simple" icon="false"}
-## YOUR ANSWER Q4:
+::: {#Q5 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q5:
 
 ```{r}
 #| label: estimate the caual effect two ways
@@ -573,7 +643,7 @@ result |>
 ```
 :::
 
-## Q5
+## Q6
 
 Estimate the causal effect of smoking cessation on weight, using the dataset `data(nhefs)` where the treatment variable is quit_smoking, the outcome variable is wt82_71, and the covariates of interest are age, wt71, smokeintensity, exercise, education, sex, and race.
 
@@ -586,8 +656,8 @@ nhefs <-
   dplyr::select(wt82_71, quit_smoking, age, wt71, smokeintensity, exercise, education, sex, race)
 ```
 
-::: {#Q5 .callout-note appearance="simple" icon="false"}
-## YOUR ANSWER Q5:
+::: {#Q6 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q6:
 
 ```{r}
 #| label: create mean difference in effects table
@@ -637,7 +707,7 @@ The un-corrected treatment effect is: \_\_\_\_
 The un-corrected treatment effect is: \_\_\_\_
 :::
 
-## Q6
+## Q7
 
 Show that our matching estimator
 
@@ -649,13 +719,13 @@ $$
 \hat{\tau}_{ATE}=\frac{n_1}{N}\hat{\tau}_{ATT}-\frac{n_0}{N}\hat{\tau}_{ATU}
 $$
 
-::: {#Q6 .callout-note icon="false"}
-## YOUR ANSWER Q6:
+::: {#Q7 .callout-note icon="false"}
+## YOUR ANSWER Q7:
 
 *You can write it here, or write it by hand on a separate piece of paper, scan the paper and add the image to your project.*
 :::
 
-## Q7
+## Q8
 
 TechMart, a major retail chain with 200 stores across urban, suburban, and rural markets, began rolling out their revolutionary "SmartFlow" inventory management system in early 2020, starting with their flagship large urban locations that could handle the complex implementation. The technology promised to streamline operations through AI-powered stock optimization and automated reordering, but executives knew the benefits would vary dramatically across their diverse store portfolio.
 
@@ -672,8 +742,8 @@ retail_data <-
   readr::read_csv("data/retail_data.csv", show_col_types = FALSE)
 ```
 
-::: {#Q7 .callout-note icon="false"}
-## YOUR ANSWER Q7:
+::: {#Q8 .callout-note icon="false"}
+## YOUR ANSWER Q8:
 
 (1a) Please give the treatment definition
 
@@ -702,13 +772,11 @@ You're done and ready to submit your work! **Save**, **stage**, **commit**, and 
 ::: render-commit-push
 ## Submission
 
-I will pull (copy) everyone's repository submissions at 5:00pm on the Sunday following class, and I will work only with these copies, so anything submitted after 5:00pm will not be graded. (**don't forget to commit and then push your work!**)
+I will pull (copy) everyone's repository submissions at 5:00pm on the Tuesday following class, and I will work only with these copies, so anything submitted after 5:00pm will not be graded. (**don't forget to commit and then push your work!**)
 :::
 
 ## Grading
 
 Total points available: 30 points.
 
-| Component | Points |
-|-----------|--------|
-| Ex 1 - 7  | 30     |
+![](images/rubric_lab_8.png){fig-align="center" width="600"}
