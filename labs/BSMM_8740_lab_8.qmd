@@ -88,7 +88,7 @@ Compare the DiD estimates and prepare a plot to assess the parallel trends assum
 Show your work below
 
 ```{r}
-#| label:: estimate ATT using DiD
+#| label: estimate ATT using DiD
 #| eval: false
 
 # read the data
