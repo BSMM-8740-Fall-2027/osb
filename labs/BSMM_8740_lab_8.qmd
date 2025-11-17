@@ -89,6 +89,7 @@ Show your work below
 
 ```{r}
 #| label:: estimate ATT using DiD
+#| eval: false
 
 # read the data
 mydata <- foreign::read.dta("https://dss.princeton.edu/training/Panel101.dta") |> 
@@ -107,6 +108,7 @@ didreg1 <- ❓
 
 ```{r}
 #| label: evaluate the parallel trends assumption
+#| eval: false
 # prepare the data for plotting
 mydata |> 
   # make year a datetime
