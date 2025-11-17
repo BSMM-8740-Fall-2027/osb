@@ -93,5 +93,17 @@ title: "weekly checklist"
     -   [ ] study guide
 -   [x] weekly lab
 -   [x] weekly lab solutions
+-   [x] weekly lab repo
+-   [ ] weekly lab invite
+
+## Week 9
+
+-   [ ] weekly slides
+-   [ ] weekly reading
+    -   [ ] links
+    -   [ ] readings
+    -   [ ] study guide
+-   [ ] weekly lab
+-   [ ] weekly lab solutions
 -   [ ] weekly lab repo
 -   [ ] weekly lab invite
