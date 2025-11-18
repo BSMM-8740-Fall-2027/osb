@@ -40,7 +40,7 @@ execute:
 ## This week
 
 -   We will explore Monte Carlo methods as a way to numerically integrate difficult functions, and to sample from difficult probability distributions.
--   Along the way we will look at Markov Chains, which can both underlie sampling methods and provide a way to model the generation of data.
+-   Along the way we will look at Markov Chains, which both underlie sampling methods and provide a way to model the generation of data.
 -   Finally, we look at Markov Chain Monte Carlo (MCMC) methods to sample from probability distributions.
 
 # Monte Carlo (MC) Methods
@@ -214,7 +214,7 @@ demo_inverse_transform <- function() {
     geom_segment(data = points_data, 
                  aes(x = 0, xend = u, y = x, yend = x), 
                  color = "red", linetype = "dashed", alpha = 0.7) +
-    labs(title = "Inverse CDF Transformation: F⁻¹(U) = -ln(1-U)",
+    labs(title = "Inverse CDF Transformation of the Exponential(1) Distribution: F⁻¹(U) = -ln(1-U)",
          x = "U ~ Uniform(0,1)", 
          y = "X = F^-1(U) ~ Exponential(1)",
          subtitle = "Red points show the transformation of uniform samples to exponential samples") +
@@ -290,7 +290,7 @@ What defines a good random number generator (RNG) is a long period – how long 
 
 ## Random Number Generation
 
-Alternatives to inverse transform sampling are special algorithms that generate random samples from particular distributions, e.g. one way to sample from a Gaussian random number generation uses the Box-Muller method:
+Alternatives to inverse transform sampling are special algorithms that generate random samples from particular distributions, e.g. one way to sample from a Gaussian random number generation uses the [Box-Muller](https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform) method:
 
 -   generate two independent uniform $[0, 1]$ random variables, and
 -   use some trigonometry.
@@ -738,7 +738,7 @@ $$
 #### example
 
 ::: {style="font-size: x-large"}
-Estimate $\mathbb E_f(X)$ where $f(x) = \sqrt{2/\pi}e^{-\frac{x^2}{2}};\;x\ge 0$ (this is the half-Normal distribution)
+Estimate $\mathbb E_f(X)$ where $f(x) = \sqrt{2/\pi}e^{-\frac{x^2}{2}};\;x\ge 0$ (this is the half-Normal distribution), and the exponential distribution is $\lambda e^{-\lambda x}$
 :::
 
 ```{r}
@@ -1179,7 +1179,7 @@ In particular, $p_{ij}(n)$ is the $(i,j)$th element of the matrix power $\mathsf
 ## Markov Chains
 
 :::: {style="font-size: xx-large"}
-The so-called **Chapman--Kolmogorov equations** follow immediately from this.
+The so-called [**Chapman--Kolmogorov equations**](https://en.wikipedia.org/wiki/Chapman%E2%80%93Kolmogorov_equation) follow immediately from this.
 
 ::: {#c-k .theorem name="Chapman–Kolmogorov equations"}
 Let $(X_n)$ be a Markov chain with state space $\mathcal S$ and transition matrix $\mathsf P = (p_{ij})$. Then, for non-negative integers $n,m$, we have $$ p_{ij}(n+m) = \sum_{k \in \mathcal S} p_{ik}(n)p_{kj}(m) , $$ or, in matrix notation, $\mathsf P(n+m) = \mathsf P(n)\mathsf P(m)$.

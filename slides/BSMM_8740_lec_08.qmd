@@ -1429,6 +1429,7 @@ The other variable $mt_1$, will store the treated point and will find matches in
 
 ## Matching estimator
 
+::: {style="font-size: large"}
 ```{r}
 #| echo: true
 #| code-fold: true
@@ -1480,10 +1481,13 @@ predicted <-
 predicted |>   
   dplyr::slice_head(n=5) |> 
   gt::gt() |> 
+  gt::cols_label( recovery = "recovery (treated)", match = "recovery (untreated)" )|> 
+  # gt::cols_width(recovery ~ px(100), match ~ px(100), everything() ~ px(90)) |> 
+  gt::tab_footnote(footnote = "matched on treated covariates: sex, age and severity", locations = gt::cells_column_labels(columns = match)) |> 
   gt::fmt_number(columns = c('sex','age','severity'), decimals = 6) |>
-  gtExtras::gt_theme_espn() |> 
-  gt::as_raw_html()
+  gtExtras::gt_theme_espn() #|> gt::as_raw_html()
 ```
+:::
 
 ## Matching estimator
 
@@ -1524,7 +1528,7 @@ It turns out the matching estimator as we’ve designed above is biased.
 
 To see this, let’s consider the ATT estimator, instead of the ATE, since it is simpler to write.
 
-The intuition will apply to the ATE as well.
+The intuition will apply to the ATU as well.
 :::
 
 $$
@@ -1569,6 +1573,7 @@ where $\hat{\mu_0}(x)$ is some estimative of $E[Y|X, D=0]$, e.g. a linear regres
 
 ## Matching bias
 
+::: {style="font-size: large"}
 ```{r}
 #| echo: true
 #| code-fold: true
@@ -1626,16 +1631,21 @@ c(
 predicted |>   
   dplyr::slice_head(n=5) |> 
   gt::gt() |> 
+  gt::cols_label( recovery = "recovery (treated)", match = "recovery (untreated)" )|> 
+  #gt::cols_width(recovery ~ px(100), match ~ px(100), bias_correct ~ px(100), everything() ~ px(85)) |> 
+  gt::tab_footnote(footnote = "matched on treated covariates: sex, age and severity", locations = gt::cells_column_labels(columns = match)) |> 
   gt::fmt_number(columns = c('sex','age','severity'), decimals = 6) |>
-  gtExtras::gt_theme_espn()
+  gtExtras::gt_theme_espn() # |> gt::as_raw_html()
 ```
+:::
+
 
 ## Matching bias
 
 ::: {style="font-size: x-large"}
-Doesn’t this defeat the point of matching? If we have to run a linear regression anyway, why don’t we ust use the regression instead of this complicated model.
+Doesn’t this defeat the point of matching? If we have to run a linear regression anyway, why don’t we just use the regression instead of this complicated model.
 
-First of all, this linear regression that we are fitting doesn’t extrapolate on the treatment dimension to get the treatment effect. Instead, its purpose is just to correct bias.
+But this linear regression that we are fitting doesn’t extrapolate on the treatment dimension to get the treatment effect. Instead, its purpose is just to correct bias.
 
 Linear regression here is local, in the sense that it doesn’t try to see how the treated would be if it looked like the untreated. It does none of that extrapolation. This is left to the matching part.
 
@@ -1708,7 +1718,7 @@ c("ATE", "ATC", "ATT") |>
 ```
 
 ::: {style="font-size: large"}
-Finally, we can say with confidence that our medicine does indeed lower the time someone spends at the hospital. The ATE estimate is just a little bit lower than our algorithm, due to the difference in tie breaking of matches of knn implementation and the `Matching` R package.
+Finally, we can say with confidence that our medicine does indeed lower the time someone spends at the hospital. The ATE estimate here is just a little bit lower than our algorithm, due to the difference in tie breaking of matches of the knn implementation and the `Matching` R package.
 :::
 
 ## Matching bias again
@@ -1947,7 +1957,7 @@ $$ Y = \beta_0 + \beta_1Group1 + \beta_2Group2 + ... + $$ $$ \beta_NGroupN + \be
 ## Fixed Effects Regression
 
 -   Why does that work?
--   We want to control for "group/individual" right? So just put in a control for group/individual.
+-   We want to control for "group/individual." So just put in a control for "group/individual."
 -   Like all categorical variables as predictors, we leave out a reference group.
 -   But here, unlike with, say, a binary predictor, we're rarely interested in the FE coefficients themselves. Most software works with the mean-subtraction approach (or a variant) and doesn't even report them!
 
@@ -1956,13 +1966,18 @@ $$ Y = \beta_0 + \beta_1Group1 + \beta_2Group2 + ... + $$ $$ \beta_NGroupN + \be
 -   Remember we are isolating *within variation*
 -   If an individual *has* no within variation, say their treatment never changes, they basically get washed out entirely!
 -   A fixed-effects regression wouldn't represent them. And can't use FE to study things that are fixed over time
--   And in general if there's not a lot of within variation, FE is going to be very noisy. Make sure there's variation to study!
+-   And in general if there's not a lot of within variation, FE is going to be very noisy. Make sure there's variation to study.
 
 ## Fixed Effects in Regression: Notes
 
+::: {style="font-size: x-large"}
 -   It's common to *cluster standard errors* at the level of the fixed effects, since it seems likely that errors would be correlated over time (autocorrelated errors).
 -   It's possible to have *more than one set* of fixed effects. $Y = \beta_i + \beta_j + \beta_1X + \varepsilon$
--   But interpretation gets tricky - think through what variation in $X$ you have at that point!
+-   Two main types:
+    -   unit fixed effects: stable traits of each unit, e.g. depending store location, manager skill, customer base
+    -   time fixed effects: shocks hitting every unit at the same time, e.g. seasonality, holidays, supply chain effects
+    -   e.g. two periods: $sales_{it}=unitFE_i+timeFE_t+treatment_{it}+error_{it}$
+:::
 
 ## Coding up Fixed Effects
 
@@ -1975,7 +1990,7 @@ $$ Y = \beta_0 + \beta_1Group1 + \beta_2Group2 + ... + $$ $$ \beta_NGroupN + \be
 #| eval: false
 #| label: fixest fixed effects
 m1 <- fixest::feols(outcome ~ predictors | FEs, data = data)
-msummary(m1)
+summary(m1)
 ```
 
 ## FE Example: Sentencing
@@ -2036,10 +2051,10 @@ ggplot(mmdata,aes(x=year,y=robberyper1000,
 
 ## Fixed Effects
 
--   You can tell that states are more or less likely to implement reform in a way that's correlated with the level of robbery they already had
+-   It seems that states are more or less likely to implement reform in a way that's correlated with the level of robbery they already had
 -   So [**something**]{.underline} about the state is driving both the level of robberies [**and**]{.underline} the decision to implement reform
 -   Who knows what!
--   Our diagram has `reform -> robberies` and `reform <- state -> robberies`, which is something we can address with fixed effects.
+-   Our DAG has `reform -> robberies` and `reform <- state -> robberies`, which is something we can address with fixed effects.
 
 ## Fixed Effects
 
@@ -2132,7 +2147,9 @@ fixest::coefplot(m, drop = '(Intercept)',
  pt.join = TRUE, ref = c('t:5' = 6), ref.line = TRUE)
 ```
 
-# Difference-in-Differences
+# Difference-in-Differences[^2]
+
+[^2]: see [John Snow's Cholera Hypothesis](https://mixtape.scunning.com/09-difference_in_differences#john-snows-cholera-hypothesis)
 
 ## Difference-in-Differences (2x2 DiD)
 
@@ -2206,10 +2223,10 @@ $$ If we add zero
 $$
 \begin{align*}
 \hat{\tau}_{DiD} & =E[Y_{i2}(1)-Y_{i1}(1)]-E[Y_{i2}(0)-Y_{i1}(0)]\\
- & =E[\color{blue}{Y_{i2}(1)}-\color{green}{Y_{i1}(1)}|D_{i}=1]-E[\color{orange}{Y_{i2}(0)}-\color{magenta}{Y_{i1}(0)}|D_{i}=0]+\\
- & E\left[\color{cyan}{Y_{i2}(1)}|D_{i}=0\right]-E\left[Y_{i2}(1)|D_{i}=0\right]\\
- & =E[\color{blue}{Y_{i2}(1)}|D_{i}=1]-E\left[Y_{i2}(1)|D_{i}=0\right]+\\
- & E[\color{cyan}{Y_{i2}(1)}-\color{green}{Y_{i1}(1)}|D_{i}=0]-E[\color{orange}{Y_{i2}(0)}-\color{magenta}{Y_{i1}(0)}|D_{i}=0]
+ & =E[{\color{blue}Y_{i2}(1)}-{\color{green}Y_{i1}(1)}|D_{i}=1]-E[{\color{orange}Y_{i2}(0)}-{\color{magenta}Y_{i1}(0)}|D_{i}=0]+\\
+ & E\left[{\color{cyan}Y_{i2}(1)}|D_{i}=0\right]-E\left[Y_{i2}(1)|D_{i}=0\right]\\
+ & =E[{\color{blue}Y_{i2}(1)}|D_{i}=1]-E\left[Y_{i2}(1)|D_{i}=0\right]+\\
+ & E[{\color{cyan}Y_{i2}(1)}-{\color{green}Y_{i1}(1)}|D_{i}=0]-E[{\color{orange}Y_{i2}(0)}-{\color{magenta}Y_{i1}(0)}|D_{i}=0]
 \end{align*}
 $$
 :::
@@ -2411,10 +2428,14 @@ data <- data %>%
 #| label: Calculate means for different groups, simple 2x2 example
 #| echo: true
 #| code-fold: true
+#| message: false
 # Calculate means for different groups
 (mean_values <- data %>%
   group_by(post, treat) %>%
-  summarise(mean_l_homicide = mean(l_homicide, na.rm = TRUE)))
+  summarise(mean_l_homicide = mean(l_homicide, na.rm = TRUE))) |> 
+  dplyr::ungroup() |> 
+  gt::gt() |> 
+  gt::fmt_number(columns = mean_l_homicide, decimals = 4)
 
 # Calculate the DiD manually
 (did <- with(mean_values, {
@@ -2546,7 +2567,7 @@ As before, for our DiD estimator to be a causal estimate (ATT) we need (now cond
 
 Under our assumptions, we can model the outcome evolution and estimate the counterfactual untreated outcome in period 2 for the treated group using regression, and our estimator
 
-$$\hat{\tau}_{DiD} = \left(\bar{Y}_2(1) - \bar{Y}_1(1)) - (\bar{Y}_0(2) - \bar{Y}_0(1)\right) $$
+$$\hat{\tau}_{DiD} = \left(\bar{Y}_2(1) - \bar{Y}_1(1)) - (\bar{Y}_2(0) - \bar{Y}_1(0)\right) $$
 
 becomes
 
@@ -2554,7 +2575,7 @@ $$\hat{\tau}_{DiD} = \left(\bar{Y}_2(1) - \bar{Y}_1(1)\right) - \left(\hat{\mu}_
 
 ## 2X2 DiD & covariates (reg)
 
-Using regression the $\hat{\tau}_{DiD}$ estimate uses
+Using regression, the $\hat{\tau}_{DiD}$ estimate uses
 
 $$
 \bar{Y}_t(d)=\sum_{i\vert D_i=d,T_i=t}Y_{it}/n_{d,t}
@@ -2737,7 +2758,7 @@ It generalizes the 2x2 model by removing group and time differences via demeanin
 #| echo: false
 
 tibble::tribble(
-  ~'Feature',~'2×2 Regression DiD',~'Fixed-Effects DiD'
+  ~'Feature',~'2×2 Regression (TWFE) DiD',~'Fixed-Effects DiD'
   #--|--|----
   ,'Groups','2 (treated/control)','Many units/groups'
   ,'Controls','Only group/time/treatment','Time and unit fixed effects'
@@ -3824,7 +3845,7 @@ $$
 \hat{Y} = \hat{\beta_1} X_1 + \hat{\beta_2} X_2
 $$
 
-where $X_1$ and $X_2$ are feature matrices (one row per feature and one column per observation) and $\hat{\beta_1}$ and $\hat{\beta_2}$ are row vectors. You can get the exact same $\hat{\beta_1}$ parameter by doing[^2]
+where $X_1$ and $X_2$ are feature matrices (one row per feature and one column per observation) and $\hat{\beta_1}$ and $\hat{\beta_2}$ are row vectors. You can get the exact same $\hat{\beta_1}$ parameter by doing[^3]
 
 1.  regress the outcome $y$ on the second set of features $\hat{y^*} = \hat{\gamma_1} X_2$
 2.  regress the first set of features on the second $\hat{X_1} = \hat{\gamma_2} X_2$
@@ -3832,7 +3853,7 @@ where $X_1$ and $X_2$ are feature matrices (one row per feature and one column p
 4.  regress the residuals of the outcome on the residuals of the features $\tilde{y} = \hat{\beta_1} \tilde{X}_1$
 :::
 
-[^2]: See the FWL Theorem
+[^3]: See the FWL Theorem
 
 ## Panel Data and Fixed Effects {visibility="hidden"}
 
