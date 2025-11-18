@@ -234,7 +234,7 @@ L.L. Odette
 <h2>This week</h2>
 <ul>
 <li>We will explore Monte Carlo methods as a way to numerically integrate difficult functions, and to sample from difficult probability distributions.</li>
-<li>Along the way we will look at Markov Chains, which can both underlie sampling methods and provide a way to model the generation of data.</li>
+<li>Along the way we will look at Markov Chains, which both underlie sampling methods and provide a way to model the generation of data.</li>
 <li>Finally, we look at Markov Chain Monte Carlo (MCMC) methods to sample from probability distributions.</li>
 </ul>
 </section>
@@ -330,7 +330,7 @@ L.L. Odette
 </section>
 <section id="random-number-generation-3" class="slide level2">
 <h2>Random Number Generation</h2>
-<p>Alternatives to inverse transform sampling are special algorithms that generate random samples from particular distributions, e.g.&nbsp;one way to sample from a Gaussian random number generation uses the Box-Muller method:</p>
+<p>Alternatives to inverse transform sampling are special algorithms that generate random samples from particular distributions, e.g.&nbsp;one way to sample from a Gaussian random number generation uses the <a href="https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform">Box-Muller</a> method:</p>
 <ul>
 <li>generate two independent uniform <span class="math inline">\([0, 1]\)</span> random variables, and</li>
 <li>use some trigonometry.</li>
@@ -719,7 +719,7 @@ w(x_i)=\frac{f(x_{i})}{g_1(x_{i})}
 <h2>MC Methods</h2>
 <h4 id="example-1">example</h4>
 <div style="font-size: x-large">
-<p>Estimate <span class="math inline">\(\mathbb E_f(X)\)</span> where <span class="math inline">\(f(x) = \sqrt{2/\pi}e^{-\frac{x^2}{2}};\;x\ge 0\)</span> (this is the half-Normal distribution)</p>
+<p>Estimate <span class="math inline">\(\mathbb E_f(X)\)</span> where <span class="math inline">\(f(x) = \sqrt{2/\pi}e^{-\frac{x^2}{2}};\;x\ge 0\)</span> (this is the half-Normal distribution), and the exponential distribution is <span class="math inline">\(\lambda e^{-\lambda x}\)</span></p>
 </div>
 <div class="cell">
 <details class="code-fold">
@@ -1151,7 +1151,7 @@ p_{ij}(n) = \sum_{k_1, k_2, \dots, k_{n-1} \in \mathcal S} p_{ik_1} p_{k_1k_2} \
 <section id="markov-chains-14" class="slide level2">
 <h2>Markov Chains</h2>
 <div style="font-size: xx-large">
-<p>The so-called <strong>Chapman–Kolmogorov equations</strong> follow immediately from this.</p>
+<p>The so-called <a href="https://en.wikipedia.org/wiki/Chapman%E2%80%93Kolmogorov_equation"><strong>Chapman–Kolmogorov equations</strong></a> follow immediately from this.</p>
 <div id="c-k" class="theorem" name="Chapman–Kolmogorov equations">
 <p>Let <span class="math inline">\((X_n)\)</span> be a Markov chain with state space <span class="math inline">\(\mathcal S\)</span> and transition matrix <span class="math inline">\(\mathsf P = (p_{ij})\)</span>. Then, for non-negative integers <span class="math inline">\(n,m\)</span>, we have <span class="math display">\[ p_{ij}(n+m) = \sum_{k \in \mathcal S} p_{ik}(n)p_{kj}(m) , \]</span> or, in matrix notation, <span class="math inline">\(\mathsf P(n+m) = \mathsf P(n)\mathsf P(m)\)</span>.</p>
 </div>
