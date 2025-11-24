@@ -26,37 +26,37 @@ theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 
 # Part 1
 
-## Q-1
+## Q1
 
 What is the primary purpose of the 'I' (Integrated) component in an **ARIMA** model?:
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION (1 point) :
+::: {#Q1 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q1 (1 point) :
 
 -   To make the time series stationary through differencing
 :::
 
-## Q-2
+## Q2
 
 What is the main purpose of the **k-means clustering** algorithm?:
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION (1 point) :
+::: {#Q2 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q2 (1 point) :
 
 -   To identify underlying groupings in a dataset
 :::
 
-## Q-3
+## Q3
 
 In the context of directed acyclic graphs (DAGs), what do **confounders** represent?:
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION (1 point) :
+::: {#Q3 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q3 (1 point) :
 
 -   Common causes that create spurious correlations
 :::
 
-## Q-4
+## Q4
 
 For the binary classifier with the confusion matrix below:
 
@@ -64,8 +64,8 @@ For the binary classifier with the confusion matrix below:
 
 The ***specificity (i.e. TNR)*** of this binary classifier is approximately:
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION (1 point) :
+::: {#Q4 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q4 (1 point) :
 
 -   0.68
 
@@ -81,12 +81,12 @@ $$ where:
 Alternatively, specificity is the number of true negatives out of all negatives. Here the number of true negatives is 32, and the number of all negatives is 47, so the specificity is 32/47 = 0.6808511 \~ 0.68.
 :::
 
-## Q-5
+## Q5
 
 In exponential smoothing, what does the smoothing factor (alpha) primarily control?
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION (1 point) :
+::: {#Q5 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q5 (1 point) :
 
 -   The rate at which the model adapts to recent changes in the data
 :::
@@ -95,8 +95,8 @@ In exponential smoothing, what does the smoothing factor (alpha) primarily contr
 
 What is the purpose of an **adjustment set** in causal inference?:
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION (1 point) :
+::: {#Q6 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q6(1 point) :
 
 -   To identify the minimum set of variables needed to block all confounding pathways
 :::
@@ -105,8 +105,8 @@ What is the purpose of an **adjustment set** in causal inference?:
 
 What is a common disadvantage of **lazy** machine learning learners like k-Nearest Neighbors (k-NN)?:
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION (1 point) :
+::: {#Q7 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q7 (1 point) :
 
 -   Their performance can degrade significantly with high-dimensional data
 :::
@@ -117,8 +117,8 @@ What is a common disadvantage of **lazy** machine learning learners like k-Neare
 
 How many **open paths** are in the DAG above?
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION (1 point) :
+::: {#Q8 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q8 (1 point) :
 
 -   3
 
@@ -158,8 +158,8 @@ dag |> dagitty::paths()
 
 When is accuracy a potentially misleading metric for evaluating a classification model?:
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION (1 point) :
+::: {#Q9 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q9 (1 point) :
 
 -   When the dataset is highly imbalanced, with one class dominating others
 :::
@@ -168,8 +168,8 @@ When is accuracy a potentially misleading metric for evaluating a classification
 
 What is the 'naive' assumption made in Naive Bayes classification?:
 
-::: {.callout-note appearance="simple" icon="false"}
-## SOLUTION (1 point) :
+::: {#Q10 .callout-note appearance="simple" icon="false"}
+## SOLUTION Q10 (1 point) :
 
 -   That the features are all independent given the class
 :::
@@ -433,7 +433,7 @@ A peer-reviewed paper by researchers at the Harvard Medical School, UCLA School 
 ![](images/BJM_article.png){fig-align="center"}
 
 ::: {#Q14 .callout-note appearance="simple" icon="false"}
-## YOUR ANSWER (3 points) Q14:
+## SOLUTION (3 points) Q14:
 
 As a causal analysis this is a randomized controlled trial which should identify the causal effect, if any.
 

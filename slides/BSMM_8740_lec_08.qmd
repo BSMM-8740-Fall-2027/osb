@@ -1639,7 +1639,6 @@ predicted |>
 ```
 :::
 
-
 ## Matching bias
 
 ::: {style="font-size: x-large"}
