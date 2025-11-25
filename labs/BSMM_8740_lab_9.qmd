@@ -45,7 +45,7 @@ if (! "librarian" %in% rownames(installed.packages()) ){
 }
   
 # load packages if not already loaded
-librarian::shelf(expm, ggplot2)
+librarian::shelf(expm, ggplot2, magrittr, tidyverse)
 theme_set(theme_bw(base_size = 18) + theme(legend.position = "top"))
 ```
 
@@ -71,8 +71,8 @@ This type of Markov model can help businesses predict customer behavior, optimiz
 
 What is the probability that a customer that has [just signed up]{.underline} is [still a customer after 6 months]{.underline}?
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q1 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q1:
 
 ```{r}
 #| echo: true
@@ -88,9 +88,10 @@ P <-
     , nrow =4, byrow = TRUE
   )
 
-# use %^% from the expm package to compute the k-th power of a matrix (k = 6 months)
+# (1) use %^% from the expm package to compute the k-th power of a matrix (k = 6 months)
 
-# sum the probabilities of the non-churned customer states after 6 steps
+# (2) starting from a new customer, sum the probabilities of the non-churned customer states after 6 steps
+
 ```
 
 The probability that a customer that has just signed up is still a customer after 6 months is \_\_\_%
@@ -103,12 +104,12 @@ A simpler customer churn model for each monthly period is as follows:
 -   a current subscriber cancels their subscription with probability 0.2
 -   a current non-subscriber starts their subscription with probability with probability 0.06
 
-write the state transition matrix $\mathsf{P}_{i,j}$, and compute the stationary distribution $\pi$ for this Markov Chain, confirming that $\pi\mathsf{P}=\pi$ and that the sum of the elements of $\pi$ equals $1.0$.
+write the state transition matrix $\mathsf{P}_{i,j}$, and compute the [**stationary distribution**]{.underline} $\pi$ for this Markov Chain, confirming that $\pi\mathsf{P}=\pi$ and that the sum of the elements of $\pi$ equals $1.0$.
 
 What percent of customers remain once the chain has reached the steady state?
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q2 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q2:
 
 ```{r}
 #| echo: true
@@ -167,10 +168,12 @@ $$
 \end{cases}
 $$
 
-and $\alpha(1|0)=\min(1,\lambda/2)$, $\alpha(0|1)=\min(1,2/\lambda)$
+and $\alpha(1|0)=\min(1,\lambda/2)$, $\alpha(0|1)=\min(1,2/\lambda)$. NOTE: there are 4 cases to consider.
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q3 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q3:
+
+(show all your work)
 :::
 
 ## Exercise 4: Samples from Poisson pmf
@@ -178,6 +181,7 @@ and $\alpha(1|0)=\min(1,\lambda/2)$, $\alpha(0|1)=\min(1,2/\lambda)$
 Given the following function for the acceptance probability
 
 ```{r}
+#| label: define the acceptance probability function (see exerise 3) 
 alpha <- function(y,x, lambda){
   if(x >= 1 & y == x+1){
     min(1,lambda/(x+1))
@@ -193,13 +197,18 @@ alpha <- function(y,x, lambda){
 
 1.  Write a MH algorithm to draw 2000 samples from a from a Poisson pmf with $\lambda = 20$ starting from $x_0=1$.
 
-2.  Compare the sample quantiles at probabilities c(0.1,.25,0.5, 0.75, 0.9) with the theoretical quantiles for the Poisson distribution (using the `qpois` function)
+2.  Compare the sample quantiles at probabilities **c(0.1,.25,0.5, 0.75, 0.9)** with the theoretical quantiles for the Poisson distribution (using the `qpois` function)
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q4 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q4:
 
 ```{r}
+#| label: sample from a Poisson(20) pmf, using a MH algorithm, then compare sampler quantiles with theoretical quantiles
 # MH algorithm drawing samples from a Poisson(20) pmf
+set.seed(8740)
+# initialize
+n = 2000; x = 1; lambda = 20; samples = c(x,rep(NA,n-1)) # to store samples
+
 
 
 # comparison of quantiles between the samples and the theoretical.
@@ -208,7 +217,7 @@ alpha <- function(y,x, lambda){
 
 ## Exercise 5: A Loan Portfolio
 
-Our client is a bank with both asset and liability products in retail bank industry. Most of the bank's assets are loans, and these loans generate the majority of the total revenue earned by the bank. Hence, it is essential for the bank to understand the proportion of loans that have a high propensity to be paid in full and those which will finally become Bad loans.
+Our client is a bank with both asset and liability products in retail bank industry. Most of the bank's assets are loans, and these loans generate the majority of the total revenue earned by the bank. Hence, it is essential for the bank to understand the proportion of loans that have a high likelihood to be paid in full and those which will finally become Bad loans.
 
 All the loans that have been issued by the bank are classified into one of four categories/states :
 
@@ -220,6 +229,7 @@ All the loans that have been issued by the bank are classified into one of four 
 Your research has suggested the following state transition matrix for the bank loans
 
 ```{r}
+#| label: define the transition matrix for our loan portfolio
 # the 1-year state transition matrix for loans is:
 P <- 
   matrix(
@@ -232,13 +242,14 @@ P <-
   )
 ```
 
-Answer the following questions, given that the bank's records indicate 60% of the loans on the books are 'good loans' and 40% are 'risky loans'.
+Answer the following questions, given that the bank's records indicate 60% of the loans on the books are 'good loans' and 40% are 'risky loans'. (*use this as the initial state*)
 
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q5 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q5:
 
 ```{r}
-# describe the current loan portfolio by state at the end of one year and two years.  
+#| label: use the transition matrix to predict the composition of the loan portfollio
+# describe the current loan portfolio by state at the end of one year.  
 
 
 # describe the current loan portfolio by state at the end of two years.
@@ -246,18 +257,20 @@ Answer the following questions, given that the bank's records indicate 60% of th
 ```
 
 ```{r}
+#| label: predict the pct of loans that start as good and are paid in 20 yrs
 # What percentage of good loans are paid in full after 20 years
 
 ```
 
-\$\$\_\_\_? percent of good loans are paid in full after 20 years
+\$\$\_\_\_❓ percent of good loans are paid in full after 20 years
 
 ```{r}
-# What percentage of good loans are paid in full after 20 years
+#| label: predict the pct of loans that start as risky and are paid in 20 yrs
+# What percentage of risky loans are paid in full after 20 years
 
 ```
 
-\_\_\_? percent of risk loans are paid in full after 20 years
+\_\_\_❓ percent of risky loans are paid in full after 20 years
 :::
 
 ## Exercise 6: A New Covariance Calculation
@@ -270,44 +283,60 @@ $$
 
 Statisticians have long interpreted this as a measure of how much the measurements $a_t$ and $b_t$ co-vary. If $a_t=b_t$ then this formula calculates the population variance of $a_t$, a measure of the dispersion or spread of the values of $a_t$.
 
-Some data scientists have suggested that this formula does not measure variation at all, since self-evidently there are no differences in the formula that would capture the variation. Instead, data scientists have suggested that the following calculation should be use to estimate co-variation. With $\Delta_k a_t \equiv a_{t+k}-a_t$ (the $k^{th}$ difference) the co-variation is calculated as:
+Some data scientists have suggested that this formula does not measure variation at all, since self-evidently there are no differences in the formula, other than mean differences, that would capture the variation.
+
+Instead, data scientists have suggested that the following calculation, which sums all possible differences, should be use to estimate co-variation. With $\Delta_k a_t \equiv a_{t+k}-a_t$ (the $k^{th}$ difference) the co-variation is calculated as:
 
 $$\frac{1}{T^2}\sum_{k=1}^{T-1}\sum_{t=1}^{T-k} \Delta_k a_t \Delta_k b_t$$
 
 Use samples of 10, 20, 50, 100, 200, 500, 1000, 2000, 5000 from $a\sim\mathcal{N}(1,1)$ and $b\sim a+\mathcal{N}(4,2)$, and calculate the covariance both ways, putting the result into a table.
 
-How do the calculations compare?
+Confirm that the calculation below computes the covariance both ways. How do the calculations compare?
 
-Make sure to use the calculations above, not the base R function.
-
-::: {.callout-note appearance="simple" icon="false"}
-## YOUR ANSWER:
+::: {#Q6 .callout-note appearance="simple" icon="false"}
+## YOUR ANSWER Q6:
 
 ```{r}
-# NOTE: you may be able to use some version of the following expression as part of your solution:
-# (dplyr::lead(a,k) - a)
+# NOTE: (dplyr::lead(a,k) - a) is key to this calculation
 set.seed(8740)
 
-
-
-
+count <- c(10,20,50)
+tibble::tibble(
+  T = c(count, count*10, count*100)
+) |> 
+  dplyr::mutate(
+    result =                                        # result is a nested columns
+      purrr::map(
+        T # a vector of sample counts: 10, 20, .., 2000, 5000
+        , (\(t){                                    # a function for each count t
+          a <- rnorm(n = t, mean = 1, sd = 1)       # t samples from N(1,1) -> a
+          b <- a + rnorm(n = t, mean = 4, sd = 2)   # t samples from a + N(4,2) -> b
+          tibble::tibble(                           # store the calculations in a tibble
+            cov = mean((a - mean(a))*(b - mean(b))) # calculate covariance the usual way
+            , alt_cov =                             # now calculate covariance the new way
+              1:(t-1) |>                            # on differences 1 to (t-1)
+              purrr::map_vec(
+                (\(k){                              # a function for each difference k
+                  (                                 # calculate the terms in the inner sum
+                    (dplyr::lead(a,k) - a) * (dplyr::lead(b,k) - b)) |> 
+                    sum(na.rm=TRUE) 
+                })
+              ) |> sum(na.rm=TRUE) / (t*t)          # the outer sum divided by count^2
+          )                                         # end: a tibble with two entries
+        })
+      )
+  ) |> tidyr::unnest(result)                        # unnest the calculations
 ```
+
+How do the two covariance calculations compare: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_❓
 :::
 
 ::: render-commit-push
 You're done and ready to submit your work! **Save**, **stage**, **commit**, and **push** all remaining changes. You can use the commit message "Done with Lab 9!" , and make sure you have committed and pushed all changed files to GitHub (your Git pane in RStudio should be empty) and that **all** documents are updated in your repo on GitHub.
 :::
 
-::: callout-important
-## Submission
-
-I will pull (copy) everyone's repository submissions at 5:00pm on the Sunday following class, and I will work only with these copies, so anything submitted after 5:00pm will not be graded. (**don't forget to commit and then push your work!**)
-:::
-
 ## Grading
 
 Total points available: 30 points.
 
-| Component | Points |
-|-----------|--------|
-| Ex 1 - 5  | 30     |
+![](images/rubric_lab_9.png){fig-align="center" width="600"}

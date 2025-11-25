@@ -761,7 +761,7 @@ tibble::tibble(mean = mu_h,  variance = var_h, 'standard error' = se_h) |>
   gt::as_raw_html()
 ```
 
-## MC Methods
+## MC Methods {visibility="hidden"}
 
 #### repeating the prior example, but un-normalized
 
@@ -1073,7 +1073,7 @@ Then the condition that $\sum_j p_{ij} = 1$ is the condition that each of the ro
 ## Markov Chains
 
 ::: {style="font-size: x-large"}
-Consider a simple two-state Markov chain with state space $\mathcal S = \{0,1\}$ and transition matrix $$ \mathsf P = \begin{pmatrix} p_{00} & p_{01} \\ p_{10} & p_{11} \end{pmatrix} = \begin{pmatrix} 1-\alpha & \alpha \\ \beta & 1-\beta \end{pmatrix}  $$ for some $0 < \alpha<1, 0>\beta < 1$. Note that the rows of $\mathsf P$ add up to $1$, as they must.
+Consider a simple two-state Markov chain with state space $\mathcal S = \{0,1\}$ and transition matrix $$ \mathsf P = \begin{pmatrix} p_{00} & p_{01} \\ p_{10} & p_{11} \end{pmatrix} = \begin{pmatrix} 1-\alpha & \alpha \\ \beta & 1-\beta \end{pmatrix}  $$ for some $0 < \alpha<1, 0<\beta < 1$. Note that the rows of $\mathsf P$ add up to $1$, as they must.
 
 like
 
@@ -1381,7 +1381,7 @@ This version is called [**random-walk Metropolis**]{.underline} - if we always a
 ## MCMC Metropolis Algo
 
 -   the burn-in period is a matter of trial and error
--   the start values don't matter much, but central. ones are 'better'
+-   the start values don't matter much, but central ones are 'better'
 -   if $\sigma$ is too small then we usually [accept]{.underline} and the chain doesn't move much
 -   if $\sigma$ is too big then we usually [reject]{.underline} and the chain doesn't move much
 -   generally the acceptance rate should be far from both zero and 1
@@ -1708,16 +1708,17 @@ In words: the joint probability of the parameters given the observed data is equ
 #| code-fold: true
 #| code-summary: "Initial state: Bayesian parameter estimation, Binomial process"
 set.seed(8740)
-p <- 0.5
-n <- 10
+p <- 0.5  # unknown - to be estimated
+n <- 10   # known
 # range of probability [0.01 - 0.99]
 p_values <- seq(0.01,0.99,0.001)
-# prior probability is beta(1,1)
+# prior probability is beta(7,2)
 pr <- dbeta(p_values,7,2)
 # Have to normalize given discreteness
 pr <- pr / sum(pr) 
 # create the data
-dat <- tibble::tibble(parameters = p_values, prob = pr, x = 0, step= 0) 
+stub <- tibble::tibble(parameters = p_values)
+dat  <- stub |> dplyr::mutate(prob = pr, x = 0, step= 0) 
 ```
 
 ## updating
@@ -1757,6 +1758,7 @@ for (i in 1:8) {
 #| fig-width: 12
 #| fig-height: 5.5
 #| fig-align: center
+#| warning: false
 #code-summary: "Plots of Bayesian updating steps"
 dat <- dat |> dplyr::filter(step <= 5) |> dplyr::group_by(step) |>
   dplyr::mutate(
@@ -1765,17 +1767,22 @@ dat <- dat |> dplyr::filter(step <= 5) |> dplyr::group_by(step) |>
         step == 0 ~ stringr::str_glue("Step {step}: prior mean is {(parameters*prob) |> sum() |> round(digits=3)}")
         , TRUE ~ stringr::str_glue("Step {step}: sample is {x} & posterior mean is {(parameters*prob) |> sum() |> round(digits=3)}")
       )
+    , x_lik = ifelse(step>0,dbinom(x, n, parameters),0) , x_lik = x_lik/sum(x_lik), lag_step = max(0,step-1)
   )
+# colors
+my_cols <- c(  "#1b9e77","#d95f02","#7570b3","#e7298a","#66a61e","#e6ab02")
 
 labels <- dat |> dplyr::distinct(step, title) |> dplyr::mutate(step = factor(step))
 step_labels <- split(labels$title, labels$step)
 step_labeller <- function(value){return(step_labels[value])}
 
-dat |> dplyr::mutate(step = factor(step)) |> dplyr::group_by(step) |>
+dat |> dplyr::mutate(step = factor(step), lag_step = factor(lag_step, levels = levels(step))) |> dplyr::group_by(step) |>
   ggplot(aes(x = parameters, y=prob, color = step)) +
   geom_line() +
-  geom_vline(xintercept=0.5, color="grey", size=1, linetype = "dashed") +
+  geom_line(aes(y=x_lik, color = lag_step), linetype = 3) +
+  geom_vline(xintercept=0.5, color="grey", linewidth=2, linetype = "dashed") +
   facet_wrap(vars(step), nrow = 2, labeller=labeller(step = step_labeller)) +
+  scale_color_manual(values = my_cols) +
   theme(plot.margin=unit(c(5,1,5,1), 'cm')) +
   theme_minimal() + 
   labs(title = "Bayesian updating - Binomial data; n known, true p = 0.5")
@@ -1838,8 +1845,10 @@ In the example to follow, we observe $(y,x)$ and we have parameters $\theta=(a,b
 ```{r}
 #| echo: true
 set.seed(8740)
+# true parameters
 a = 0; b = 5; sigma = 10; sampleSize = 31
 
+# create the observations
 data <- 
   tibble::tibble(
     x = (-(sampleSize-1)/2):((sampleSize-1)/2)
@@ -2076,7 +2085,7 @@ plot(mcm_chain)
 ::: {style="font-size: xx-large"}
 Businesses often face the the exploration vs exploitation dilemma. For example, managers might try to find a balance between the known most attractive ads/promotions/prices and the new ads/promotions/prices that might be even more successful.
 
-If we have learned all the information about the environment, we are able to find the best strategy by even just simulating brute-force. The dilemma comes from ***incomplete*** information: we need to gather enough information to make best overall decisions while keeping the risk under control.
+If we have learned all the information about the environment, we are able to find the best strategy by just simulating brute-force. The dilemma comes from ***incomplete*** information: we need to gather enough information to make best overall decisions while keeping the risk under control.
 :::
 
 ## Multi-armed Bandits
@@ -2092,7 +2101,7 @@ Thompson Sampling is a Bayesian approach to **sequential decision-making** that 
 :::::: columns
 :::: {.column width="50%"}
 ::: {style="font-size: large"}
-Core Idea: At each decision point:
+Core Idea: at each decision point:
 
 1.  For each option (arm), sample a parameter (e.g., conversion rate) from its posterior distribution.
 2.  Select the option with the highest sampled value.
