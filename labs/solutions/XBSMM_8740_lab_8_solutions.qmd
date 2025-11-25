@@ -6,8 +6,6 @@ editor: visual
 self-contained: true
 ---
 
-## Packages
-
 ```{r}
 #| message: false
 #| warning: false
@@ -568,6 +566,7 @@ result <-
 
 ```{r}
 #| label: plot the cumulative results to compare strategies 
+#| warning: false
 #
 result |>
   tidyr::pivot_longer(c(cumulative_baseline, cumulative_lift)) |>
@@ -823,6 +822,8 @@ fixest::etable(
   res, fitstat=c('n'), fixef_sizes = TRUE, family= TRUE 
 ) 
 ```
+
+The estimated ATT is 26.34
 :::
 
 ## Q8
