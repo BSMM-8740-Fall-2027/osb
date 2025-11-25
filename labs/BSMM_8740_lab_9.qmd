@@ -297,6 +297,7 @@ Confirm that the calculation below computes the covariance both ways. How do the
 ## YOUR ANSWER Q6:
 
 ```{r}
+#| eval: false
 # NOTE: (dplyr::lead(a,k) - a) is key to this calculation
 set.seed(8740)
 
