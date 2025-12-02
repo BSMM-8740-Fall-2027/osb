@@ -1,0 +1,20 @@
+---
+title: "SPT"
+---
+
+## Time to Complete Student Perceptions of Teaching
+
+::: {style="font-size: x-large"}
+To access and complete an online SPT:
+
+-   In your web browser, preferably Google Chrome, go [here](www.uwindsor.ca/uwinsitestudent) ( www.uwindsor.ca/uwinsitestudent).
+-   Click the blue [This text is blueSIGN IN TO UWINSITE STUDENT]{style="color: blue;"} button.
+-   On the Sign in screen, enter (or select) your UWinID\@uwindsor.ca. Click the Next button.
+-   On the Enter password screen, enter your UWin Account password. Click the Sign in button.
+-   On your Student Homepage in UWinsite Student, click the My Academics tile.
+-   Click Student Perception of Teaching in the left navigation menu.
+-   Select the appropriate term and click the Continue button.
+-   In the STUDENT PERCEPTION OF TEACHING box, click the Start button. PLEASE SELECT YOUR INSTRUCTOR'S NAME WHEN COMPLETING THE SPT.
+
+Follow the instructions within the SPT in order to complete and submit.
+:::
