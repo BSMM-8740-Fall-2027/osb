@@ -116,6 +116,8 @@ website:
             text: Sample exam questions
           - href: https://blog.djnavarro.net/posts/2025-09-06_p-splines/
             text: Splines
+          - href: supplemental/spt.qmd
+            text: Student Perceptions of Teaching
           - href: supplemental/smd.qmd
             text: Standardized Mean Differences (SMD)
 
