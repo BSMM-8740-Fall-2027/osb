@@ -159,7 +159,7 @@ You are now ready interact with GitHub via RStudio!
 
 1.  First make sure you are logged into your own Github account on a web browser.
 
-2.  Next, in a new browser tab, go to the course organization site at [BSMM-8740-Fall-2025](https://github.com/BSMM-8740-Fall-2025/ "Course GitHub organization") on GitHub. On the right hand side of the page you will find a list of repositories. Click on the repo **2025-lab-1\_*your.github.username***. It contains the starter documents you need to complete the lab.
+2.  Next, in a new browser tab, go to the course organization site at [BSMM-8740-Fall-2027](https://github.com/BSMM-8740-Fall-2027/ "Course GitHub organization") on GitHub. On the right hand side of the page you will find a list of repositories. Click on the repo **2027-lab-1\_*your.github.username***. It contains the starter documents you need to complete the lab.
 
 3.  Next, click on the green **CODE** button, select **SSH** (this might already be selected by default, and if it is, you'll see the text **in the text box**). Click on the clipboard icon to copy the text.
 
@@ -169,7 +169,7 @@ You are now ready interact with GitHub via RStudio!
 
 6.  Finally, click *Create Project*, and the files from your GitHub repo will be displayed in the *Files* pane in RStudio.
 
-7.  Click *2025-lab-1.qmd* to open the template R Markdown file. This is where you will write up your code and narrative for the lab.
+7.  Click *2027-lab-1.qmd* to open the template R Markdown file. This is where you will write up your code and narrative for the lab.
 
 ### R and R Studio
 

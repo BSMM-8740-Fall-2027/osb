@@ -1,5 +1,5 @@
 ---
-title: "2025-midterm"
+title: "2027-midterm"
 subtitle: "SOLUTIONS"
 editor: visual
 format: html

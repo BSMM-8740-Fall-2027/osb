@@ -3,7 +3,7 @@ title: "BSMM-8740: Data Analytic Methods & Algorithms"
 tbl-colwidths: [5,10,30,5,5,5,5,5,5,5]
 ---
 
-This page contains an outline of the topics, content, and assignments for the Fall 2025 semester. Note that this schedule will be updated as the semester progresses, with all changes documented here.
+This page contains an outline of the topics, content, and assignments for the Fall 2027 semester. Note that this schedule will be updated as the semester progresses, with all changes documented here.
 
 ::: column-screen-inset-right
 |                Week                | Date        | Topic                                  |                                  Prepare                                  |                                        Slides                                        |                                                                                                        |                                          Lab                                           |                                            Lab Solution                                            | Exam                                                                                          | Project |

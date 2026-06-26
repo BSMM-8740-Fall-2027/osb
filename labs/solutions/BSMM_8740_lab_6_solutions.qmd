@@ -319,7 +319,7 @@ refit_tbl |>
 
 ## Exercise 10: Seasonal Time Series Modeling for Retail Forecasting
 
-You are working as a Senior Business Analyst for "TechMart," a consumer electronics retailer with 50 stores across North America. The company is planning its inventory strategy for 2025 and needs accurate forecasts of monthly sales. The CFO has specifically requested that you use advanced decomposition methods that can handle the complex seasonal patterns in electronics retail.
+You are working as a Senior Business Analyst for "TechMart," a consumer electronics retailer with 50 stores across North America. The company is planning its inventory strategy for 2027 and needs accurate forecasts of monthly sales. The CFO has specifically requested that you use advanced decomposition methods that can handle the complex seasonal patterns in electronics retail.
 
 You have been provided with 60 months of historical sales data (Jan 2019 - Dec 2023) showing strong monthly seasonality (holiday shopping peaks) and an underlying growth trend due to market expansion.
 

@@ -95,18 +95,18 @@ While there is no official textbook for the course, the following textbooks are 
 
 | Date           | Topic                               |
 |----------------|-------------------------------------|
-| *Sep 10, 2025* | The Tidyverse, EDA & Git            |
-| *Sep 17, 2025* | The Recipes Package                 |
-| *Sep 24, 2025* | Regression Methods                  |
-| *Oct 01, 2025* | The TidyModels Package              |
-| *Oct 08, 2025* | Classification & Clustering Methods |
-| *Oct 22, 2025* | Time Series Methods                 |
-| *Oct 29, 2025* | Causality: DAGs                     |
-| *Nov 05, 2025* | Causality: Methods                  |
-| *Nov 12, 2025* | Monte Carlo Methods                 |
-| *Nov 19, 2025* | Bayesian Methods                    |
-| *Nov 26, 2025* | Advanced Topics                     |
-| *Dec 03, 2025* | Final Exam                          |
+| *Sep 10, 2027* | The Tidyverse, EDA & Git            |
+| *Sep 17, 2027* | The Recipes Package                 |
+| *Sep 24, 2027* | Regression Methods                  |
+| *Oct 01, 2027* | The TidyModels Package              |
+| *Oct 08, 2027* | Classification & Clustering Methods |
+| *Oct 22, 2027* | Time Series Methods                 |
+| *Oct 29, 2027* | Causality: DAGs                     |
+| *Nov 05, 2027* | Causality: Methods                  |
+| *Nov 12, 2027* | Monte Carlo Methods                 |
+| *Nov 19, 2027* | Bayesian Methods                    |
+| *Nov 26, 2027* | Advanced Topics                     |
+| *Dec 03, 2027* | Final Exam                          |
 
 ## Key Dates For Exams/Assignments[^1]
 
@@ -114,10 +114,10 @@ While there is no official textbook for the course, the following textbooks are 
 
 | Date           | Exam/Assignment     |
 |----------------|---------------------|
-| *Oct 08, 2025* | Quiz1               |
-| *Nov 05, 2025* | Midterm Examination |
-| *Nov 19, 2025* | Quiz 2              |
-| *Dec 03, 2025* | Final Examination   |
+| *Oct 08, 2027* | Quiz1               |
+| *Nov 05, 2027* | Midterm Examination |
+| *Nov 19, 2027* | Quiz 2              |
+| *Dec 03, 2027* | Final Examination   |
 
 ## Grading
 
@@ -271,10 +271,10 @@ In the event of inclement weather or other connectivity-related events that proh
 
 ## Important Academic Dates
 
-| FALL 2025                |                                      |
+| FALL 2027                |                                      |
 |--------------------------|--------------------------------------|
 | September 1              | Labour Day (University closed)       |
-| September 4              | all 2025 classes begin               |
+| September 4              | all 2027 classes begin               |
 | September 17             | Add/Drop Date                        |
 | October 2                | Financial Drop Date                  |
 | October 13               | Thanksgiving Day (University closed) |

@@ -1,8 +1,8 @@
 ---
 title: "Tidyverse, EDA & git"
-subtitle: "BSMM8740-2-R-2025F [WEEK - 1]"
+subtitle: "BSMM8740-2-R-2027F [WEEK - 1]"
 author: "Dr. L.L. Odette"
-footer:  "[bsmm-8740-fall-2025.github.io/osb](https://bsmm-8740-fall-2025.github.io/osb/)"
+footer:  "[bsmm-8740-fall-2027.github.io/osb](https://bsmm-8740-fall-2027.github.io/osb/)"
 logo: "images/logo.png"
 format: 
   revealjs: 
@@ -60,7 +60,7 @@ knitr::opts_chunk$set(
 ## Announcements
 
 ::: {style="font-size: smaller"}
--   Please go to the [course website](https://bsmm-8740-fall-2025.github.io/osb/) to review the weekly slides, access the labs, read the syllabus, etc.
+-   Please go to the [course website](https://bsmm-8740-fall-2027.github.io/osb/) to review the weekly slides, access the labs, read the syllabus, etc.
 -   My intent is to have assigned lab exercises each week, which will be started during class.
     -   Lab assignments will be due at 5:00pm sharp on the Sunday following the lecture.
 -   Lab 1 is due Sunday September 14 at 5pm.
