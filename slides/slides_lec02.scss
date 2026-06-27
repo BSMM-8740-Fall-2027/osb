@@ -1,0 +1,184 @@
+/*-- scss:defaults --*/
+
+// Modern Kitchen palette — original design for BSMM-8740 Lec 02
+// Concept: recipes package cooking metaphor (forest green, warm white, terracotta)
+@import 'https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&display=swap';
+
+$forest-green:  #2D6A4F;
+$sage:          #52B788;
+$terracotta:    #E76F51;
+$warm-white:    #FAFAF8;
+$deep-charcoal: #1A2332;
+$light-sage:    #E8F4EC;
+$warm-gray:     #6B7280;
+
+// RevealJS variable overrides
+$backgroundColor:           $warm-white;
+$mainColor:                 $deep-charcoal;
+$headingColor:              $forest-green;
+$mainFont:                  "Atkinson Hyperlegible", sans-serif;
+$headingFont:               "Atkinson Hyperlegible", sans-serif;
+$headingFontWeight:         700;
+$headingTextTransform:      none;
+$headingTextShadow:         none;
+$linkColor:                 $sage;
+$linkColorHover:            $forest-green;
+$selectionBackgroundColor:  rgba(82, 183, 136, 0.25);
+$codeBackground:            $light-sage;
+
+/*-- scss:rules --*/
+
+// Left-rule heading — the deck's identity marker
+.reveal h2 {
+  border-left: 4px solid #2D6A4F;
+  padding-left: 0.45em;
+  line-height: 1.2;
+  margin-bottom: 0.6em;
+}
+
+// Slide logo
+.reveal .slide-logo {
+  height: 60px !important;
+  width: 60px !important;
+  max-width: unset !important;
+  max-height: unset !important;
+}
+
+// Code blocks — sage tint, green left rule
+.reveal pre {
+  box-shadow: none;
+  border-left: 3px solid #2D6A4F;
+  border-radius: 0 4px 4px 0;
+}
+
+.reveal pre code {
+  background-color: #E8F4EC;
+  font-size: 0.78em;
+  line-height: 1.5;
+}
+
+.reveal code {
+  color: #2D6A4F;
+  background-color: #E8F4EC;
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  font-size: 0.88em;
+}
+
+// Callout accent
+.reveal .callout-note {
+  border-left-color: #2D6A4F !important;
+}
+
+.reveal .callout-note .callout-title {
+  background-color: #E8F4EC !important;
+  color: #2D6A4F !important;
+}
+
+// Utility
+.highlight { color: #E76F51; font-weight: 700; }
+.muted     { color: #6B7280; font-size: 0.85em; }
+
+// code-fold summary link
+details > summary { font-size: 0.75em; color: #2D6A4F; cursor: pointer; }
+
+// Workflow diagram: recipe() → prep() → bake()
+.workflow-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.6em;
+  margin-top: 2em;
+}
+
+.w-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 7.5em;
+  padding: 0.6em 1.1em;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 1em;
+  color: #FAFAF8;
+  line-height: 1.2;
+}
+
+.w-box .w-sub {
+  font-weight: 400;
+  font-size: 0.6em;
+  color: rgba(255,255,255,0.82);
+  margin-top: 0.4em;
+  text-align: center;
+}
+
+.w-arrow { font-size: 2em; color: #6B7280; line-height: 2.3; }
+
+.w-green { background-color: #2D6A4F; }
+.w-sage  { background-color: #52B788; }
+.w-terra { background-color: #E76F51; }
+
+// Strip paragraph margins inside workflow boxes
+.w-box p { margin: 0; padding: 0; line-height: 1.2; color: #FAFAF8; }
+
+// Selector grid
+.sel-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.1em;
+  margin-top: 1.3em;
+}
+
+.sel-card {
+  background: #E8F4EC;
+  border-radius: 6px;
+  padding: 0.75em 0.9em;
+}
+
+.sel-card strong {
+  color: #2D6A4F;
+  font-size: 0.9em;
+  display: block;
+  border-bottom: 1px solid #52B788;
+  padding-bottom: 0.25em;
+  margin-bottom: 0.35em;
+}
+
+.sel-card code {
+  font-size: 0.75em;
+  display: block;
+  margin: 0.15em 0;
+  background: none;
+  padding: 0;
+}
+
+// Three-panel resolution slide
+.three-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.4em;
+  margin-top: 1.6em;
+}
+
+.p-card {
+  background: #E8F4EC;
+  border-top: 4px solid #2D6A4F;
+  border-radius: 6px;
+  padding: 1em 1em 1.3em;
+  text-align: center;
+}
+
+.p-card strong {
+  color: #2D6A4F;
+  font-size: 1.05em;
+  display: block;
+  margin-bottom: 0.45em;
+}
+
+.p-card p {
+  color: #1A2332;
+  font-size: 0.82em;
+  line-height: 1.4;
+  margin: 0;
+}

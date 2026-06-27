@@ -15,3 +15,5 @@ _site/
 *speaker.html
 .DS_Store
 scrolly
+
+**/*.quarto_ipynb
